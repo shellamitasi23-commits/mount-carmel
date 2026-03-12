@@ -8,18 +8,26 @@
     
     <div class="lg:col-span-2 flex flex-col gap-6">
         
-        <div class="relative bg-primary rounded-2xl p-8 md:p-10 flex flex-col md:flex-row items-center justify-between overflow-hidden shadow-lg">
-            <div class="relative z-10 text-white max-w-md">
-                <h2 class="text-3xl font-bold leading-tight mb-4">Pantau Ketersediaan Kavling Madinah.</h2>
-                <button class="bg-white text-primary px-6 py-2.5 rounded-lg font-semibold hover:bg-gray-100 transition-colors shadow-sm text-sm">
-                    Lihat Laporan
-                </button>
-            </div>
-            <div class="mt-6 md:mt-0 relative z-10 w-48 h-32 md:absolute md:-right-4 md:-bottom-8 md:w-80 md:h-80">
-                <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=600&auto=format&fit=crop" 
-                     class="w-full h-full object-cover object-center rounded-xl md:rounded-none md:mask-image-bottom opacity-90 mix-blend-luminosity" alt="Ilustrasi">
-            </div>
-        </div>
+<div class="relative bg-[#0a1120] rounded-[2rem] p-10 flex flex-col md:flex-row items-center justify-between overflow-hidden shadow-2xl shadow-slate-900/50 border border-slate-800/50">
+    
+    <div class="absolute top-[-20%] right-[-10%] w-96 h-96 bg-blue-600/15 rounded-full blur-[120px] pointer-events-none z-0"></div>
+    
+    <div class="relative z-10 text-white max-w-sm text-center md:text-left">
+        <h2 class="text-3xl font-black leading-tight mb-5 tracking-tight">Pantau Ketersediaan Kavling Madinah.</h2>
+        <button class="bg-white text-slate-900 px-8 py-3.5 rounded-xl font-bold hover:bg-slate-50 transition-all shadow-lg text-xs uppercase tracking-widest active:scale-95">
+            Lihat Laporan
+        </button>
+    </div>
+
+    <div class="mt-10 md:mt-0 relative z-10 w-full md:w-auto flex justify-center md:justify-end">
+        <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=600&auto=format&fit=crop" 
+             class="w-72 h-52 md:w-80 md:h-56 object-cover object-center rounded-2xl 
+                    border border-white/20 
+                    shadow-[0_20px_50px_rgba(8,_112,_184,_0.3)] 
+                    transition-all duration-500 hover:scale-105 hover:shadow-[0_30px_60px_rgba(8,_112,_184,_0.5)]" 
+             alt="Ilustrasi Kavling">
+    </div>
+</div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             
@@ -121,9 +129,9 @@
 
             <div class="space-y-6">
                 <div class="group cursor-pointer">
-                    <div class="relative w-full h-36 rounded-xl overflow-hidden mb-3">
+                    <div class="relative w-full h-36 rounded-xl overflow-hidden mb-3 shadow-lg border-2 border-slate-50">
                         <img src="https://images.unsplash.com/photo-1599809275671-b5942cabc7a2?q=80&w=400&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Kavling">
-                        <span class="absolute top-2 left-2 bg-white/90 backdrop-blur text-xs font-bold px-2 py-1 rounded-md text-textMain">Tersedia</span>
+                        <span class="absolute top-2 left-2 bg-white/90 backdrop-blur text-xs font-bold px-2 py-1 rounded-md text-textMain shadow-sm">Tersedia</span>
                     </div>
                     <h4 class="font-bold text-textMain">Cluster Non-Muslim VIP</h4>
                     <p class="text-xs text-textMuted mt-1 mb-2">Ukuran 26m x 36m • Kapasitas 18</p>
@@ -133,9 +141,9 @@
                 <hr class="border-gray-50">
 
                 <div class="group cursor-pointer">
-                    <div class="relative w-full h-36 rounded-xl overflow-hidden mb-3">
+                    <div class="relative w-full h-36 rounded-xl overflow-hidden mb-3 shadow-lg border-2 border-slate-50">
                         <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?q=80&w=400&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Kavling">
-                        <span class="absolute top-2 left-2 bg-white/90 backdrop-blur text-xs font-bold px-2 py-1 rounded-md text-textMain">Tersedia</span>
+                        <span class="absolute top-2 left-2 bg-white/90 backdrop-blur text-xs font-bold px-2 py-1 rounded-md text-textMain shadow-sm">Tersedia</span>
                     </div>
                     <h4 class="font-bold text-textMain">Cluster Muslim Khalifah</h4>
                     <p class="text-xs text-textMuted mt-1 mb-2">Ukuran 7m x 15m • Kapasitas 12</p>
@@ -146,11 +154,11 @@
 
         <div class="bg-card rounded-2xl p-6 border border-gray-100 shadow-sm flex-1 flex flex-col">
             <h3 class="font-bold text-textMain mb-4">Peta Cluster Madinah</h3>
-            <div class="w-full flex-1 min-h-[200px] bg-gray-100 rounded-xl overflow-hidden relative border border-gray-200">
+            <div class="w-full flex-1 min-h-[200px] bg-gray-100 rounded-xl overflow-hidden relative border border-gray-200 cursor-pointer">
                 <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=400&auto=format&fit=crop" class="w-full h-full object-cover opacity-50 grayscale" alt="Map">
-                <div class="absolute inset-0 flex items-center justify-center">
-                    <span class="bg-white px-4 py-2 rounded-lg shadow-md text-sm font-bold text-textMain flex items-center gap-2">
-                        <span class="material-icons-outlined text-primary">location_on</span> View Masterplan
+                <div class="absolute inset-0 flex items-center justify-center bg-black/20">
+                    <span class="bg-white px-4 py-2 rounded-lg shadow-xl text-[11px] uppercase tracking-wider font-extrabold text-textMain flex items-center gap-1.5 hover:scale-105 transition-all">
+                        <span class="material-icons-outlined text-primary text-sm">location_on</span> View Masterplan
                     </span>
                 </div>
             </div>
@@ -164,10 +172,9 @@
     document.addEventListener('DOMContentLoaded', function () {
         const ctxLine = document.getElementById('revenueLineChart').getContext('2d');
         
-        // Membuat efek gradasi warna di bawah garis
         let gradient = ctxLine.createLinearGradient(0, 0, 0, 300);
-        gradient.addColorStop(0, 'rgba(74, 159, 181, 0.4)'); // Teal transparant
-        gradient.addColorStop(1, 'rgba(74, 159, 181, 0.0)'); // Transparan total
+        gradient.addColorStop(0, 'rgba(74, 159, 181, 0.4)'); 
+        gradient.addColorStop(1, 'rgba(74, 159, 181, 0.0)'); 
 
         new Chart(ctxLine, {
             type: 'line',
@@ -176,7 +183,7 @@
                 datasets: [{
                     label: 'Pendapatan',
                     data: [120, 250, 180, 320, 280, 450, 520],
-                    borderColor: '#4a9fb5', // Warna garis Teal
+                    borderColor: '#4a9fb5', 
                     backgroundColor: gradient,
                     borderWidth: 3,
                     pointBackgroundColor: '#ffffff',
@@ -184,15 +191,15 @@
                     pointBorderWidth: 2,
                     pointRadius: 4,
                     pointHoverRadius: 6,
-                    fill: true, // Mengaktifkan gradasi di bawah garis
-                    tension: 0.4 // Membuat garis melengkung (smooth curve)
+                    fill: true, 
+                    tension: 0.4 
                 }]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
                 plugins: {
-                    legend: { display: false }, // Menyembunyikan label legend bawaan
+                    legend: { display: false }, 
                     tooltip: {
                         backgroundColor: '#1a2332',
                         padding: 10,

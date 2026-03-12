@@ -1,112 +1,111 @@
 @extends('layouts.admin')
-
-@section('title', 'Manajemen Kavling - Mount Carmel')
+@section('title', 'Data Kavling - Mount Carmel')
 
 @section('content')
+
+@if(session('success'))
+<div class="mb-6 bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-xl flex items-center gap-3">
+    <span class="material-icons-outlined">check_circle</span>
+    <span class="font-medium text-sm">{{ session('success') }}</span>
+</div>
+@endif
+
 <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
     <div>
-        <h1 class="text-2xl font-bold text-textMain">Manajemen Kavling</h1>
-        <p class="text-sm text-textMuted mt-1">Kelola data, tipe, dan ketersediaan kavling cluster.</p>
+        <h1 class="text-2xl font-bold text-slate-800">Data Kavling</h1>
+        <p class="text-sm text-slate-500 mt-1">Kelola data, harga, dan ketersediaan kavling per cluster.</p>
     </div>
-    <button class="bg-primary hover:bg-opacity-90 text-white px-5 py-2.5 rounded-xl font-semibold text-sm flex items-center gap-2 transition-all shadow-sm">
-        <span class="material-icons-outlined text-lg">add</span>
-        Tambah Kavling
-    </button>
+    @if(auth()->user()->role == 'admin')
+    <div class="flex gap-3 w-full md:w-auto">
+        <button onclick="openModal()" class="bg-slate-900 hover:bg-slate-800 text-white px-5 py-2.5 rounded-xl font-semibold flex items-center gap-2 transition-all shadow-md text-sm hover:shadow-lg hover:-translate-y-0.5">
+            <span class="material-icons-outlined text-sm">add</span> Tambah Kavling
+        </button>
+    </div>
+    @endif
 </div>
 
-<div class="bg-card rounded-t-2xl p-6 border border-gray-100 border-b-0 shadow-sm flex flex-col md:flex-row gap-4 justify-between items-center mt-4">
-    <div class="flex items-center bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 w-full md:w-80">
-        <span class="material-icons-outlined text-gray-400 text-sm mr-2">search</span>
-        <input type="text" placeholder="Cari ID atau Tipe Kavling..." class="bg-transparent border-none focus:outline-none text-sm w-full text-gray-700">
-    </div>
-    <div class="flex gap-2 w-full md:w-auto">
-        <select class="bg-gray-50 border border-gray-200 text-gray-700 text-sm rounded-lg px-4 py-2 focus:outline-none w-full md:w-auto cursor-pointer">
-            <option value="">Semua Cluster</option>
-            <option value="muslim">Muslim</option>
-            <option value="non_muslim">Non-Muslim</option>
-        </select>
-        <select class="bg-gray-50 border border-gray-200 text-gray-700 text-sm rounded-lg px-4 py-2 focus:outline-none w-full md:w-auto cursor-pointer">
-            <option value="">Semua Status</option>
-            <option value="tersedia">Tersedia</option>
-            <option value="terjual">Terjual</option>
-            <option value="booking">Booking</option>
-        </select>
-    </div>
-</div>
-
-<div class="bg-card rounded-b-2xl border border-gray-100 shadow-sm overflow-hidden mb-8">
+<div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
     <div class="overflow-x-auto">
         <table class="w-full text-left text-sm whitespace-nowrap">
             <thead>
-                <tr class="text-textMuted font-semibold bg-gray-50/80 border-b border-gray-100">
-                    <th class="px-6 py-4">ID Kavling</th>
+                <tr class="text-slate-500 font-semibold bg-slate-50/80 border-b border-slate-100 uppercase tracking-wider text-[11px]">
+                    <th class="px-6 py-4">ID / Nomor</th>
                     <th class="px-6 py-4">Tipe & Cluster</th>
-                    <th class="px-6 py-4">Ukuran</th>
+                    <th class="px-6 py-4">Spesifikasi</th>
                     <th class="px-6 py-4">Harga</th>
                     <th class="px-6 py-4">Status</th>
+                    @if(auth()->user()->role == 'admin')
                     <th class="px-6 py-4 text-center">Aksi</th>
+                    @endif
                 </tr>
             </thead>
-            <tbody class="divide-y divide-gray-50">
-                <tr class="hover:bg-gray-50/50 transition-colors">
-                    <td class="px-6 py-4 font-bold text-primary">#KV-M01</td>
+            <tbody class="divide-y divide-slate-50 text-slate-700">
+                
+                @forelse($kavlings as $kavling)
+                <tr class="hover:bg-slate-50/50 transition-colors group">
+                    <td class="px-6 py-4 font-bold text-slate-900">#{{ $kavling->nomor_kavling }}</td>
                     <td class="px-6 py-4">
-                        <p class="font-semibold text-textMain">Tipe Barokah</p>
-                        <p class="text-xs text-textMuted">Cluster Muslim</p>
+                        <p class="font-bold text-slate-900">{{ $kavling->tipe_kavling }}</p>
+                        <p class="text-xs text-slate-500 mt-0.5">{{ $kavling->cluster->nama_cluster ?? 'Tanpa Cluster' }}</p>
                     </td>
-                    <td class="px-6 py-4 text-textMuted">1.5m x 2.5m</td>
-                    <td class="px-6 py-4 font-medium text-textMain">Rp 150.000.000</td>
                     <td class="px-6 py-4">
-                        <span class="px-3 py-1 bg-green-50 text-green-600 rounded-md text-xs font-bold tracking-wide">Tersedia</span>
+                        <p class="font-medium text-slate-800">{{ $kavling->ukuran }}</p>
+                        <p class="text-xs text-slate-500 mt-0.5">Kapasitas: {{ $kavling->kapasitas }} Orang</p>
                     </td>
-                    <td class="px-6 py-4 text-center">
-                        <button class="text-blue-500 hover:bg-blue-50 p-1.5 rounded-lg transition-colors"><span class="material-icons-outlined text-lg">edit</span></button>
-                        <button class="text-red-500 hover:bg-red-50 p-1.5 rounded-lg transition-colors"><span class="material-icons-outlined text-lg">delete</span></button>
+                    <td class="px-6 py-4 font-bold text-slate-900">Rp {{ number_format($kavling->harga, 0, ',', '.') }}</td>
+                    <td class="px-6 py-4">
+                        @if($kavling->status == 'Tersedia')
+                            <span class="px-3 py-1 bg-green-100 text-green-700 rounded-md text-[11px] font-bold uppercase tracking-wide">Tersedia</span>
+                        @elseif($kavling->status == 'Dipesan')
+                            <span class="px-3 py-1 bg-yellow-100 text-yellow-700 rounded-md text-[11px] font-bold uppercase tracking-wide">Dipesan</span>
+                        @else
+                            <span class="px-3 py-1 bg-slate-200 text-slate-600 rounded-md text-[11px] font-bold uppercase tracking-wide">Terjual</span>
+                        @endif
+                    </td>
+                    @if(auth()->user()->role == 'admin')
+                    <td class="px-6 py-4 text-center flex justify-center gap-2">
+                        <button type="button" onclick="openEditModal({{ $kavling->id }})" class="text-slate-400 hover:text-blue-600 bg-white border border-slate-200 hover:border-blue-200 p-2 rounded-lg transition-all shadow-sm">
+                            <span class="material-icons-outlined text-lg block">edit</span>
+                        </button>
+                        <form action="{{ route('admin.kavling.destroy', $kavling->id) }}" method="POST" onsubmit="return confirm('Yakin hapus kavling ini?');">
+                            @csrf @method('DELETE')
+                            <button type="submit" class="text-slate-400 hover:text-red-600 bg-white border border-slate-200 hover:border-red-200 p-2 rounded-lg transition-all shadow-sm">
+                                <span class="material-icons-outlined text-lg block">delete</span>
+                            </button>
+                        </form>
+                    </td>
+                    @endif
+                </tr>
+                
+                @if(auth()->user()->role == 'admin')
+                @include('admin.kavling.edit')
+                @endif
+
+                @empty
+                <tr>
+                    <td colspan="{{ auth()->user()->role == 'admin' ? '6' : '5' }}" class="px-6 py-10 text-center text-slate-500">
+                        <div class="flex flex-col items-center justify-center">
+                            <span class="material-icons-outlined text-4xl text-slate-300 mb-2">crop_square</span>
+                            <p class="font-medium">Belum ada data kavling.</p>
+                            <p class="text-xs mt-1">Klik tombol "Tambah Kavling" untuk memulai.</p>
+                        </div>
                     </td>
                 </tr>
-                <tr class="hover:bg-gray-50/50 transition-colors">
-                    <td class="px-6 py-4 font-bold text-primary">#KV-NM05</td>
-                    <td class="px-6 py-4">
-                        <p class="font-semibold text-textMain">Family</p>
-                        <p class="text-xs text-textMuted">Cluster Non-Muslim</p>
-                    </td>
-                    <td class="px-6 py-4 text-textMuted">8m x 5m</td>
-                    <td class="px-6 py-4 font-medium text-textMain">Rp 450.000.000</td>
-                    <td class="px-6 py-4">
-                        <span class="px-3 py-1 bg-gray-100 text-gray-500 rounded-md text-xs font-bold tracking-wide">Terjual</span>
-                    </td>
-                    <td class="px-6 py-4 text-center">
-                        <button class="text-blue-500 hover:bg-blue-50 p-1.5 rounded-lg transition-colors"><span class="material-icons-outlined text-lg">edit</span></button>
-                        <button class="text-red-500 hover:bg-red-50 p-1.5 rounded-lg transition-colors"><span class="material-icons-outlined text-lg">delete</span></button>
-                    </td>
-                </tr>
-                <tr class="hover:bg-gray-50/50 transition-colors">
-                    <td class="px-6 py-4 font-bold text-primary">#KV-M12</td>
-                    <td class="px-6 py-4">
-                        <p class="font-semibold text-textMain">Tipe Khalifah</p>
-                        <p class="text-xs text-textMuted">Cluster Muslim</p>
-                    </td>
-                    <td class="px-6 py-4 text-textMuted">7m x 15m</td>
-                    <td class="px-6 py-4 font-medium text-textMain">Rp 650.000.000</td>
-                    <td class="px-6 py-4">
-                        <span class="px-3 py-1 bg-yellow-50 text-yellow-600 rounded-md text-xs font-bold tracking-wide">Booking</span>
-                    </td>
-                    <td class="px-6 py-4 text-center">
-                        <button class="text-blue-500 hover:bg-blue-50 p-1.5 rounded-lg transition-colors"><span class="material-icons-outlined text-lg">edit</span></button>
-                        <button class="text-red-500 hover:bg-red-50 p-1.5 rounded-lg transition-colors"><span class="material-icons-outlined text-lg">delete</span></button>
-                    </td>
-                </tr>
+                @endforelse
+
             </tbody>
         </table>
     </div>
-    <div class="p-4 border-t border-gray-50 flex items-center justify-between text-sm text-textMuted">
-        <span>Menampilkan 1-10 dari 120 Kavling</span>
-        <div class="flex gap-1">
-            <button class="px-3 py-1 border border-gray-200 rounded hover:bg-gray-50">Prev</button>
-            <button class="px-3 py-1 bg-primary text-white rounded">1</button>
-            <button class="px-3 py-1 border border-gray-200 rounded hover:bg-gray-50">2</button>
-            <button class="px-3 py-1 border border-gray-200 rounded hover:bg-gray-50">Next</button>
-        </div>
-    </div>
 </div>
+
+@if(auth()->user()->role == 'admin')
+@include('admin.kavling.create')
+@endif
+
+<script>
+    function openModal() { document.getElementById('createModal').classList.remove('hidden'); }
+    function closeModal() { document.getElementById('createModal').classList.add('hidden'); }
+    function openEditModal(id) { document.getElementById('editModal' + id).classList.remove('hidden'); }
+    function closeEditModal(id) { document.getElementById('editModal' + id).classList.add('hidden'); }
+</script>
 @endsection

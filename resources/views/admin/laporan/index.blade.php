@@ -15,10 +15,10 @@
             <span>Okt 2023 - Nov 2023</span>
             <span class="material-icons-outlined text-gray-400 text-sm ml-2 cursor-pointer">expand_more</span>
         </div>
-        <button class="bg-primary hover:bg-opacity-90 text-white px-5 py-2.5 rounded-xl font-semibold flex items-center gap-2 transition-all shadow-md text-sm">
+        <a href="{{ route('admin.laporan.pdf') }}" class="bg-primary hover:bg-opacity-90 text-white px-5 py-2.5 rounded-xl font-semibold flex items-center gap-2 transition-all shadow-md text-sm">
             <span class="material-icons-outlined text-sm">picture_as_pdf</span>
             Export PDF
-        </button>
+        </a>
     </div>
 </div>
 

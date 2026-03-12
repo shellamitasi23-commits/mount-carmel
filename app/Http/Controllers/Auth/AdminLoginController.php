@@ -8,55 +8,52 @@ use Illuminate\Support\Facades\Auth;
 
 class AdminLoginController extends Controller
 {
-    /**
-     * Menampilkan form login admin
-     */
+    // Menampilkan view admin-login.blade.php
     public function showLoginForm()
     {
         return view('auth.admin-login');
     }
 
-    /**
-     * Memproses data login admin
-     */
+    // Memproses Login
     public function login(Request $request)
     {
-        // 1. Validasi inputan
         $credentials = $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required'],
         ]);
 
-        // 2. Proses Autentikasi (Cek email & password)
-        // Catatan: Saat ini kita menggunakan default Auth. 
-        // Nanti jika ingin dipisah total, kita bisa ubah menjadi Auth::guard('admin')->attempt(...)
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
-
-            // Jika berhasil, perbarui sesi untuk keamanan
             $request->session()->regenerate();
 
-            // Arahkan ke dashboard admin
-            return redirect()->intended('/admin');
+            $user = Auth::user();
+
+            // CEK ROLE SETELAH BERHASIL LOGIN
+            if ($user->role === 'admin') {
+                return redirect()->route('admin.dashboard');
+            } elseif ($user->role === 'pimpinan') {
+                return redirect()->route('pimpinan.dashboard');
+            } else {
+                // Jika pembeli biasa nyasar login di portal admin, tendang keluar
+                Auth::logout();
+                return back()->withErrors([
+                    'email' => 'Akses ditolak! Akun ini bukan administrator.',
+                ]);
+            }
         }
 
-        // 3. Jika gagal login, kembalikan ke halaman login beserta error
         return back()->withErrors([
             'email' => 'Email atau kata sandi yang Anda masukkan salah.',
-        ])->onlyInput('email'); // Tetap pertahankan isian email agar tidak perlu mengetik ulang
+        ])->onlyInput('email');
     }
 
-    /**
-     * Memproses logout admin
-     */
+    // Memproses Logout
     public function logout(Request $request)
     {
         Auth::logout();
-
-        // Hapus sesi pengguna dan buat ulang token CSRF
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        // Arahkan kembali ke halaman login admin
+        // Kembalikan ke halaman login portal
         return redirect('/admin/login');
     }
 }

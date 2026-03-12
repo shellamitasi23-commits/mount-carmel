@@ -8,21 +8,27 @@ use App\Models\User;
 
 class AdminUserSeeder extends Seeder
 {
-    /**
-     * Jalankan seeder database.
-     */
     public function run(): void
     {
-        // Kita gunakan updateOrCreate agar tidak terjadi error duplikat 
-        // jika kamu menjalankan seeder ini berkali-kali.
+        // 1. Buat Akun Admin
         User::updateOrCreate(
-            ['email' => 'admin@mountcarmel.id'], // Ini akan jadi email login
+            ['email' => 'admin@mountcarmel.id'],
             [
-                'name' => 'Super Admin',
-                'password' => Hash::make('admin12345'), // Ini akan jadi kata sandi login
+                'name' => 'Admin Mount Carmel',
+                'password' => Hash::make('admin12345'),
+                'role' => 'admin', 
+                'no_telepon' => '081234567890'
+            ]
+        );
 
-                // Catatan: Kalau nanti di tabel users kamu menambahkan kolom 'role', 
-                // kamu bisa tambahkan di sini, misalnya: 'role' => 'admin'
+        // 2. Buat Akun Pimpinan 
+        User::updateOrCreate(
+            ['email' => 'pimpinan@mountcarmel.id'],
+            [
+                'name' => 'Pimpinan Mount Carmel',
+                'password' => Hash::make('pimpinan123'),
+                'role' => 'pimpinan', 
+                'no_telepon' => '081111222333'
             ]
         );
     }
