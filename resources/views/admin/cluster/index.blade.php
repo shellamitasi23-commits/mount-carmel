@@ -18,10 +18,12 @@
     </div>
     @if(auth()->user()->role == 'admin')
     <div class="flex gap-3 w-full md:w-auto">
+        @if(auth()->user()->role == 'admin')
         <button onclick="openModal()" class="bg-slate-900 hover:bg-slate-800 text-white px-5 py-2.5 rounded-xl font-semibold flex items-center gap-2 transition-all shadow-md text-sm hover:shadow-lg hover:-translate-y-0.5">
             <span class="material-icons-outlined text-sm">add</span>
             Tambah Cluster
         </button>
+        @endif
     </div>
     @endif
 </div>

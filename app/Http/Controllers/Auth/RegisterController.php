@@ -38,6 +38,6 @@ class RegisterController extends Controller
         Auth::login($user);
 
         // 4. Redirect ke dashboard pembeli
-        return redirect()->route('pembeli.dashboard')->with('success', 'Pendaftaran berhasil!');
+        return redirect()->route('home')->with('success', 'Pendaftaran berhasil!');
     }
 }

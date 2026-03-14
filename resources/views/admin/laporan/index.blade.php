@@ -25,17 +25,17 @@
 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
     <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 border-l-4 border-l-teal">
         <p class="text-sm font-medium text-gray-500 mb-1">Total Pendapatan Bersih</p>
-        <h3 class="text-3xl font-bold text-navy">Rp 12.45 M</h3>
-        <p class="text-xs text-green-500 font-semibold mt-2 flex items-center gap-1"><span class="material-icons-outlined text-xs">trending_up</span> +12.5% dari periode sebelumnya</p>
+        <h3 class="text-3xl font-bold text-navy">Rp {{ number_format($totalPendapatan / 1000000, 2, ',', '.') }} M</h3>
+        <p class="text-xs text-green-500 font-semibold mt-2 flex items-center gap-1"><span class="material-icons-outlined text-xs">trending_up</span> Periode ini</p>
     </div>
     <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 border-l-4 border-l-blue-500">
         <p class="text-sm font-medium text-gray-500 mb-1">Kavling Terjual (Periode Ini)</p>
-        <h3 class="text-3xl font-bold text-navy">32 Unit</h3>
-        <p class="text-xs text-green-500 font-semibold mt-2 flex items-center gap-1"><span class="material-icons-outlined text-xs">trending_up</span> +5 Unit dari periode sebelumnya</p>
+        <h3 class="text-3xl font-bold text-navy">{{ $kavlingTerjual }} Unit</h3>
+        <p class="text-xs text-green-500 font-semibold mt-2 flex items-center gap-1"><span class="material-icons-outlined text-xs">trending_up</span> Unit terjual</p>
     </div>
     <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 border-l-4 border-l-purple-500">
         <p class="text-sm font-medium text-gray-500 mb-1">Pendapatan Tertunda (Pending)</p>
-        <h3 class="text-3xl font-bold text-navy">Rp 850 Jt</h3>
+        <h3 class="text-3xl font-bold text-navy">Rp {{ number_format($pendapatanTertunda / 1000000, 2, ',', '.') }} M</h3>
         <p class="text-xs text-gray-400 font-medium mt-2">Menunggu konfirmasi pembayaran</p>
     </div>
 </div>
@@ -53,36 +53,25 @@
     <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
         <h3 class="font-bold text-gray-800 mb-4">Tipe Kavling Terlaris</h3>
         <div class="space-y-5">
-            <div>
-                <div class="flex justify-between text-sm mb-1">
-                    <span class="font-medium text-gray-700">Muslim - Fitrah</span>
-                    <span class="font-bold text-navy">45%</span>
+            @php $index = 0; @endphp
+            @foreach($tipeTerlaris as $tipe => $count)
+                @php
+                    $colors = ['bg-teal', 'bg-blue-500', 'bg-purple-500'];
+                    $color = $colors[$index % count($colors)] ?? 'bg-gray-500';
+                    $percentage = $totalTerjualSemuaTipe > 0 ? round(($count / $totalTerjualSemuaTipe) * 100) : 0;
+                    $index++;
+                @endphp
+                <div>
+                    <div class="flex justify-between text-sm mb-1">
+                        <span class="font-medium text-gray-700">{{ $tipe }}</span>
+                        <span class="font-bold text-navy">{{ $percentage }}%</span>
+                    </div>
+                    <div class="w-full bg-gray-100 rounded-full h-2">
+                        <div class="{{ $color }} h-2 rounded-full" style="width: {{ $percentage }}%"></div>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-1">{{ $count }} Unit Terjual</p>
                 </div>
-                <div class="w-full bg-gray-100 rounded-full h-2">
-                    <div class="bg-teal h-2 rounded-full" style="width: 45%"></div>
-                </div>
-                <p class="text-xs text-gray-500 mt-1">15 Unit Terjual</p>
-            </div>
-            <div>
-                <div class="flex justify-between text-sm mb-1">
-                    <span class="font-medium text-gray-700">Non-Muslim - Family</span>
-                    <span class="font-bold text-navy">30%</span>
-                </div>
-                <div class="w-full bg-gray-100 rounded-full h-2">
-                    <div class="bg-blue-500 h-2 rounded-full" style="width: 30%"></div>
-                </div>
-                <p class="text-xs text-gray-500 mt-1">10 Unit Terjual</p>
-            </div>
-            <div>
-                <div class="flex justify-between text-sm mb-1">
-                    <span class="font-medium text-gray-700">Muslim - Sakinah</span>
-                    <span class="font-bold text-navy">15%</span>
-                </div>
-                <div class="w-full bg-gray-100 rounded-full h-2">
-                    <div class="bg-purple-500 h-2 rounded-full" style="width: 15%"></div>
-                </div>
-                <p class="text-xs text-gray-500 mt-1">5 Unit Terjual</p>
-            </div>
+            @endforeach
         </div>
     </div>
 </div>
@@ -103,20 +92,21 @@
                 </tr>
             </thead>
             <tbody class="divide-y divide-gray-50 text-gray-700">
+                @forelse($transaksi as $pembayaran)
                 <tr class="hover:bg-gray-50/50 transition-colors">
-                    <td class="px-6 py-4 text-gray-500">12 Nov 2023</td>
-                    <td class="px-6 py-4 font-medium">INV-202311-001</td>
-                    <td class="px-6 py-4 font-semibold">Budi Santoso</td>
-                    <td class="px-6 py-4">Muslim - Fitrah</td>
-                    <td class="px-6 py-4 font-bold text-navy">Rp 150.000.000</td>
+                    <td class="px-6 py-4 text-gray-500">{{ $pembayaran->created_at->format('d M Y') }}</td>
+                    <td class="px-6 py-4 font-medium">{{ $pembayaran->no_invoice }}</td>
+                    <td class="px-6 py-4 font-semibold">{{ $pembayaran->reservasi->user->name ?? 'N/A' }}</td>
+                    <td class="px-6 py-4">{{ $pembayaran->reservasi->kavling->tipe_kavling ?? 'N/A' }}</td>
+                    <td class="px-6 py-4 font-bold text-navy">Rp {{ number_format($pembayaran->jumlah_bayar, 0, ',', '.') }}</td>
                 </tr>
-                <tr class="hover:bg-gray-50/50 transition-colors">
-                    <td class="px-6 py-4 text-gray-500">10 Nov 2023</td>
-                    <td class="px-6 py-4 font-medium">INV-202311-002</td>
-                    <td class="px-6 py-4 font-semibold">Keluarga Lee</td>
-                    <td class="px-6 py-4">Non-Muslim - VIP</td>
-                    <td class="px-6 py-4 font-bold text-navy">Rp 1.250.000.000</td>
+                @empty
+                <tr>
+                    <td colspan="5" class="px-6 py-8 text-center text-gray-500">
+                        Belum ada transaksi yang selesai
+                    </td>
                 </tr>
+                @endforelse
             </tbody>
         </table>
     </div>
@@ -130,10 +120,10 @@
         new Chart(ctxBar, {
             type: 'bar',
             data: {
-                labels: ['Jul', 'Ags', 'Sep', 'Okt', 'Nov', 'Des'],
+                labels: @json($chartLabels),
                 datasets: [{
                     label: 'Pendapatan (Miliar Rp)',
-                    data: [2.1, 3.5, 2.8, 4.2, 5.8, 7.1],
+                    data: @json($chartData),
                     backgroundColor: '#4a9fb5', // Teal Mount Carmel
                     borderRadius: 6,
                     barPercentage: 0.6

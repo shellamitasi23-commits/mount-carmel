@@ -1,37 +1,16 @@
 <!DOCTYPE html>
-<html lang="id" class="scroll-smooth">
+<html lang="id" class="scroll-smooth overflow-x-hidden">
 
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title>@yield('title', 'Mount Carmel Cluster')</title>
 
-    <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+    @vite(['resources/css/app.css', 'resources/js/app.js']) 
+
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
     
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-
-    <script>
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    colors: {
-                        primary: "#73b7d4", 
-                        secondary: "#FAFAFA",
-                        dark: "#121212",
-                    },
-                    fontFamily: {
-                        display: ["Montserrat", "sans-serif"],
-                        body: ["Inter", "sans-serif"],
-                    },
-                },
-            },
-        };
-    </script>
     <style>
         body { font-family: 'Inter', sans-serif; }
         h1, h2, h3, h4, h5, h6 { font-family: 'Montserrat', sans-serif; }
@@ -67,8 +46,9 @@
         .btn-press:active {
             transform: scale(0.95);
         }
+        
     </style>
-</head>
+</head> 
 
 <body class="bg-[#F3F4F6] text-gray-900 antialiased overflow-x-hidden relative">
     
@@ -80,7 +60,6 @@
 
     @include('partials.footer')
 
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
         AOS.init({
             duration: 800,

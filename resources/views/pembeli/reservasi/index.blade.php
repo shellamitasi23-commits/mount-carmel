@@ -1,308 +1,170 @@
 @extends('layouts.master')
-@section('title', 'Kelola Reservasi - Mount Carmel')
+@section('title', 'Reservasi Kavling — Mount Carmel')
 
 @section('content')
-<div class="pt-24 min-h-screen bg-gray-50 dark:bg-gray-950">
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700;800;900&display=swap');
+    
+    .font-poppins { font-family: 'Poppins', sans-serif; }
+    .font-inter { font-family: 'Inter', sans-serif; }
+    
+    /* Animasi halus untuk pop-up */
+    @keyframes modalScale {
+        0% { opacity: 0; transform: scale(0.95) translateY(10px); }
+        100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    .animate-modal { animation: modalScale 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+</style>
 
-    <!-- Header -->
-    <div class="px-8 xl:px-24 py-12 bg-white dark:bg-gray-900 border-b border-gray-100 dark:border-gray-800">
-        <div class="max-w-7xl mx-auto">
-            <div class="flex items-center gap-2 text-sm text-gray-400 mb-3">
-                <a href="/" class="hover:text-gray-600">Beranda</a>
-                <span class="material-icons text-xs">chevron_right</span>
-                <span class="text-gray-900 dark:text-white font-medium">Kelola Reservasi</span>
+<div class="min-h-screen bg-[#FDFCFB] pt-32 pb-24 font-inter">
+    
+    <div x-data="{ modalForm: {{ isset($kavling_terpilih) ? 'true' : 'false' }} }" class="max-w-7xl mx-auto px-6 lg:px-8">
+
+        {{-- Pesan Sukses --}}
+        @if(session('success'))
+            <div class="mb-8 bg-emerald-50 border border-emerald-100 text-emerald-700 px-6 py-4 rounded-2xl font-bold flex items-center justify-between shadow-sm animate-pulse">
+                <span>{{ session('success') }}</span>
+                <span class="material-icons text-emerald-500">check_circle</span>
             </div>
-            <h1 class="font-display text-4xl font-bold">Kelola Reservasi</h1>
-            <p class="text-gray-500 mt-2 text-sm">Isi form, upload dokumen, dan pantau status reservasi kavling Anda.</p>
+        @endif
+
+        {{-- ── HERO / HEADER SECTION ── --}}
+        <div class="flex flex-col md:flex-row justify-between items-end gap-6 mb-12">
+            <div>
+                <span class="text-[10px] font-bold tracking-[0.2em] text-amber-600 uppercase mb-3 block font-inter">Layanan Pemakaman</span>
+                <h1 class="text-4xl md:text-5xl font-black text-slate-900 font-poppins leading-tight">
+                    Reservasi Kavling
+                </h1>
+                <p class="text-slate-500 mt-4 max-w-xl text-sm md:text-base leading-relaxed">
+                    Pantau status pemesanan lahan Anda atau buat reservasi baru untuk memberikan tempat peristirahatan terbaik bagi keluarga tercinta.
+                </p>
+            </div>
+            
+            <button @click="modalForm = true" class="w-full md:w-auto bg-slate-900 text-white px-8 py-4 rounded-full text-sm font-bold shadow-xl shadow-slate-900/20 hover:bg-black hover:-translate-y-1 transition-all duration-300 flex items-center justify-center gap-2 font-poppins">
+                <span class="material-icons text-sm">add</span> BUAT RESERVASI
+            </button>
         </div>
-    </div>
 
-    <!-- Tab Navigation -->
-    <div class="px-8 xl:px-24 py-8" x-data="{ tab: 'form' }">
-        <div class="max-w-7xl mx-auto">
-
-            <div class="flex gap-1 bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-2xl p-1 mb-8 w-fit">
-                @foreach([
-                    ['key' => 'form', 'label' => 'Mengisi Form', 'icon' => 'edit_note'],
-                    ['key' => 'dokumen', 'label' => 'Upload Dokumen', 'icon' => 'upload_file'],
-                    ['key' => 'status', 'label' => 'Status Reservasi', 'icon' => 'pending_actions'],
-                    ['key' => 'konfirmasi', 'label' => 'Konfirmasi', 'icon' => 'verified'],
-                ] as $t)
-                <button @click="tab = '{{ $t['key'] }}'"
-                        :class="tab === '{{ $t['key'] }}' ? 'bg-gray-900 dark:bg-white text-white dark:text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-900'"
-                        class="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold transition-all">
-                    <span class="material-icons text-base">{{ $t['icon'] }}</span>
-                    <span class="hidden md:inline">{{ $t['label'] }}</span>
-                </button>
-                @endforeach
-            </div>
-
-            <!-- Progress Indicator -->
-            <div class="flex items-center gap-3 mb-8 overflow-x-auto pb-2">
-                @php $steps = ['Form Reservasi', 'Upload Dokumen', 'Review Admin', 'Konfirmasi Pembelian']; @endphp
-                @foreach($steps as $i => $step)
-                <div class="flex items-center gap-3 shrink-0">
-                    <div class="flex items-center gap-2">
-                        <div class="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold {{ $i === 0 ? 'bg-primary text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-500' }}">
-                            {{ $i + 1 }}
-                        </div>
-                        <span class="text-sm font-medium {{ $i === 0 ? 'text-gray-900 dark:text-white' : 'text-gray-400' }}">{{ $step }}</span>
+        {{-- ── DAFTAR RESERVASI (BENTUK KARTU, BUKAN TABEL) ── --}}
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            
+            @if(isset($reservasis) && $reservasis->count() > 0)
+                @foreach($reservasis as $res)
+                <div class="bg-white rounded-[2rem] p-8 border border-slate-100 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col relative group overflow-hidden">
+                    
+                    <div class="absolute -right-10 -top-10 text-slate-50 opacity-50 group-hover:scale-110 transition-transform duration-500">
+                        <span class="material-icons" style="font-size: 150px;">spa</span>
                     </div>
-                    @if(!$loop->last)
-                    <span class="material-icons text-gray-300 dark:text-gray-700">arrow_forward</span>
-                    @endif
-                </div>
-                @endforeach
-            </div>
 
-            <!-- TAB: Form Reservasi -->
-            <div x-show="tab === 'form'" x-transition>
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    <div class="lg:col-span-2">
-                        <div class="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-3xl p-8">
-                            <h2 class="font-display text-2xl font-bold mb-6">Form Reservasi Kavling</h2>
-                            <form class="space-y-6">
-                                @csrf
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    <div>
-                                        <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Nama Lengkap Almarhum/ah</label>
-                                        <input type="text" placeholder="Masukkan nama lengkap"
-                                               class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" />
-                                    </div>
-                                    <div>
-                                        <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Tanggal Lahir</label>
-                                        <input type="date"
-                                               class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" />
-                                    </div>
-                                    <div>
-                                        <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Tanggal Wafat</label>
-                                        <input type="date"
-                                               class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" />
-                                    </div>
-                                    <div>
-                                        <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Agama</label>
-                                        <select class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary">
-                                            <option>Islam</option>
-                                            <option>Kristen</option>
-                                            <option>Katolik</option>
-                                            <option>Buddha</option>
-                                            <option>Hindu</option>
-                                            <option>Konghucu</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    <div>
-                                        <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Pilih Cluster</label>
-                                        <select class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary">
-                                            <option>Cluster Madinah (Muslim)</option>
-                                            <option>Cluster Carmel Hijau (Non-Muslim)</option>
-                                            <option>Cluster Sakura (Non-Muslim)</option>
-                                        </select>
-                                    </div>
-                                    <div>
-                                        <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Tipe Kavling</label>
-                                        <select class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary">
-                                            <option>Tipe Barokah (1.5m × 2.5m)</option>
-                                            <option>Tipe Fitrah (4m × 3m)</option>
-                                            <option>Tipe Sakinah (7m × 8m)</option>
-                                            <option>Tipe Khalifah (7m × 15m)</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Nama Kontak / Penanggung Jawab</label>
-                                    <input type="text" placeholder="Nama penanggung jawab keluarga"
-                                           class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" />
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Nomor Telepon</label>
-                                    <input type="tel" placeholder="+62 8xx xxxx xxxx"
-                                           class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" />
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Catatan Tambahan</label>
-                                    <textarea rows="3" placeholder="Informasi tambahan yang perlu diketahui..."
-                                              class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent resize-none"></textarea>
-                                </div>
-                                <div class="flex gap-3">
-                                    <button type="submit" class="btn-press btn-ripple flex-1 py-3.5 bg-primary text-white font-bold rounded-xl hover:bg-primary/90 transition-colors">
-                                        Simpan & Lanjut Upload Dokumen
-                                    </button>
-                                </div>
-                            </form>
+                    <div class="flex justify-between items-start mb-6 relative z-10">
+                        <div class="w-12 h-12 bg-slate-50 rounded-2xl flex items-center justify-center border border-slate-100">
+                            <span class="material-icons text-slate-400">book_online</span>
+                        </div>
+                        
+                        @if($res->status_reservasi == 'Disetujui')
+                            <span class="bg-emerald-50 text-emerald-600 px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-widest border border-emerald-100">Disetujui</span>
+                        @elseif($res->status_reservasi == 'Ditolak')
+                            <span class="bg-red-50 text-red-600 px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-widest border border-red-100">Ditolak</span>
+                        @else
+                            <span class="bg-amber-50 text-amber-600 px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-widest border border-amber-100">Menunggu</span>
+                        @endif
+                    </div>
+
+                    <div class="relative z-10 mb-6 flex-grow">
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Nomor Kavling</p>
+                        <h3 class="text-2xl font-black text-slate-900 font-poppins mb-4 group-hover:text-primary transition-colors">
+                            {{ $res->kavling->nomor_kavling ?? 'N/A' }}
+                        </h3>
+                        
+                        <div class="bg-slate-50 rounded-2xl p-4 border border-slate-100">
+                            <p class="text-[10px] text-slate-400 uppercase tracking-widest mb-1 font-bold">Atas Nama Jenazah</p>
+                            <p class="font-bold text-slate-800 text-sm">{{ $res->nama_jenazah }}</p>
                         </div>
                     </div>
 
-                    <!-- Sidebar Info -->
-                    <div class="space-y-4">
-                        <div class="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-2xl p-6">
-                            <h3 class="font-bold mb-4 flex items-center gap-2"><span class="material-icons text-primary text-base">info</span> Informasi Penting</h3>
-                            <ul class="space-y-3 text-sm text-gray-500">
-                                <li class="flex items-start gap-2"><span class="material-icons text-emerald-500 text-sm mt-0.5">check</span> Reservasi akan dikonfirmasi dalam 1x24 jam kerja</li>
-                                <li class="flex items-start gap-2"><span class="material-icons text-emerald-500 text-sm mt-0.5">check</span> Dokumen identitas asli diperlukan saat kunjungan</li>
-                                <li class="flex items-start gap-2"><span class="material-icons text-emerald-500 text-sm mt-0.5">check</span> Pilihan kavling sesuai ketersediaan saat konfirmasi</li>
-                                <li class="flex items-start gap-2"><span class="material-icons text-amber-500 text-sm mt-0.5">schedule</span> Form yang tidak dilengkapi dokumen dalam 3 hari akan dibatalkan</li>
-                            </ul>
+                    <div class="pt-6 border-t border-slate-50 flex items-center justify-between relative z-10">
+                        <div>
+                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Tanggal Pesan</p>
+                            <p class="text-sm font-semibold text-slate-700">{{ $res->created_at->format('d M Y') }}</p>
                         </div>
-                        <div class="bg-primary/5 border border-primary/20 rounded-2xl p-6">
-                            <h3 class="font-bold mb-2 text-primary">Butuh Bantuan?</h3>
-                            <p class="text-sm text-gray-500 mb-4">Tim kami siap membantu proses reservasi Anda.</p>
-                            <a href="tel:+6280000000000" class="flex items-center gap-2 text-sm font-semibold text-primary">
-                                <span class="material-icons text-base">phone</span> +62 800 0000 0000
+                        @if($res->status_reservasi == 'Disetujui')
+                            <a href="{{ route('pembeli.pembayaran.index') }}" class="w-10 h-10 bg-slate-900 text-white rounded-full flex items-center justify-center hover:bg-primary transition-colors">
+                                <span class="material-icons text-sm">arrow_forward</span>
                             </a>
-                        </div>
+                        @endif
                     </div>
                 </div>
-            </div>
-
-            <!-- TAB: Upload Dokumen -->
-            <div x-show="tab === 'dokumen'" style="display:none" x-transition>
-                <div class="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-3xl p-8 max-w-3xl">
-                    <h2 class="font-display text-2xl font-bold mb-2">Upload Dokumen</h2>
-                    <p class="text-gray-500 text-sm mb-8">Upload dokumen yang diperlukan untuk melengkapi proses reservasi.</p>
-
-                    <div class="space-y-4">
-                        @php
-                        $docs = [
-                            ['label' => 'KTP Penanggung Jawab', 'desc' => 'Scan/foto KTP yang masih berlaku', 'required' => true, 'status' => 'belum'],
-                            ['label' => 'Surat Kematian', 'desc' => 'Surat kematian resmi dari instansi berwenang', 'required' => true, 'status' => 'uploaded'],
-                            ['label' => 'Kartu Keluarga', 'desc' => 'KK terbaru untuk verifikasi hubungan keluarga', 'required' => true, 'status' => 'belum'],
-                            ['label' => 'Surat Keterangan Agama', 'desc' => 'Diperlukan untuk cluster Muslim', 'required' => false, 'status' => 'belum'],
-                        ];
-                        @endphp
-
-                        @foreach($docs as $doc)
-                        <div class="border border-gray-100 dark:border-gray-800 rounded-2xl p-5 flex items-center gap-5">
-                            <div class="w-12 h-12 rounded-xl {{ $doc['status'] === 'uploaded' ? 'bg-emerald-100' : 'bg-gray-100 dark:bg-gray-800' }} flex items-center justify-center shrink-0">
-                                <span class="material-icons {{ $doc['status'] === 'uploaded' ? 'text-emerald-600' : 'text-gray-400' }}">
-                                    {{ $doc['status'] === 'uploaded' ? 'check_circle' : 'description' }}
-                                </span>
-                            </div>
-                            <div class="flex-grow">
-                                <div class="flex items-center gap-2 mb-1">
-                                    <h4 class="font-semibold text-sm">{{ $doc['label'] }}</h4>
-                                    @if($doc['required']) <span class="text-xs text-red-500 font-bold">*Wajib</span> @endif
-                                    @if($doc['status'] === 'uploaded') <span class="text-xs bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full font-bold">Terupload</span> @endif
-                                </div>
-                                <p class="text-xs text-gray-400">{{ $doc['desc'] }}</p>
-                            </div>
-                            <label class="btn-press shrink-0 px-4 py-2 {{ $doc['status'] === 'uploaded' ? 'border border-gray-200 dark:border-gray-700 text-gray-500' : 'bg-primary text-white' }} rounded-xl text-sm font-semibold cursor-pointer hover:opacity-90 transition-opacity">
-                                {{ $doc['status'] === 'uploaded' ? 'Ganti' : 'Upload' }}
-                                <input type="file" class="hidden" accept=".pdf,.jpg,.jpeg,.png" />
-                            </label>
-                        </div>
-                        @endforeach
-
-                        <button class="btn-press btn-ripple w-full py-3.5 bg-gray-900 dark:bg-white text-white dark:text-gray-900 font-bold rounded-xl hover:bg-gray-800 transition-colors mt-4">
-                            Kirim Dokumen untuk Direview
-                        </button>
+                @endforeach
+            @else
+                
+                <div class="col-span-full py-20 bg-white border border-slate-100 rounded-[3rem] shadow-sm text-center flex flex-col items-center justify-center">
+                    <div class="w-24 h-24 bg-slate-50 rounded-full flex items-center justify-center mb-6">
+                        <span class="material-icons text-slate-300 text-4xl">inventory_2</span>
                     </div>
+                    <h3 class="text-2xl font-black text-slate-900 font-poppins mb-2">Belum Ada Reservasi</h3>
+                    <p class="text-slate-500 max-w-md mx-auto text-sm">Anda belum melakukan pemesanan kavling. Silakan klik tombol di atas untuk memulai reservasi lahan.</p>
                 </div>
-            </div>
-
-            <!-- TAB: Status Reservasi -->
-            <div x-show="tab === 'status'" style="display:none" x-transition>
-                <div class="space-y-4">
-                    @php
-                    $reservasis = [
-                        ['id' => 'RSV-2024-001', 'nama' => 'Bpk. Ahmad Santoso', 'cluster' => 'Cluster Madinah', 'tipe' => 'Tipe Sakinah', 'status' => 'confirmed', 'tanggal' => '15 Jan 2024'],
-                        ['id' => 'RSV-2024-002', 'nama' => 'Ibu Sari Wulandari', 'cluster' => 'Cluster Carmel Hijau', 'tipe' => 'Family', 'status' => 'review', 'tanggal' => '10 Okt 2024'],
-                        ['id' => 'RSV-2024-003', 'nama' => 'Bpk. Darmawan', 'cluster' => 'Cluster Madinah', 'tipe' => 'Tipe Barokah', 'status' => 'pending', 'tanggal' => '01 Nov 2024'],
-                    ];
-                    $statusMap = [
-                        'confirmed' => ['label' => 'Dikonfirmasi', 'color' => 'emerald', 'icon' => 'verified'],
-                        'review' => ['label' => 'Sedang Direview', 'color' => 'blue', 'icon' => 'manage_search'],
-                        'pending' => ['label' => 'Menunggu Dokumen', 'color' => 'amber', 'icon' => 'pending'],
-                    ];
-                    @endphp
-
-                    @foreach($reservasis as $rsv)
-                    @php $s = $statusMap[$rsv['status']]; @endphp
-                    <div data-aos="fade-up" class="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-2xl p-6">
-                        <div class="flex flex-col md:flex-row md:items-center gap-4">
-                            <div class="flex-grow">
-                                <div class="flex flex-wrap items-center gap-3 mb-2">
-                                    <span class="font-bold text-primary font-display">{{ $rsv['id'] }}</span>
-                                    <span class="inline-flex items-center gap-1 text-xs font-bold px-3 py-1 rounded-full bg-{{ $s['color'] }}-100 text-{{ $s['color'] }}-700">
-                                        <span class="material-icons text-xs">{{ $s['icon'] }}</span> {{ $s['label'] }}
-                                    </span>
-                                </div>
-                                <h3 class="font-semibold text-gray-900 dark:text-white mb-1">{{ $rsv['nama'] }}</h3>
-                                <div class="flex flex-wrap gap-4 text-sm text-gray-500">
-                                    <span><span class="material-icons text-xs mr-1">location_on</span>{{ $rsv['cluster'] }}</span>
-                                    <span><span class="material-icons text-xs mr-1">category</span>{{ $rsv['tipe'] }}</span>
-                                    <span><span class="material-icons text-xs mr-1">calendar_today</span>{{ $rsv['tanggal'] }}</span>
-                                </div>
-                            </div>
-                            <div class="flex gap-2 shrink-0">
-                                @if($rsv['status'] === 'pending')
-                                <a href="#" x-data @click.prevent="$dispatch('change-tab', 'dokumen')" class="btn-press px-4 py-2 bg-amber-500 text-white rounded-xl text-sm font-semibold">Upload Dokumen</a>
-                                @endif
-                                @if($rsv['status'] === 'confirmed')
-                                <a href="/pembayaran" class="btn-press px-4 py-2 bg-primary text-white rounded-xl text-sm font-semibold">Bayar Sekarang</a>
-                                @endif
-                                <button class="btn-press px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-xl text-sm font-semibold hover:bg-gray-50 transition-colors">Detail</button>
-                            </div>
-                        </div>
-
-                        <!-- Progress Bar Status -->
-                        <div class="mt-5 pt-4 border-t border-gray-50 dark:border-gray-800">
-                            <div class="flex items-center gap-2">
-                                @foreach(['Form', 'Dokumen', 'Review', 'Konfirmasi'] as $si => $step)
-                                <div class="flex items-center gap-2">
-                                    <div class="w-2 h-2 rounded-full
-                                        {{ ($rsv['status'] === 'confirmed' && $si <= 3) || ($rsv['status'] === 'review' && $si <= 2) || ($rsv['status'] === 'pending' && $si <= 0) ? 'bg-primary' : 'bg-gray-200 dark:bg-gray-700' }}">
-                                    </div>
-                                    <span class="text-xs text-gray-400 hidden md:inline">{{ $step }}</span>
-                                    @if(!$loop->last) <div class="h-px w-8 bg-gray-200 dark:bg-gray-700"></div> @endif
-                                </div>
-                                @endforeach
-                            </div>
-                        </div>
-                    </div>
-                    @endforeach
-                </div>
-            </div>
-
-            <!-- TAB: Konfirmasi Pembelian -->
-            <div x-show="tab === 'konfirmasi'" style="display:none" x-transition>
-                <div class="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-3xl p-8 max-w-2xl">
-                    <div class="text-center mb-8">
-                        <div class="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <span class="material-icons text-3xl text-emerald-600">verified</span>
-                        </div>
-                        <h2 class="font-display text-2xl font-bold">Konfirmasi Pembelian</h2>
-                        <p class="text-gray-500 text-sm mt-2">Reservasi RSV-2024-001 telah disetujui. Lanjutkan ke pembayaran.</p>
-                    </div>
-
-                    <div class="bg-gray-50 dark:bg-gray-800 rounded-2xl p-6 mb-6 space-y-3">
-                        @foreach([
-                            ['label' => 'Nomor Reservasi', 'value' => 'RSV-2024-001'],
-                            ['label' => 'Almarhum/ah', 'value' => 'Bpk. Ahmad Santoso'],
-                            ['label' => 'Cluster', 'value' => 'Cluster Madinah'],
-                            ['label' => 'Tipe Kavling', 'value' => 'Tipe Sakinah (7m × 8m)'],
-                            ['label' => 'Nomor Kavling', 'value' => 'A-001'],
-                            ['label' => 'Harga', 'value' => 'Rp 120.000.000'],
-                        ] as $row)
-                        <div class="flex justify-between text-sm">
-                            <span class="text-gray-500">{{ $row['label'] }}</span>
-                            <span class="font-semibold text-gray-900 dark:text-white">{{ $row['value'] }}</span>
-                        </div>
-                        @endforeach
-                        <div class="border-t border-gray-200 dark:border-gray-700 pt-3 flex justify-between font-bold">
-                            <span>Total</span>
-                            <span class="text-primary text-lg">Rp 120.000.000</span>
-                        </div>
-                    </div>
-
-                    <a href="/pembayaran" class="btn-press btn-ripple w-full py-4 bg-primary text-white font-bold rounded-xl text-center block hover:bg-primary/90 transition-colors">
-                        Lanjut ke Pembayaran
-                    </a>
-                </div>
-            </div>
+            @endif
 
         </div>
+
+        {{-- ── MODAL POP-UP FORM RESERVASI ── --}}
+        <div x-show="modalForm" style="display: none;" class="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 bg-slate-900/40 backdrop-blur-md" x-transition.opacity>
+            
+            <div @click.away="modalForm = false" class="bg-white rounded-[2.5rem] w-full max-w-xl shadow-2xl relative animate-modal overflow-hidden flex flex-col max-h-[90vh]">
+                
+                <div class="px-8 pt-10 pb-6 border-b border-slate-50 relative shrink-0">
+                    <button @click="modalForm = false" class="absolute top-8 right-8 w-10 h-10 bg-slate-50 text-slate-400 rounded-full flex items-center justify-center hover:bg-red-50 hover:text-red-500 transition-colors">
+                        <span class="material-icons text-sm">close</span>
+                    </button>
+                    <h3 class="text-2xl font-black text-slate-900 font-poppins mb-2">Formulir Pemesanan</h3>
+                    <p class="text-sm text-slate-500 font-inter">Mohon lengkapi data administratif berikut dengan benar.</p>
+                </div>
+
+                <div class="px-8 py-6 overflow-y-auto font-inter">
+                    <form action="{{ route('pembeli.reservasi.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
+                        @csrf
+                        
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 ml-1">Kavling yang Tersedia</label>
+                            <div class="relative">
+                                <select name="kavling_id" class="w-full border-none bg-slate-50 rounded-2xl px-5 py-4 text-sm font-bold text-slate-700 outline-none focus:ring-2 focus:ring-primary/20 appearance-none cursor-pointer" required>
+                                    <option value="" disabled selected>-- Pilih Lokasi Kavling --</option>
+                                    @if(isset($kavlings))
+                                        @foreach($kavlings as $kavling)
+                                            <option value="{{ $kavling->id }}" {{ (isset($kavling_terpilih) && $kavling_terpilih == $kavling->id) ? 'selected' : '' }}>
+                                                Cluster {{ $kavling->cluster->nama_cluster ?? '' }} - Kavling {{ $kavling->nomor_kavling }} (Rp {{ number_format($kavling->harga, 0, ',', '.') }})
+                                            </option>
+                                        @endforeach
+                                    @endif
+                                </select>
+                                <span class="material-icons absolute right-5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">expand_more</span>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 ml-1">Nama Lengkap Jenazah</label>
+                            <input type="text" name="nama_jenazah" placeholder="Sesuai KTP/Sertifikat Kematian" class="w-full border-none bg-slate-50 rounded-2xl px-5 py-4 text-sm font-bold text-slate-700 outline-none focus:ring-2 focus:ring-primary/20 placeholder:font-normal placeholder:text-slate-400" required>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 ml-1">Dokumen KTP/KK Pemesan (PDF/JPG)</label>
+                            <div class="border-2 border-dashed border-slate-200 rounded-2xl p-2 bg-slate-50 flex items-center hover:border-primary/50 transition-colors group relative overflow-hidden">
+                                <input type="file" name="dokumen_ktp" accept=".pdf,.jpg,.jpeg,.png" class="w-full text-xs font-semibold text-slate-500 file:mr-4 file:py-3 file:px-6 file:rounded-xl file:border-0 file:text-[10px] file:uppercase file:tracking-widest file:font-black file:bg-white file:text-slate-700 file:shadow-sm cursor-pointer" required>
+                            </div>
+                        </div>
+
+                        <div class="h-4"></div>
+                </div>
+
+                <div class="px-8 py-6 border-t border-slate-50 shrink-0">
+                    <button type="submit" class="w-full bg-slate-900 text-white font-black text-xs uppercase tracking-widest py-5 rounded-[1.5rem] shadow-xl shadow-slate-900/20 hover:bg-black hover:-translate-y-0.5 transition-all duration-300 font-poppins">
+                        KIRIM PENGAJUAN RESERVASI
+                    </button>
+                </div>
+                </form> </div>
+        </div>
+
     </div>
 </div>
 @endsection

@@ -6,6 +6,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Models\Reservasi;
+use App\Models\Pembayaran;
 
 class User extends Authenticatable
 {
@@ -21,6 +23,10 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
+        'no_telepon',
+        'alamat',
+        'avatar'
     ];
 
     /**
@@ -44,5 +50,25 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    // ====================================================
+    // RELASI DATABASE (Sesuai Use Case)
+    // ====================================================
+
+    /**
+     * 1 User (Pembeli) memiliki BANYAK Reservasi
+     */
+    public function reservasis()
+    {
+        return $this->hasMany(Reservasi::class);
+    }
+
+    /**
+     * 1 User (Pembeli) memiliki BANYAK Pembayaran
+     */
+    public function pembayarans()
+    {
+        return $this->hasMany(Pembayaran::class);
     }
 }

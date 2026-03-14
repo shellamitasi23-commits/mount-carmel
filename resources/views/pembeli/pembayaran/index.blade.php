@@ -1,301 +1,193 @@
 @extends('layouts.master')
-@section('title', 'Kelola Pembayaran - Mount Carmel')
+@section('title', 'Pembayaran — Mount Carmel')
 
 @section('content')
-<div class="pt-24 min-h-screen bg-gray-50 dark:bg-gray-950">
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700;800;900&display=swap');
+    .font-poppins { font-family: 'Poppins', sans-serif; }
+    .font-inter { font-family: 'Inter', sans-serif; }
+    @keyframes modalScale {
+        0% { opacity: 0; transform: scale(0.95) translateY(10px); }
+        100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    .animate-modal { animation: modalScale 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+</style>
 
-    <!-- Header -->
-    <div class="px-8 xl:px-24 py-12 bg-white dark:bg-gray-900 border-b border-gray-100 dark:border-gray-800">
-        <div class="max-w-7xl mx-auto">
-            <div class="flex items-center gap-2 text-sm text-gray-400 mb-3">
-                <a href="/" class="hover:text-gray-600">Beranda</a>
-                <span class="material-icons text-xs">chevron_right</span>
-                <span class="text-gray-900 dark:text-white font-medium">Kelola Pembayaran</span>
+<div class="min-h-screen bg-[#FDFCFB] pt-32 pb-24 font-inter">
+    
+    <div x-data="{ modalForm: false, currentReservasiId: null, currentTagihan: 0 }" class="max-w-7xl mx-auto px-6 lg:px-8">
+
+        {{-- Flash Message --}}
+        @if(session('success'))
+            <div class="mb-8 bg-emerald-50 border border-emerald-100 text-emerald-700 px-6 py-4 rounded-2xl font-bold flex items-center justify-between shadow-sm animate-pulse">
+                <span>{{ session('success') }}</span>
+                <span class="material-icons text-emerald-500">check_circle</span>
             </div>
-            <h1 class="font-display text-4xl font-bold">Kelola Pembayaran</h1>
-            <p class="text-gray-500 mt-2 text-sm">Input pembayaran, pantau status, dan cetak invoice kavling Anda.</p>
+        @endif
+
+        {{-- ── HERO SECTION ── --}}
+        <div class="flex flex-col md:flex-row justify-between items-end gap-6 mb-12">
+            <div>
+                <span class="text-[10px] font-bold tracking-[0.2em] text-amber-600 uppercase mb-3 block font-inter">Administrasi</span>
+                <h1 class="text-4xl md:text-5xl font-black text-slate-900 font-poppins leading-tight">
+                    Pembayaran
+                </h1>
+                <p class="text-slate-500 mt-4 max-w-xl text-sm md:text-base leading-relaxed">
+                    Selesaikan proses pembayaran untuk reservasi kavling Anda yang telah disetujui, atau cetak invoice untuk pembayaran yang telah selesai.
+                </p>
+            </div>
         </div>
-    </div>
 
-    <!-- Tab Navigation -->
-    <div class="px-8 xl:px-24 py-8" x-data="{ tab: 'input' }">
-        <div class="max-w-7xl mx-auto">
-
-            <div class="flex gap-1 bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-2xl p-1 mb-8 w-fit">
-                @foreach([
-                    ['key' => 'input', 'label' => 'Input Pembayaran', 'icon' => 'payments'],
-                    ['key' => 'status', 'label' => 'Status Pembayaran', 'icon' => 'receipt_long'],
-                    ['key' => 'invoice', 'label' => 'Cetak Invoice', 'icon' => 'print'],
-                ] as $t)
-                <button @click="tab = '{{ $t['key'] }}'"
-                        :class="tab === '{{ $t['key'] }}' ? 'bg-gray-900 dark:bg-white text-white dark:text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-900'"
-                        class="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold transition-all">
-                    <span class="material-icons text-base">{{ $t['icon'] }}</span>
-                    <span class="hidden md:inline">{{ $t['label'] }}</span>
-                </button>
-                @endforeach
-            </div>
-
-            <!-- TAB: Input Pembayaran -->
-            <div x-show="tab === 'input'" x-transition>
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    <div class="lg:col-span-2">
-                        <div class="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-3xl p-8">
-                            <h2 class="font-display text-2xl font-bold mb-2">Input Pembayaran</h2>
-                            <p class="text-sm text-gray-500 mb-8">Lengkapi detail pembayaran untuk reservasi yang sudah dikonfirmasi.</p>
-
-                            <form class="space-y-6">
-                                @csrf
-                                <div>
-                                    <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Pilih Reservasi</label>
-                                    <select class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary">
-                                        <option>RSV-2024-001 - Bpk. Ahmad Santoso - Rp 120.000.000</option>
-                                    </select>
-                                </div>
-
-                                <!-- Ringkasan Tagihan -->
-                                <div class="bg-primary/5 border border-primary/20 rounded-2xl p-5">
-                                    <h3 class="font-bold text-sm mb-4 text-primary uppercase tracking-wider">Ringkasan Tagihan</h3>
-                                    <div class="space-y-2">
-                                        @foreach([
-                                            ['label' => 'Harga Kavling', 'value' => 'Rp 120.000.000'],
-                                            ['label' => 'Biaya Administrasi', 'value' => 'Rp 500.000'],
-                                            ['label' => 'Biaya Perawatan (1 Tahun)', 'value' => 'Rp 2.000.000'],
-                                        ] as $row)
-                                        <div class="flex justify-between text-sm">
-                                            <span class="text-gray-500">{{ $row['label'] }}</span>
-                                            <span class="font-medium">{{ $row['value'] }}</span>
-                                        </div>
-                                        @endforeach
-                                        <div class="border-t border-primary/20 pt-2 flex justify-between font-bold">
-                                            <span>Total Pembayaran</span>
-                                            <span class="text-primary text-lg">Rp 122.500.000</span>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-3">Metode Pembayaran</label>
-                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                                        @foreach([
-                                            ['label' => 'Transfer Bank', 'icon' => 'account_balance', 'value' => 'transfer'],
-                                            ['label' => 'Virtual Account', 'icon' => 'credit_card', 'value' => 'va'],
-                                            ['label' => 'Tunai', 'icon' => 'payments', 'value' => 'cash'],
-                                        ] as $method)
-                                        <label class="flex items-center gap-3 p-4 border-2 border-gray-200 dark:border-gray-700 rounded-xl cursor-pointer hover:border-primary transition-colors has-[:checked]:border-primary has-[:checked]:bg-primary/5">
-                                            <input type="radio" name="metode" value="{{ $method['value'] }}" class="accent-primary" {{ $loop->first ? 'checked' : '' }} />
-                                            <span class="material-icons text-primary">{{ $method['icon'] }}</span>
-                                            <span class="text-sm font-semibold">{{ $method['label'] }}</span>
-                                        </label>
-                                        @endforeach
-                                    </div>
-                                </div>
-
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    <div>
-                                        <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Tanggal Transfer</label>
-                                        <input type="date" class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
-                                    </div>
-                                    <div>
-                                        <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Jumlah Dibayarkan (Rp)</label>
-                                        <input type="number" placeholder="122500000" class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Upload Bukti Transfer</label>
-                                    <label class="flex flex-col items-center justify-center w-full h-36 border-2 border-dashed border-gray-200 dark:border-gray-700 rounded-xl cursor-pointer hover:border-primary hover:bg-primary/5 transition-all">
-                                        <span class="material-icons text-3xl text-gray-300 mb-2">cloud_upload</span>
-                                        <span class="text-sm text-gray-400">Klik untuk upload atau drag & drop</span>
-                                        <span class="text-xs text-gray-300 mt-1">PNG, JPG, PDF (maks 5MB)</span>
-                                        <input type="file" class="hidden" accept=".png,.jpg,.jpeg,.pdf" />
-                                    </label>
-                                </div>
-
-                                <button type="submit" class="btn-press btn-ripple w-full py-4 bg-primary text-white font-bold rounded-xl hover:bg-primary/90 transition-colors">
-                                    Kirim Bukti Pembayaran
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-
-                    <!-- Sidebar Info Rekening -->
-                    <div class="space-y-4">
-                        <div class="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-2xl p-6">
-                            <h3 class="font-bold mb-4">Rekening Tujuan</h3>
-                            <div class="space-y-4">
-                                @foreach([
-                                    ['bank' => 'Bank BCA', 'no' => '1234 5678 9012', 'atas' => 'PT Mount Carmel Madinah'],
-                                    ['bank' => 'Bank Mandiri', 'no' => '9876 5432 1098', 'atas' => 'PT Mount Carmel Madinah'],
-                                    ['bank' => 'Bank BRI', 'no' => '0001 0102 1234 567', 'atas' => 'PT Mount Carmel Madinah'],
-                                ] as $rek)
-                                <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-xl">
-                                    <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">{{ $rek['bank'] }}</p>
-                                    <p class="font-bold text-gray-900 dark:text-white tracking-wider">{{ $rek['no'] }}</p>
-                                    <p class="text-xs text-gray-500 mt-1">a.n. {{ $rek['atas'] }}</p>
-                                </div>
+        {{-- ── TABEL TAGIHAN (RESERVASI SIAP BAYAR) ── --}}
+        <div class="mb-16">
+            <h2 class="text-xl font-bold text-slate-900 font-poppins mb-6 flex items-center gap-2">
+                <span class="material-icons text-amber-500">pending_actions</span> Menunggu Pembayaran
+            </h2>
+            
+            <div class="bg-white rounded-[2rem] border border-slate-100 shadow-sm overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left whitespace-nowrap">
+                        <thead class="bg-slate-50 text-[10px] font-black uppercase text-slate-400 tracking-widest border-b border-slate-100">
+                            <tr>
+                                <th class="px-8 py-5">Kavling</th>
+                                <th class="px-8 py-5">Atas Nama</th>
+                                <th class="px-8 py-5">Total Tagihan</th>
+                                <th class="px-8 py-5 text-right">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-50">
+                            @if(isset($reservasis_siap_bayar) && $reservasis_siap_bayar->count() > 0)
+                                @foreach($reservasis_siap_bayar as $res)
+                                <tr class="hover:bg-slate-50/50 transition-colors">
+                                    <td class="px-8 py-5">
+                                        <span class="font-bold text-slate-800">{{ $res->kavling->nomor_kavling ?? '-' }}</span>
+                                    </td>
+                                    <td class="px-8 py-5 font-medium text-slate-600">{{ $res->nama_jenazah }}</td>
+                                    <td class="px-8 py-5 font-black text-slate-900">Rp {{ number_format($res->kavling->harga ?? 0, 0, ',', '.') }}</td>
+                                    <td class="px-8 py-5 text-right">
+                                        <button @click="modalForm = true; currentReservasiId = '{{ $res->id }}'; currentTagihan = '{{ $res->kavling->harga ?? 0 }}'" class="bg-slate-900 text-white px-5 py-2.5 rounded-full text-xs font-bold shadow-lg shadow-slate-900/20 hover:bg-primary transition-all font-poppins">
+                                            BAYAR SEKARANG
+                                        </button>
+                                    </td>
+                                </tr>
                                 @endforeach
-                            </div>
-                        </div>
-                        <div class="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-2xl p-5">
-                            <h3 class="font-bold text-amber-800 dark:text-amber-400 mb-2 flex items-center gap-2">
-                                <span class="material-icons text-base">warning</span> Perhatian
-                            </h3>
-                            <p class="text-xs text-amber-700 dark:text-amber-400 leading-relaxed">Transfer sesuai nominal tagihan. Pembayaran kurang tidak akan diproses. Konfirmasi dalam waktu 1x24 jam setelah transfer.</p>
-                        </div>
-                    </div>
+                            @else
+                                <tr>
+                                    <td colspan="4" class="px-8 py-10 text-center text-slate-400 font-medium">
+                                        Tidak ada tagihan pembayaran saat ini.
+                                    </td>
+                                </tr>
+                            @endif
+                        </tbody>
+                    </table>
                 </div>
             </div>
+        </div>
 
-            <!-- TAB: Status Pembayaran -->
-            <div x-show="tab === 'status'" style="display:none" x-transition>
-                @php
-                $payments = [
-                    ['id' => 'PAY-2024-001', 'rsv' => 'RSV-2024-001', 'nama' => 'Bpk. Ahmad Santoso', 'jumlah' => 'Rp 122.500.000', 'metode' => 'Transfer BCA', 'status' => 'lunas', 'tanggal' => '20 Jan 2024'],
-                    ['id' => 'PAY-2024-002', 'rsv' => 'RSV-2024-002', 'nama' => 'Ibu Sari Wulandari', 'jumlah' => 'Rp 61.250.000', 'metode' => 'Transfer Mandiri', 'status' => 'dp', 'tanggal' => '12 Okt 2024'],
-                    ['id' => 'PAY-2024-003', 'rsv' => 'RSV-2024-003', 'nama' => 'Bpk. Darmawan', 'jumlah' => 'Rp 15.000.000', 'metode' => '-', 'status' => 'belum', 'tanggal' => '-'],
-                ];
-                $statusPay = [
-                    'lunas' => ['label' => 'Lunas', 'color' => 'emerald', 'icon' => 'check_circle'],
-                    'dp' => ['label' => 'DP Dibayar', 'color' => 'blue', 'icon' => 'schedule'],
-                    'belum' => ['label' => 'Belum Bayar', 'color' => 'red', 'icon' => 'cancel'],
-                ];
-                @endphp
+        {{-- ── DAFTAR RIWAYAT PEMBAYARAN (BENTUK KARTU) ── --}}
+        <div>
+            <h2 class="text-xl font-bold text-slate-900 font-poppins mb-6 flex items-center gap-2">
+                <span class="material-icons text-emerald-500">history</span> Riwayat Transaksi
+            </h2>
 
-                <div class="space-y-4">
-                    @foreach($payments as $pay)
-                    @php $s = $statusPay[$pay['status']]; @endphp
-                    <div data-aos="fade-up" class="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-2xl p-6">
-                        <div class="flex flex-col md:flex-row md:items-center gap-4">
-                            <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center shrink-0">
-                                <span class="material-icons text-primary">receipt</span>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                @if(isset($riwayat_pembayaran) && $riwayat_pembayaran->count() > 0)
+                    @foreach($riwayat_pembayaran as $bayar)
+                    <div class="bg-white rounded-[2rem] p-8 border border-slate-100 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col relative group overflow-hidden">
+                        
+                        <div class="absolute -right-8 -top-8 text-slate-50 opacity-50 group-hover:scale-110 transition-transform duration-500">
+                            <span class="material-icons" style="font-size: 120px;">receipt_long</span>
+                        </div>
+
+                        <div class="flex justify-between items-start mb-6 relative z-10">
+                            <div>
+                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Kavling</p>
+                                <h3 class="text-xl font-black text-slate-900 font-poppins">
+                                    {{ $bayar->reservasi->kavling->nomor_kavling ?? 'N/A' }}
+                                </h3>
                             </div>
-                            <div class="flex-grow">
-                                <div class="flex flex-wrap items-center gap-3 mb-2">
-                                    <span class="font-bold font-display text-primary">{{ $pay['id'] }}</span>
-                                    <span class="text-xs text-gray-400">{{ $pay['rsv'] }}</span>
-                                    <span class="inline-flex items-center gap-1 text-xs font-bold px-3 py-1 rounded-full bg-{{ $s['color'] }}-100 text-{{ $s['color'] }}-700">
-                                        <span class="material-icons text-xs">{{ $s['icon'] }}</span> {{ $s['label'] }}
-                                    </span>
-                                </div>
-                                <p class="font-semibold text-gray-900 dark:text-white text-sm mb-1">{{ $pay['nama'] }}</p>
-                                <div class="flex flex-wrap gap-4 text-sm text-gray-500">
-                                    <span><span class="material-icons text-xs mr-1">payments</span>{{ $pay['jumlah'] }}</span>
-                                    <span><span class="material-icons text-xs mr-1">credit_card</span>{{ $pay['metode'] }}</span>
-                                    @if($pay['tanggal'] !== '-') <span><span class="material-icons text-xs mr-1">calendar_today</span>{{ $pay['tanggal'] }}</span> @endif
-                                </div>
-                            </div>
-                            <div class="flex gap-2 shrink-0">
-                                @if($pay['status'] === 'lunas')
-                                <button @click="tab = 'invoice'" class="btn-press px-4 py-2 bg-primary text-white rounded-xl text-sm font-semibold flex items-center gap-1">
-                                    <span class="material-icons text-sm">print</span> Invoice
-                                </button>
-                                @elseif($pay['status'] === 'belum')
-                                <button @click="tab = 'input'" class="btn-press px-4 py-2 bg-amber-500 text-white rounded-xl text-sm font-semibold">Bayar Sekarang</button>
-                                @endif
-                            </div>
+                            @if($bayar->status_pembayaran == 'Lunas')
+                                <span class="bg-emerald-50 text-emerald-600 px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest border border-emerald-100">Lunas</span>
+                            @elseif($bayar->status_pembayaran == 'Ditolak')
+                                <span class="bg-red-50 text-red-600 px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest border border-red-100">Ditolak</span>
+                            @else
+                                <span class="bg-amber-50 text-amber-600 px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest border border-amber-100">Menunggu</span>
+                            @endif
+                        </div>
+
+                        <div class="bg-slate-50 rounded-2xl p-4 border border-slate-100 mb-6 relative z-10 flex-grow">
+                            <p class="text-[10px] text-slate-400 uppercase tracking-widest mb-1 font-bold">Nominal Bayar</p>
+                            <p class="font-black text-slate-800 text-lg">Rp {{ number_format($bayar->jumlah_bayar, 0, ',', '.') }}</p>
+                            <p class="text-xs text-slate-500 mt-2">Tanggal: {{ $bayar->created_at->format('d M Y') }}</p>
+                        </div>
+
+                        <div class="pt-4 border-t border-slate-50 flex items-center justify-between relative z-10">
+                            @if($bayar->status_pembayaran == 'Lunas')
+                                <a href="{{ route('pembeli.pembayaran.invoice', $bayar->id) }}" class="w-full bg-slate-100 text-slate-700 py-3 rounded-xl flex items-center justify-center gap-2 font-bold text-xs hover:bg-slate-200 transition-colors">
+                                    <span class="material-icons text-sm">print</span> CETAK INVOICE
+                                </a>
+                            @else
+                                <span class="text-xs font-semibold text-slate-400 italic text-center w-full">Invoice belum tersedia</span>
+                            @endif
                         </div>
                     </div>
                     @endforeach
-                </div>
-            </div>
-
-            <!-- TAB: Cetak Invoice -->
-            <div x-show="tab === 'invoice'" style="display:none" x-transition>
-                <div class="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-3xl overflow-hidden max-w-3xl">
-                    <!-- Invoice Header -->
-                    <div class="bg-gray-900 dark:bg-gray-950 p-8 flex items-center justify-between">
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
-                                <span class="material-icons text-white text-sm">park</span>
-                            </div>
-                            <div>
-                                <p class="font-display text-white font-bold text-lg">Mount Carmel</p>
-                                <p class="text-gray-400 text-xs">Cluster Madinah, Indonesia</p>
-                            </div>
-                        </div>
-                        <div class="text-right">
-                            <p class="text-primary font-bold text-xl font-display">INVOICE</p>
-                            <p class="text-gray-400 text-sm">#PAY-2024-001</p>
-                        </div>
+                @else
+                    <div class="col-span-full py-16 bg-white border border-slate-100 rounded-[3rem] shadow-sm text-center">
+                        <span class="material-icons text-slate-300 text-4xl mb-4">receipt_long</span>
+                        <h3 class="text-xl font-black text-slate-900 font-poppins mb-2">Belum Ada Transaksi</h3>
+                        <p class="text-slate-500 text-sm">Riwayat pembayaran Anda akan muncul di sini.</p>
                     </div>
-
-                    <!-- Invoice Body -->
-                    <div class="p-8">
-                        <div class="grid grid-cols-2 gap-8 mb-8">
-                            <div>
-                                <p class="text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Ditagihkan Kepada</p>
-                                <p class="font-semibold text-gray-900 dark:text-white">Keluarga Ahmad Santoso</p>
-                                <p class="text-sm text-gray-500">Jl. Merpati No. 12, Jakarta Selatan</p>
-                                <p class="text-sm text-gray-500">+62 812 3456 7890</p>
-                            </div>
-                            <div class="text-right">
-                                <p class="text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Detail Invoice</p>
-                                <div class="space-y-1 text-sm">
-                                    <div class="flex justify-end gap-4"><span class="text-gray-400">Tgl. Invoice:</span><span class="font-medium">20 Jan 2024</span></div>
-                                    <div class="flex justify-end gap-4"><span class="text-gray-400">Tgl. Jatuh Tempo:</span><span class="font-medium">27 Jan 2024</span></div>
-                                    <div class="flex justify-end gap-4"><span class="text-gray-400">Status:</span><span class="font-bold text-emerald-600">LUNAS</span></div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Item Table -->
-                        <table class="w-full text-sm mb-8">
-                            <thead>
-                                <tr class="border-b-2 border-gray-900 dark:border-white">
-                                    <th class="text-left py-3 font-bold text-xs uppercase tracking-wider">Deskripsi</th>
-                                    <th class="text-right py-3 font-bold text-xs uppercase tracking-wider">Jumlah</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-gray-100 dark:divide-gray-800">
-                                @foreach([
-                                    ['desc' => 'Kavling A-001 - Tipe Sakinah (7m × 8m)', 'sub' => 'Cluster Madinah, Zona A', 'amount' => 'Rp 120.000.000'],
-                                    ['desc' => 'Biaya Administrasi', 'sub' => 'Satu kali bayar', 'amount' => 'Rp 500.000'],
-                                    ['desc' => 'Biaya Perawatan Tahunan', 'sub' => 'Periode Jan 2024 - Jan 2025', 'amount' => 'Rp 2.000.000'],
-                                ] as $item)
-                                <tr>
-                                    <td class="py-4">
-                                        <p class="font-medium text-gray-900 dark:text-white">{{ $item['desc'] }}</p>
-                                        <p class="text-xs text-gray-400 mt-0.5">{{ $item['sub'] }}</p>
-                                    </td>
-                                    <td class="py-4 text-right font-semibold">{{ $item['amount'] }}</td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                            <tfoot>
-                                <tr class="border-t-2 border-gray-900 dark:border-white">
-                                    <td class="pt-4 font-bold text-base">Total</td>
-                                    <td class="pt-4 text-right font-bold text-primary text-xl">Rp 122.500.000</td>
-                                </tr>
-                            </tfoot>
-                        </table>
-
-                        <!-- Payment Info -->
-                        <div class="bg-gray-50 dark:bg-gray-800 rounded-2xl p-5 mb-8 flex items-center gap-4">
-                            <span class="material-icons text-emerald-500 text-3xl">check_circle</span>
-                            <div>
-                                <p class="font-bold text-sm">Pembayaran Diterima</p>
-                                <p class="text-xs text-gray-500">Transfer BCA · 20 Januari 2024 · Rp 122.500.000</p>
-                            </div>
-                        </div>
-
-                        <!-- Footer Note -->
-                        <p class="text-xs text-gray-400 text-center mb-6">Terima kasih atas kepercayaan Anda kepada Mount Carmel Cluster Madinah. Dokumen ini adalah bukti pembayaran yang sah.</p>
-
-                        <!-- Action Buttons -->
-                        <div class="flex gap-3">
-                            <button onclick="window.print()" class="btn-press btn-ripple flex-1 py-3.5 bg-gray-900 dark:bg-white text-white dark:text-gray-900 font-bold rounded-xl flex items-center justify-center gap-2 hover:bg-gray-800 transition-colors">
-                                <span class="material-icons">print</span> Cetak Invoice
-                            </button>
-                            <button class="btn-press px-6 py-3.5 border border-gray-200 dark:border-gray-700 rounded-xl font-bold hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors flex items-center gap-2">
-                                <span class="material-icons text-sm">download</span> Unduh PDF
-                            </button>
-                        </div>
-                    </div>
-                </div>
+                @endif
             </div>
-
         </div>
+
+        {{-- ── MODAL UPLOAD BUKTI BAYAR ── --}}
+        <div x-show="modalForm" style="display: none;" class="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 bg-slate-900/60 backdrop-blur-md" x-transition.opacity>
+            <div @click.away="modalForm = false" class="bg-white rounded-[2.5rem] w-full max-w-md shadow-2xl relative animate-modal overflow-hidden flex flex-col">
+                
+                <div class="px-8 pt-10 pb-6 border-b border-slate-50 relative shrink-0 text-center">
+                    <button @click="modalForm = false" class="absolute top-6 right-6 text-slate-400 hover:text-red-500 transition-colors">
+                        <span class="material-icons">close</span>
+                    </button>
+                    <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="material-icons text-primary text-3xl">account_balance_wallet</span>
+                    </div>
+                    <h3 class="text-2xl font-black text-slate-900 font-poppins">Upload Bukti Bayar</h3>
+                </div>
+
+                <div class="px-8 py-6 font-inter">
+                    <div class="bg-amber-50 border border-amber-100 rounded-2xl p-4 mb-6 text-center">
+                        <p class="text-[10px] font-bold text-amber-600 uppercase tracking-widest mb-1">Transfer Ke Rekening BCA</p>
+                        <p class="font-black text-slate-800 text-lg tracking-wider font-poppins">8890 123 456</p>
+                        <p class="text-xs font-semibold text-slate-600">a.n PT Mount Carmel</p>
+                    </div>
+
+                    <form action="{{ route('pembeli.pembayaran.store') }}" method="POST" enctype="multipart/form-data" class="space-y-5">
+                        @csrf
+                        
+                        <input type="hidden" name="reservasi_id" x-bind:value="currentReservasiId">
+                        
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 ml-1">Jumlah Transfer (Rp)</label>
+                            <input type="number" name="jumlah_bayar" x-bind:value="currentTagihan" class="w-full border-none bg-slate-50 rounded-2xl px-5 py-4 text-sm font-bold text-slate-700 outline-none focus:ring-2 focus:ring-primary/20" required readonly>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 ml-1">Upload Bukti Transfer (JPG/PDF)</label>
+                            <div class="border-2 border-dashed border-slate-200 rounded-2xl p-2 bg-slate-50 flex items-center hover:border-primary/50 transition-colors">
+                                <input type="file" name="bukti_pembayaran" accept=".jpg,.jpeg,.png,.pdf" class="w-full text-xs font-semibold text-slate-500 file:mr-4 file:py-3 file:px-6 file:rounded-xl file:border-0 file:text-[10px] file:uppercase file:tracking-widest file:font-black file:bg-white file:text-slate-700 file:shadow-sm cursor-pointer" required>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="w-full bg-slate-900 text-white font-black text-xs uppercase tracking-widest py-5 rounded-[1.5rem] mt-4 shadow-xl shadow-slate-900/20 hover:bg-black hover:-translate-y-0.5 transition-all duration-300 font-poppins">
+                            KONFIRMASI PEMBAYARAN
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
 @endsection

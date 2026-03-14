@@ -33,11 +33,11 @@
         <tbody>
             @foreach($sales as $sale)
             <tr>
-                <td>{{ $sale['tanggal'] }}</td>
-                <td>{{ $sale['invoice'] }}</td>
-                <td>{{ $sale['nama'] }}</td>
-                <td>{{ $sale['tipe'] }}</td>
-                <td>{{ $sale['nominal'] }}</td>
+                <td>{{ $sale->created_at->format('d M Y') }}</td>
+                <td>{{ $sale->no_invoice }}</td>
+                <td>{{ $sale->reservasi->user->name ?? 'N/A' }}</td>
+                <td>{{ $sale->reservasi->kavling->tipe_kavling ?? 'N/A' }}</td>
+                <td>Rp {{ number_format($sale->jumlah_bayar, 0, ',', '.') }}</td>
             </tr>
             @endforeach
         </tbody>

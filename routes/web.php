@@ -20,37 +20,47 @@ use App\Http\Controllers\Pimpinan\DashboardController as PimpinanDashboard;
 use App\Http\Controllers\Pimpinan\LaporanController as PimpinanLaporan;
 
 // Pembeli
-use App\Http\Controllers\Pembeli\DashboardController as PembeliDashboard;
+use App\Http\Controllers\Pembeli\HomeController as PembeliHome;
 use App\Http\Controllers\Pembeli\ReservasiController as PembeliReservasi;
 use App\Http\Controllers\Pembeli\PembayaranController as PembeliPembayaran;
+use App\Http\Controllers\Pembeli\ClusterController as PembeliCluster;
+use App\Http\Controllers\Pembeli\KavlingController as PembeliKavling;
+use App\Http\Controllers\Pembeli\ProfilController as PembeliProfil;
 
-/*
-|--------------------------------------------------------------------------
-| 1. PUBLIC ROUTES (Landing Page)
-|--------------------------------------------------------------------------
-*/
+
+
+// 1. PUBLIC ROUTES (Landing Page)
 Route::get('/', function () {
-    return view('pembeli.index');
+    // Misalnya kamu ingin mengirimkan nomor tertentu
+    $nomor = 1; // Atau dari database: $nomor = Kavling::count();
+
+    return view('pembeli.home', compact('nomor'));
 })->name('home');
 
+Route::get('/cluster', [App\Http\Controllers\Pembeli\ClusterController::class, 'index'])->name('cluster.index');
 
-/*
-|--------------------------------------------------------------------------
-| 2. GUEST ROUTES (Belum Login)
-|--------------------------------------------------------------------------
-*/
+// 2. GUEST ROUTES (Belum Login)
+
 Route::middleware('guest')->group(function () {
 
     // -- Area Pembeli (Lupa Password & Register) --
     Route::get('/forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
     Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
 
-    Route::get('/login', function () {
-        return view('auth.login'); })->name('login');
-    Route::get('/register', function () {
-        return view('auth.register'); })->name('register');
+    // 1. Rute GET untuk MENAMPILKAN form (Arahkan ke fungsi 'index')
+    Route::get('/login', [LoginController::class, 'index'])->name('login');
 
-// -- Area Login Khusus Admin / Pimpinan --
+    // 2. Rute POST untuk MEMPROSES login (Arahkan ke fungsi 'login')
+    Route::post('/login', [LoginController::class, 'login'])->name('login.submit');
+
+    // 3. Rute POST untuk LOGOUT (Arahkan ke fungsi 'logout')
+    Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+//Register
+    Route::get('/register', [RegisterController::class, 'index'])->name('register');
+    Route::post('/register', [RegisterController::class, 'register'])->name('register.submit');
+
+
+// Area Login Khusus Admin / Pimpinan 
     Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/login', [AdminLoginController::class, 'showLoginForm'])->name('login');
         Route::post('/login', [AdminLoginController::class, 'login'])->name('login.submit');
@@ -59,12 +69,9 @@ Route::middleware('guest')->group(function () {
 });
 
 
-/*
-|--------------------------------------------------------------------------
-| 3. AUTH ROUTES (Sudah Login)
-|--------------------------------------------------------------------------
-| Di sini kita pisahkan berdasarkan Role: Admin, Pimpinan, dan Pembeli
-*/
+
+// 3. AUTH ROUTES (Sudah Login)
+
 Route::middleware('auth')->group(function () {
 
     // Global Logout
@@ -105,9 +112,8 @@ Route::middleware('auth')->group(function () {
     });
 
 
-    // =========================================================
 // B. AREA PIMPINAN (Akses Read-Only / View)
-// =========================================================
+
     Route::middleware(['auth', 'role:pimpinan'])->prefix('pimpinan')->name('pimpinan.')->group(function () {
 
         // Dashboard Pimpinan
@@ -127,20 +133,23 @@ Route::middleware('auth')->group(function () {
         Route::get('/laporan/cetak', [PimpinanLaporan::class, 'cetak'])->name('laporan.cetak');
     });
 
-    // =========================================================
     // C. AREA PEMBELI (Akses Fitur Reservasi & Transaksi)
-    // =========================================================
-    Route::middleware('role:pembeli')->prefix('pembeli')->name('pembeli.')->group(function () {
-        Route::get('/dashboard', [PembeliDashboard::class, 'index'])->name('dashboard');
-
-        // Sesuai Use Case Diagram Pembeli
-        Route::get('/reservasi/buat', [PembeliReservasi::class, 'create'])->name('reservasi.create');
+    Route::middleware(['role:pembeli'])->prefix('pembeli')->name('pembeli.')->group(function () {
+        Route::get('/reservasi', [PembeliReservasi::class, 'index'])->name('reservasi.index');
         Route::post('/reservasi', [PembeliReservasi::class, 'store'])->name('reservasi.store');
-
-        Route::get('/pembayaran/{id}', [PembeliPembayaran::class, 'create'])->name('pembayaran.create');
+        Route::get('/pembayaran', [PembeliPembayaran::class, 'index'])->name('pembayaran.index');
         Route::post('/pembayaran', [PembeliPembayaran::class, 'store'])->name('pembayaran.store');
 
-        Route::get('/invoice/{id}/cetak', [PembeliPembayaran::class, 'cetakInvoice'])->name('invoice.cetak');
+        // Halaman List Kavling & Cek Ketersediaan
+        Route::get('/kavling', [PembeliKavling::class, 'index'])->name('kavling.index');
+        Route::get('/cluster', [PembeliCluster::class, 'index'])->name('cluster.index');
+        Route::get('/pembayaran/invoice/{id}', [PembeliPembayaran::class, 'cetakInvoice'])->name('pembayaran.invoice');
     });
-
+    // PROFIL AREA 
+    Route::prefix('profil')->name('profil.')->group(function () {
+        Route::get('/', [App\Http\Controllers\Pembeli\ProfilController::class, 'index'])->name('index');
+        Route::patch('/update', [App\Http\Controllers\Pembeli\ProfilController::class, 'update'])->name('update');
+        Route::put('/password', [App\Http\Controllers\Pembeli\ProfilController::class, 'updatePassword'])->name('password');
+        Route::patch('/avatar', [App\Http\Controllers\Pembeli\ProfilController::class, 'updateAvatar'])->name('avatar.update');
+    });
 });

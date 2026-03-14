@@ -62,9 +62,6 @@
                     </td>
                     @if(auth()->user()->role == 'admin')
                     <td class="px-6 py-4 text-center flex justify-center gap-2">
-                        <button type="button" onclick="openEditModal({{ $pembeli->id }})" class="text-slate-400 hover:text-blue-600 bg-white border border-slate-200 hover:border-blue-200 p-2 rounded-lg transition-all shadow-sm" title="Edit Data">
-                            <span class="material-icons-outlined text-lg block">edit</span>
-                        </button>
                         <form action="{{ route('admin.pembeli.destroy', $pembeli->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus akun pembeli ini beserta semua data reservasinya?');">
                             @csrf @method('DELETE')
                             <button type="submit" class="text-slate-400 hover:text-red-600 bg-white border border-slate-200 hover:border-red-200 p-2 rounded-lg transition-all shadow-sm" title="Hapus Data">
@@ -75,9 +72,6 @@
                     @endif
                 </tr>
                 
-                @if(auth()->user()->role == 'admin')
-                @include('admin.pelanggan.edit')
-                @endif
 
                 @empty
                 <tr>
