@@ -38,6 +38,7 @@ Route::get('/', function () {
 })->name('home');
 
 Route::get('/cluster', [App\Http\Controllers\Pembeli\ClusterController::class, 'index'])->name('cluster.index');
+Route::get('/cluster/{id}', [App\Http\Controllers\Pembeli\ClusterController::class, 'show'])->name('cluster.show');
 
 // 2. GUEST ROUTES (Belum Login)
 
@@ -55,12 +56,12 @@ Route::middleware('guest')->group(function () {
 
     // 3. Rute POST untuk LOGOUT (Arahkan ke fungsi 'logout')
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
-//Register
+    //Register
     Route::get('/register', [RegisterController::class, 'index'])->name('register');
     Route::post('/register', [RegisterController::class, 'register'])->name('register.submit');
 
 
-// Area Login Khusus Admin / Pimpinan 
+    // Area Login Khusus Admin / Pimpinan 
     Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/login', [AdminLoginController::class, 'showLoginForm'])->name('login');
         Route::post('/login', [AdminLoginController::class, 'login'])->name('login.submit');
@@ -84,10 +85,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [AdminDashboard::class, 'index'])->name('dashboard');
 
         // --- CRUD DATA PEMBELI / PELANGGAN ---
-      Route::get('/pembeli', [AdminPelanggan::class, 'index'])->name('pembeli.index');
-    Route::post('/pembeli', [AdminPelanggan::class, 'store'])->name('pembeli.store');
-    Route::put('/pembeli/{id}', [AdminPelanggan::class, 'update'])->name('pembeli.update');
-    Route::delete('/pembeli/{id}', [AdminPelanggan::class, 'destroy'])->name('pembeli.destroy');
+        Route::get('/pembeli', [AdminPelanggan::class, 'index'])->name('pembeli.index');
+        Route::post('/pembeli', [AdminPelanggan::class, 'store'])->name('pembeli.store');
+        Route::put('/pembeli/{id}', [AdminPelanggan::class, 'update'])->name('pembeli.update');
+        Route::delete('/pembeli/{id}', [AdminPelanggan::class, 'destroy'])->name('pembeli.destroy');
 
         //CRUD RESERVASI
         Route::get('/reservasi', [AdminTransaksi::class, 'reservasi'])->name('reservasi.index');
@@ -112,7 +113,7 @@ Route::middleware('auth')->group(function () {
     });
 
 
-// B. AREA PIMPINAN (Akses Read-Only / View)
+    // B. AREA PIMPINAN (Akses Read-Only / View)
 
     Route::middleware(['auth', 'role:pimpinan'])->prefix('pimpinan')->name('pimpinan.')->group(function () {
 
@@ -139,11 +140,15 @@ Route::middleware('auth')->group(function () {
         Route::post('/reservasi', [PembeliReservasi::class, 'store'])->name('reservasi.store');
         Route::get('/pembayaran', [PembeliPembayaran::class, 'index'])->name('pembayaran.index');
         Route::post('/pembayaran', [PembeliPembayaran::class, 'store'])->name('pembayaran.store');
+        Route::get('/pembayaran/{id}', [PembeliPembayaran::class, 'show'])->name('pembayaran.show');
+         Route::put('/pembayaran/{id}', [App\Http\Controllers\Admin\TransaksiController::class, 'updatePembayaran'])->name('pembayaran.update');
+         
 
         // Halaman List Kavling & Cek Ketersediaan
         Route::get('/kavling', [PembeliKavling::class, 'index'])->name('kavling.index');
         Route::get('/cluster', [PembeliCluster::class, 'index'])->name('cluster.index');
         Route::get('/pembayaran/invoice/{id}', [PembeliPembayaran::class, 'cetakInvoice'])->name('pembayaran.invoice');
+       
     });
     // PROFIL AREA 
     Route::prefix('profil')->name('profil.')->group(function () {

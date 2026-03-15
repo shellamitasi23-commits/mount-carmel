@@ -14,10 +14,12 @@
                     <li>
                         <a href="{{ route('home') }}" class="block px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-primary hover:bg-white dark:hover:bg-gray-700 rounded-full transition-all">Home</a>
                     </li>
+                    {{-- Menu Cluster --}}
                     <li>
-                        <a href="{{ route('cluster.index') }}" class="block px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-primary hover:bg-white dark:hover:bg-gray-700 rounded-full transition-all">Cluster</a>
+                        <a href="{{ route('cluster.index') }}" class="flex items-center gap-1 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-primary hover:bg-white dark:hover:bg-gray-700 rounded-full transition-all">
+                            Cluster
+                        </a>
                     </li>
-                    
                     @auth
                     {{-- Menu Kavling --}}
                     <li x-data="{ open: false }" class="relative">

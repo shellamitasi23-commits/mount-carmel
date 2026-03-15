@@ -44,8 +44,9 @@ class ReservasiController extends Controller
             'user_id' => auth()->id(),
             'kavling_id' => $request->kavling_id,
             'nama_jenazah' => $request->nama_jenazah,
-            'file_dokumen' => $path,
-            'status_reservasi' => 'Menunggu Verifikasi'
+            'tanggal_reservasi' => now()->toDateString(), 
+            'dokumen_ktp' => $path,
+            'status_reservasi' => 'Menunggu Validasi'
         ]);
 
         // Redirect kembali dengan pesan sukses

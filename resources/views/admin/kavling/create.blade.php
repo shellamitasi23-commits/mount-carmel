@@ -22,7 +22,12 @@
                 </div>
                 <div>
                     <label class="block text-sm font-bold text-slate-700 mb-1.5">Tipe Kavling <span class="text-red-500">*</span></label>
-                    <input type="text" name="tipe_kavling" required placeholder="Contoh: Fitrah / VIP" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:border-blue-600 outline-none text-sm">
+                    <select name="tipe_kavling" required class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:border-blue-600 outline-none text-sm">
+                        <option value="" disabled selected>-- Pilih Tipe Kavling --</option>
+                        @foreach($tipe_kavlings as $tipe)
+                            <option value="{{ $tipe }}">{{ $tipe }}</option>
+                        @endforeach
+                    </select>
                 </div>
                 <div>
                     <label class="block text-sm font-bold text-slate-700 mb-1.5">Ukuran <span class="text-red-500">*</span></label>
@@ -34,7 +39,10 @@
                 </div>
                 <div>
                     <label class="block text-sm font-bold text-slate-700 mb-1.5">Harga (Rp) <span class="text-red-500">*</span></label>
-                    <input type="number" name="harga" required placeholder="Contoh: 150000000" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:border-blue-600 outline-none text-sm">
+                    <select name="harga" required class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:border-blue-600 outline-none text-sm" disabled>
+                        <option value="" disabled selected>-- Pilih Tipe Kavling Terlebih Dahulu --</option>
+                    </select>
+                    <p class="mt-1 text-xs text-slate-500">Pilih tipe kavling terlebih dahulu untuk melihat opsi harga.</p>
                 </div>
                 <div class="md:col-span-2">
                     <label class="block text-sm font-bold text-slate-700 mb-1.5">Status <span class="text-red-500">*</span></label>
@@ -52,3 +60,54 @@
         </form>
     </div>
 </div>
+
+{{-- Script untuk update dropdown harga berdasarkan tipe kavling --}}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const tipeSelect = document.querySelector('select[name="tipe_kavling"]');
+    const hargaSelect = document.querySelector('select[name="harga"]');
+
+    if (tipeSelect && hargaSelect) {
+        // Pastikan harga tetap disable sampai tipe dipilih
+        hargaSelect.disabled = true;
+
+        tipeSelect.addEventListener('change', function() {
+            if (!this.value) {
+                hargaSelect.disabled = true;
+                hargaSelect.innerHTML = '<option value="" disabled selected>-- Pilih Tipe Kavling Terlebih Dahulu --</option>';
+                return;
+            }
+
+            hargaSelect.disabled = false;
+            updateHargaOptions(this.value);
+        });
+    }
+
+    function updateHargaOptions(tipeKavling) {
+        // Clear existing options except the first
+        hargaSelect.innerHTML = '<option value="" disabled selected>-- Pilih Harga --</option>';
+
+        let start, end, step;
+        const tipeMuslim = ['Barokah', 'Fitrah', 'Sakinah', 'Khalifah'];
+
+        if (tipeMuslim.includes(tipeKavling)) {
+            // Muslim: 25jt - 600jt, step 25jt
+            start = 25000000;
+            end = 600000000;
+            step = 25000000;
+        } else {
+            // Non-Muslim: 60jt - 12M, step 500jt
+            start = 60000000;
+            end = 12000000000;
+            step = 500000000;
+        }
+
+        for (let harga = start; harga <= end; harga += step) {
+            const option = document.createElement('option');
+            option.value = harga;
+            option.textContent = 'Rp ' + harga.toLocaleString('id-ID');
+            hargaSelect.appendChild(option);
+        }
+    }
+});
+</script>

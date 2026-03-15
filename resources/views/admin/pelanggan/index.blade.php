@@ -24,6 +24,12 @@
     @endif
 </div>
 
+{{-- Search --}}
+<div class="mb-6">
+    <input id="pembeli-search" type="text" placeholder="Cari pembeli (nama, email, telp, alamat)..." 
+        class="w-full md:w-1/2 px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:border-blue-600 outline-none text-sm" />
+</div>
+
 <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
     <div class="overflow-x-auto">
         <table class="w-full text-left text-sm whitespace-nowrap">
@@ -99,5 +105,29 @@
     function closeModal() { document.getElementById('createModal').classList.add('hidden'); }
     function openEditModal(id) { document.getElementById('editModal' + id).classList.remove('hidden'); }
     function closeEditModal(id) { document.getElementById('editModal' + id).classList.add('hidden'); }
+
+    // Search/filter pembeli table
+    function initPembeliSearch() {
+        const input = document.getElementById('pembeli-search');
+        const rows = document.querySelectorAll('tbody tr');
+
+        if (!input) return;
+
+        input.addEventListener('input', () => {
+            const query = input.value.trim().toLowerCase();
+
+            rows.forEach(row => {
+                const text = row.innerText.toLowerCase();
+                const matches = query === '' || text.includes(query);
+                row.classList.toggle('hidden', !matches);
+            });
+        });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initPembeliSearch);
+    } else {
+        initPembeliSearch();
+    }
 </script>
 @endsection

@@ -9,13 +9,17 @@ class Cluster extends Model
 {
     use HasFactory;
 
-    // Tentukan nama tabel jika Laravel tidak bisa menebak otomatis (opsional)
-    protected $table = 'clusters';
-
-    // Kolom apa saja yang boleh diisi dari form
     protected $fillable = [
         'nama_cluster',
         'kategori',
-        'deskripsi'
+        'deskripsi',
     ];
+
+    /**
+     * Relasi: Cluster memiliki banyak Kavling
+     */
+    public function kavlings()
+    {
+        return $this->hasMany(Kavling::class);
+    }
 }

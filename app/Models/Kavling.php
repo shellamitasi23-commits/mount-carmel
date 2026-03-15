@@ -9,7 +9,6 @@ class Kavling extends Model
 {
     use HasFactory;
 
-    // Tambahkan semua nama kolom ke sini agar diizinkan oleh Laravel
     protected $fillable = [
         'cluster_id',
         'nomor_kavling',
@@ -17,12 +16,22 @@ class Kavling extends Model
         'ukuran',
         'kapasitas',
         'harga',
-        'status'
+        'status',
     ];
 
-    // Relasi ke tabel clusters
+    /**
+     * Relasi: Kavling dimiliki oleh satu Cluster
+     */
     public function cluster()
     {
         return $this->belongsTo(Cluster::class);
+    }
+
+    /**
+     * Relasi: Kavling memiliki banyak Reservasi
+     */
+    public function reservasis()
+    {
+        return $this->hasMany(Reservasi::class);
     }
 }
