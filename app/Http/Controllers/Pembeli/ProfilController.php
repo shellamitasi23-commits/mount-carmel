@@ -13,7 +13,7 @@ class ProfilController extends Controller
         $user = auth()->user(); // Mengambil data user yang sedang login
 
         // Data tambahan untuk tab lain
-        $riwayat = $user->reservasis()->with('kavling')->latest()->get();
+        $riwayat = $user->reservasis()->with(['kavling', 'pembayaran'])->latest()->get();
         $sertifikats = $user->reservasis()->whereNotNull('file_sertifikat')->get();
 
         return view('pembeli.profil.index', compact('user', 'riwayat', 'sertifikats'));

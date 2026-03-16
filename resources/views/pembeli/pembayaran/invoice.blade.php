@@ -3,143 +3,429 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Invoice #{{ $pembayaran->id }} - Mount Carmel</title>
+    <title>Invoice #{{ $pembayaran->no_invoice }} — Mount Carmel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,600&display=swap" rel="stylesheet">
     <style>
-        @page { size: A4; margin: 0; }
-        body { font-family: 'Helvetica', 'Arial', sans-serif; color: #1a2332; margin: 0; padding: 0; background-color: #ffffff; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #E5E7EB;
+            color: #1F2937;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column; /* Mengatur elemen berbaris ke bawah */
+            align-items: center;    /* Memastikan semuanya berada di tengah */
+            min-height: 100vh;
+        }
+
+        /* ── PRINT BUTTON (Tepat di atas kertas) ── */
+        .print-btn-container {
+            width: 100%;
+            max-width: 210mm; /* Mengikuti lebar kertas A4 */
+            display: flex;
+            justify-content: flex-end; /* Tombol rata kanan */
+            gap: 10px;
+            margin-bottom: 20px; /* Jarak antara tombol dan kertas */
+        }
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+        .btn-print { background: #111827; color: white; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .btn-print:hover { background: #374151; transform: translateY(-2px); box-shadow: 0 6px 10px rgba(0,0,0,0.15); }
+        .btn-back { background: white; color: #111827; border: 1px solid #D1D5DB; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+        .btn-back:hover { background: #F3F4F6; }
+
+        /* ── KERTAS INVOICE (A4) ── */
+        .invoice-box {
+            background: #FFFFFF;
+            width: 100%;
+            max-width: 210mm; /* Lebar standar A4 */
+            min-height: 297mm; /* Tinggi standar A4 */
+            padding: 50px 60px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08); /* Bayangan sedikit dipertebal agar kertas lebih 'muncul' */
+            display: flex;
+            flex-direction: column;
+            border-radius: 4px; /* Sedikit membulat agar lebih manis di web */
+        }
+
+        /* ── HEADER ── */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 2px solid #111827;
+            padding-bottom: 25px;
+            margin-bottom: 35px;
+        }
+        .brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: #111827;
+            letter-spacing: -0.02em;
+        }
+        .brand-sub {
+            font-family: 'Inter', sans-serif;
+            font-size: 10px;
+            font-weight: 600;
+            color: #6B7280;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            margin-top: 4px;
+        }
+        .invoice-details {
+            text-align: right;
+        }
+        .invoice-title {
+            font-size: 24px;
+            font-weight: 800;
+            color: #111827;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+        .invoice-no {
+            font-size: 13px;
+            font-weight: 600;
+            color: #6B7280;
+            margin-top: 4px;
+        }
+
+        /* ── STATUS BADGE ── */
+        .badge {
+            display: inline-block;
+            padding: 5px 14px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-top: 10px;
+        }
+        .badge.lunas { background: #F0FDF4; color: #16A34A; border: 1px solid #BBF7D0; }
+        .badge.menunggu { background: #FFFBEB; color: #D97706; border: 1px solid #FDE68A; }
+        .badge.ditolak { background: #FEF2F2; color: #DC2626; border: 1px solid #FECACA; }
+
+        /* ── BILING INFO ── */
+        .info-section {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 40px;
+        }
+        .info-col { width: 48%; }
+        .info-title {
+            font-size: 10px;
+            font-weight: 700;
+            color: #9CA3AF;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 12px;
+        }
+        .info-text {
+            font-size: 13px;
+            color: #4B5563;
+            line-height: 1.6;
+        }
+        .info-text strong {
+            color: #111827;
+            font-size: 15px;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        /* ── TABLE ── */
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        .table th {
+            background: #F9FAFB;
+            font-size: 10px;
+            font-weight: 700;
+            color: #6B7280;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 14px 16px;
+            text-align: left;
+            border-top: 1px solid #E5E7EB;
+            border-bottom: 1px solid #E5E7EB;
+        }
+        .table td {
+            padding: 20px 16px;
+            font-size: 13px;
+            color: #111827;
+            border-bottom: 1px solid #F3F4F6;
+            vertical-align: top;
+        }
+        .item-title { font-weight: 700; margin-bottom: 6px; }
+        .item-desc { font-size: 12px; color: #6B7280; line-height: 1.5; }
+        .text-right { text-align: right !important; }
+
+        .tag-need {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-size: 9px;
+            font-weight: 700;
+            margin-top: 10px;
+        }
+        .tag-preneed { background: #F3F4F6; color: #4B5563; }
+        .tag-atneed { background: #EFF6FF; color: #1D4ED8; }
+
+        /* ── FOOTER SPLIT (REKENING & TOTAL) ── */
+        .footer-split {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-top: auto;
+            padding-top: 20px;
+        }
         
-        /* Layout Dasar */
-        .invoice-box { max-width: 800px; margin: auto; padding: 40px; }
-        
-        /* Header Section */
-        .header { display: table; width: 100%; border-bottom: 2px solid #f0f4f8; padding-bottom: 20px; }
-        .brand { display: table-cell; vertical-align: middle; }
-        .brand h1 { color: #1a2332; margin: 0; font-size: 24px; text-transform: uppercase; letter-spacing: 2px; }
-        .brand p { color: #4a9fb5; margin: 5px 0 0; font-size: 12px; font-weight: bold; }
-        .invoice-details { display: table-cell; text-align: right; vertical-align: middle; }
-        .invoice-details h2 { color: #6b7a8d; margin: 0; font-size: 18px; }
-        .invoice-details p { margin: 3px 0; font-size: 12px; color: #b0bcc8; }
+        .footer-left { width: 55%; }
+        .bank-box {
+            background: #F9FAFB;
+            border: 1px solid #E5E7EB;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 24px;
+        }
+        .bank-title {
+            font-size: 10px;
+            font-weight: 700;
+            color: #9CA3AF;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 10px;
+        }
+        .bank-name { font-size: 13px; font-weight: 700; color: #111827; }
+        .bank-acc { font-family: monospace; font-size: 15px; font-weight: 700; color: #374151; margin: 4px 0; }
+        .bank-owner { font-size: 12px; color: #6B7280; }
 
-        /* Information Section */
-        .info-section { display: table; width: 100%; margin: 30px 0; }
-        .info-box { display: table-cell; width: 50%; vertical-align: top; }
-        .info-box h3 { font-size: 10px; text-transform: uppercase; color: #b0bcc8; letter-spacing: 1px; margin-bottom: 10px; }
-        .info-box p { font-size: 13px; line-height: 1.6; margin: 0; font-weight: bold; }
+        .notes {
+            font-size: 11px;
+            color: #6B7280;
+            line-height: 1.7;
+        }
+        .notes strong { color: #374151; }
 
-        /* Table Section */
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        table thead th { background-color: #1a2332; color: #ffffff; text-align: left; padding: 12px; font-size: 12px; text-transform: uppercase; }
-        table tbody td { padding: 15px 12px; border-bottom: 1px solid #f0f4f8; font-size: 13px; }
-        
-        /* Total Section */
-        .total-wrapper { text-align: right; margin-top: 30px; }
-        .total-table { width: 40%; margin-left: auto; }
-        .total-table td { padding: 8px 12px; border: none; }
-        .total-amount { background-color: #4a9fb5; color: #ffffff; font-weight: bold; font-size: 16px !important; border-radius: 5px; }
+        .footer-right { width: 38%; }
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            font-size: 13px;
+            color: #4B5563;
+        }
+        .total-row.grand-total {
+            border-top: 2px solid #111827;
+            margin-top: 10px;
+            padding-top: 16px;
+            font-size: 18px;
+            font-weight: 800;
+            color: #111827;
+        }
 
-        /* Status Badge */
-        .badge { display: inline-block; padding: 4px 12px; border-radius: 15px; font-size: 11px; font-weight: bold; text-transform: uppercase; }
-        .badge-success { background-color: #e8f6f3; color: #27ae60; border: 1px solid #27ae60; }
-        .badge-pending { background-color: #fef9e7; color: #f1c40f; border: 1px solid #f1c40f; }
-
-        /* Footer */
-        .footer { margin-top: 50px; text-align: center; border-top: 1px solid #f0f4f8; padding-top: 20px; }
-        .footer p { font-size: 11px; color: #b0bcc8; margin: 5px 0; }
-        .watermark { position: absolute; top: 40%; left: 25%; font-size: 80px; color: rgba(26, 35, 50, 0.03); transform: rotate(-45deg); z-index: -1; }
+        /* ── PRINT MEDIA QUERY ── */
+        @media print {
+            body { background: white; padding: 0; margin: 0; display: block; }
+            .print-btn-container { display: none; }
+            .invoice-box { 
+                box-shadow: none; 
+                max-width: 100%; 
+                min-height: auto; 
+                padding: 0; 
+                border-radius: 0;
+            }
+            @page { margin: 15mm; size: A4 portrait; }
+        }
     </style>
 </head>
 <body>
 
-<div class="invoice-box">
-    <div class="watermark">MOUNT CARMEL</div>
+{{-- Pembungkus Tombol (Sekarang ada di DALAM aliran dokumen, di atas kertas) --}}
+<div class="print-btn-container">
+    <a href="{{ route('pembeli.pembayaran.index') }}" class="btn btn-back">
+        Kembali
+    </a>
+    <button class="btn btn-print" onclick="window.print()">
+        Cetak Invoice
+    </button>
+</div>
 
+{{-- Kertas Invoice --}}
+<div class="invoice-box">
+
+    {{-- Header --}}
     <div class="header">
-        <div class="brand">
-            <h1>MOUNT CARMEL</h1>
-            <p>MEMORIAL PARK & FUNERAL SERVICE</p>
+        <div>
+            <div class="brand">Mount Carmel</div>
+            <div class="brand-sub">Memorial Park & Funeral Service</div>
         </div>
         <div class="invoice-details">
-            <h2>INVOICE PEMBAYARAN</h2>
-            <p>ID Transaksi: #TRX-{{ str_pad($pembayaran->id, 5, '0', STR_PAD_LEFT) }}</p>
-            <p>Tanggal: {{ $pembayaran->created_at->format('d F Y') }}</p>
+            <div class="invoice-title">INVOICE</div>
+            <div class="invoice-no">#{{ $pembayaran->no_invoice }}</div>
+            <div class="invoice-no" style="font-weight: 400;">{{ $pembayaran->created_at->translatedFormat('d F Y') }}</div>
+            
+            @php
+                $statusClass = match($pembayaran->status_pembayaran) {
+                    'Lunas'  => 'lunas',
+                    'Ditolak' => 'ditolak',
+                    default  => 'menunggu',
+                };
+            @endphp
+            <div class="badge {{ $statusClass }}">{{ $pembayaran->status_pembayaran }}</div>
         </div>
     </div>
 
+    {{-- Billing Info --}}
     <div class="info-section">
-        <div class="info-box">
-            <h3>DITAGIHKAN KEPADA:</h3>
-            <p>{{ $pembayaran->user->name }}</p>
-            <p style="font-weight: normal; color: #6b7a8d;">{{ $pembayaran->user->email }}</p>
-            <p style="font-weight: normal; color: #6b7a8d;">{{ $pembayaran->user->no_telepon ?? '-' }}</p>
+        <div class="info-col">
+            <div class="info-title">Ditagihkan Kepada</div>
+            <div class="info-text">
+                <strong>{{ $pembayaran->reservasi?->user?->name ?? 'Pemesan' }}</strong>
+                {{ $pembayaran->reservasi?->user?->email ?? '-' }}<br>
+                {{ $pembayaran->reservasi?->user?->no_telepon ?? '-' }}<br>
+                @if($pembayaran->reservasi?->alamat_pemesan)
+                    <span style="display:inline-block; margin-top:6px; font-size:12px; color:#6B7280; line-height:1.5;">
+                        {{ $pembayaran->reservasi->alamat_pemesan }}
+                    </span>
+                @endif
+            </div>
         </div>
-        <div class="info-box" style="text-align: right;">
-            <h3>LOKASI KAVLING:</h3>
-            <p>Cluster {{ $pembayaran->reservasi->kavling->cluster->nama_cluster }}</p>
-            <p>Nomor Kavling: {{ $pembayaran->reservasi->kavling->nomor_kavling }}</p>
-            <p style="font-weight: normal; color: #6b7a8d;">Tipe: {{ $pembayaran->reservasi->kavling->tipe_kavling }}</p>
+        <div class="info-col" style="text-align: right;">
+            <div class="info-title">Detail Reservasi Kavling</div>
+            <div class="info-text">
+                <strong>No. Kavling: {{ $pembayaran->reservasi?->kavling?->nomor_kavling ?? '-' }}</strong>
+                {{ $pembayaran->reservasi?->kavling?->cluster?->nama_cluster ?? '-' }}<br>
+                Tipe {{ $pembayaran->reservasi?->kavling?->tipe_kavling ?? '-' }}<br>
+                Ukuran {{ $pembayaran->reservasi?->kavling?->ukuran ?? '-' }} 
+                (Max. {{ $pembayaran->reservasi?->kavling?->kapasitas ?? '-' }} org)
+            </div>
         </div>
     </div>
 
-    <table>
+    {{-- Tabel Layanan --}}
+    <table class="table">
         <thead>
             <tr>
-                <th>Deskripsi Layanan</th>
-                <th>Nama Jenazah</th>
-                <th style="text-align: right;">Harga</th>
+                <th style="width: 45%;">Deskripsi Layanan</th>
+                <th style="width: 20%;">Info Jenazah</th>
+                <th style="width: 20%;">Tgl. Makam</th>
+                <th style="width: 15%;" class="text-right">Harga</th>
             </tr>
         </thead>
         <tbody>
             <tr>
                 <td>
-                    <strong>Reservasi Lahan Pemakaman</strong><br>
-                    <small style="color: #6b7a8d;">Pemesanan lahan kavling eksklusif Mount Carmel</small>
+                    <div class="item-title">Reservasi Lahan Pemakaman</div>
+                    <div class="item-desc">
+                        Hak guna lahan kavling di Mount Carmel Memorial Park. Biaya ini merupakan nilai total kavling.
+                    </div>
+                    @if(!$pembayaran->reservasi?->nama_jenazah)
+                        <span class="tag-need tag-preneed">PRE-NEED</span>
+                    @else
+                        <span class="tag-need tag-atneed">AT-NEED</span>
+                    @endif
                 </td>
-                <td>{{ $pembayaran->reservasi->nama_jenazah }}</td>
-                <td style="text-align: right;">Rp {{ number_format($pembayaran->reservasi->kavling->harga, 0, ',', '.') }}</td>
+                <td>
+                    @if($pembayaran->reservasi?->nama_jenazah)
+                        <span style="font-weight:600">Alm. {{ $pembayaran->reservasi->nama_jenazah }}</span>
+                    @else
+                        <span style="color:#9CA3AF; font-style:italic; font-size:12px">Belum diisi</span>
+                    @endif
+                </td>
+                <td>
+                    @if($pembayaran->reservasi?->tanggal_dimakamkan)
+                        {{ \Carbon\Carbon::parse($pembayaran->reservasi->tanggal_dimakamkan)->translatedFormat('d M Y') }}
+                    @else
+                        <span style="color:#9CA3AF; font-style:italic; font-size:12px">Menyusul</span>
+                    @endif
+                </td>
+                <td class="text-right item-title">
+                    Rp {{ number_format($pembayaran->reservasi?->kavling?->harga ?? 0, 0, ',', '.') }}
+                </td>
             </tr>
         </tbody>
     </table>
 
-    <div class="total-wrapper">
-        <table class="total-table">
-            <tr>
-                <td style="color: #6b7a8d;">Subtotal</td>
-                <td>Rp {{ number_format($pembayaran->reservasi->kavling->harga, 0, ',', '.') }}</td>
-            </tr>
-            <tr>
-                <td style="color: #6b7a8d;">Status Pembayaran</td>
-                <td>
-                    <span class="badge {{ $pembayaran->status_pembayaran == 'Lunas' ? 'badge-success' : 'badge-pending' }}">
-                        {{ $pembayaran->status_pembayaran }}
-                    </span>
-                </td>
-            </tr>
-            <tr class="total-amount">
-                <td>TOTAL</td>
-                <td>Rp {{ number_format($pembayaran->reservasi->kavling->harga, 0, ',', '.') }}</td>
-            </tr>
-        </table>
+    {{-- Bagian Bawah: Split Kiri (Note & Bank) & Kanan (Total) --}}
+    <div class="footer-split">
+        
+        <div class="footer-left">
+            @if($pembayaran->nama_bank && $pembayaran->rekening_tujuan)
+            <div class="bank-box">
+                <div class="bank-title">Informasi Transfer Bank</div>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <div class="bank-name">{{ $pembayaran->nama_bank }}</div>
+                        <div class="bank-acc">{{ $pembayaran->rekening_tujuan }}</div>
+                        <div class="bank-owner">a.n {{ $pembayaran->atas_nama_rekening }}</div>
+                    </div>
+                    <div style="text-align: right; font-size: 11px; color: #6B7280;">
+                        Tgl Transfer:<br>
+                        <strong style="color: #111827; font-size: 12px;">
+                            {{ $pembayaran->tanggal_bayar ? \Carbon\Carbon::parse($pembayaran->tanggal_bayar)->translatedFormat('d M Y') : '-' }}
+                        </strong>
+                    </div>
+                </div>
+            </div>
+            @endif
+
+            <div class="notes">
+                <strong>Catatan Penting:</strong><br>
+                1. Invoice ini adalah bukti pembayaran yang sah setelah diverifikasi.<br>
+                2. Harap simpan invoice ini untuk penerbitan Sertifikat Hak Guna Lahan.<br>
+                @if(!$pembayaran->reservasi?->nama_jenazah)
+                3. Berstatus <strong>Pre-Need</strong> (Data jenazah dapat dilengkapi nanti).<br>
+                @endif
+                @if($pembayaran->catatan)
+                <br>Catatan Pemesan: <em>"{{ $pembayaran->catatan }}"</em>
+                @endif
+            </div>
+        </div>
+
+        <div class="footer-right">
+            <div class="total-row">
+                <span>Subtotal Harga</span>
+                <span style="font-weight: 600;">Rp {{ number_format($pembayaran->jumlah_bayar, 0, ',', '.') }}</span>
+            </div>
+            <div class="total-row">
+                <span>Diskon / Potongan</span>
+                <span style="font-weight: 600;">Rp 0</span>
+            </div>
+            <div class="total-row grand-total">
+                <span>Total Bayar</span>
+                <span>Rp {{ number_format($pembayaran->jumlah_bayar, 0, ',', '.') }}</span>
+            </div>
+            
+            {{-- Pesan Status di bawah Total --}}
+            <div style="text-align: right; margin-top: 15px; font-size: 11px; color: #6B7280;">
+                @if($pembayaran->status_pembayaran === 'Lunas')
+                    <span style="color: #059669; font-weight: 700;">✓ PEMBAYARAN SELESAI</span>
+                @elseif($pembayaran->status_pembayaran === 'Ditolak')
+                    <span style="color: #DC2626; font-weight: 700;">✗ PEMBAYARAN DITOLAK</span>
+                @else
+                    <span style="color: #D97706; font-weight: 700;">⏳ MENUNGGU KONFIRMASI</span>
+                @endif
+                <br>
+                Terakhir diperbarui: <br>{{ $pembayaran->updated_at->translatedFormat('d M Y, H:i') }}
+            </div>
+        </div>
+
     </div>
 
-    <div style="margin-top: 40px; font-size: 11px; color: #6b7a8d; background: #f9fbfe; padding: 15px; border-radius: 10px;">
-        <strong>Catatan Penting:</strong>
-        <ul style="margin: 5px 0 0; padding-left: 15px;">
-            <li>Invoice ini adalah bukti pembayaran yang sah setelah divalidasi oleh sistem.</li>
-            <li>Harap simpan invoice ini untuk proses penerbitan Sertifikat Hak Guna Lahan.</li>
-            <li>Layanan Mount Carmel tersedia 24 jam untuk bantuan operasional pemakaman.</li>
-        </ul>
-    </div>
-
-    <div class="footer">
-        <p>Terima kasih telah mempercayakan layanan kepada Mount Carmel Memorial Park.</p>
-        <p>Jl. Raya Mount Carmel No. 01, Jawa Tengah | www.mountcarmel.co.id | (024) 123-4567</p>
-    </div>
 </div>
-
-<script>
-    // Otomatis memicu dialog cetak saat halaman dibuka (untuk demo)
-    window.print();
-</script>
 
 </body>
 </html>

@@ -1,212 +1,132 @@
 @extends('layouts.master')
-@section('title', 'Kelola Kavling - Mount Carmel')
+@section('title', 'Tipe Kavling — {{ $cluster->nama_cluster }}')
 
 @section('content')
-<div class="pt-24 min-h-screen bg-gray-50 dark:bg-gray-950">
+<div class="min-h-screen bg-[#F3F4F6] pt-28 pb-20">
+<div class="max-w-5xl mx-auto px-6">
 
-    <!-- Page Header -->
-    <div class="px-8 xl:px-24 py-12 bg-white dark:bg-gray-900 border-b border-gray-100 dark:border-gray-800">
-        <div class="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-6">
-            <div>
-                <div class="flex items-center gap-2 text-sm text-gray-400 mb-3">
-                    <a href="/" class="hover:text-gray-600">Beranda</a>
-                    <span class="material-icons text-xs">chevron_right</span>
-                    <span class="text-gray-900 dark:text-white font-medium">Kelola Kavling</span>
-                </div>
-                <h1 class="font-display text-4xl font-bold">Kelola Data Kavling</h1>
-                <p class="text-gray-500 mt-2 text-sm">Lihat detail, ketersediaan, dan nomor kavling yang Anda miliki.</p>
+    {{-- Breadcrumb --}}
+    <nav class="flex items-center gap-2 text-sm text-gray-400 mb-8" data-aos="fade-down">
+        <a href="{{ route('home') }}" class="hover:text-gray-600 transition-colors">Beranda</a>
+        <span class="material-icons text-xs">chevron_right</span>
+        <a href="{{ route('cluster.index') }}" class="hover:text-gray-600 transition-colors">Cluster</a>
+        <span class="material-icons text-xs">chevron_right</span>
+        <span class="text-gray-700 font-semibold">{{ $cluster->nama_cluster }}</span>
+    </nav>
+
+    {{-- Header --}}
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-10" data-aos="fade-up">
+        <div>
+            <div class="flex items-center gap-2 mb-2">
+                <span class="material-icons text-base {{ $cluster->kategori === 'Muslim' ? 'text-emerald-500' : 'text-amber-500' }}">
+                    {{ $cluster->kategori === 'Muslim' ? 'mosque' : 'church' }}
+                </span>
+                <span class="text-xs font-bold tracking-widest uppercase {{ $cluster->kategori === 'Muslim' ? 'text-emerald-500' : 'text-amber-500' }}">
+                    {{ $cluster->kategori }}
+                </span>
             </div>
-            <a href="/reservasi" class="btn-press btn-ripple inline-flex items-center gap-2 px-6 py-3 bg-primary text-white font-semibold rounded-full hover:bg-primary/90 transition-colors self-start md:self-auto">
-                <span class="material-icons text-base">add</span> Buat Reservasi Baru
-            </a>
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-1">{{ $cluster->nama_cluster }}</h1>
+            <p class="text-gray-500 text-sm">{{ $cluster->deskripsi ?? 'Pilih tipe kavling yang sesuai.' }}</p>
         </div>
-    </div>
 
-    <!-- Summary Cards -->
-    <div class="px-8 xl:px-24 py-8">
-        <div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4">
-            @foreach([
-                ['icon' => 'grid_view', 'label' => 'Total Kavling Dimiliki', 'value' => '3', 'color' => 'blue'],
-                ['icon' => 'check_circle', 'label' => 'Kavling Aktif', 'value' => '2', 'color' => 'emerald'],
-                ['icon' => 'pending', 'label' => 'Proses Reservasi', 'value' => '1', 'color' => 'amber'],
-                ['icon' => 'receipt_long', 'label' => 'Total Transaksi', 'value' => '3', 'color' => 'purple'],
-            ] as $card)
-            <div data-aos="fade-up" class="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-2xl p-5">
-                <div class="flex items-center justify-between mb-3">
-                    <span class="material-icons text-{{ $card['color'] }}-500 text-2xl">{{ $card['icon'] }}</span>
-                </div>
-                <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ $card['value'] }}</p>
-                <p class="text-xs text-gray-400 mt-1 font-medium">{{ $card['label'] }}</p>
-            </div>
-            @endforeach
-        </div>
-    </div>
-
-    <!-- Sub-navigation -->
-    <div class="px-8 xl:px-24 pb-6" x-data="{ tab: 'detail' }">
-        <div class="max-w-7xl mx-auto">
-            <div class="flex gap-1 bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-2xl p-1 mb-8 w-fit">
-                @foreach([['key' => 'detail', 'label' => 'Detail Kavling', 'icon' => 'view_list'], ['key' => 'ketersediaan', 'label' => 'Cek Ketersediaan', 'icon' => 'fact_check'], ['key' => 'nomor', 'label' => 'Nomor Kavling', 'icon' => 'tag']] as $t)
-                <button @click="tab = '{{ $t['key'] }}'"
-                        :class="tab === '{{ $t['key'] }}' ? 'bg-gray-900 dark:bg-white text-white dark:text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-900'"
-                        class="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold transition-all">
-                    <span class="material-icons text-base">{{ $t['icon'] }}</span>
-                    <span class="hidden md:inline">{{ $t['label'] }}</span>
-                </button>
+        {{-- Pilih Cluster Lain --}}
+        @if($clusters->count() > 1)
+        <div x-data="{ open: false }" class="relative shrink-0">
+            <button @click="open = !open" @click.away="open = false"
+                    class="flex items-center gap-2 px-5 py-2.5 bg-white border border-gray-200 rounded-full text-sm font-semibold text-gray-600 hover:border-gray-400 transition-all">
+                <span class="material-icons text-base">swap_horiz</span>
+                Ganti Cluster
+                <span class="material-icons text-sm">expand_more</span>
+            </button>
+            <div x-show="open" x-transition
+                 class="absolute right-0 top-full mt-2 w-56 bg-white border border-gray-100 rounded-2xl shadow-xl py-2 z-50">
+                @foreach($clusters as $cl)
+                <a href="{{ route('pembeli.kavling.index', ['cluster_id' => $cl->id]) }}"
+                   class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors
+                       {{ $cl->id === $cluster->id ? 'font-bold text-gray-900 bg-gray-50' : '' }}">
+                    <span class="material-icons text-base {{ $cl->kategori === 'Muslim' ? 'text-emerald-500' : 'text-amber-500' }}">
+                        {{ $cl->kategori === 'Muslim' ? 'mosque' : 'church' }}
+                    </span>
+                    {{ $cl->nama_cluster }}
+                    @if($cl->id === $cluster->id)
+                    <span class="material-icons text-sm text-gray-400 ml-auto">check</span>
+                    @endif
+                </a>
                 @endforeach
             </div>
-
-            <!-- TAB: Lihat Detail Kavling -->
-            <div x-show="tab === 'detail'" x-transition>
-                <div class="space-y-4">
-                    @php
-                    $kavlings = [
-                        ['nomor' => 'A-001', 'cluster' => 'Cluster Madinah', 'tipe' => 'Tipe Sakinah', 'ukuran' => '7m × 8m', 'status' => 'Aktif', 'tanggal' => '15 Jan 2024'],
-                        ['nomor' => 'A-015', 'cluster' => 'Cluster Madinah', 'tipe' => 'Tipe Barokah', 'ukuran' => '1.5m × 2.5m', 'status' => 'Aktif', 'tanggal' => '22 Mar 2024'],
-                        ['nomor' => 'B-007', 'cluster' => 'Cluster Carmel Hijau', 'tipe' => 'Family', 'ukuran' => '8m × 5m', 'status' => 'Proses', 'tanggal' => '10 Okt 2024'],
-                    ];
-                    @endphp
-
-                    @foreach($kavlings as $kavling)
-                    <div data-aos="fade-up" class="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-2xl p-6 flex flex-col md:flex-row md:items-center gap-4">
-                        <!-- Nomor Kavling Badge -->
-                        <div class="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center shrink-0">
-                            <span class="font-display font-bold text-primary text-lg">{{ explode('-', $kavling['nomor'])[0] }}</span>
-                        </div>
-
-                        <div class="flex-grow">
-                            <div class="flex flex-wrap items-center gap-3 mb-1">
-                                <h3 class="font-bold text-gray-900 dark:text-white">Kavling {{ $kavling['nomor'] }}</h3>
-                                <span class="text-xs font-bold px-2 py-1 rounded-full {{ $kavling['status'] === 'Aktif' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700' }}">
-                                    {{ $kavling['status'] }}
-                                </span>
-                            </div>
-                            <div class="flex flex-wrap gap-4 text-sm text-gray-500">
-                                <span class="flex items-center gap-1"><span class="material-icons text-xs">location_on</span>{{ $kavling['cluster'] }}</span>
-                                <span class="flex items-center gap-1"><span class="material-icons text-xs">category</span>{{ $kavling['tipe'] }}</span>
-                                <span class="flex items-center gap-1"><span class="material-icons text-xs">square_foot</span>{{ $kavling['ukuran'] }}</span>
-                                <span class="flex items-center gap-1"><span class="material-icons text-xs">calendar_today</span>{{ $kavling['tanggal'] }}</span>
-                            </div>
-                        </div>
-
-                        <div class="flex gap-2 shrink-0">
-                            <a href="/cluster/1" class="btn-press px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-xl text-sm font-medium hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors flex items-center gap-1">
-                                <span class="material-icons text-sm">visibility</span> Detail
-                            </a>
-                            <a href="/reservasi" class="btn-press px-4 py-2 bg-primary text-white rounded-xl text-sm font-medium hover:bg-primary/90 transition-colors flex items-center gap-1">
-                                <span class="material-icons text-sm">bookmark_add</span> Reservasi
-                            </a>
-                        </div>
-                    </div>
-                    @endforeach
-                </div>
-            </div>
-
-            <!-- TAB: Cek Ketersediaan -->
-            <div x-show="tab === 'ketersediaan'" style="display:none" x-transition>
-                <div class="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-3xl p-8">
-                    <h2 class="font-display text-2xl font-bold mb-6">Cek Ketersediaan Kavling</h2>
-
-                    <!-- Filter Form -->
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 p-6 bg-gray-50 dark:bg-gray-800 rounded-2xl">
-                        <div>
-                            <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Cluster</label>
-                            <select class="w-full px-4 py-3 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary">
-                                <option>Semua Cluster</option>
-                                <option>Cluster Madinah (Muslim)</option>
-                                <option>Cluster Carmel Hijau (Non-Muslim)</option>
-                                <option>Cluster Sakura (Non-Muslim)</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Tipe Kavling</label>
-                            <select class="w-full px-4 py-3 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary">
-                                <option>Semua Tipe</option>
-                                <option>Tipe Barokah / Single</option>
-                                <option>Tipe Fitrah / Double</option>
-                                <option>Tipe Sakinah / Family</option>
-                                <option>Tipe Khalifah / VIP</option>
-                            </select>
-                        </div>
-                        <div class="flex items-end">
-                            <button class="btn-press btn-ripple w-full px-6 py-3 bg-primary text-white font-semibold rounded-xl hover:bg-primary/90 transition-colors">
-                                Cek Sekarang
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Availability Grid -->
-                    <div class="grid grid-cols-4 md:grid-cols-8 lg:grid-cols-12 gap-2 mb-6">
-                        @php
-                        $kavlingGrid = array_merge(
-                            array_fill(0, 24, 'tersedia'),
-                            array_fill(0, 68, 'terisi'),
-                            array_fill(0, 8, 'proses'),
-                            array_fill(0, 20, 'tersedia')
-                        );
-                        shuffle($kavlingGrid);
-                        @endphp
-                        @foreach(array_slice($kavlingGrid, 0, 60) as $i => $status)
-                        <div title="{{ sprintf('Kavling %03d', $i+1) }}"
-                             class="aspect-square rounded-lg cursor-pointer transition-all hover:scale-110 hover:shadow-md
-                             {{ $status === 'tersedia' ? 'bg-emerald-400' : ($status === 'proses' ? 'bg-amber-400' : 'bg-gray-200 dark:bg-gray-700') }}">
-                        </div>
-                        @endforeach
-                    </div>
-
-                    <!-- Legend -->
-                    <div class="flex flex-wrap gap-6 text-sm">
-                        <div class="flex items-center gap-2"><div class="w-4 h-4 rounded bg-emerald-400"></div> Tersedia</div>
-                        <div class="flex items-center gap-2"><div class="w-4 h-4 rounded bg-amber-400"></div> Dalam Proses</div>
-                        <div class="flex items-center gap-2"><div class="w-4 h-4 rounded bg-gray-200 dark:bg-gray-700"></div> Terisi / Tidak Tersedia</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- TAB: Nomor Kavling -->
-            <div x-show="tab === 'nomor'" style="display:none" x-transition>
-                <div class="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-3xl p-8">
-                    <h2 class="font-display text-2xl font-bold mb-2">Nomor Kavling Anda</h2>
-                    <p class="text-gray-500 text-sm mb-8">Informasi nomor dan lokasi kavling yang terdaftar atas nama Anda.</p>
-
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-sm">
-                            <thead>
-                                <tr class="border-b border-gray-100 dark:border-gray-800">
-                                    <th class="text-left py-3 px-4 font-bold uppercase tracking-wider text-xs text-gray-400">No. Kavling</th>
-                                    <th class="text-left py-3 px-4 font-bold uppercase tracking-wider text-xs text-gray-400">Cluster</th>
-                                    <th class="text-left py-3 px-4 font-bold uppercase tracking-wider text-xs text-gray-400">Tipe</th>
-                                    <th class="text-left py-3 px-4 font-bold uppercase tracking-wider text-xs text-gray-400">Zona</th>
-                                    <th class="text-left py-3 px-4 font-bold uppercase tracking-wider text-xs text-gray-400">Status</th>
-                                    <th class="text-left py-3 px-4 font-bold uppercase tracking-wider text-xs text-gray-400">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-gray-50 dark:divide-gray-800">
-                                @foreach($kavlings as $kavling)
-                                <tr class="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
-                                    <td class="py-4 px-4">
-                                        <span class="font-bold font-display text-primary text-base">{{ $kavling['nomor'] }}</span>
-                                    </td>
-                                    <td class="py-4 px-4 text-gray-700 dark:text-gray-300">{{ $kavling['cluster'] }}</td>
-                                    <td class="py-4 px-4 text-gray-700 dark:text-gray-300">{{ $kavling['tipe'] }}</td>
-                                    <td class="py-4 px-4 text-gray-500">{{ explode('-', $kavling['nomor'])[0] }}</td>
-                                    <td class="py-4 px-4">
-                                        <span class="text-xs font-bold px-2.5 py-1 rounded-full {{ $kavling['status'] === 'Aktif' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700' }}">
-                                            {{ $kavling['status'] }}
-                                        </span>
-                                    </td>
-                                    <td class="py-4 px-4">
-                                        <a href="/cluster/1" class="text-primary hover:underline text-xs font-semibold">Lihat Peta</a>
-                                    </td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
         </div>
+        @endif
     </div>
+
+    {{-- Tipe Kavling Cards --}}
+    @if($tipeKavlings->isEmpty())
+    <div class="py-20 text-center bg-white rounded-2xl border border-gray-100 shadow-sm">
+        <span class="material-icons text-5xl text-gray-200 block mb-3">inventory_2</span>
+        <h3 class="text-lg font-bold text-gray-400 mb-1">Tidak Ada Kavling Tersedia</h3>
+        <p class="text-sm text-gray-400">Semua kavling di cluster ini sudah terisi.</p>
+        <a href="{{ route('cluster.index') }}" class="inline-flex items-center gap-2 mt-4 text-sm font-semibold text-gray-500 hover:text-gray-900 transition-colors">
+            <span class="material-icons text-sm">arrow_back</span> Kembali ke Cluster
+        </a>
+    </div>
+    @else
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        @foreach($tipeKavlings as $i => $tipe)
+
+        {{-- Klik card tipe → ke halaman nomor kavling --}}
+        <a href="{{ route('pembeli.kavling.nomor', ['cluster_id' => $cluster->id, 'tipe_kavling' => $tipe['tipe_kavling']]) }}"
+           class="group bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
+           data-aos="fade-up" data-aos-delay="{{ ($i % 3) * 80 }}">
+
+            {{-- Bar warna atas --}}
+            <div class="h-1.5 w-full {{ $cluster->kategori === 'Muslim' ? 'bg-emerald-500' : 'bg-amber-500' }}"></div>
+
+            <div class="p-6">
+                {{-- Denah SVG --}}
+                @php
+                    preg_match('/(\d+(?:\.\d+)?)\s*[mx×x]\s*(\d+(?:\.\d+)?)/i', $tipe['ukuran'], $dim);
+                    $w = isset($dim[1]) ? (float)$dim[1] : 4;
+                    $h = isset($dim[2]) ? (float)$dim[2] : 3;
+                    $svgW=140; $svgH=80; $pad=12;
+                    $maxW=$svgW-$pad*2; $maxH=$svgH-$pad*2;
+                    $ratio=min($maxW/max($w,.1),$maxH/max($h,.1));
+                    $rw=round($w*$ratio); $rh=round($h*$ratio);
+                    $rx=round(($svgW-$rw)/2); $ry=round(($svgH-$rh)/2);
+                    $fill   = $cluster->kategori==='Muslim' ? '#d1fae5' : '#fef3c7';
+                    $stroke = $cluster->kategori==='Muslim' ? '#10b981' : '#f59e0b';
+                @endphp
+                <div class="bg-gray-50 rounded-xl flex items-center justify-center mb-4" style="height:90px">
+                    <svg width="{{ $svgW }}" height="{{ $svgH }}" viewBox="0 0 {{ $svgW }} {{ $svgH }}" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="{{ $svgW }}" height="{{ $svgH }}" fill="#f9fafb" rx="6"/>
+                        <rect x="{{ $rx }}" y="{{ $ry }}" width="{{ $rw }}" height="{{ $rh }}"
+                            fill="{{ $fill }}" stroke="{{ $stroke }}" stroke-width="1.5" stroke-dasharray="4 2" rx="3"/>
+                        <text x="{{ $rx+$rw/2 }}" y="{{ $ry+$rh/2+4 }}" text-anchor="middle"
+                            font-size="9" font-weight="700" fill="#6b7280" font-family="Inter,sans-serif">
+                            {{ $tipe['ukuran'] }}
+                        </text>
+                    </svg>
+                </div>
+
+                <h3 class="font-bold text-gray-900 text-lg mb-1">{{ $tipe['tipe_kavling'] }}</h3>
+                <p class="text-xs text-gray-400 mb-4">
+                    Kapasitas {{ $tipe['kapasitas'] }} orang &middot;
+                    <span class="text-emerald-600 font-semibold">{{ $tipe['tersedia'] }} unit tersedia</span>
+                </p>
+
+                <div class="flex items-center justify-between pt-4 border-t border-gray-50">
+                    <div>
+                        <p class="text-[10px] text-gray-400 font-semibold uppercase tracking-wider">Harga mulai</p>
+                        <p class="font-bold text-gray-900 text-sm">Rp {{ number_format($tipe['harga_min'],0,',','.') }}</p>
+                    </div>
+                    <div class="w-9 h-9 bg-gray-900 rounded-full flex items-center justify-center group-hover:bg-amber-500 transition-colors">
+                        <span class="material-icons text-white text-sm">arrow_forward</span>
+                    </div>
+                </div>
+            </div>
+        </a>
+        @endforeach
+    </div>
+    @endif
+
+</div>
 </div>
 @endsection

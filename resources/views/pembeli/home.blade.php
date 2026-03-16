@@ -325,7 +325,7 @@ $reservedKavlings = $reservedKavlings ?? [];
                             @for($r = 0; $r < $rows; $r++)
                                 @for($c = 0; $c < $cols; $c++)
                                     @if($kavlingMuslim <= 100) <!-- Limit to 100 -->
-                                        @php $nomorFormatted = 'A-' . str_pad($nomor, 3, '0', STR_PAD_LEFT); @endphp
+                                        @php $nomorFormatted = 'A-' . str_pad($kavlingMuslim, 3, '0', STR_PAD_LEFT); @endphp
                                         <rect x="{{ 80 + $c * $cellWidth }}" y="{{ $yStart + $r * $cellHeight }}" width="{{ $cellWidth }}" height="{{ $cellHeight }}" 
                                               fill="url(#muslimGrad)" stroke="#10b981" stroke-width="0.3" rx="2" 
                                               class="cursor-pointer hover:fill-emerald-100 transition-all" 

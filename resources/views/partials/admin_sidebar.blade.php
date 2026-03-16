@@ -1,7 +1,7 @@
 <div x-show="sidebarOpen" x-transition.opacity class="fixed inset-0 z-20 bg-black/40 backdrop-blur-sm lg:hidden" @click="sidebarOpen = false" x-cloak></div>
 
 <aside :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'" class="fixed inset-y-0 left-0 z-30 w-60 bg-white border-r border-slate-100 transition-transform duration-300 lg:translate-x-0 lg:static lg:inset-auto flex flex-col h-full shadow-sm">
-    
+
     <div class="p-5 pb-4 border-b border-slate-50 mb-2">
         <p class="text-[10px] text-slate-400 mb-0.5 font-bold uppercase tracking-widest italic">
             {{ auth()->user()->role }} Space
@@ -10,7 +10,7 @@
     </div>
 
     <nav class="flex-1 px-3 pb-4 space-y-0.5 overflow-y-auto custom-scrollbar">
-        
+
         @php $role = auth()->user()->role; @endphp
 
         @php $dashboardRoute = ($role == 'admin') ? 'admin.dashboard' : 'pimpinan.dashboard'; @endphp
@@ -60,6 +60,18 @@
             <span class="material-icons-outlined text-[18px]">analytics</span>
             Laporan Penjualan
         </a>
+
+        {{-- Menu Sertifikat — hanya untuk admin --}}
+        @if($role == 'admin')
+        <div class="pt-4 pb-1">
+            <p class="px-3 text-[9px] font-black tracking-widest text-slate-400 uppercase leading-none">Dokumen</p>
+        </div>
+
+        <a href="{{ route('admin.sertifikat.index') }}" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-semibold transition-all {{ request()->routeIs('admin.sertifikat.*') ? 'bg-slate-900 text-white shadow-sm' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800' }}">
+            <span class="material-icons-outlined text-[18px]">workspace_premium</span>
+            Sertifikat
+        </a>
+        @endif
 
     </nav>
 

@@ -6,112 +6,162 @@
 
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
     
+    {{-- KIRI: KONTEN UTAMA (Span 2) --}}
     <div class="lg:col-span-2 flex flex-col gap-6">
         
-<div class="relative bg-[#0a1120] rounded-[2rem] p-10 flex flex-col md:flex-row items-center justify-between overflow-hidden shadow-2xl shadow-slate-900/50 border border-slate-800/50">
-    
-    <div class="absolute top-[-20%] right-[-10%] w-96 h-96 bg-blue-600/15 rounded-full blur-[120px] pointer-events-none z-0"></div>
-    
-    <div class="relative z-10 text-white max-w-sm text-center md:text-left">
-        <h2 class="text-3xl font-black leading-tight mb-5 tracking-tight">Pantau Ketersediaan Kavling Madinah.</h2>
-        <button class="bg-white text-slate-900 px-8 py-3.5 rounded-xl font-bold hover:bg-slate-50 transition-all shadow-lg text-xs uppercase tracking-widest active:scale-95">
-            Lihat Laporan
-        </button>
-    </div>
-
-    <div class="mt-10 md:mt-0 relative z-10 w-full md:w-auto flex justify-center md:justify-end">
-        <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=600&auto=format&fit=crop" 
-             class="w-72 h-52 md:w-80 md:h-56 object-cover object-center rounded-2xl 
-                    border border-white/20 
-                    shadow-[0_20px_50px_rgba(8,_112,_184,_0.3)] 
-                    transition-all duration-500 hover:scale-105 hover:shadow-[0_30px_60px_rgba(8,_112,_184,_0.5)]" 
-             alt="Ilustrasi Kavling">
-    </div>
-</div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {{-- 1. Hero Banner --}}
+        <div class="relative bg-slate-900 rounded-3xl p-8 md:p-10 flex flex-col md:flex-row items-center justify-between overflow-hidden shadow-xl border border-slate-800">
+            <div class="absolute top-[-50%] right-[-10%] w-96 h-96 bg-blue-500/20 rounded-full blur-[100px] pointer-events-none z-0"></div>
             
-            <div class="flex flex-col gap-6">
-                <div class="bg-card rounded-2xl p-6 border border-gray-100 shadow-sm relative overflow-hidden">
-                    <div class="flex justify-between items-start mb-2">
-                        <div class="flex items-center gap-2 text-textMuted text-sm font-medium">
-                            <span class="material-icons-outlined text-base">payments</span> Total Pendapatan
-                        </div>
-                        <button class="text-gray-400"><span class="material-icons-outlined text-lg">more_horiz</span></button>
-                    </div>
-                    <h3 class="text-3xl font-bold text-textMain mt-2">Rp 7.83M</h3>
-                    <p class="text-xs text-green-500 font-semibold mt-2 bg-green-50 w-max px-2 py-1 rounded-md">+28% <span class="text-textMuted font-normal">Dari bulan lalu</span></p>
-                </div>
+            <div class="relative z-10 text-white max-w-sm text-center md:text-left">
+                <h2 class="text-3xl font-black leading-tight mb-4 tracking-tight">Pantau Ketersediaan Kavling Madinah.</h2>
+                <button class="bg-white text-slate-900 px-6 py-3 rounded-xl font-bold hover:bg-slate-100 transition-all shadow-lg text-xs uppercase tracking-widest active:scale-95">
+                    Lihat Laporan
+                </button>
+            </div>
 
-                <div class="bg-card rounded-2xl p-6 border border-gray-100 shadow-sm relative overflow-hidden">
-                    <div class="flex justify-between items-start mb-2">
-                        <div class="flex items-center gap-2 text-textMuted text-sm font-medium">
-                            <span class="material-icons-outlined text-base">build</span> Biaya Pemeliharaan
-                        </div>
-                        <button class="text-gray-400"><span class="material-icons-outlined text-lg">more_horiz</span></button>
+            <div class="mt-8 md:mt-0 relative z-10 w-full md:w-auto flex justify-center md:justify-end">
+                <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=600&auto=format&fit=crop" 
+                     class="w-full max-w-[280px] h-48 md:h-52 object-cover object-center rounded-2xl border border-white/10 shadow-2xl transition-transform duration-500 hover:scale-105" 
+                     alt="Ilustrasi Kavling">
+            </div>
+        </div>
+
+        {{-- 2. Statistik Kavling (3 Kolom Berjejer) --}}
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {{-- Total Kavling --}}
+            <div class="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm flex flex-col justify-between">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
+                        <span class="material-icons-outlined text-xl">layers</span>
                     </div>
-                    <h3 class="text-3xl font-bold text-textMain mt-2">Rp 582 Jt</h3>
-                    <p class="text-xs text-red-500 font-semibold mt-2 bg-red-50 w-max px-2 py-1 rounded-md">+15% <span class="text-textMuted font-normal">Dari bulan lalu</span></p>
+                    <button class="text-slate-400 hover:text-slate-600"><span class="material-icons-outlined">more_horiz</span></button>
+                </div>
+                <div>
+                    <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Total Kavling</p>
+                    <h3 class="text-3xl font-black text-slate-800">{{ number_format($totalKavling) }}</h3>
                 </div>
             </div>
 
-           <div class="bg-card rounded-2xl p-6 border border-gray-100 shadow-sm h-full min-h-[250px] flex flex-col">
+            {{-- Kavling Tersedia --}}
+            <div class="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm flex flex-col justify-between">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+                        <span class="material-icons-outlined text-xl">check_circle</span>
+                    </div>
+                    <button class="text-slate-400 hover:text-slate-600"><span class="material-icons-outlined">more_horiz</span></button>
+                </div>
+                <div>
+                    <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Tersedia</p>
+                    <div class="flex items-end gap-3">
+                        <h3 class="text-3xl font-black text-slate-800">{{ number_format($availableKavling) }}</h3>
+                        <span class="text-[10px] font-bold bg-emerald-100 text-emerald-700 px-2 py-1 rounded-md mb-1">Siap dipesan</span>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Kavling Terisi --}}
+            <div class="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm flex flex-col justify-between">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="w-10 h-10 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center">
+                        <span class="material-icons-outlined text-xl">do_not_disturb_on</span>
+                    </div>
+                    <button class="text-slate-400 hover:text-slate-600"><span class="material-icons-outlined">more_horiz</span></button>
+                </div>
+                <div>
+                    <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Terisi</p>
+                    <div class="flex items-end gap-3">
+                        <h3 class="text-3xl font-black text-slate-800">{{ number_format($occupiedKavling) }}</h3>
+                        <span class="text-[10px] font-bold bg-rose-100 text-rose-700 px-2 py-1 rounded-md mb-1">Sudah laku</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{-- 3. Keuangan & Grafik Pendapatan --}}
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            
+            {{-- Kotak Keuangan (Kiri) --}}
+            <div class="lg:col-span-1 flex flex-col gap-4">
+                <div class="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm flex-1">
+                    <div class="flex items-center gap-2 text-slate-500 mb-3">
+                        <span class="material-icons-outlined text-sm">payments</span>
+                        <span class="text-xs font-bold uppercase tracking-wider">Pendapatan</span>
+                    </div>
+                    <h3 class="text-2xl font-black text-slate-800">Rp {{ number_format($totalRevenue, 0, ',', '.') }}</h3>
+                    <p class="text-[11px] font-semibold mt-2 {{ $revenueChange >= 0 ? 'text-emerald-600 bg-emerald-50' : 'text-rose-600 bg-rose-50' }} w-max px-2 py-1 rounded-md">
+                        {{ $revenueChange >= 0 ? '+' : '' }}{{ number_format($revenueChange, 0) }}% vs bulan lalu
+                    </p>
+                </div>
+
+                <div class="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm flex-1">
+                    <div class="flex items-center gap-2 text-slate-500 mb-3">
+                        <span class="material-icons-outlined text-sm">build</span>
+                        <span class="text-xs font-bold uppercase tracking-wider">Pemeliharaan</span>
+                    </div>
+                    <h3 class="text-2xl font-black text-slate-800">Rp {{ number_format($maintenanceCost, 0, ',', '.') }}</h3>
+                    <p class="text-[11px] font-semibold mt-2 text-rose-600 bg-rose-50 w-max px-2 py-1 rounded-md">
+                        +15% vs bulan lalu
+                    </p>
+                </div>
+            </div>
+
+            {{-- Area Grafik (Kanan) --}}
+            <div class="lg:col-span-2 bg-white rounded-2xl p-5 border border-slate-100 shadow-sm flex flex-col min-h-[260px]">
                 <div class="flex justify-between items-center mb-4">
-                    <h4 class="font-bold text-textMain text-sm">Grafik Pendapatan</h4>
-                    <select class="text-xs border border-gray-200 bg-gray-50 text-textMuted rounded-md px-2 py-1 outline-none focus:ring-0 cursor-pointer">
+                    <h4 class="font-bold text-slate-800 text-sm uppercase tracking-wider">Grafik Pendapatan</h4>
+                    <select class="text-xs font-semibold border border-slate-200 bg-slate-50 text-slate-600 rounded-lg px-3 py-1.5 outline-none cursor-pointer">
                         <option>Tahun Ini</option>
                         <option>Tahun Lalu</option>
                     </select>
                 </div>
-                
-                <div class="relative w-full flex-1">
+                <div class="relative w-full flex-1 min-h-[200px]">
                     <canvas id="revenueLineChart"></canvas>
                 </div>
             </div>
 
         </div>
 
-        <div class="bg-card rounded-2xl border border-gray-100 shadow-sm overflow-hidden mt-2">
-            <div class="p-6 border-b border-gray-50">
-                <h3 class="text-lg font-bold text-textMain">Laporan Penjualan</h3>
+        {{-- 4. Tabel Penjualan --}}
+        <div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+            <div class="p-5 border-b border-slate-100 flex justify-between items-center">
+                <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wider">Laporan Penjualan Terbaru</h3>
             </div>
             <div class="overflow-x-auto">
                 <table class="w-full text-left text-sm whitespace-nowrap">
                     <thead>
-                        <tr class="text-textMuted font-semibold bg-gray-50/50">
-                            <th class="px-6 py-4 font-medium">Pembeli</th>
-                            <th class="px-6 py-4 font-medium">Email</th>
-                            <th class="px-6 py-4 font-medium">Tipe Kavling</th>
-                            <th class="px-6 py-4 font-medium">Harga</th>
-                            <th class="px-6 py-4 font-medium">Status</th>
+                        <tr class="text-slate-500 font-bold bg-slate-50 text-xs uppercase tracking-wider border-b border-slate-100">
+                            <th class="px-6 py-4">Pembeli</th>
+                            <th class="px-6 py-4">Email</th>
+                            <th class="px-6 py-4">Tipe Kavling</th>
+                            <th class="px-6 py-4">Harga</th>
+                            <th class="px-6 py-4">Status</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-gray-50">
-                        @php
-                            $sales = [
-                                ['name' => 'Budi Santoso', 'email' => 'budi@gmail.com', 'type' => 'Muslim - Fitrah', 'price' => 'Rp 150 Jt', 'status' => 'Lunas', 'color' => 'bg-green-100 text-green-700'],
-                                ['name' => 'Michael Verade', 'email' => 'michael@gmail.com', 'type' => 'Non-Muslim - Family', 'price' => 'Rp 450 Jt', 'status' => 'Pending', 'color' => 'bg-teal-100 text-teal-700'],
-                                ['name' => 'Siti Aminah', 'email' => 'siti.am@gmail.com', 'type' => 'Muslim - Sakinah', 'price' => 'Rp 210 Jt', 'status' => 'Lunas', 'color' => 'bg-green-100 text-green-700'],
-                                ['name' => 'Keluarga Lee', 'email' => 'lee.fam@gmail.com', 'type' => 'Non-Muslim - VIP', 'price' => 'Rp 1.2 M', 'status' => 'Lunas', 'color' => 'bg-green-100 text-green-700'],
-                                ['name' => 'Ahmad Rizal', 'email' => 'arizal@gmail.com', 'type' => 'Muslim - Barokah', 'price' => 'Rp 100 Jt', 'status' => 'Pending', 'color' => 'bg-teal-100 text-teal-700'],
-                            ];
-                        @endphp
-                        @foreach($sales as $sale)
-                        <tr class="hover:bg-gray-50/50 transition-colors">
+                    <tbody class="divide-y divide-slate-50">
+                        @forelse($recentSales as $sale)
+                        <tr class="hover:bg-slate-50 transition-colors">
                             <td class="px-6 py-4 flex items-center gap-3">
-                                <img src="https://ui-avatars.com/api/?name={{ urlencode($sale['name']) }}&background=f3f4f6" class="w-8 h-8 rounded-full" alt="avatar">
-                                <span class="font-semibold text-textMain">{{ $sale['name'] }}</span>
+                                <img src="https://ui-avatars.com/api/?name={{ urlencode($sale['name']) }}&background=f1f5f9&color=475569" class="w-8 h-8 rounded-full" alt="avatar">
+                                <span class="font-bold text-slate-800">{{ $sale['name'] }}</span>
                             </td>
-                            <td class="px-6 py-4 text-textMuted">{{ $sale['email'] }}</td>
-                            <td class="px-6 py-4 text-textMuted">{{ $sale['type'] }}</td>
-                            <td class="px-6 py-4 font-medium text-textMain">{{ $sale['price'] }}</td>
+                            <td class="px-6 py-4 text-slate-500">{{ $sale['email'] }}</td>
+                            <td class="px-6 py-4 text-slate-500">{{ $sale['type'] }}</td>
+                            <td class="px-6 py-4 font-bold text-slate-800">{{ $sale['price'] }}</td>
                             <td class="px-6 py-4">
-                                <span class="px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wide {{ $sale['color'] }}">
+                                {{-- Pemanggilan warna dari Controller, tanpa perlu di-PHP-kan lagi di sini --}}
+                                <span class="px-3 py-1.5 rounded-md text-[10px] font-bold uppercase tracking-wider {{ $sale['status_color'] }}">
                                     {{ $sale['status'] }}
                                 </span>
                             </td>
                         </tr>
-                        @endforeach
+                        @empty
+                        <tr>
+                            <td colspan="5" class="px-6 py-10 text-center text-slate-400 font-medium">
+                                Belum ada data reservasi
+                            </td>
+                        </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>
@@ -119,75 +169,77 @@
 
     </div>
 
+    {{-- KANAN: SIDEBAR (Span 1) --}}
     <div class="flex flex-col gap-6">
         
-        <div class="bg-card rounded-2xl p-6 border border-gray-100 shadow-sm">
-            <div class="flex justify-between items-center mb-6">
-                <h3 class="font-bold text-textMain">Kavling Premium</h3>
-                <a href="#" class="text-xs font-semibold text-textMuted hover:text-primary">Lihat Semua</a>
-            </div>
-
-            <div class="space-y-6">
-                <div class="group cursor-pointer">
-                    <div class="relative w-full h-36 rounded-xl overflow-hidden mb-3 shadow-lg border-2 border-slate-50">
-                        <img src="https://images.unsplash.com/photo-1599809275671-b5942cabc7a2?q=80&w=400&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Kavling">
-                        <span class="absolute top-2 left-2 bg-white/90 backdrop-blur text-xs font-bold px-2 py-1 rounded-md text-textMain shadow-sm">Tersedia</span>
-                    </div>
-                    <h4 class="font-bold text-textMain">Cluster Non-Muslim VIP</h4>
-                    <p class="text-xs text-textMuted mt-1 mb-2">Ukuran 26m x 36m • Kapasitas 18</p>
-                    <p class="font-bold text-primary text-lg">Rp 1.250.000.000</p>
-                </div>
-
-                <hr class="border-gray-50">
-
-                <div class="group cursor-pointer">
-                    <div class="relative w-full h-36 rounded-xl overflow-hidden mb-3 shadow-lg border-2 border-slate-50">
-                        <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?q=80&w=400&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Kavling">
-                        <span class="absolute top-2 left-2 bg-white/90 backdrop-blur text-xs font-bold px-2 py-1 rounded-md text-textMain shadow-sm">Tersedia</span>
-                    </div>
-                    <h4 class="font-bold text-textMain">Cluster Muslim Khalifah</h4>
-                    <p class="text-xs text-textMuted mt-1 mb-2">Ukuran 7m x 15m • Kapasitas 12</p>
-                    <p class="font-bold text-primary text-lg">Rp 650.000.000</p>
+        {{-- Peta Cluster --}}
+        <div class="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm flex flex-col">
+            <h3 class="font-bold text-slate-800 text-sm uppercase tracking-wider mb-4">Peta Cluster Madinah</h3>
+            <div class="w-full h-48 bg-slate-100 rounded-xl overflow-hidden relative border border-slate-200 cursor-pointer group">
+                <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=400&auto=format&fit=crop" class="w-full h-full object-cover opacity-70 group-hover:scale-105 transition-transform duration-700" alt="Map">
+                <div class="absolute inset-0 flex items-center justify-center bg-slate-900/30 group-hover:bg-slate-900/10 transition-colors">
+                    <span class="bg-white px-4 py-2.5 rounded-lg shadow-xl text-[10px] uppercase tracking-widest font-bold text-slate-800 flex items-center gap-2">
+                        <span class="material-icons-outlined text-blue-600 text-sm">location_on</span> View Masterplan
+                    </span>
                 </div>
             </div>
         </div>
 
-        <div class="bg-card rounded-2xl p-6 border border-gray-100 shadow-sm flex-1 flex flex-col">
-            <h3 class="font-bold text-textMain mb-4">Peta Cluster Madinah</h3>
-            <div class="w-full flex-1 min-h-[200px] bg-gray-100 rounded-xl overflow-hidden relative border border-gray-200 cursor-pointer">
-                <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=400&auto=format&fit=crop" class="w-full h-full object-cover opacity-50 grayscale" alt="Map">
-                <div class="absolute inset-0 flex items-center justify-center bg-black/20">
-                    <span class="bg-white px-4 py-2 rounded-lg shadow-xl text-[11px] uppercase tracking-wider font-extrabold text-textMain flex items-center gap-1.5 hover:scale-105 transition-all">
-                        <span class="material-icons-outlined text-primary text-sm">location_on</span> View Masterplan
-                    </span>
+        {{-- Kavling Premium --}}
+        <div class="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm">
+            <div class="flex justify-between items-center mb-5">
+                <h3 class="font-bold text-slate-800 text-sm uppercase tracking-wider">Kavling Premium</h3>
+                <a href="#" class="text-[11px] font-bold text-blue-600 hover:text-blue-800 uppercase tracking-wider">Lihat Semua</a>
+            </div>
+
+            <div class="space-y-5">
+                @forelse($premiumKavlings as $index => $kavling)
+                <div class="group cursor-pointer">
+                    <div class="relative w-full h-32 rounded-xl overflow-hidden mb-3 shadow-sm border border-slate-100">
+                        <img src="https://images.unsplash.com/photo-{{ $index == 0 ? '1599809275671-b5942cabc7a2' : '1584622650111-993a426fbf0a' }}?q=80&w=400&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Kavling">
+                        <span class="absolute top-2 left-2 bg-white/95 backdrop-blur text-[10px] uppercase tracking-widest font-bold px-2 py-1 rounded shadow-sm text-emerald-600">Tersedia</span>
+                    </div>
+                    <h4 class="font-bold text-slate-800">{{ $kavling->cluster->nama_cluster ?? 'N/A' }}</h4>
+                    <p class="text-xs font-medium text-slate-500 mt-0.5 mb-1.5">Ukuran {{ $kavling->ukuran ?? 'N/A' }} • Kap. {{ $kavling->kapasitas ?? 'N/A' }} org</p>
+                    <p class="font-black text-slate-900">Rp {{ number_format($kavling->harga ?? 0, 0, ',', '.') }}</p>
                 </div>
+                @if(!$loop->last)
+                <hr class="border-slate-100">
+                @endif
+                @empty
+                <div class="text-center py-8 text-slate-400">
+                    <span class="material-icons-outlined text-4xl mb-2 opacity-50">location_off</span>
+                    <p class="text-sm font-medium">Tidak ada kavling premium</p>
+                </div>
+                @endforelse
             </div>
         </div>
 
     </div>
 
 </div>
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const ctxLine = document.getElementById('revenueLineChart').getContext('2d');
         
         let gradient = ctxLine.createLinearGradient(0, 0, 0, 300);
-        gradient.addColorStop(0, 'rgba(74, 159, 181, 0.4)'); 
-        gradient.addColorStop(1, 'rgba(74, 159, 181, 0.0)'); 
+        gradient.addColorStop(0, 'rgba(59, 130, 246, 0.2)'); // Tailwind Blue-500
+        gradient.addColorStop(1, 'rgba(59, 130, 246, 0)'); 
 
         new Chart(ctxLine, {
             type: 'line',
             data: {
-                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul'],
+                labels: @json($labels),
                 datasets: [{
                     label: 'Pendapatan',
-                    data: [120, 250, 180, 320, 280, 450, 520],
-                    borderColor: '#4a9fb5', 
+                    data: @json($revenueData),
+                    borderColor: '#3b82f6', // Tailwind Blue-500
                     backgroundColor: gradient,
                     borderWidth: 3,
                     pointBackgroundColor: '#ffffff',
-                    pointBorderColor: '#4a9fb5',
+                    pointBorderColor: '#3b82f6',
                     pointBorderWidth: 2,
                     pointRadius: 4,
                     pointHoverRadius: 6,
@@ -201,10 +253,10 @@
                 plugins: {
                     legend: { display: false }, 
                     tooltip: {
-                        backgroundColor: '#1a2332',
-                        padding: 10,
-                        titleFont: { family: 'Plus Jakarta Sans', size: 12 },
-                        bodyFont: { family: 'Plus Jakarta Sans', size: 14, weight: 'bold' },
+                        backgroundColor: '#0f172a',
+                        padding: 12,
+                        titleFont: { family: 'Inter', size: 12 },
+                        bodyFont: { family: 'Inter', size: 14, weight: 'bold' },
                         displayColors: false,
                         callbacks: {
                             label: function(context) { return 'Rp ' + context.parsed.y + ' Juta'; }
@@ -214,12 +266,13 @@
                 scales: {
                     x: { 
                         grid: { display: false, drawBorder: false },
-                        ticks: { font: { size: 11 } }
+                        ticks: { font: { family: 'Inter', size: 11 }, color: '#64748b' }
                     },
                     y: { 
-                        grid: { borderDash: [4, 4], color: '#f3f4f6', drawBorder: false },
+                        grid: { borderDash: [4, 4], color: '#f1f5f9', drawBorder: false },
                         ticks: { 
-                            font: { size: 11 },
+                            font: { family: 'Inter', size: 11 },
+                            color: '#64748b',
                             callback: function(value) { return value + ' Jt'; }
                         }
                     }

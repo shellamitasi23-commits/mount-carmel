@@ -16,8 +16,11 @@ class Pembayaran extends Model
         'tanggal_bayar',
         'bukti_pembayaran',
         'status_pembayaran',
+        'nama_bank',            
+        'rekening_tujuan',       
+        'atas_nama_rekening',   
+        'catatan',               
     ];
-
     /**
      * Relasi: Pembayaran dimiliki oleh satu Reservasi
      */

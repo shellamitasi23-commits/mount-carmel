@@ -14,16 +14,24 @@ class DashboardController extends Controller
     {
         // Ambil data statistik dan masukkan ke dalam array $stats
         $stats = [
-            'pembeli' => \App\Models\User::where('role', 'pembeli')->count(),
-            'reservasi' => \App\Models\Reservasi::count(),
-            'tersedia' => \App\Models\Kavling::where('status', 'Tersedia')->count(),
-            'omzet' => \App\Models\Reservasi::where('status_reservasi', 'Disetujui')
+            'pembeli' => User::where('role', 'pembeli')->count(),
+
+            'reservasi' => Reservasi::count(),
+
+            // Gunakan whereIn untuk jaga-jaga jika ada perbedaan huruf besar/kecil di database
+            'tersedia' => Kavling::whereIn('status', ['Tersedia', 'tersedia'])->count(),
+
+            // TAMBAHAN WAJIB: Data untuk menghitung persentase "Status Lahan"
+            'terisi' => Kavling::whereIn('status', ['Terjual', 'terjual', 'Dipesan', 'dipesan', 'Terisi', 'terisi'])->count(),
+            'total' => Kavling::count(),
+
+            'omzet' => Reservasi::where('status_reservasi', 'Disetujui')
                 ->join('kavlings', 'reservasis.kavling_id', '=', 'kavlings.id')
                 ->sum('kavlings.harga'),
         ];
 
         // Ambil 5 reservasi terbaru
-        $latest_reservasi = \App\Models\Reservasi::with(['user', 'kavling.cluster'])
+        $latest_reservasi = Reservasi::with(['user', 'kavling.cluster'])
             ->latest()
             ->take(5)
             ->get();

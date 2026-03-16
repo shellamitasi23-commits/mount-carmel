@@ -51,46 +51,136 @@
         </div>
     </div>
 
+    @php
+        $type = request('type', 'reservasi');
+        $periodeFrom = request('start_date') ?? 'Semua';
+        $periodeTo = request('end_date') ?? 'Sekarang';
+    @endphp
+
     <div class="judul-laporan">
-        <h2>Laporan Rekapitulasi Penjualan Kavling</h2>
-        <p>Periode: {{ request('start_date') ?? 'Semua' }} s/d {{ request('end_date') ?? 'Sekarang' }}</p>
+        <h2>
+            @if($type === 'kavling')
+                Laporan Data Kavling
+            @elseif($type === 'pembeli')
+                Laporan Data Pembeli
+            @elseif($type === 'cluster')
+                Laporan Data Cluster
+            @else
+                Laporan Rekapitulasi Penjualan Kavling
+            @endif
+        </h2>
+        <p>Periode: {{ $periodeFrom }} s/d {{ $periodeTo }}</p>
     </div>
 
     <table>
         <thead>
-            <tr>
-                <th>No</th>
-                <th>Tanggal</th>
-                <th>Nama Pembeli</th>
-                <th>Kavling & Cluster</th>
-                <th>Nama Jenazah</th>
-                <th class="text-right">Harga (Rp)</th>
-            </tr>
+            @if($type === 'kavling')
+                <tr>
+                    <th>No</th>
+                    <th>Nomor Kavling</th>
+                    <th>Cluster</th>
+                    <th>Tipe</th>
+                    <th>Status</th>
+                    <th class="text-right">Harga (Rp)</th>
+                </tr>
+            @elseif($type === 'pembeli')
+                <tr>
+                    <th>No</th>
+                    <th>Nama Pembeli</th>
+                    <th>Email</th>
+                    <th>Total Reservasi</th>
+                    <th>Tanggal Daftar</th>
+                </tr>
+            @elseif($type === 'cluster')
+                <tr>
+                    <th>No</th>
+                    <th>Nama Cluster</th>
+                    <th>Kategori</th>
+                    <th>Total Kavling</th>
+                </tr>
+            @else
+                <tr>
+                    <th>No</th>
+                    <th>Tanggal</th>
+                    <th>Nama Pembeli</th>
+                    <th>Kavling & Cluster</th>
+                    <th>Nama Jenazah</th>
+                    <th class="text-right">Harga (Rp)</th>
+                </tr>
+            @endif
         </thead>
         <tbody>
             @php $total = 0; @endphp
-            @forelse($reservasis as $index => $rs)
-                @php $total += $rs->kavling->harga; @endphp
-                <tr>
-                    <td>{{ $index + 1 }}</td>
-                    <td>{{ $rs->created_at->format('d/m/Y') }}</td>
-                    <td>{{ $rs->user->name }}</td>
-                    <td>{{ $rs->kavling->cluster->nama_cluster }} - {{ $rs->kavling->nomor_kavling }}</td>
-                    <td>Alm. {{ $rs->nama_jenazah }}</td>
-                    <td class="text-right">{{ number_format($rs->kavling->harga, 0, ',', '.') }}</td>
-                </tr>
-            @empty
-                <tr>
-                    <td colspan="6" style="text-align: center;">Tidak ada data pada periode ini.</td>
-                </tr>
-            @endforelse
+
+            @if($type === 'kavling')
+                @forelse($kavlings as $index => $k)
+                    <tr>
+                        <td>{{ $index + 1 }}</td>
+                        <td>{{ $k->nomor_kavling }}</td>
+                        <td>{{ $k->cluster->nama_cluster ?? '-' }}</td>
+                        <td>{{ $k->tipe_kavling }}</td>
+                        <td>{{ $k->status }}</td>
+                        <td class="text-right">{{ number_format($k->harga, 0, ',', '.') }}</td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="6" style="text-align: center;">Tidak ada data pada periode ini.</td>
+                    </tr>
+                @endforelse
+            @elseif($type === 'pembeli')
+                @forelse($pembelis as $index => $p)
+                    <tr>
+                        <td>{{ $index + 1 }}</td>
+                        <td>{{ $p->name }}</td>
+                        <td>{{ $p->email }}</td>
+                        <td>{{ $p->reservasis_count }}</td>
+                        <td>{{ $p->created_at ? $p->created_at->format('d/m/Y') : '-' }}</td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="5" style="text-align: center;">Tidak ada data pada periode ini.</td>
+                    </tr>
+                @endforelse
+            @elseif($type === 'cluster')
+                @forelse($clusters as $index => $c)
+                    <tr>
+                        <td>{{ $index + 1 }}</td>
+                        <td>{{ $c->nama_cluster }}</td>
+                        <td>{{ $c->kategori }}</td>
+                        <td>{{ $c->kavlings_count }}</td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="4" style="text-align: center;">Tidak ada data pada periode ini.</td>
+                    </tr>
+                @endforelse
+            @else
+                @forelse($reservasis as $index => $rs)
+                    @php $total += $rs->kavling->harga; @endphp
+                    <tr>
+                        <td>{{ $index + 1 }}</td>
+                        <td>{{ $rs->created_at->format('d/m/Y') }}</td>
+                        <td>{{ $rs->user->name }}</td>
+                        <td>{{ $rs->kavling->cluster->nama_cluster }} - {{ $rs->kavling->nomor_kavling }}</td>
+                        <td>Alm. {{ $rs->nama_jenazah }}</td>
+                        <td class="text-right">{{ number_format($rs->kavling->harga, 0, ',', '.') }}</td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="6" style="text-align: center;">Tidak ada data pada periode ini.</td>
+                    </tr>
+                @endforelse
+            @endif
         </tbody>
-        <tfoot>
-            <tr class="font-bold" style="background-color: #fdfdfd;">
-                <td colspan="5" class="text-right">TOTAL PENDAPATAN</td>
-                <td class="text-right">Rp {{ number_format($total, 0, ',', '.') }}</td>
-            </tr>
-        </tfoot>
+
+        @if($type === 'reservasi')
+            <tfoot>
+                <tr class="font-bold" style="background-color: #fdfdfd;">
+                    <td colspan="5" class="text-right">TOTAL PENDAPATAN</td>
+                    <td class="text-right">Rp {{ number_format($total, 0, ',', '.') }}</td>
+                </tr>
+            </tfoot>
+        @endif
     </table>
 
     <div class="tanda-tangan">
