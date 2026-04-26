@@ -15,7 +15,7 @@ class AdminUserSeeder extends Seeder
             ['email' => 'admin@mountcarmel.id'],
             [
                 'name' => 'Admin Mount Carmel',
-                'password' => Hash::make('admin12345'),
+                'password' => Hash::make('admin123454'),
                 'role' => 'admin', 
                 'no_telepon' => '081234567890'
             ]

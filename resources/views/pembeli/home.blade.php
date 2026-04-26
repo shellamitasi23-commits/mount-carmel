@@ -539,189 +539,6 @@ $reservedKavlings = $reservedKavlings ?? [];
 </section>
 
 {{-- ═══════════════════════════════════════════════════════════════
-     TIPE KAVLING
-     ═══════════════════════════════════════════════════════════════ --}}
-<section id="tipe-kavling" class="py-16 md:py-24 px-4 md:px-8 xl:px-24 bg-white relative">
-    <div class="max-w-7xl mx-auto">
-        <div class="text-center mb-10 md:mb-16">
-            <span data-aos="fade-up" class="text-primary font-bold tracking-widest uppercase text-sm">Pilihan Kavling</span>
-            <h2 data-aos="fade-up" data-aos-delay="100" class="text-3xl md:text-5xl font-bold mt-2 leading-tight">Spesifikasi & Ukuran</h2>
-            <p data-aos="fade-up" data-aos-delay="200" class="text-gray-500 mt-4 max-w-2xl mx-auto text-sm md:text-base">Tersedia berbagai pilihan tipe kavling untuk kenyamanan peristirahatan keluarga Anda.</p>
-        </div>
-
-        <div x-data="{ activeTab: 'muslim' }" class="w-full">
-            <div data-aos="fade-up" data-aos-delay="200" class="flex justify-center mb-8 md:mb-12">
-                <div class="bg-gray-100 p-1 rounded-full inline-flex relative shadow-sm border border-gray-200">
-                    <button @click="activeTab = 'muslim'" 
-                            :class="{ 'bg-primary text-gray-900 shadow-md': activeTab === 'muslim', 'text-gray-500 hover:text-gray-900': activeTab !== 'muslim' }"
-                            class="btn-press px-4 md:px-10 py-2.5 md:py-3 rounded-full text-xs md:text-sm font-bold transition-all duration-300">
-                        Cluster Muslim
-                    </button>
-                    <button @click="activeTab = 'non_muslim'" 
-                            :class="{ 'bg-gray-900 text-white shadow-md': activeTab === 'non_muslim', 'text-gray-500 hover:text-gray-900': activeTab !== 'non_muslim' }"
-                            class="btn-press px-4 md:px-10 py-2.5 md:py-3 rounded-full text-xs md:text-sm font-bold transition-all duration-300">
-                        Cluster Non-Muslim
-                    </button>
-                </div>
-            </div>
-
-            <div class="relative min-h-[400px]">
-                <div x-show="activeTab === 'muslim'" 
-                     x-transition:enter="transition ease-out duration-500"
-                     x-transition:enter-start="opacity-0 translate-y-4"
-                     x-transition:enter-end="opacity-100 translate-y-0"
-                     class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-                    @php
-                    $muslimTypes = [
-                        ['name' => 'Tipe Barokah', 'size' => '1.5m x 2.5m', 'max' => 1],
-                        ['name' => 'Tipe Fitrah', 'size' => '4m x 3m', 'max' => 2],
-                        ['name' => 'Tipe Sakinah', 'size' => '7m x 8m', 'max' => 6],
-                        ['name' => 'Tipe Khalifah', 'size' => '7m x 15m', 'max' => 12],
-                    ];
-                    $muslimDims = [
-                        ['w' => 1.5, 'h' => 2.5],
-                        ['w' => 4,   'h' => 3],
-                        ['w' => 7,   'h' => 8],
-                        ['w' => 7,   'h' => 15],
-                    ];
-                    @endphp
-                    @foreach($muslimTypes as $idx => $item)
-                    @php
-                    $dim   = $muslimDims[$idx];
-                    $svgW  = 200; $svgH = 120;
-                    $pad   = 16;
-                    $maxW  = $svgW - $pad * 2;
-                    $maxH  = $svgH - $pad * 2;
-                    $ratio = min($maxW / $dim['w'], $maxH / $dim['h']);
-                    $rw    = round($dim['w'] * $ratio);
-                    $rh    = round($dim['h'] * $ratio);
-                    $rx    = round(($svgW - $rw) / 2);
-                    $ry    = round(($svgH - $rh) / 2);
-                    @endphp
-                    <div class="group bg-white border border-gray-100 rounded-2xl overflow-hidden hover:shadow-xl hover:border-emerald-200 transition-all duration-300 hover:-translate-y-2 flex flex-col shadow-sm">
-                        <div class="bg-gradient-to-r from-emerald-500 to-emerald-600 px-5 pt-5 pb-3">
-                            <span class="text-emerald-100 text-[10px] font-bold uppercase tracking-widest">Cluster Muslim</span>
-                            <h3 class="text-white font-poppins text-lg font-bold mt-0.5">{{ $item['name'] }}</h3>
-                        </div>
-                        <div class="bg-gray-50 px-4 py-3 flex items-center justify-center" style="height:140px">
-                            <svg width="{{ $svgW }}" height="{{ $svgH }}" viewBox="0 0 {{ $svgW }} {{ $svgH }}" xmlns="http://www.w3.org/2000/svg">
-                                <pattern id="dots-m{{ $idx }}" x="0" y="0" width="10" height="10" patternUnits="userSpaceOnUse">
-                                    <circle cx="1" cy="1" r="0.8" fill="#d1fae5"/>
-                                </pattern>
-                                <rect width="{{ $svgW }}" height="{{ $svgH }}" fill="url(#dots-m{{ $idx }})" rx="6"/>
-                                <rect x="{{ $rx }}" y="{{ $ry }}" width="{{ $rw }}" height="{{ $rh }}" fill="#ecfdf5" stroke="#10b981" stroke-width="1.5" stroke-dasharray="4 2" rx="3"/>
-                                <line x1="{{ $rx }}" y1="{{ $ry + $rh + 8 }}" x2="{{ $rx + $rw }}" y2="{{ $ry + $rh + 8 }}" stroke="#10b981" stroke-width="1"/>
-                                <line x1="{{ $rx }}" y1="{{ $ry + $rh + 5 }}" x2="{{ $rx }}" y2="{{ $ry + $rh + 11 }}" stroke="#10b981" stroke-width="1"/>
-                                <line x1="{{ $rx + $rw }}" y1="{{ $ry + $rh + 5 }}" x2="{{ $rx + $rw }}" y2="{{ $ry + $rh + 11 }}" stroke="#10b981" stroke-width="1"/>
-                                <text x="{{ $rx + $rw / 2 }}" y="{{ $ry + $rh + 20 }}" text-anchor="middle" font-size="9" fill="#059669" font-family="Inter,sans-serif" font-weight="600">{{ $dim['w'] }}m</text>
-                                <line x1="{{ $rx - 8 }}" y1="{{ $ry }}" x2="{{ $rx - 8 }}" y2="{{ $ry + $rh }}" stroke="#10b981" stroke-width="1"/>
-                                <line x1="{{ $rx - 11 }}" y1="{{ $ry }}" x2="{{ $rx - 5 }}" y2="{{ $ry }}" stroke="#10b981" stroke-width="1"/>
-                                <line x1="{{ $rx - 11 }}" y1="{{ $ry + $rh }}" x2="{{ $rx - 5 }}" y2="{{ $ry + $rh }}" stroke="#10b981" stroke-width="1"/>
-                                <text x="{{ $rx - 14 }}" y="{{ $ry + $rh / 2 }}" text-anchor="middle" font-size="9" fill="#059669" font-family="Inter,sans-serif" font-weight="600" transform="rotate(-90 {{ $rx - 14 }} {{ $ry + $rh / 2 }})">{{ $dim['h'] }}m</text>
-                                <text x="{{ $rx + $rw / 2 }}" y="{{ $ry + $rh / 2 + 4 }}" text-anchor="middle" font-size="11" fill="#065f46" font-family="Inter,sans-serif" font-weight="700">{{ $dim['w'] * $dim['h'] }} m²</text>
-                            </svg>
-                        </div>
-                        <div class="px-5 py-4 flex flex-col flex-grow">
-                            <div class="flex items-center justify-between mb-1">
-                                <span class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Ukuran</span>
-                                <span class="text-sm font-bold text-gray-800">{{ $item['size'] }}</span>
-                            </div>
-                            <div class="flex items-center justify-between mb-4">
-                                <span class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Kapasitas</span>
-                                <span class="text-sm font-bold text-gray-800">{{ $item['max'] }} orang</span>
-                            </div>
-                            <button class="btn-ripple btn-press mt-auto w-full py-2.5 bg-emerald-600 text-white rounded-xl text-sm font-bold hover:bg-emerald-700 transition-colors">
-                                Pilih Tipe Ini
-                            </button>
-                        </div>
-                    </div>
-                    @endforeach
-                </div>
-
-                <div x-show="activeTab === 'non_muslim'" style="display: none;"
-                     x-transition:enter="transition ease-out duration-500"
-                     x-transition:enter-start="opacity-0 translate-y-4"
-                     x-transition:enter-end="opacity-100 translate-y-0"
-                     class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-                    @php
-                    $nonMuslimTypes = [
-                        ['name' => 'Single',        'size' => '1.5m x 4m',  'max' => 1],
-                        ['name' => 'Double',        'size' => '3m x 4m',    'max' => 2],
-                        ['name' => 'Double Deluxe', 'size' => '4m x 4.5m',  'max' => 2],
-                        ['name' => 'Double Special','size' => '8m x 4.5m',  'max' => 4],
-                        ['name' => 'Family',        'size' => '8m x 5m',    'max' => 4],
-                        ['name' => 'Super Family',  'size' => '8m x 10m',   'max' => 6],
-                        ['name' => 'Royal Family',  'size' => '16m x 20m',  'max' => 10],
-                        ['name' => 'VIP',           'size' => '26m x 36m',  'max' => 18],
-                    ];
-                    $nonMuslimDims = [
-                        ['w' => 1.5, 'h' => 4],
-                        ['w' => 3,   'h' => 4],
-                        ['w' => 4,   'h' => 4.5],
-                        ['w' => 8,   'h' => 4.5],
-                        ['w' => 8,   'h' => 5],
-                        ['w' => 8,   'h' => 10],
-                        ['w' => 16,  'h' => 20],
-                        ['w' => 26,  'h' => 36],
-                    ];
-                    @endphp
-                    @foreach($nonMuslimTypes as $idx => $item)
-                    @php
-                    $dim2  = $nonMuslimDims[$idx];
-                    $svgW2 = 200; $svgH2 = 110;
-                    $pad2  = 18;
-                    $maxW2 = $svgW2 - $pad2 * 2;
-                    $maxH2 = $svgH2 - $pad2 * 2;
-                    $ratio2 = min($maxW2 / $dim2['w'], $maxH2 / $dim2['h']);
-                    $rw2   = round($dim2['w'] * $ratio2);
-                    $rh2   = round($dim2['h'] * $ratio2);
-                    $rx2   = round(($svgW2 - $rw2) / 2);
-                    $ry2   = round(($svgH2 - $rh2) / 2);
-                    @endphp
-                    <div class="group bg-white border border-gray-100 rounded-2xl overflow-hidden hover:shadow-xl hover:border-gray-300 transition-all duration-300 hover:-translate-y-2 flex flex-col shadow-sm">
-                        <div class="bg-gradient-to-r from-gray-700 to-gray-800 px-5 pt-5 pb-3">
-                            <span class="text-gray-300 text-[10px] font-bold uppercase tracking-widest">Non-Muslim</span>
-                            <h3 class="text-white font-poppins text-lg font-bold mt-0.5 truncate">{{ $item['name'] }}</h3>
-                        </div>
-                        <div class="bg-gray-50 px-4 py-2 flex items-center justify-center" style="height:130px">
-                            <svg width="{{ $svgW2 }}" height="{{ $svgH2 }}" viewBox="0 0 {{ $svgW2 }} {{ $svgH2 }}" xmlns="http://www.w3.org/2000/svg">
-                                <pattern id="dots-nm{{ $idx }}" x="0" y="0" width="10" height="10" patternUnits="userSpaceOnUse">
-                                    <circle cx="1" cy="1" r="0.8" fill="#e5e7eb"/>
-                                </pattern>
-                                <rect width="{{ $svgW2 }}" height="{{ $svgH2 }}" fill="url(#dots-nm{{ $idx }})" rx="6"/>
-                                <rect x="{{ $rx2 }}" y="{{ $ry2 }}" width="{{ $rw2 }}" height="{{ $rh2 }}" fill="#f9fafb" stroke="#374151" stroke-width="1.5" stroke-dasharray="4 2" rx="3"/>
-                                <line x1="{{ $rx2 }}" y1="{{ $ry2 + $rh2 + 8 }}" x2="{{ $rx2 + $rw2 }}" y2="{{ $ry2 + $rh2 + 8 }}" stroke="#6b7280" stroke-width="1"/>
-                                <line x1="{{ $rx2 }}" y1="{{ $ry2 + $rh2 + 5 }}" x2="{{ $rx2 }}" y2="{{ $ry2 + $rh2 + 11 }}" stroke="#6b7280" stroke-width="1"/>
-                                <line x1="{{ $rx2 + $rw2 }}" y1="{{ $ry2 + $rh2 + 5 }}" x2="{{ $rx2 + $rw2 }}" y2="{{ $ry2 + $rh2 + 11 }}" stroke="#6b7280" stroke-width="1"/>
-                                <text x="{{ $rx2 + $rw2 / 2 }}" y="{{ $ry2 + $rh2 + 20 }}" text-anchor="middle" font-size="9" fill="#4b5563" font-family="Inter,sans-serif" font-weight="600">{{ $dim2['w'] }}m</text>
-                                <line x1="{{ $rx2 - 8 }}" y1="{{ $ry2 }}" x2="{{ $rx2 - 8 }}" y2="{{ $ry2 + $rh2 }}" stroke="#6b7280" stroke-width="1"/>
-                                <line x1="{{ $rx2 - 11 }}" y1="{{ $ry2 }}" x2="{{ $rx2 - 5 }}" y2="{{ $ry2 }}" stroke="#6b7280" stroke-width="1"/>
-                                <line x1="{{ $rx2 - 11 }}" y1="{{ $ry2 + $rh2 }}" x2="{{ $rx2 - 5 }}" y2="{{ $ry2 + $rh2 }}" stroke="#6b7280" stroke-width="1"/>
-                                <text x="{{ $rx2 - 14 }}" y="{{ $ry2 + $rh2 / 2 }}" text-anchor="middle" font-size="9" fill="#4b5563" font-family="Inter,sans-serif" font-weight="600" transform="rotate(-90 {{ $rx2 - 14 }} {{ $ry2 + $rh2 / 2 }})">{{ $dim2['h'] }}m</text>
-                                <text x="{{ $rx2 + $rw2 / 2 }}" y="{{ $ry2 + $rh2 / 2 + 4 }}" text-anchor="middle" font-size="11" fill="#111827" font-family="Inter,sans-serif" font-weight="700">{{ $dim2['w'] * $dim2['h'] }} m²</text>
-                            </svg>
-                        </div>
-                        <div class="px-5 py-4 flex flex-col flex-grow">
-                            <div class="flex items-center justify-between mb-1">
-                                <span class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Ukuran</span>
-                                <span class="text-sm font-bold text-gray-800">{{ $item['size'] }}</span>
-                            </div>
-                            <div class="flex items-center justify-between mb-4">
-                                <span class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Kapasitas</span>
-                                <span class="text-sm font-bold text-gray-800">{{ $item['max'] }} orang</span>
-                            </div>
-                            <button class="btn-ripple btn-press mt-auto w-full py-2.5 bg-gray-800 text-white rounded-xl text-sm font-bold hover:bg-gray-900 transition-colors">
-                                Lihat Detail
-                            </button>
-                        </div>
-                    </div>
-                    @endforeach
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-{{-- ═══════════════════════════════════════════════════════════════
      TESTIMONIAL (Kompak ala Marketplace / Review Premium)
      ═══════════════════════════════════════════════════════════════ --}}
 <section class="py-16 md:py-24 px-4 md:px-8 xl:px-24 bg-[#FDFCFB] relative overflow-hidden font-inter">
@@ -813,17 +630,14 @@ $reservedKavlings = $reservedKavlings ?? [];
 
         </div>
 
-        <div data-aos="fade-up" class="mt-12 text-center">
-            <button class="bg-white border border-slate-200 text-slate-700 font-bold px-8 py-3.5 rounded-full text-xs uppercase tracking-widest hover:bg-slate-50 hover:text-slate-900 transition-colors shadow-sm btn-press">
-                Lihat Semua Ulasan
-            </button>
-        </div>
 
     </div>
 </section>
+
 {{-- ═══════════════════════════════════════════════════════════════
      PROSES PEMESANAN
      ═══════════════════════════════════════════════════════════════ --}}
+
 <section class="py-16 md:py-24 px-4 md:px-8 xl:px-24 bg-white">
     <div class="max-w-7xl mx-auto">
         <div class="text-center mb-10 md:mb-16">
@@ -868,6 +682,7 @@ $reservedKavlings = $reservedKavlings ?? [];
 {{-- ═══════════════════════════════════════════════════════════════
      FAQ
      ═══════════════════════════════════════════════════════════════ --}}
+     
 <section class="py-16 md:py-24 px-4 md:px-8 xl:px-24 bg-gray-50">
     <div class="max-w-4xl mx-auto">
         <div class="text-center mb-10 md:mb-14">

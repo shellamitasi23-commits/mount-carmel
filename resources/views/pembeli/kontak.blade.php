@@ -27,9 +27,9 @@
             <p class="text-gray-400 text-xs mb-3">Tersedia 24 jam, 7 hari</p>
             <a href="tel:+628111234567"
                class="font-bold text-gray-900 hover:text-green-600 transition-colors text-sm block mb-1">
-                +62 811 1234 567
+                085134910195
             </a>
-            <a href="https://wa.me/628111234567" target="_blank"
+            <a href="https://wa.me/085134910195" target="_blank"
                class="inline-flex items-center gap-1.5 mt-2 px-4 py-2 bg-green-50 text-green-700 rounded-xl text-xs font-bold hover:bg-green-100 transition-colors">
                 <span class="material-icons text-sm">chat</span> Chat WhatsApp
             </a>
@@ -187,7 +187,7 @@
                 <div class="p-5 border-t border-gray-50">
                     <p class="text-sm text-gray-600 font-medium">Jl. Raya Cirebon – Bandung Km. 12</p>
                     <p class="text-xs text-gray-400 mt-0.5">Jawa Barat, Indonesia</p>
-                    <a href="https://maps.google.com/?q=Jl.+Raya+Cirebon+Bandung+Km.12+Jawa+Barat" target="_blank"
+                    <a href="https://maps.app.goo.gl/1Fo5UK7722utuz2aA" target="_blank"
                        class="inline-flex items-center gap-1.5 mt-3 text-xs font-bold text-gray-500 hover:text-gray-900 transition-colors">
                         <span class="material-icons text-sm">open_in_new</span> Buka di Google Maps
                     </a>
