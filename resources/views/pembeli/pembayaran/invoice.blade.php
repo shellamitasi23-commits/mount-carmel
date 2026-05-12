@@ -308,7 +308,7 @@
             <div class="info-text">
                 <strong>No. Kavling: {{ $pembayaran->reservasi?->kavling?->nomor_kavling ?? '-' }}</strong>
                 {{ $pembayaran->reservasi?->kavling?->cluster?->nama_cluster ?? '-' }}<br>
-                Tipe {{ $pembayaran->reservasi?->kavling?->tipe_kavling ?? '-' }}<br>
+                Lahan {{ $pembayaran->reservasi?->kavling?->tipe_kavling ?? '-' }}<br>
                 Ukuran {{ $pembayaran->reservasi?->kavling?->ukuran ?? '-' }} 
                 (Max. {{ $pembayaran->reservasi?->kavling?->kapasitas ?? '-' }} org)
             </div>

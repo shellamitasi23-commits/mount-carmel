@@ -1,5 +1,7 @@
 @extends('layouts.master')
-@section('title', 'Tipe Kavling — {{ $cluster->nama_cluster }}')
+@section('title')
+Lahan Kavling — {{ $cluster->nama_cluster }}
+@endsection
 
 @section('content')
 <div class="min-h-screen bg-[#F3F4F6] pt-28 pb-20">
@@ -26,7 +28,7 @@
                 </span>
             </div>
             <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-1">{{ $cluster->nama_cluster }}</h1>
-            <p class="text-gray-500 text-sm">{{ $cluster->deskripsi ?? 'Pilih tipe kavling yang sesuai.' }}</p>
+            <p class="text-gray-500 text-sm">{{ $cluster->deskripsi ?? 'Pilih lahan yang sesuai.' }}</p>
         </div>
 
         {{-- Pilih Cluster Lain --}}
@@ -58,11 +60,11 @@
         @endif
     </div>
 
-    {{-- Tipe Kavling Cards --}}
+    {{-- Tipe Lahan Cards --}}
     @if($tipeKavlings->isEmpty())
     <div class="py-20 text-center bg-white rounded-2xl border border-gray-100 shadow-sm">
         <span class="material-icons text-5xl text-gray-200 block mb-3">inventory_2</span>
-        <h3 class="text-lg font-bold text-gray-400 mb-1">Tidak Ada Kavling Tersedia</h3>
+        <h3 class="text-lg font-bold text-gray-400 mb-1">Tidak Ada Lahan Tersedia</h3>
         <p class="text-sm text-gray-400">Semua kavling di cluster ini sudah terisi.</p>
         <a href="{{ route('cluster.index') }}" class="inline-flex items-center gap-2 mt-4 text-sm font-semibold text-gray-500 hover:text-gray-900 transition-colors">
             <span class="material-icons text-sm">arrow_back</span> Kembali ke Cluster
@@ -72,7 +74,7 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
         @foreach($tipeKavlings as $i => $tipe)
 
-        {{-- Klik card tipe → ke halaman nomor kavling --}}
+        {{-- Klik card tipe → ke halaman Nomor Lahan --}}
         <a href="{{ route('pembeli.kavling.nomor', ['cluster_id' => $cluster->id, 'tipe_kavling' => $tipe['tipe_kavling']]) }}"
            class="group bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
            data-aos="fade-up" data-aos-delay="{{ ($i % 3) * 80 }}">
@@ -114,8 +116,16 @@
 
                 <div class="flex items-center justify-between pt-4 border-t border-gray-50">
                     <div>
-                        <p class="text-[10px] text-gray-400 font-semibold uppercase tracking-wider">Harga mulai</p>
-                        <p class="font-bold text-gray-900 text-sm">Rp {{ number_format($tipe['harga_min'],0,',','.') }}</p>
+                        <p class="text-[10px] text-gray-400 font-semibold uppercase tracking-wider">
+                            {{ $tipe['harga_min'] !== $tipe['harga_max'] ? 'Rentang Harga' : 'Harga' }}
+                        </p>
+                        <p class="font-bold text-gray-900 text-sm">
+                            @if($tipe['harga_min'] !== $tipe['harga_max'])
+                                Rp {{ number_format($tipe['harga_min'],0,',','.') }} - Rp {{ number_format($tipe['harga_max'],0,',','.') }}
+                            @else
+                                Rp {{ number_format($tipe['harga_min'],0,',','.') }}
+                            @endif
+                        </p>
                     </div>
                     <div class="w-9 h-9 bg-gray-900 rounded-full flex items-center justify-center group-hover:bg-amber-500 transition-colors">
                         <span class="material-icons text-white text-sm">arrow_forward</span>

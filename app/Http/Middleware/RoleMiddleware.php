@@ -19,12 +19,16 @@ class RoleMiddleware
         // Cek apakah role user di database sesuai dengan role di Route
         if (Auth::user()->role !== $role) {
             // Jika salah masuk kamar, tendang ke dashboard masing-masing
-            if (Auth::user()->role === 'admin') {
-                return redirect()->route('admin.dashboard');
-            } elseif (Auth::user()->role === 'pimpinan') {
-                return redirect()->route('pimpinan.dashboard');
+            if (Auth::user()->role === 'marketing') {
+                return redirect()->route('marketing.dashboard');
+            } elseif (Auth::user()->role === 'manajer') {
+                return redirect()->route('manajer.dashboard');
+            } elseif (Auth::user()->role === 'accounting') {
+                return redirect()->route('accounting.dashboard');
+            } elseif (Auth::user()->role === 'koordinator_lapangan') {
+                return redirect()->route('koordinator_lapangan.dashboard');
             } else {
-                return redirect()->route('pembeli.dashboard');
+                return redirect()->route('home');
             }
         }
 

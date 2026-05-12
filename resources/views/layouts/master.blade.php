@@ -61,13 +61,6 @@
     @include('partials.footer')
 
     <script>
-        AOS.init({
-            duration: 800,
-            once: true,
-            offset: 100,
-            easing: 'ease-out-cubic',
-        });
-
         // Mobile Menu Script
         const navToggle = document.getElementById('nav-toggle');
         const mobileMenu = document.getElementById('mobile-menu');

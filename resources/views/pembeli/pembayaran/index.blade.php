@@ -12,7 +12,7 @@
         </div>
         <a href="{{ route('cluster.index') }}"
            class="btn-press btn-ripple inline-flex items-center gap-2 px-5 py-2.5 bg-gray-900 text-white rounded-xl text-sm font-bold hover:bg-gray-800 transition-colors shadow-md">
-            <span class="material-icons text-sm">add</span> Pesan Kavling Baru
+            <span class="material-icons text-sm">add</span> Pesan Lahan Baru
         </a>
     </div>
 
@@ -39,7 +39,7 @@
             @foreach($reservasiSiapBayar as $res)
             <div class="bg-amber-50 border border-amber-200 rounded-2xl p-5 flex flex-col sm:flex-row sm:items-center gap-4">
                 <div class="flex-grow">
-                    <p class="font-bold text-gray-900">Kavling #{{ $res->kavling->nomor_kavling }}</p>
+                    <p class="font-bold text-gray-900">lahan #{{ $res->kavling->nomor_kavling }}</p>
                     <p class="text-xs text-gray-500 mt-0.5">{{ $res->kavling->cluster->nama_cluster }} &middot; {{ $res->kavling->tipe_kavling }}</p>
                     @if($res->nama_jenazah)
                     <p class="text-xs text-gray-500">Alm. {{ $res->nama_jenazah }}</p>
@@ -106,7 +106,7 @@
                             </span>
                         </div>
                         <p class="text-xs text-gray-500">
-                            Kavling #{{ $bayar->reservasi->kavling->nomor_kavling }} &middot;
+                            lahan #{{ $bayar->reservasi->kavling->nomor_kavling }} &middot;
                             {{ $bayar->reservasi->kavling->cluster->nama_cluster }}
                             @if($bayar->nama_bank)
                             &middot; Transfer via {{ $bayar->nama_bank }}

@@ -143,7 +143,7 @@
 
                         {{-- Info --}}
                         <h3 class="text-xl font-black text-slate-900 mb-1">
-                            Kavling #{{ $s->kavling->nomor_kavling }}
+                            lahan #{{ $s->kavling->nomor_kavling }}
                         </h3>
                         <p class="text-xs text-slate-400 mb-1">{{ $s->kavling->cluster->nama_cluster ?? '-' }} &middot; {{ $s->kavling->tipe_kavling }}</p>
                         @if($s->nama_jenazah)

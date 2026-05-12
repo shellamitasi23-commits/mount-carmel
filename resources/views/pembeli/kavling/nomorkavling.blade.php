@@ -1,5 +1,7 @@
 @extends('layouts.master')
-@section('title', 'Pilih Nomor Kavling — {{ $sample?->tipe_kavling ?? "N/A" }}')
+@section('title')
+Pilih Nomor Lahan — {{ $sample?->tipe_kavling ?? 'N/A' }}
+@endsection
 
 @section('content')
 <style>
@@ -95,9 +97,9 @@
                         {{ $cluster->nama_cluster }}
                     </span>
                 </div>
-                <h1 class="text-3xl font-bold text-gray-900 mb-1">Pilih Nomor Kavling</h1>
+                <h1 class="text-3xl font-bold text-gray-900 mb-1">Pilih Nomor Lahan</h1>
                 <p class="text-gray-500 text-sm">
-                    Tipe <span class="font-semibold text-gray-700">{{ $sample?->tipe_kavling ?? 'N/A' }}</span> —
+                    Lahan <span class="font-semibold text-gray-700">{{ $sample?->tipe_kavling ?? 'N/A' }}</span> —
                     {{ collect($kavlings)->where('status','Tersedia')->count() }} unit tersedia dari {{ collect($kavlings)->count() }} total
                 </p>
             </div>
@@ -179,7 +181,7 @@
                 <div x-show="selected === null"
                      class="mt-5 bg-white border-2 border-dashed border-gray-200 rounded-2xl p-5 text-center text-gray-400">
                     <span class="material-icons text-2xl text-gray-200 block mb-1">touch_app</span>
-                    <p class="text-sm font-medium">Klik nomor kavling hijau untuk memilih</p>
+                    <p class="text-sm font-medium">Klik Nomor Lahan hijau untuk memilih</p>
                     <p class="text-xs mt-1">Kavling abu-abu sudah dipesan / terjual</p>
                 </div>
 
@@ -189,7 +191,7 @@
         {{-- KANAN: Info Tipe --}}
         <div class="lg:w-72 shrink-0" data-aos="fade-left">
             <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 sticky top-28">
-                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-4">Info Tipe Kavling</p>
+                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-4">Info Lahan Kavling</p>
 
                 @php
                     preg_match('/(\d+(?:\.\d+)?)\s*[mx×x]\s*(\d+(?:\.\d+)?)/i', $sample?->ukuran ?? '4x3', $dim);
@@ -217,7 +219,7 @@
                     </svg>
                 </div>
 
-                <h3 class="font-bold text-gray-900 text-lg mb-4">Tipe {{ $sample?->tipe_kavling ?? 'N/A' }}</h3>
+                <h3 class="font-bold text-gray-900 text-lg mb-4">Lahan {{ $sample?->tipe_kavling ?? 'N/A' }}</h3>
 
                 <div class="space-y-2.5 text-sm mb-5">
                     <div class="flex justify-between">
@@ -245,7 +247,7 @@
                 <div class="pt-4 border-t border-gray-50">
                     <a href="{{ route('pembeli.kavling.index', ['cluster_id' => $cluster->id]) }}"
                        class="text-sm text-gray-400 hover:text-gray-700 flex items-center gap-1.5 transition-colors">
-                        <span class="material-icons text-sm">arrow_back</span> Ganti tipe kavling
+                        <span class="material-icons text-sm">arrow_back</span> Ganti lahan
                     </a>
                 </div>
             </div>

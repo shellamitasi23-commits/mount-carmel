@@ -70,11 +70,15 @@ class ReservasiController extends Controller
             'tanggal_dimakamkan' => 'nullable|date|after_or_equal:today|required_if:jenis_reservasi,at-need',
             'alamat_pemesan' => 'required|string',
             'dokumen_ktp' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048',
+            'tenor_cicilan' => 'required|integer|min:1|max:24',
+            'kontak_kerabat' => 'nullable|string|max:255',
         ], [
             'nama_jenazah.required_if' => 'Nama jenazah wajib diisi untuk pemesanan langsung.',
             'tanggal_dimakamkan.required_if' => 'Tanggal dimakamkan wajib diisi untuk pemesanan langsung.',
             'alamat_pemesan.required' => 'Alamat pemesan wajib diisi.',
             'dokumen_ktp.required' => 'Dokumen KTP wajib diunggah.',
+            'tenor_cicilan.required' => 'Tenor cicilan wajib dipilih.',
+            'tenor_cicilan.max' => 'Tenor cicilan maksimal 24 bulan.',
         ]);
 
         // Cek ulang kavling masih tersedia (cegah race condition)
@@ -82,6 +86,10 @@ class ReservasiController extends Controller
         if ($kavling->status !== 'Tersedia') {
             return back()->with('error', 'Maaf, kavling ini baru saja dipesan orang lain. Silakan pilih nomor lain.');
         }
+
+        // Hitung biaya
+        $biayaPenuh = $kavling->harga ?? 10000000; // Asumsi default jika tidak ada
+        $biayaReservasi = $biayaPenuh * 0.2; // 20% DP
 
         // Upload KTP
         $ktpPath = $request->file('dokumen_ktp')->store('dokumen_reservasi', 'public');
@@ -97,6 +105,11 @@ class ReservasiController extends Controller
             'dokumen_ktp' => $ktpPath,
             'status_reservasi' => 'Menunggu Validasi',
             'status_pembayaran' => 'Belum Bayar',
+            'jenis_pembayaran' => 'cicilan',
+            'tenor_cicilan' => $request->tenor_cicilan,
+            'biaya_reservasi' => $biayaReservasi,
+            'biaya_penuh' => $biayaPenuh,
+            'kontak_kerabat' => $request->kontak_kerabat,
         ]);
 
         // Kunci kavling agar tidak bisa dipesan orang lain
@@ -105,6 +118,6 @@ class ReservasiController extends Controller
         // Redirect ke form pembayaran
         return redirect()
             ->route('pembeli.pembayaran.create', ['reservasi_id' => $reservasi->id])
-            ->with('success', 'Reservasi berhasil dibuat! Silakan lanjutkan pembayaran.');
+            ->with('success', 'Reservasi berhasil dibuat! Silakan lanjutkan pembayaran DP.');
     }
 }

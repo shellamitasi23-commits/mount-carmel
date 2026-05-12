@@ -80,12 +80,15 @@ $reservedKavlings = $reservedKavlings ?? [];
         </h4>
         
         <div data-aos="zoom-in" data-aos-delay="200" data-aos-duration="1000" class="relative w-full h-[300px] sm:h-[400px] md:h-[500px] rounded-2xl md:rounded-[2rem] overflow-hidden shadow-2xl group">
-            <img alt="Pemandangan indah pemakaman" class="w-full h-full object-cover object-center transform transition-transform duration-700 group-hover:scale-105"
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuC1NyIlZmBiYtT_kIu9sIln0H_-6RueC2Hhc_d6kZXH1IScjujHYPs6awIbu5dRMlY6nh3OHS1NSyx_fBcV7oOIg267GAnn0m7Dmy2SYQtQcbdLRfesZdEgbtNBETqCuWIVnqGkcdMwWMXj_pXaa-9yAZFgRqIMFAYsbtXSydiAp8yeFKTcA-sa0Emlh4YOvMdCaPtYTaF9zS1c7aKDxKlmU_zIPST46YbjjlfflaEwp9vViTnYZ990e-nAoVM2fkKAhJwzbhau-yI" />
+    
+    <video autoplay loop muted playsinline class="w-full h-full object-cover object-center transform transition-transform duration-700 group-hover:scale-105">
+        <source src="{{ asset('storage/assets/Profile-MC.mp4') }}" type="video/mp4" />
+        Browser Anda tidak mendukung pemutaran video.
+    </video>
             
             {{-- Floating cards: hanya tampil di md ke atas --}}
             <div data-aos="fade-right" data-aos-delay="500" class="hero-float-card absolute bottom-8 left-8 bg-white/90 backdrop-blur-md p-6 rounded-2xl shadow-lg max-w-sm transition-transform hover:-translate-y-2 cursor-pointer btn-press">
-                <img alt="Pratinjau cluster" class="w-full h-40 object-cover rounded-xl mb-4" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCKKlS1j_Zt3H2_tLdwUcZy3qankghtW1i1Z_CwZctvMaNAB6rj9WvYrHL3jwoPljnQjbwgX-wOB61mlkFoHUxqt_S0zV7NoHPF5t1gTcZ2wb4P0HKv7ripuN0rO5W71tkzxVnzxIqaQ7Dc8p0S0QKYT3crM1aj8H3wq0lQGPx-n4dJSc0DoENon9u9Nc60JG6ou2rOUQ8pD9s7UXqTxyMGomfOJ1FK5F3h_NAMcq3XGhEcG-GAfKcf3n8lzikz-kwhBLb0QNuLmLc" />
+                <img alt="Pratinjau cluster" class="w-full h-40 object-cover rounded-xl mb-4" src="/storage/assets/cluster-hero.jpg" />
                 <div class="flex justify-between items-center">
                     <span class="font-semibold text-gray-900">Lihat Semua Cluster</span>
                     <span class="material-icons text-gray-500">arrow_forward</span>
@@ -93,7 +96,7 @@ $reservedKavlings = $reservedKavlings ?? [];
             </div>
             
             <div data-aos="fade-left" data-aos-delay="700" class="hero-float-card absolute bottom-32 right-8 bg-white/90 backdrop-blur-md p-6 rounded-2xl shadow-lg max-w-sm transition-transform hover:-translate-y-2 cursor-pointer btn-press">
-                <img alt="Pratinjau layanan" class="w-full h-40 object-cover rounded-xl mb-4" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDOy1Fohlq_qivWE2tkM433deJqLAQ3UogU5-WSqG19mRZNu9OmlEuPQ1U06tbq0gdMbF0Ck-PAYzTBMlskj5DAkT-uNDwHpskU1Dl1eoUeygiIidyS5eeHLFpz0zt2d1TIfYlbxRLfJx1o_DXE7pH0PxPeyGigVt9a_ryqk2-e_iNR8oUYCQxyFMTCES7kBIrLIOpYtrlVK4vi9pO0ZbGqRBYIW7YG7GGQuf_tf8GP3pXp_wb8cb0_x4OhwB-nGxmxFINL8LCrYYQ" />
+                <img alt="Pratinjau layanan" class="w-full h-40 object-cover rounded-xl mb-4" src="/storage/assets/Marketing.jpg" />
                 <div class="flex justify-between items-center">
                     <span class="font-semibold text-gray-900">Layanan Kami</span>
                     <span class="material-icons text-gray-500">arrow_forward</span>
@@ -133,7 +136,7 @@ $reservedKavlings = $reservedKavlings ?? [];
             $stats = [
                 ['value' => '2.500+', 'label' => 'Keluarga Dipercayakan', 'accent' => 'text-emerald-600'],
                 ['value' => '15+',    'label' => 'Tahun Pengalaman',      'accent' => 'text-blue-600'],
-                ['value' => '4',      'label' => 'Cluster Tersedia',      'accent' => 'text-amber-600'],
+                ['value' => '2',      'label' => 'Cluster Tersedia',      'accent' => 'text-amber-600'],
                 ['value' => '98%',    'label' => 'Kepuasan Keluarga',     'accent' => 'text-rose-600'],
             ];
             @endphp
@@ -495,51 +498,7 @@ $reservedKavlings = $reservedKavlings ?? [];
 </section>
 
 {{-- ═══════════════════════════════════════════════════════════════
-     KEUNGGULAN / FASILITAS
-     ═══════════════════════════════════════════════════════════════ --}}
-<section class="py-16 md:py-24 px-4 md:px-8 xl:px-24 bg-white">
-    <div class="max-w-7xl mx-auto">
-        <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 md:mb-16 gap-6">
-            <div>
-                <span data-aos="fade-up" class="text-primary font-bold tracking-widest uppercase text-xs">Mengapa Kami</span>
-                <h2 data-aos="fade-up" data-aos-delay="100" class="text-3xl md:text-5xl font-bold mt-2 leading-tight max-w-md">Standar Perawatan yang Tak Tertandingi</h2>
-            </div>
-            <p data-aos="fade-up" data-aos-delay="200" class="text-gray-500 max-w-sm text-sm leading-relaxed md:text-right">
-                Setiap detail dirancang untuk memberikan ketenangan bagi keluarga yang Anda kasihi.
-            </p>
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-            @php
-            $features = [
-                ['icon' => 'security',        'title' => 'Keamanan 24 Jam',         'desc' => 'Sistem CCTV terintegrasi dan petugas keamanan berjaga sepanjang waktu tanpa henti.'],
-                ['icon' => 'mosque',          'title' => 'Fasilitas Ibadah',         'desc' => 'Mushola internal dan area wudu tersedia di dalam kawasan untuk kemudahan beribadah.'],
-                ['icon' => 'nature',          'title' => 'Taman Hijau Terawat',      'desc' => 'Tim hortikultura profesional merawat setiap tanaman dan lanskap setiap hari.'],
-                ['icon' => 'gavel',           'title' => 'Legalitas Lengkap',        'desc' => 'Sertifikat kavling resmi dan dokumen legal yang transparan dan dapat diverifikasi.'],
-                ['icon' => 'local_parking',   'title' => 'Parkir Luas',              'desc' => 'Area parkir yang memadai untuk ratusan kendaraan keluarga yang berkunjung.'],
-                ['icon' => 'support_agent',   'title' => 'Layanan Keluarga',         'desc' => 'Tim konsultan siap mendampingi seluruh proses dari pemilihan hingga selesai.'],
-            ];
-            @endphp
-
-            @foreach($features as $i => $f)
-            <div data-aos="fade-up" data-aos-delay="{{ ($i % 3) * 100 }}"
-                 class="group p-5 md:p-7 rounded-3xl border border-gray-100 hover:border-primary/30 hover:shadow-xl transition-all duration-500 hover:-translate-y-1 bg-white relative overflow-hidden">
-                <div class="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl"></div>
-                <div class="relative z-10">
-                    <div class="w-10 h-10 md:w-12 md:h-12 rounded-2xl bg-gray-100 flex items-center justify-center mb-4 md:mb-5 group-hover:bg-primary/10 transition-colors">
-                        <span class="material-icons text-gray-600 group-hover:text-primary transition-colors">{{ $f['icon'] }}</span>
-                    </div>
-                    <h3 class="font-bold text-gray-900 text-base md:text-lg mb-2">{{ $f['title'] }}</h3>
-                    <p class="text-sm text-gray-500 leading-relaxed">{{ $f['desc'] }}</p>
-                </div>
-            </div>
-            @endforeach
-        </div>
-    </div>
-</section>
-
-{{-- ═══════════════════════════════════════════════════════════════
-     TESTIMONIAL (Kompak ala Marketplace / Review Premium)
+     TESTIMONIAL 
      ═══════════════════════════════════════════════════════════════ --}}
 <section class="py-16 md:py-24 px-4 md:px-8 xl:px-24 bg-[#FDFCFB] relative overflow-hidden font-inter">
     
@@ -654,7 +613,7 @@ $reservedKavlings = $reservedKavlings ?? [];
                     ['no' => '01', 'icon' => 'search',       'title' => 'Pilih Cluster',      'desc' => 'Jelajahi pilihan cluster Muslim atau Non-Muslim dan temukan yang sesuai.'],
                     ['no' => '02', 'icon' => 'edit_note',    'title' => 'Isi Formulir',       'desc' => 'Lengkapi data reservasi dan upload dokumen yang diperlukan secara online.'],
                     ['no' => '03', 'icon' => 'payments',     'title' => 'Lakukan Pembayaran', 'desc' => 'Pilih metode pembayaran yang nyaman dan kirim bukti transfer.'],
-                    ['no' => '04', 'icon' => 'verified',     'title' => 'Konfirmasi Resmi',   'desc' => 'Dapatkan sertifikat dan nomor kavling resmi atas nama keluarga Anda.'],
+                    ['no' => '04', 'icon' => 'verified',     'title' => 'Konfirmasi Resmi',   'desc' => 'Dapatkan sertifikat dan Nomor Lahan resmi atas nama keluarga Anda.'],
                 ];
                 @endphp
                 @foreach($steps as $i => $step)
@@ -698,7 +657,7 @@ $reservedKavlings = $reservedKavlings ?? [];
              'a' => 'Cluster Muslim dirancang dengan orientasi kiblat terverifikasi, fasilitas mushola internal, dan tata cara pemakaman sesuai syariat Islam. Cluster Non-Muslim memiliki desain yang lebih umum dan dapat digunakan oleh berbagai kepercayaan.'],
             ['q' => 'Apakah ada biaya perawatan tahunan?',
              'a' => 'Ya, terdapat biaya perawatan tahunan yang mencakup kebersihan area, perawatan tanaman, dan penerangan. Biaya ini sangat terjangkau dan dapat dibayarkan sekaligus untuk beberapa tahun ke depan.'],
-            ['q' => 'Bagaimana dengan legalitas dan sertifikat kavling?',
+            ['q' => 'Bagaimana dengan legalitas dan Sertifikat Lahan?',
              'a' => 'Setiap kavling dilengkapi dengan sertifikat resmi dan dokumen legal yang transparan. Kami bekerja sama dengan notaris terpercaya untuk memastikan seluruh proses kepemilikan berjalan dengan benar.'],
             ['q' => 'Bisakah kavling dijual atau dipindahtangankan?',
              'a' => 'Kavling dapat dipindahtangankan kepada anggota keluarga inti. Proses pemindahan kepemilikan dilakukan melalui tim administrasi kami dengan prosedur yang jelas dan transparan.'],

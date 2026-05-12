@@ -23,7 +23,7 @@
     {{-- Progress --}}
     <div class="flex items-center mb-10" data-aos="fade-down" data-aos-delay="50">
         @foreach([
-            ['label'=>'Pilih Tipe','done'=>true,'active'=>false],
+            ['label'=>'Pilih Lahan','done'=>true,'active'=>false],
             ['label'=>'Pilih Nomor','done'=>true,'active'=>false],
             ['label'=>'Isi Data','done'=>false,'active'=>true],
             ['label'=>'Pembayaran','done'=>false,'active'=>false],
@@ -69,7 +69,7 @@
         <div class="flex-1" data-aos="fade-up">
             <div class="mb-6">
                 <h1 class="text-3xl font-bold text-gray-900 mb-1">Isi Data Reservasi</h1>
-                <p class="text-gray-500 text-sm">Lengkapi data sesuai dokumen resmi. Semua data tercatat di sertifikat kavling.</p>
+                <p class="text-gray-500 text-sm">Lengkapi data sesuai dokumen resmi. Semua data tercatat di Sertifikat Lahan.</p>
             </div>
 
             <form action="{{ route('pembeli.reservasi.store') }}" method="POST" enctype="multipart/form-data"
@@ -158,23 +158,30 @@
                     <p class="text-xs text-gray-400 mt-1">Otomatis diisi dari profil, bisa diubah.</p>
                 </div>
 
-                {{-- Upload KTP --}}
+                {{-- Tenor Cicilan --}}
                 <div>
                     <label class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">
-                        Dokumen KTP Pemesan <span class="text-red-400">*</span>
+                        Tenor Cicilan <span class="text-red-400">*</span>
                     </label>
-                    <div class="border-2 border-dashed border-gray-200 rounded-xl bg-gray-50 hover:border-gray-400 transition-colors">
-                        <label class="flex flex-col items-center justify-center p-5 cursor-pointer">
-                            <span class="material-icons text-3xl text-gray-300 mb-2">upload_file</span>
-                            <span class="text-sm font-semibold text-gray-500 mb-1">Klik untuk upload KTP</span>
-                            <span class="text-xs text-gray-400">JPG, PNG, PDF — Maks. 2MB</span>
-                            <input type="file" name="dokumen_ktp" class="hidden" accept=".jpg,.jpeg,.png,.pdf" required
-                                onchange="document.getElementById('ktp-nama').textContent = this.files[0]?.name || 'Belum ada file'">
-                        </label>
-                        <div class="pb-3 text-center">
-                            <span id="ktp-nama" class="text-xs text-gray-400 font-medium">Belum ada file dipilih</span>
-                        </div>
-                    </div>
+                    <select name="tenor_cicilan" required
+                        class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-800 outline-none focus:border-gray-900 focus:ring-2 focus:ring-gray-900/10 transition-all">
+                        <option value="">Pilih Tenor</option>
+                        @for($i = 1; $i <= 24; $i++)
+                        <option value="{{ $i }}" {{ old('tenor_cicilan') == $i ? 'selected' : '' }}>{{ $i }} Bulan</option>
+                        @endfor
+                    </select>
+                    <p class="text-xs text-gray-400 mt-1">Maksimal 24 bulan. DP 20% dari Harga Lahan.</p>
+                </div>
+
+                {{-- Kontak Kerabat --}}
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">
+                        Kontak Kerabat (Opsional)
+                    </label>
+                    <input type="text" name="kontak_kerabat" value="{{ old('kontak_kerabat') }}"
+                        placeholder="No. HP atau email kerabat jenazah"
+                        class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-800 outline-none focus:border-gray-900 focus:ring-2 focus:ring-gray-900/10 transition-all placeholder:text-gray-400">
+                    <p class="text-xs text-gray-400 mt-1">Untuk notifikasi jika cicilan belum lunas saat at-need.</p>
                 </div>
 
                 {{-- Tombol --}}
@@ -201,7 +208,7 @@
                 </div>
                 <div class="space-y-2.5 text-sm mb-5">
                     <div class="flex justify-between"><span class="text-gray-400">Cluster</span><span class="font-semibold text-gray-800 text-right max-w-[150px] leading-tight">{{ $kavling->cluster->nama_cluster }}</span></div>
-                    <div class="flex justify-between"><span class="text-gray-400">Tipe</span><span class="font-semibold text-gray-800">{{ $kavling->tipe_kavling }}</span></div>
+                    <div class="flex justify-between"><span class="text-gray-400">Lahan</span><span class="font-semibold text-gray-800">{{ $kavling->tipe_kavling }}</span></div>
                     <div class="flex justify-between"><span class="text-gray-400">Ukuran</span><span class="font-semibold text-gray-800">{{ $kavling->ukuran }}</span></div>
                     <div class="flex justify-between"><span class="text-gray-400">Kapasitas</span><span class="font-semibold text-gray-800">{{ $kavling->kapasitas }} orang</span></div>
                 </div>

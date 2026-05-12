@@ -6,5 +6,5 @@
         <span class="font-bold text-lg text-primary">Mount Carmel</span>
     </div>
     
-    <img src="https://ui-avatars.com/api/?name=Admin&background=1e1b4b&color=fff" alt="Admin" class="w-8 h-8 rounded-full">
+    <img src="https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->name) }}&background=0f172a&color=fff" alt="{{ auth()->user()->name }}" class="w-8 h-8 rounded-full">
 </header>

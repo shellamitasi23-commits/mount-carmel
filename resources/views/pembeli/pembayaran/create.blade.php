@@ -148,7 +148,7 @@
                     <p class="text-xs text-gray-500 mt-0.5">{{ $reservasi->kavling->cluster->nama_cluster }}</p>
                 </div>
                 <div class="space-y-2.5 text-sm mb-4">
-                    <div class="flex justify-between"><span class="text-gray-400">Tipe</span><span class="font-semibold text-gray-800">{{ $reservasi->kavling->tipe_kavling }}</span></div>
+                    <div class="flex justify-between"><span class="text-gray-400">Lahan</span><span class="font-semibold text-gray-800">{{ $reservasi->kavling->tipe_kavling }}</span></div>
                     <div class="flex justify-between"><span class="text-gray-400">Ukuran</span><span class="font-semibold text-gray-800">{{ $reservasi->kavling->ukuran }}</span></div>
                     <div class="flex justify-between">
                         <span class="text-gray-400">Jenazah</span>

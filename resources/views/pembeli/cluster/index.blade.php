@@ -10,7 +10,7 @@
             <span data-aos="fade-up" class="text-primary font-bold tracking-widest uppercase text-xs">Pilihan Kami</span>
             <h1 data-aos="fade-up" data-aos-delay="100" class="text-5xl md:text-6xl font-bold mt-2 leading-tight">Daftar Cluster</h1>
             <p data-aos="fade-up" data-aos-delay="200" class="text-gray-500 dark:text-gray-400 mt-4 max-w-xl text-base leading-relaxed">
-                Temukan cluster yang sesuai untuk ketenangan keluarga Anda. Tersedia pilihan Muslim dan Non-Muslim dengan berbagai tipe kavling.
+                Temukan cluster yang sesuai untuk ketenangan keluarga Anda. Tersedia pilihan Muslim dan Non-Muslim dengan berbagai Tipe Lahan.
             </p>
         </div>
     </div>
@@ -101,10 +101,10 @@
                             {{ $cluster->deskripsi ?? 'Kawasan pemakaman eksklusif dengan lingkungan asri dan fasilitas lengkap.' }}
                         </p>
 
-                        {{-- Tipe Kavling --}}
+                        {{-- Tipe Lahan --}}
                         @if($tipeKavling->isNotEmpty())
                         <div class="mb-5">
-                            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Tipe Kavling</p>
+                            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Tipe Lahan</p>
                             <div class="flex flex-wrap gap-1.5">
                                 @foreach($tipeKavling->take(4) as $tipe)
                                 <span class="px-2.5 py-1 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 rounded-lg text-[11px] font-semibold">
@@ -145,7 +145,7 @@
                            class="btn-press btn-ripple flex items-center justify-between px-5 py-3 rounded-xl
                                bg-gray-900 dark:bg-white text-white dark:text-gray-900 hover:bg-gray-800
                                transition-colors font-semibold text-sm">
-                            Pilih Tipe Kavling
+                            Pilih Tipe Lahan
                             <span class="material-icons text-base">arrow_forward</span>
                         </a>
                         @else

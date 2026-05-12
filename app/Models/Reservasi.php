@@ -19,8 +19,15 @@ class Reservasi extends Model
         'status_reservasi',
         'status_pembayaran',
         'file_sertifikat',
-        'alamat_pemesan',        
-        'tanggal_dimakamkan',    
+        'alamat_pemesan',
+        'tanggal_dimakamkan',
+        'jenis_pembayaran',
+        'tenor_cicilan',
+        'biaya_reservasi',
+        'biaya_penuh',
+        'pembayar_akhir',
+        'catatan_kerabat',
+        'kontak_kerabat',
     ];
 
     /**

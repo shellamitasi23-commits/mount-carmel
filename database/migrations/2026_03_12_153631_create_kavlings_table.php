@@ -15,10 +15,10 @@ return new class extends Migration
             $table->id();
             $table->foreignId('cluster_id')->constrained('clusters')->onDelete('cascade');
             $table->string('nomor_kavling')->unique();
-            $table->string('tipe_kavling'); // cth: Fitrah, VIP
-            $table->string('ukuran'); // cth: 4m x 3m
-            $table->integer('kapasitas'); // cth: Max 2 orang
-            $table->decimal('harga', 15, 2); // Terintegrasi dengan fitur "Kelola Data Harga"
+            $table->string('tipe_kavling'); 
+            $table->string('ukuran'); 
+            $table->integer('kapasitas'); 
+            $table->decimal('harga', 15, 2); 
             $table->enum('status', ['Tersedia', 'Dipesan', 'Terjual'])->default('Tersedia');
             $table->timestamps();
         });

@@ -10,25 +10,43 @@ class AdminUserSeeder extends Seeder
 {
     public function run(): void
     {
-        // 1. Buat Akun Admin
         User::updateOrCreate(
-            ['email' => 'admin@mountcarmel.id'],
+            ['email' => 'manajer@mountcarmel.id'],
             [
-                'name' => 'Admin Mount Carmel',
-                'password' => Hash::make('admin123454'),
-                'role' => 'admin', 
-                'no_telepon' => '081234567890'
+                'name' => 'Manajer Mount Carmel',
+                'password' => Hash::make('manajer123'),
+                'role' => 'manajer',
+                'no_telepon' => '081234560002'
             ]
         );
 
-        // 2. Buat Akun Pimpinan 
         User::updateOrCreate(
-            ['email' => 'pimpinan@mountcarmel.id'],
+            ['email' => 'marketing@mountcarmel.id'],
             [
-                'name' => 'Pimpinan Mount Carmel',
-                'password' => Hash::make('pimpinan123'),
-                'role' => 'pimpinan', 
-                'no_telepon' => '081111222333'
+                'name' => 'Marketing Mount Carmel',
+                'password' => Hash::make('marketing123'),
+                'role' => 'marketing',
+                'no_telepon' => '081234560003'
+            ]
+        );
+
+        User::updateOrCreate(
+            ['email' => 'accounting@mountcarmel.id'],
+            [
+                'name' => 'Accounting Mount Carmel',
+                'password' => Hash::make('accounting123'),
+                'role' => 'accounting',
+                'no_telepon' => '081234560004'
+            ]
+        );
+
+        User::updateOrCreate(
+            ['email' => 'koordinator@mountcarmel.id'],
+            [
+                'name' => 'Koordinator Lapangan Mount Carmel',
+                'password' => Hash::make('koordinator123'),
+                'role' => 'koordinator_lapangan',
+                'no_telepon' => '081234560005'
             ]
         );
     }
