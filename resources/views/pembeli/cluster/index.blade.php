@@ -5,62 +5,64 @@
 <div class="pt-24 min-h-screen bg-white dark:bg-gray-950">
 
     {{-- Page Header --}}
-    <div class="px-8 xl:px-24 py-16 border-b border-gray-100 dark:border-gray-800">
+    <div class="px-8 xl:px-24 py-20 border-b border-gray-100 dark:border-gray-900">
         <div class="max-w-7xl mx-auto">
-            <span data-aos="fade-up" class="text-primary font-bold tracking-widest uppercase text-xs">Pilihan Kami</span>
-            <h1 data-aos="fade-up" data-aos-delay="100" class="text-5xl md:text-6xl font-bold mt-2 leading-tight">Daftar Cluster</h1>
-            <p data-aos="fade-up" data-aos-delay="200" class="text-gray-500 dark:text-gray-400 mt-4 max-w-xl text-base leading-relaxed">
-                Temukan cluster yang sesuai untuk ketenangan keluarga Anda. Tersedia pilihan Muslim dan Non-Muslim dengan berbagai Tipe Lahan.
+            <span data-aos="fade-up" class="text-primary font-bold tracking-[0.2em] uppercase text-[10px]">Eksklusivitas & Ketenangan</span>
+            <h1 data-aos="fade-up" data-aos-delay="100" class="text-6xl md:text-7xl font-bold mt-4 tracking-tighter leading-[0.9]">Daftar Cluster</h1>
+            <p data-aos="fade-up" data-aos-delay="200" class="text-gray-400 dark:text-gray-500 mt-6 max-w-2xl text-lg leading-relaxed font-light">
+                Kurasi kawasan pemakaman terbaik yang dirancang khusus untuk menghadirkan kedamaian abadi. Pilih antara kawasan Muslim dan Non-Muslim dengan berbagai spesifikasi lahan.
             </p>
         </div>
     </div>
 
     {{-- Filter Bar --}}
-    <div class="px-8 xl:px-24 py-6 bg-gray-50 dark:bg-gray-900 border-b border-gray-100 dark:border-gray-800"
+    <div class="px-8 xl:px-24 py-8 bg-white dark:bg-gray-950 sticky top-20 z-10 border-b border-gray-50 dark:border-gray-900"
          x-data="{ filter: 'semua' }">
-        <div class="max-w-7xl mx-auto flex flex-wrap items-center gap-3">
-            <span class="text-xs font-bold uppercase tracking-wider text-gray-400 mr-2">Filter:</span>
-
+        <div class="max-w-7xl mx-auto flex flex-wrap items-center gap-8">
             <button @click="filter = 'semua'"
-                    :class="filter === 'semua' ? 'bg-gray-900 dark:bg-white text-white dark:text-gray-900' : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-700'"
-                    class="px-5 py-2 rounded-full text-sm font-semibold transition-all">
-                Semua ({{ $clusters->count() }})
+                    :class="filter === 'semua' ? 'text-gray-900 dark:text-white border-b-2 border-primary' : 'text-gray-400 hover:text-gray-600'"
+                    class="pb-2 text-xs font-bold uppercase tracking-widest transition-all">
+                Semua Koleksi
             </button>
 
             <button @click="filter = 'Muslim'"
-                    :class="filter === 'Muslim' ? 'bg-gray-900 text-white' : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-700'"
-                    class="px-5 py-2 rounded-full text-sm font-semibold transition-all">
-                Cluster Muslim ({{ $clusters->where('kategori','Muslim')->count() }})
+                    :class="filter === 'Muslim' ? 'text-gray-900 dark:text-white border-b-2 border-primary' : 'text-gray-400 hover:text-gray-600'"
+                    class="pb-2 text-xs font-bold uppercase tracking-widest transition-all">
+                Kawasan Muslim
             </button>
 
             <button @click="filter = 'Non-Muslim'"
-                    :class="filter === 'Non-Muslim' ? 'bg-gray-900 text-white' : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-700'"
-                    class="px-5 py-2 rounded-full text-sm font-semibold transition-all">
-                Cluster Non-Muslim ({{ $clusters->where('kategori','Non-Muslim')->count() }})
+                    :class="filter === 'Non-Muslim' ? 'text-gray-900 dark:text-white border-b-2 border-primary' : 'text-gray-400 hover:text-gray-600'"
+                    class="pb-2 text-xs font-bold uppercase tracking-widest transition-all">
+                Kawasan Non-Muslim
             </button>
         </div>
     </div>
 
     {{-- Cluster Grid --}}
-    <div class="px-8 xl:px-24 py-16" x-data="{ filter: 'semua' }">
+    <div class="px-8 xl:px-24 py-20" x-data="{ filter: 'semua' }">
         <div class="max-w-7xl mx-auto">
 
             @if($clusters->isEmpty())
-            <div class="text-center py-24">
-                <span class="material-icons text-6xl text-gray-200 block mb-4">map</span>
-                <h3 class="text-xl font-bold text-gray-400 mb-2">Belum ada cluster tersedia</h3>
-                <p class="text-sm text-gray-400">Admin belum menambahkan data cluster.</p>
+            <div class="text-center py-32">
+                <h3 class="text-2xl font-light text-gray-300 mb-2 italic">Belum ada cluster yang dipublikasikan</h3>
+                <p class="text-sm text-gray-400 tracking-wide uppercase">Silakan hubungi administrator untuk informasi lebih lanjut.</p>
             </div>
             @else
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 lg:gap-16">
 
                 @foreach($clusters as $i => $cluster)
                 @php
-                    $totalKavling = $cluster->kavlings->count();
-                    $tersedia     = $cluster->kavlings->where('status','Tersedia')->count();
-                    $isMuslim     = $cluster->kategori === 'Muslim';
-                    $tipeKavling  = $cluster->kavlings->pluck('tipe_kavling')->unique()->values();
-                    $hargaMin     = $cluster->kavlings->min('harga');
+                    $lahans         = $cluster->lahans;
+                    $tersedia       = $lahans->where('status', 'Tersedia')->count();
+                    $isMuslim       = $cluster->kategori === 'Muslim';
+                    $tipeLahan      = $lahans->pluck('tipe_lahan')->unique()->values();
+                    
+                    // Hanya ambil harga terendah dari unit yang tersedia dan harga > 0
+                    $hargaMin       = $lahans->where('status', 'Tersedia')->where('harga', '>', 0)->min('harga');
+                    
+                    // Format harga untuk tampilan (misal: 25jt)
+                    $hargaDisplay   = $hargaMin ? number_format($hargaMin / 1000000, 0, ',', '.') . 'jt' : '—';
 
                     $img = $isMuslim
                         ? 'https://lh3.googleusercontent.com/aida-public/AB6AXuA6rqI9PeXcrrGEttejmy2Cel3avh8VDbuuLZ9znSeQ0Gw8_f3nDIPA5daXuk1lNSAm-tWxpJ6GMjkfk9Tp4ugchXR-TAxa51kf5RD--deEWZYCqfHqwdgP2haxZx3xe7cTs56uTS0TFSEdFgax5uGIbYCrGwAW6cxENUzjoD6JXr0AiwuyMq0RGnXuNAwZgLJIJ_7ohB4P4zHoRvO2BfqUnDNpU9LpoqSZub_tqXvtwDa3MXakwPvYeN3NT97N3pe77_3ygdwuIsc'
@@ -69,94 +71,78 @@
 
                 <div data-aos="fade-up" data-aos-delay="{{ ($i % 3) * 100 }}"
                      x-show="filter === 'semua' || filter === '{{ $cluster->kategori }}'"
-                     x-transition:enter="transition ease-out duration-300"
-                     x-transition:enter-start="opacity-0 translate-y-4"
+                     x-transition:enter="transition ease-out duration-500"
+                     x-transition:enter-start="opacity-0 translate-y-8"
                      x-transition:enter-end="opacity-100 translate-y-0"
-                     class="group bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-3xl overflow-hidden hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 flex flex-col">
+                     class="group flex flex-col">
 
-                    {{-- Image --}}
-                    <div class="relative h-56 overflow-hidden">
+                    {{-- Image Aspect Ratio 4:5 for Premium Feel --}}
+                    <div class="relative aspect-[4/5] overflow-hidden bg-gray-100 dark:bg-gray-900 rounded-sm">
                         <img src="{{ $img }}" alt="{{ $cluster->nama_cluster }}"
-                             class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+                             class="w-full h-full object-cover transition-transform duration-[1.5s] ease-out group-hover:scale-105" />
+                        
+                        <div class="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors duration-500"></div>
 
-                        <span class="absolute top-4 left-4 inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold bg-white/90 text-gray-900">
-                            <span class="material-icons text-xs">{{ $isMuslim ? 'mosque' : 'church' }}</span>
-                            {{ $cluster->kategori }}
-                        </span>
-
-                        <span class="absolute top-4 right-4 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold
-                            {{ $tersedia > 0 ? 'bg-white/90 text-gray-900' : 'bg-black/60 text-white' }}">
-                            {{ $tersedia > 0 ? $tersedia.' tersedia' : 'Penuh' }}
-                        </span>
-
-                        <div class="absolute bottom-4 left-5 right-5">
-                            <h3 class="text-xl font-bold text-white drop-shadow-md">{{ $cluster->nama_cluster }}</h3>
+                        <div class="absolute top-6 left-6 right-6 flex justify-between items-start">
+                            <span class="px-4 py-1.5 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md text-[9px] font-black uppercase tracking-[0.2em] text-gray-900 dark:text-white">
+                                {{ $cluster->kategori }}
+                            </span>
+                            
+                            @if($tersedia > 0)
+                            <span class="text-[9px] font-bold uppercase tracking-widest text-white drop-shadow-sm">
+                                {{ $tersedia }} Unit Tersedia
+                            </span>
+                            @else
+                            <span class="text-[9px] font-bold uppercase tracking-widest text-red-400 drop-shadow-sm">
+                                Terjual Habis
+                            </span>
+                            @endif
                         </div>
                     </div>
 
                     {{-- Content --}}
-                    <div class="p-6 flex flex-col flex-grow">
-                        <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed mb-5 flex-grow min-h-[48px]">
-                            {{ $cluster->deskripsi ?? 'Kawasan pemakaman eksklusif dengan lingkungan asri dan fasilitas lengkap.' }}
-                        </p>
-
-                        {{-- Tipe Lahan --}}
-                        @if($tipeKavling->isNotEmpty())
-                        <div class="mb-5">
-                            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Tipe Lahan</p>
-                            <div class="flex flex-wrap gap-1.5">
-                                @foreach($tipeKavling->take(4) as $tipe)
-                                <span class="px-2.5 py-1 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 rounded-lg text-[11px] font-semibold">
-                                    {{ $tipe }}
-                                </span>
-                                @endforeach
-                                @if($tipeKavling->count() > 4)
-                                <span class="px-2.5 py-1 bg-gray-100 text-gray-400 rounded-lg text-[11px] font-semibold">
-                                    +{{ $tipeKavling->count() - 4 }} lainnya
-                                </span>
-                                @endif
-                            </div>
-                        </div>
-                        @endif
-
-                        {{-- Stats --}}
-                        <div class="flex items-center gap-4 py-4 border-t border-gray-100 dark:border-gray-800 mb-5">
-                            <div class="flex items-center gap-1.5 text-xs text-gray-500">
-                                <span class="material-icons text-primary text-base">grid_view</span>
-                                {{ $totalKavling }} Total
-                            </div>
-                            <div class="flex items-center gap-1.5 text-xs text-gray-500">
-                                <span class="material-icons text-primary text-base">check_circle</span>
-                                {{ $tersedia }} Tersedia
-                            </div>
+                    <div class="py-8 flex flex-col flex-grow">
+                        <div class="flex justify-between items-end mb-4">
+                            <h3 class="text-3xl font-bold tracking-tight text-gray-900 dark:text-white">{{ $cluster->nama_cluster }}</h3>
                             @if($hargaMin)
-                            <div class="text-xs text-gray-500 ml-auto">
-                                <span class="font-bold text-gray-700 dark:text-gray-300">
-                                    Mulai Rp {{ number_format($hargaMin/1000000, 0, ',', '.') }}jt
-                                </span>
-                            </div>
+                            <span class="text-xs font-medium text-gray-400">
+                                Mulai <span class="text-gray-900 dark:text-white font-bold text-base ml-1">Rp {{ number_format($hargaMin/1000000, 0, ',', '.') }}jt</span>
+                            </span>
                             @endif
                         </div>
 
-                        {{-- CTA — ARAHKAN KE kavling/index dengan cluster_id --}}
-                        @auth
-                        <a href="{{ route('pembeli.kavling.index', ['cluster_id' => $cluster->id]) }}"
-                           class="btn-press btn-ripple flex items-center justify-between px-5 py-3 rounded-xl
-                               bg-gray-900 dark:bg-white text-white dark:text-gray-900 hover:bg-gray-800
-                               transition-colors font-semibold text-sm">
-                            Pilih Tipe Lahan
-                            <span class="material-icons text-base">arrow_forward</span>
-                        </a>
-                        @else
-                        <a href="{{ route('login') }}"
-                           class="btn-press flex items-center justify-between px-5 py-3 rounded-xl
-                               border border-gray-300 text-gray-700 hover:bg-gray-50
-                               transition-colors font-semibold text-sm">
-                            Login untuk Pesan
-                            <span class="material-icons text-base">arrow_forward</span>
-                        </a>
-                        @endauth
+                        <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed font-light mb-8 line-clamp-2">
+                            {{ $cluster->deskripsi ?? 'Kawasan pemakaman eksklusif dengan lingkungan asri dan fasilitas lengkap untuk kedamaian keluarga.' }}
+                        </p>
+
+                        {{-- Tipe Lahan Tags --}}
+                        @if($tipeLahan->isNotEmpty())
+                        <div class="flex flex-wrap gap-2 mb-10">
+                            @foreach($tipeLahan->take(3) as $tipe)
+                            <span class="text-[10px] font-bold uppercase tracking-widest text-gray-400 border-b border-gray-100 dark:border-gray-800 pb-0.5">
+                                {{ $tipe }}
+                            </span>
+                            @endforeach
+                            @if($tipeLahan->count() > 3)
+                            <span class="text-[10px] font-bold text-gray-300 italic">+{{ $tipeLahan->count() - 3 }} lainnya</span>
+                            @endif
+                        </div>
+                        @endif
+
+                        {{-- CTA --}}
+                        <div class="mt-auto pt-6 border-t border-gray-50 dark:border-gray-900">
+                            @auth
+                            <a href="{{ route('pembeli.lahan.index', ['cluster_id' => $cluster->id]) }}"
+                               class="group/btn inline-flex items-center text-xs font-black uppercase tracking-[0.3em] text-gray-900 dark:text-white transition-all">
+                                <span class="border-b-2 border-primary pb-1 group-hover/btn:pr-4 transition-all duration-300">Lihat Detail Lahan</span>
+                            </a>
+                            @else
+                            <a href="{{ route('login') }}"
+                               class="group/btn inline-flex items-center text-xs font-black uppercase tracking-[0.3em] text-gray-400 transition-all">
+                                <span class="border-b-2 border-gray-200 pb-1 group-hover/btn:text-gray-900 group-hover/btn:border-primary transition-all duration-300">Login Untuk Memesan</span>
+                            </a>
+                            @endauth
+                        </div>
                     </div>
                 </div>
                 @endforeach
@@ -167,17 +153,15 @@
         </div>
     </div>
 
-    {{-- CTA Login --}}
+    {{-- Luxury Footer CTA --}}
     @guest
-    <div class="px-8 xl:px-24 pb-20">
-        <div class="max-w-7xl mx-auto bg-gradient-to-r from-primary/10 to-primary/5 dark:from-primary/20 dark:to-primary/10 border border-primary/20 rounded-3xl p-10 flex flex-col md:flex-row items-center justify-between gap-6">
-            <div>
-                <h3 class="text-2xl font-bold mb-2">Ingin memesan kavling?</h3>
-                <p class="text-sm text-gray-500 dark:text-gray-400">Masuk atau daftar terlebih dahulu untuk melanjutkan proses pemesanan.</p>
-            </div>
-            <div class="flex gap-3">
-                <a href="{{ route('login') }}" class="btn-press px-6 py-3 border border-gray-300 dark:border-gray-600 rounded-full text-sm font-semibold hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">Masuk</a>
-                <a href="{{ route('register') }}" class="btn-press btn-ripple px-6 py-3 bg-primary text-white rounded-full text-sm font-semibold hover:bg-primary/90 transition-colors">Daftar Sekarang</a>
+    <div class="px-8 xl:px-24 pb-32">
+        <div class="max-w-7xl mx-auto py-24 border-t border-gray-100 dark:border-gray-900 text-center">
+            <h3 class="text-4xl font-bold tracking-tighter mb-6">Mulai Perencanaan Masa Depan</h3>
+            <p class="text-gray-400 font-light max-w-xl mx-auto mb-10 text-lg">Bergabunglah bersama kami untuk mendapatkan kemudahan dalam memilih dan mengelola lahan pemakaman keluarga Anda.</p>
+            <div class="flex flex-col sm:flex-row justify-center gap-6">
+                <a href="{{ route('register') }}" class="px-12 py-4 bg-gray-900 dark:bg-white text-white dark:text-gray-900 text-xs font-black uppercase tracking-[0.2em] hover:bg-primary transition-colors duration-500">Daftar Sekarang</a>
+                <a href="{{ route('login') }}" class="px-12 py-4 border border-gray-200 dark:border-gray-800 text-gray-900 dark:text-white text-xs font-black uppercase tracking-[0.2em] hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors duration-500">Masuk Akun</a>
             </div>
         </div>
     </div>
@@ -185,3 +169,4 @@
 
 </div>
 @endsection
+

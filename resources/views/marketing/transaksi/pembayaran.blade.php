@@ -1,38 +1,39 @@
 @extends('layouts.admin')
-@section('title', 'Data Pembayaran')
+@section('title', 'Riwayat Pembayaran - Mount Carmel')
 
 @section('content')
 
 @if(session('success'))
 <div class="mb-6 bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-xl flex items-center gap-3">
-    <span class="material-icons-outlined text-sm">check_circle</span>
+    <span class="material-icons-outlined">check_circle</span>
     <span class="font-medium text-sm">{{ session('success') }}</span>
 </div>
 @endif
 
-<div class="flex justify-between items-start mb-6">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
     <div>
-        <h1 class="text-xl font-bold text-slate-800">Data Pembayaran Lunas</h1>
-        <p class="text-xs text-slate-500 mt-1">Daftar bukti transfer pembayaran lunas dari pembeli.</p>
+        <h1 class="text-2xl font-bold text-slate-800">Riwayat Pembayaran</h1>
+        <p class="text-sm text-slate-500 mt-1">Daftar transaksi yang telah divalidasi oleh departemen keuangan.</p>
     </div>
 </div>
 
 {{-- Search Bar --}}
-<div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 mb-6">
-    <form method="GET" action="{{ route('marketing.pembayaran.index') }}" class="flex flex-col md:flex-row gap-4">
-        <div class="flex-1">
-            <label class="block text-xs font-bold text-slate-600 uppercase tracking-widest mb-2">Cari Pembayaran</label>
-            <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama pembeli, nomor lahan, atau invoice..."
-                   class="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-slate-300 focus:border-slate-300">
+<div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 mb-8">
+    <form method="GET" action="{{ route('marketing.pembayaran.index') }}" class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div class="md:col-span-3">
+            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Cari Transaksi</label>
+            <div class="relative">
+                <span class="absolute left-4 top-1/2 -translate-y-1/2 material-icons-outlined text-slate-400 text-sm">search</span>
+                <input type="text" name="search" value="{{ request('search') }}" placeholder="Nama pembeli, unit lahan, atau nomor invoice..."
+                       class="w-full pl-12 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-slate-900/5 outline-none transition-all">
+            </div>
         </div>
         <div class="flex items-end gap-2">
-            <button type="submit" class="bg-slate-900 hover:bg-black text-white px-6 py-3 rounded-xl text-sm font-bold transition-all flex items-center gap-2">
-                <span class="material-icons-outlined text-sm">search</span>
+            <button type="submit" class="flex-1 bg-slate-900 text-white px-5 py-3 rounded-xl font-semibold text-sm hover:bg-black transition-all shadow-md">
                 Cari
             </button>
             @if(request('search'))
-            <a href="{{ route('marketing.pembayaran.index') }}" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-3 rounded-xl text-sm font-bold transition-all flex items-center gap-2">
-                <span class="material-icons-outlined text-sm">clear</span>
+            <a href="{{ route('marketing.pembayaran.index') }}" class="px-5 py-3 bg-slate-100 text-slate-600 rounded-xl font-semibold text-sm hover:bg-slate-200 transition-all text-center">
                 Reset
             </a>
             @endif
@@ -42,106 +43,68 @@
 
 <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
     <div class="overflow-x-auto">
-        <table class="w-full text-left text-xs">
-            <thead class="bg-slate-50 text-slate-400 font-bold uppercase tracking-widest text-[10px] border-b border-slate-100">
-                <tr>
-                    <th class="px-6 py-4">Invoice</th>
+        <table class="w-full text-left text-sm whitespace-nowrap">
+            <thead>
+                <tr class="text-slate-500 font-semibold bg-slate-50/80 border-b border-slate-100 uppercase tracking-wider text-[11px]">
+                    <th class="px-6 py-4">Invoice & Tanggal</th>
                     <th class="px-6 py-4">Pembeli</th>
-                    <th class="px-6 py-4">Lahan</th>
+                    <th class="px-6 py-4">Unit Lahan</th>
                     <th class="px-6 py-4">Rekening Tujuan</th>
                     <th class="px-6 py-4">Nominal</th>
-                    <th class="px-6 py-4">Bukti Transfer</th>
-                    <th class="px-6 py-4">Status</th>
+                    <th class="px-6 py-4 text-center">Status</th>
                 </tr>
             </thead>
-            <tbody class="divide-y divide-slate-50">
+            <tbody class="divide-y divide-slate-50 text-slate-700">
                 @forelse($pembayarans as $p)
                 <tr class="hover:bg-slate-50/50 transition-colors">
-
-                    {{-- Invoice --}}
-                    <td class="px-6 py-4">
-                        <p class="font-bold text-slate-800 text-[11px]">{{ $p->no_invoice }}</p>
-                        <p class="text-[10px] text-slate-400 mt-0.5">{{ $p->created_at->format('d M Y') }}</p>
+                    <td class="px-6 py-5">
+                        <p class="font-bold text-slate-900">{{ $p->no_invoice }}</p>
+                        <p class="text-[10px] text-slate-400 mt-0.5 uppercase">{{ $p->created_at->format('d M Y') }}</p>
                     </td>
-
-                    {{-- Pembeli --}}
-                    <td class="px-6 py-4">
-                        <p class="font-bold text-slate-700">{{ $p->reservasi?->user?->name ?? 'N/A' }}</p>
-                        <p class="text-[10px] text-slate-400 italic">{{ $p->reservasi?->user?->email ?? '-' }}</p>
+                    <td class="px-6 py-5">
+                        <p class="font-bold text-slate-800">{{ $p->reservasi?->user?->name ?? 'N/A' }}</p>
+                        <p class="text-[10px] text-slate-400 mt-0.5 uppercase tracking-tighter">{{ $p->reservasi?->user?->email ?? '-' }}</p>
                     </td>
-
-                    {{-- Lahan/Kavling --}}
-                    <td class="px-6 py-4">
-                        <p class="font-bold text-slate-700">Lahan #{{ $p->reservasi?->kavling?->nomor_kavling ?? '-' }}</p>
-                        <p class="text-[10px] text-slate-400">{{ $p->reservasi?->kavling?->tipe_kavling ?? '-' }}</p>
-                        <p class="text-[10px] text-slate-400">{{ $p->reservasi?->kavling?->cluster?->nama_cluster ?? '-' }}</p>
+                    <td class="px-6 py-5">
+                        <p class="font-bold text-slate-800 uppercase">UNIT {{ $p->reservasi?->lahan?->nomor_lahan ?? '-' }}</p>
+                        <p class="text-[10px] text-slate-400 mt-0.5 uppercase">{{ $p->reservasi?->lahan?->cluster?->nama_cluster ?? '-' }}</p>
                     </td>
-
-                    {{-- Rekening Tujuan --}}
-                    <td class="px-6 py-4">
+                    <td class="px-6 py-5">
                         @if($p->nama_bank)
-                        <span class="inline-block px-2 py-0.5 rounded text-[10px] font-black uppercase mb-1
-                            {{ $p->nama_bank === 'BCA' ? 'bg-blue-100 text-blue-700' :
-                                ($p->nama_bank === 'BNI' ? 'bg-orange-100 text-orange-700' : 'bg-yellow-100 text-yellow-700') }}">
-                            {{ $p->nama_bank }}
-                        </span>
-                        <p class="font-mono font-bold text-slate-700 text-[11px]">{{ $p->rekening_tujuan }}</p>
-                        <p class="text-[10px] text-slate-400">a.n {{ $p->atas_nama_rekening }}</p>
+                            <p class="font-bold text-slate-800 uppercase">{{ $p->nama_bank }}</p>
+                            <p class="text-[10px] text-slate-400 mt-0.5">{{ $p->rekening_tujuan }}</p>
                         @else
-                        <span class="text-slate-400 italic text-[10px]">—</span>
+                            <span class="text-slate-300">—</span>
                         @endif
                     </td>
-
-                    {{-- Nominal --}}
-                    <td class="px-6 py-4 font-bold text-slate-900">
+                    <td class="px-6 py-5 font-bold text-slate-900">
                         Rp {{ number_format($p->jumlah_bayar, 0, ',', '.') }}
                     </td>
-
-                    {{-- Bukti Transfer --}}
-                    <td class="px-6 py-4">
-                        @if($p->bukti_pembayaran)
-                        <a href="{{ asset('storage/' . $p->bukti_pembayaran) }}" target="_blank"
-                           class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-[10px] font-bold transition-colors">
-                            <span class="material-icons-outlined text-sm">open_in_new</span> Lihat
-                        </a>
-                        @else
-                        <span class="text-slate-400 italic text-[10px]">Belum ada</span>
-                        @endif
+                    <td class="px-6 py-5 text-center">
+                        @php
+                            $status = $p->status_pembayaran;
+                            $badgeClass = match($status) {
+                                'Dikonfirmasi', 'Lunas', 'Berhasil', 'Selesai' => 'bg-emerald-50 text-emerald-600',
+                                'Ditolak' => 'bg-rose-50 text-rose-600',
+                                default => 'bg-amber-50 text-amber-600',
+                            };
+                        @endphp
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider {{ $badgeClass }}">
+                            {{ $status }}
+                        </span>
                     </td>
-
-                    {{-- Status Badge --}}
-                    <td class="px-6 py-4">
-                        @if($p->status_pembayaran === 'Lunas')
-                            <span class="px-2 py-1 rounded-md text-[9px] font-black uppercase bg-emerald-100 text-emerald-700">
-                                ✓ Lunas
-                            </span>
-                        @elseif($p->status_pembayaran === 'Ditolak')
-                            <span class="px-2 py-1 rounded-md text-[9px] font-black uppercase bg-red-100 text-red-700">
-                                ✗ Ditolak
-                            </span>
-                        @else
-                            <span class="px-2 py-1 rounded-md text-[9px] font-black uppercase bg-amber-100 text-amber-700">
-                                ⏳ Menunggu
-                            </span>
-                        @endif
-                    </td>
-
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="7" class="px-6 py-14 text-center text-slate-400 italic">
-                        <span class="material-icons-outlined text-4xl text-slate-200 block mb-2">receipt_long</span>
-                        Belum ada data pembayaran lunas.
-                    </td>
+                    <td colspan="6" class="px-6 py-12 text-center text-slate-400 font-medium">Belum ada riwayat pembayaran yang terdata.</td>
                 </tr>
                 @endforelse
             </tbody>
         </table>
     </div>
 
-    {{-- Pagination --}}
     @if(method_exists($pembayarans, 'hasPages') && $pembayarans->hasPages())
-    <div class="px-6 py-4 border-t border-slate-50">
+    <div class="px-6 py-4 border-t border-slate-50 bg-slate-50/30">
         {{ $pembayarans->appends(request()->query())->links() }}
     </div>
     @endif

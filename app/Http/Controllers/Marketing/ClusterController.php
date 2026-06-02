@@ -8,9 +8,17 @@ use App\Models\Cluster;
 
 class ClusterController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $clusters = Cluster::withCount('kavlings')->latest()->get();
+        $query = Cluster::withCount('lahans');
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where('nama_cluster', 'like', '%' . $search . '%')
+                  ->orWhere('kategori', 'like', '%' . $search . '%');
+        }
+
+        $clusters = $query->latest()->paginate(12);
 
         return view('marketing.cluster.index', compact('clusters'));
     }

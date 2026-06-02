@@ -8,7 +8,7 @@
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-10" data-aos="fade-up">
         <div>
             <h1 class="text-3xl font-bold text-gray-900 mb-1">Pembayaran Saya</h1>
-            <p class="text-gray-500 text-sm">Riwayat pembayaran dan invoice kavling Anda.</p>
+            <p class="text-gray-500 text-sm">Riwayat pembayaran dan invoice lahan Anda.</p>
         </div>
         <a href="{{ route('cluster.index') }}"
            class="btn-press btn-ripple inline-flex items-center gap-2 px-5 py-2.5 bg-gray-900 text-white rounded-xl text-sm font-bold hover:bg-gray-800 transition-colors shadow-md">
@@ -39,18 +39,16 @@
             @foreach($reservasiSiapBayar as $res)
             <div class="bg-amber-50 border border-amber-200 rounded-2xl p-5 flex flex-col sm:flex-row sm:items-center gap-4">
                 <div class="flex-grow">
-                    <p class="font-bold text-gray-900">lahan #{{ $res->kavling->nomor_kavling }}</p>
-                    <p class="text-xs text-gray-500 mt-0.5">{{ $res->kavling->cluster->nama_cluster }} &middot; {{ $res->kavling->tipe_kavling }}</p>
+                    <p class="font-bold text-gray-900">lahan #{{ $res->lahan->nomor_lahan }}</p>
+                    <p class="text-xs text-gray-500 mt-0.5">{{ $res->lahan->cluster->nama_cluster }} &middot; {{ $res->lahan->tipe_lahan }}</p>
                     @if($res->nama_jenazah)
                     <p class="text-xs text-gray-500">Alm. {{ $res->nama_jenazah }}</p>
-                    @else
-                    <p class="text-xs text-gray-400 italic">Pre-Need</p>
                     @endif
                 </div>
                 <div class="shrink-0 flex items-center gap-4">
                     <div class="text-right">
                         <p class="text-xs text-gray-400">Total Bayar</p>
-                        <p class="font-bold text-gray-900">Rp {{ number_format($res->kavling->harga, 0, ',', '.') }}</p>
+                        <p class="font-bold text-gray-900">Rp {{ number_format($res->lahan->harga, 0, ',', '.') }}</p>
                     </div>
                     <a href="{{ route('pembeli.pembayaran.create', ['reservasi_id' => $res->id]) }}"
                        class="btn-press btn-ripple px-5 py-2.5 bg-gray-900 text-white rounded-xl text-sm font-bold hover:bg-amber-500 transition-colors flex items-center gap-2 whitespace-nowrap">
@@ -106,8 +104,8 @@
                             </span>
                         </div>
                         <p class="text-xs text-gray-500">
-                            lahan #{{ $bayar->reservasi->kavling->nomor_kavling }} &middot;
-                            {{ $bayar->reservasi->kavling->cluster->nama_cluster }}
+                            lahan #{{ $bayar->reservasi->lahan->nomor_lahan }} &middot;
+                            {{ $bayar->reservasi->lahan->cluster->nama_cluster }}
                             @if($bayar->nama_bank)
                             &middot; Transfer via {{ $bayar->nama_bank }}
                             @endif

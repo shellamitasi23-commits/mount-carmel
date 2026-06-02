@@ -12,26 +12,24 @@ class HomeController extends Controller
 {
     public function index()
     {
-        // Data default (Publik)
+        // Ambil data cluster dengan lahan terkait (hanya kolom yang diperlukan untuk peta)
+        $clusters = Cluster::with(['lahans' => function($query) {
+            $query->select('id', 'cluster_id', 'nomor_lahan', 'status', 'tipe_lahan', 'ukuran', 'harga', 'kapasitas');
+        }])->get();
+
+        // Pisahkan data untuk kemudahan di Blade
+        $lahanMuslim = $clusters->where('kategori', 'Muslim')->first()->lahans ?? collect();
+        $lahanNonMuslim = $clusters->where('kategori', 'Non-Muslim')->first()->lahans ?? collect();
+
         $data = [
-            // $cluster = Cluster::all(), (Opsional jika mau panggil dari database)
+            'clusters' => $clusters,
+            'lahanMuslim' => $lahanMuslim,
+            'lahanNonMuslim' => $lahanNonMuslim,
+            'reservedLahans' => $lahanMuslim->where('status', '!=', 'Tersedia')
+                                ->pluck('nomor_lahan')
+                                ->merge($lahanNonMuslim->where('status', '!=', 'Tersedia')->pluck('nomor_lahan'))
+                                ->toArray()
         ];
-
-        // Ambil kavling yang sudah dipesan
-        $reservedKavlings = Reservasi::join('kavlings', 'reservasis.kavling_id', '=', 'kavlings.id')
-            ->pluck('kavlings.nomor_kavling')
-            ->toArray();
-        $data['reservedKavlings'] = $reservedKavlings;
-
-        // Ambil data cluster dan kavling
-        $clusters = Cluster::with('kavlings')->get();
-        $data['clusters'] = $clusters;
-
-        // Jika user login, ambil data transaksinya untuk dimunculkan di Landing Page
-        if (Auth::check() && Auth::user()->role == 'pembeli') {
-            // Contoh memanggil relasi:
-            // $data['riwayat_reservasi'] = Reservasi::where('user_id', Auth::id())->get();
-        }
 
         return view('pembeli.home', $data);
     }

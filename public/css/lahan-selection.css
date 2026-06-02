@@ -1,0 +1,84 @@
+/* ==========================================================================
+   MOUNT CARMEL — LOT SELECTION INTERACTIVE GRID STYLESHEET
+   ========================================================================== */
+
+.lahan-cell {
+  aspect-ratio: 1;
+  border-radius: 10px;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Poppins', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.lahan-cell.tersedia {
+  background: #f0fdf4;
+  border-color: #86efac;
+  color: #166534;
+}
+
+.lahan-cell.tersedia:hover {
+  background: #dcfce7;
+  border-color: #22c55e;
+  transform: scale(1.07);
+  box-shadow: 0 4px 14px rgba(34, 197, 94, .2);
+  z-index: 10;
+  position: relative;
+}
+
+.lahan-cell.tersedia.dipilih {
+  background: #14532d;
+  border-color: #14532d;
+  color: white;
+  transform: scale(1.09);
+  box-shadow: 0 6px 20px rgba(20, 83, 45, .3);
+  z-index: 20;
+  position: relative;
+}
+
+.lahan-cell.dipesan {
+  background: #fefce8;
+  border-color: #fde047;
+  color: #854d0e;
+  cursor: not-allowed;
+  opacity: 0.8;
+}
+
+.lahan-cell.terjual {
+  background: #f3f4f6;
+  border-color: #e5e7eb;
+  color: #9ca3af;
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.lahan-cell .dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  margin-top: 3px;
+  flex-shrink: 0;
+}
+
+.tersedia .dot {
+  background: #22c55e;
+}
+
+.tersedia.dipilih .dot {
+  background: white;
+}
+
+.dipesan .dot {
+  background: #eab308;
+}
+
+.terjual .dot {
+  background: #d1d5db;
+}

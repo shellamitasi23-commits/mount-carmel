@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-@section('title', 'Data Pembeli - Mount Carmel')
+@section('title', 'Data Pelanggan - Mount Carmel')
 
 @section('content')
 
@@ -13,21 +13,24 @@
 <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
     <div>
         <h1 class="text-2xl font-bold text-slate-800">Data Pembeli</h1>
-        <p class="text-sm text-slate-500 mt-1">Kelola data akun pelanggan/keluarga yang terdaftar di sistem.</p>
+        <p class="text-sm text-slate-500 mt-1">Kelola data pembeli lahan di Mount Carmel.</p>
     </div>
     @if(auth()->user()->role == 'marketing')
-    <div class="flex gap-3 w-full md:w-auto">
-        <button onclick="openModal()" class="bg-slate-900 hover:bg-slate-800 text-white px-5 py-2.5 rounded-xl font-semibold flex items-center gap-2 transition-all shadow-md text-sm hover:shadow-lg hover:-translate-y-0.5">
-            <span class="material-icons-outlined text-sm">person_add</span> Tambah Pembeli
-        </button>
-    </div>
+    <button onclick="openModal()" class="bg-slate-900 hover:bg-slate-800 text-white px-5 py-3 rounded-xl font-semibold text-sm transition-all shadow-md flex items-center gap-2">
+        <span class="material-icons-outlined text-lg">add</span>
+        Tambah Pembeli Baru
+    </button>
     @endif
 </div>
 
 {{-- Search --}}
-<div class="mb-6">
-    <input id="pembeli-search" type="text" placeholder="Cari pembeli (nama, email, telp, alamat)..." 
-        class="w-full md:w-1/2 px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:border-blue-600 outline-none text-sm" />
+<div class="relative mb-10 group">
+    <div class="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
+        <span class="material-icons-outlined text-slate-400 group-focus-within:text-slate-900 transition-colors">search</span>
+    </div>
+    <input type="text" id="pembeli-search" 
+           placeholder="Cari nama pembeli, email, atau no. telepon..." 
+           class="w-full pl-14 pr-6 py-4 bg-white border border-slate-100 rounded-[1.5rem] text-sm font-medium shadow-sm focus:ring-4 focus:ring-slate-900/5 focus:border-slate-900 outline-none transition-all placeholder:text-slate-300">
 </div>
 
 <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
@@ -35,99 +38,80 @@
         <table class="w-full text-left text-sm whitespace-nowrap">
             <thead>
                 <tr class="text-slate-500 font-semibold bg-slate-50/80 border-b border-slate-100 uppercase tracking-wider text-[11px]">
-                    <th class="px-6 py-4">Nama Lengkap</th>
-                    <th class="px-6 py-4">Kontak (Email & No. Telp)</th>
-                    <th class="px-6 py-4">Alamat Lengkap</th>
-                    <th class="px-6 py-4">Tgl. Bergabung</th>
+                    <th class="px-6 py-4 text-center">ID</th>
+                    <th class="px-6 py-4">Informasi Pembeli</th>
+                    <th class="px-6 py-4">Kontak</th>
+                    <th class="px-6 py-4">Alamat</th>
+                    <th class="px-6 py-4">Tgl Terdaftar</th>
                     @if(auth()->user()->role == 'marketing')
                     <th class="px-6 py-4 text-center">Aksi</th>
                     @endif
                 </tr>
             </thead>
             <tbody class="divide-y divide-slate-50 text-slate-700">
-                
                 @forelse($pembelis as $pembeli)
                 <tr class="hover:bg-slate-50/50 transition-colors group">
+                    <td class="px-6 py-4 text-center text-slate-400 font-mono text-xs">#{{ $pembeli->id }}</td>
                     <td class="px-6 py-4">
                         <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 font-bold text-lg">
+                            <div class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 font-bold text-sm">
                                 {{ strtoupper(substr($pembeli->name, 0, 1)) }}
                             </div>
-                            <p class="font-bold text-slate-900 text-base">{{ $pembeli->name }}</p>
+                            <p class="font-bold text-slate-900">{{ $pembeli->name }}</p>
                         </div>
                     </td>
                     <td class="px-6 py-4">
                         <p class="font-medium text-slate-800">{{ $pembeli->email }}</p>
-                        <p class="text-xs text-slate-500 mt-0.5">{{ $pembeli->no_telepon ?? 'Tidak ada No. Telp' }}</p>
+                        <p class="text-xs text-slate-400 mt-0.5">{{ $pembeli->no_telepon ?? '-' }}</p>
                     </td>
-                    <td class="px-6 py-4 text-slate-500 whitespace-normal min-w-[200px] text-xs leading-relaxed">
-                        {{ $pembeli->alamat ?? 'Alamat belum diisi.' }}
-                    </td>
-                    <td class="px-6 py-4">
-                        <p class="font-medium text-slate-800">{{ $pembeli->created_at->format('d M Y') }}</p>
-                    </td>
+                    <td class="px-6 py-4 text-slate-500 truncate max-w-xs">{{ $pembeli->alamat ?? '-' }}</td>
+                    <td class="px-6 py-4">{{ $pembeli->created_at->format('d/m/Y') }}</td>
                     @if(auth()->user()->role == 'marketing')
-                    <td class="px-6 py-4 text-center flex justify-center gap-2">
-                        <form action="{{ route('marketing.pembeli.destroy', $pembeli->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus akun pembeli ini beserta semua data reservasinya?');">
-                            @csrf @method('DELETE')
-                            <button type="submit" class="text-slate-400 hover:text-red-600 bg-white border border-slate-200 hover:border-red-200 p-2 rounded-lg transition-all shadow-sm" title="Hapus Data">
+                    <td class="px-6 py-4 text-center">
+                        <form action="{{ route('marketing.pembeli.destroy', $pembeli->id) }}" method="POST" class="inline" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data pembeli ini?')">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="text-slate-400 hover:text-red-600 p-2 rounded-lg transition-all" title="Hapus">
                                 <span class="material-icons-outlined text-lg block">delete</span>
                             </button>
                         </form>
                     </td>
                     @endif
                 </tr>
-                
-
                 @empty
                 <tr>
-                    <td colspan="{{ auth()->user()->role == 'marketing' ? '5' : '4' }}" class="px-6 py-10 text-center text-slate-500">
-                        <div class="flex flex-col items-center justify-center">
-                            <span class="material-icons-outlined text-4xl text-slate-300 mb-2">group_off</span>
-                            <p class="font-medium">Belum ada data pembeli.</p>
-                            <p class="text-xs mt-1">Pembeli yang mendaftar di halaman depan akan otomatis muncul di sini.</p>
-                        </div>
-                    </td>
+                    <td colspan="6" class="px-6 py-10 text-center text-slate-500 font-medium">Belum ada data pembeli.</td>
                 </tr>
                 @endforelse
-
             </tbody>
         </table>
     </div>
+
+    @if($pembelis->hasPages())
+    <div class="px-6 py-4 border-t border-slate-50">
+        {{ $pembelis->links() }}
+    </div>
+    @endif
 </div>
 
 @if(auth()->user()->role == 'marketing')
-@include('marketing.pelanggan.create')
+    @include('marketing.pelanggan.create')
 @endif
 
 <script>
     function openModal() { document.getElementById('createModal').classList.remove('hidden'); }
     function closeModal() { document.getElementById('createModal').classList.add('hidden'); }
-    function openEditModal(id) { document.getElementById('editModal' + id).classList.remove('hidden'); }
-    function closeEditModal(id) { document.getElementById('editModal' + id).classList.add('hidden'); }
 
-    // Search/filter pembeli table
-    function initPembeliSearch() {
-        const input = document.getElementById('pembeli-search');
+    // Live Search for Pembeli
+    document.getElementById('pembeli-search')?.addEventListener('input', function(e) {
+        const query = e.target.value.toLowerCase().trim();
         const rows = document.querySelectorAll('tbody tr');
-
-        if (!input) return;
-
-        input.addEventListener('input', () => {
-            const query = input.value.trim().toLowerCase();
-
-            rows.forEach(row => {
-                const text = row.innerText.toLowerCase();
-                const matches = query === '' || text.includes(query);
-                row.classList.toggle('hidden', !matches);
-            });
+        
+        rows.forEach(row => {
+            const text = row.textContent.toLowerCase();
+            const matches = text.includes(query);
+            row.style.display = matches ? '' : 'none';
         });
-    }
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initPembeliSearch);
-    } else {
-        initPembeliSearch();
-    }
+    });
 </script>
 @endsection

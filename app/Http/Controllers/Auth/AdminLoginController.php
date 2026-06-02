@@ -53,9 +53,16 @@ class AdminLoginController extends Controller
     // Memproses Logout
     public function logout(Request $request)
     {
+        $role = Auth::user() ? Auth::user()->role : null;
+
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
+
+        // Jika pembeli, kembalikan ke landing page utama
+        if ($role === 'pembeli') {
+            return redirect('/');
+        }
 
         // Kembalikan ke halaman login portal
         return redirect('/marketing/login');

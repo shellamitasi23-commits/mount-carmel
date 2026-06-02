@@ -9,7 +9,7 @@
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-10" data-aos="fade-up">
         <div>
             <h1 class="text-3xl font-bold text-gray-900 mb-1">Reservasi Saya</h1>
-            <p class="text-gray-500 text-sm">Daftar semua pemesanan kavling yang telah Anda buat.</p>
+            <p class="text-gray-500 text-sm">Daftar semua pemesanan lahan yang telah Anda buat.</p>
         </div>
         <a href="{{ route('cluster.index') }}"
            class="btn-press btn-ripple inline-flex items-center gap-2 px-5 py-2.5 bg-gray-900 text-white rounded-xl text-sm font-bold hover:bg-gray-800 transition-colors shadow-md">
@@ -34,7 +34,7 @@
     <div class="py-20 text-center bg-white rounded-2xl border border-gray-100 shadow-sm" data-aos="fade-up">
         <span class="material-icons text-5xl text-gray-200 block mb-3">inbox</span>
         <h3 class="text-lg font-bold text-gray-400 mb-1">Belum Ada Reservasi</h3>
-        <p class="text-sm text-gray-400 mb-6">Anda belum pernah melakukan pemesanan kavling.</p>
+        <p class="text-sm text-gray-400 mb-6">Anda belum pernah melakukan pemesanan lahan.</p>
         <a href="{{ route('cluster.index') }}"
            class="btn-press btn-ripple inline-flex items-center gap-2 px-6 py-3 bg-gray-900 text-white rounded-xl text-sm font-bold hover:bg-gray-800 transition-colors">
             <span class="material-icons text-sm">search</span> Lihat Cluster Tersedia
@@ -62,16 +62,16 @@
             <div class="p-5 flex flex-col md:flex-row md:items-center gap-4">
 
                 {{-- Ikon --}}
-                <div class="w-12 h-12 rounded-xl {{ $res->kavling->cluster->kategori === 'Muslim' ? 'bg-emerald-50' : 'bg-amber-50' }} flex items-center justify-center shrink-0">
-                    <span class="material-icons {{ $res->kavling->cluster->kategori === 'Muslim' ? 'text-emerald-600' : 'text-amber-600' }}">
-                        {{ $res->kavling->cluster->kategori === 'Muslim' ? 'mosque' : 'church' }}
+                <div class="w-12 h-12 rounded-xl {{ $res->lahan->cluster->kategori === 'Muslim' ? 'bg-emerald-50' : 'bg-amber-50' }} flex items-center justify-center shrink-0">
+                    <span class="material-icons {{ $res->lahan->cluster->kategori === 'Muslim' ? 'text-emerald-600' : 'text-amber-600' }}">
+                        {{ $res->lahan->cluster->kategori === 'Muslim' ? 'mosque' : 'church' }}
                     </span>
                 </div>
 
                 {{-- Info --}}
                 <div class="flex-grow">
                     <div class="flex flex-wrap items-center gap-2 mb-1">
-                        <h3 class="font-bold text-gray-900">lahan #{{ $res->kavling->nomor_kavling }}</h3>
+                        <h3 class="font-bold text-gray-900">lahan #{{ $res->lahan->nomor_lahan }}</h3>
                         <span class="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase
                             {{ $statusReservasi === 'Selesai' ? 'bg-emerald-100 text-emerald-700' :
                                ($statusReservasi === 'Disetujui' ? 'bg-blue-100 text-blue-700' :
@@ -80,11 +80,9 @@
                         </span>
                     </div>
                     <p class="text-xs text-gray-400 mb-0.5">
-                        {{ $res->kavling->cluster->nama_cluster }} &middot; {{ $res->kavling->tipe_kavling }}
+                        {{ $res->lahan->cluster->nama_cluster }} &middot; {{ $res->lahan->tipe_lahan }}
                         @if($res->nama_jenazah)
                         &middot; Alm. {{ $res->nama_jenazah }}
-                        @else
-                        &middot; <span class="italic">Pre-Need</span>
                         @endif
                     </p>
                     <p class="text-xs text-gray-400">
@@ -97,7 +95,7 @@
 
                 {{-- Harga + Status Bayar + Aksi --}}
                 <div class="flex flex-col md:items-end gap-2 shrink-0">
-                    <p class="font-bold text-gray-900">Rp {{ number_format($res->kavling->harga, 0, ',', '.') }}</p>
+                    <p class="font-bold text-gray-900">Rp {{ number_format($res->lahan->harga, 0, ',', '.') }}</p>
 
                     <span class="px-3 py-1 rounded-full text-[11px] font-bold uppercase
                         {{ $statusBayar === 'Lunas' ? 'bg-emerald-100 text-emerald-700' :

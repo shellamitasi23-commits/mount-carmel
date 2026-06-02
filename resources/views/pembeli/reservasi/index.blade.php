@@ -2,143 +2,162 @@
 @section('title', 'Reservasi Saya — Mount Carmel')
 
 @section('content')
-<div class="min-h-screen bg-[#F3F4F6] pt-28 pb-20">
-<div class="max-w-5xl mx-auto px-6">
+<div class="min-h-screen bg-white pt-40 pb-32">
+    <div class="max-w-7xl mx-auto px-10">
 
-    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-10" data-aos="fade-up">
-        <div>
-            <h1 class="text-3xl font-bold text-gray-900 mb-1">Reservasi Saya</h1>
-            <p class="text-gray-500 text-sm">Daftar semua pemesanan kavling yang telah Anda buat.</p>
-        </div>
-        <a href="{{ route('cluster.index') }}"
-           class="btn-press btn-ripple inline-flex items-center gap-2 px-5 py-2.5 bg-gray-900 text-white rounded-xl text-sm font-bold hover:bg-gray-800 transition-colors shadow-md">
-            <span class="material-icons text-sm">add</span> Pesan Lahan Baru
-        </a>
-    </div>
-
-    @if(session('success'))
-    <div class="mb-6 bg-green-50 border border-green-200 text-green-700 px-5 py-4 rounded-xl text-sm font-medium flex items-center gap-2">
-        <span class="material-icons text-sm">check_circle</span> {{ session('success') }}
-    </div>
-    @endif
-
-    @if(session('error'))
-    <div class="mb-6 bg-red-50 border border-red-200 text-red-700 px-5 py-4 rounded-xl text-sm font-medium flex items-center gap-2">
-        <span class="material-icons text-sm">error</span> {{ session('error') }}
-    </div>
-    @endif
-
-    @if($reservasis->isEmpty())
-    <div class="py-20 text-center bg-white rounded-2xl border border-gray-100 shadow-sm" data-aos="fade-up">
-        <span class="material-icons text-5xl text-gray-200 block mb-3">inbox</span>
-        <h3 class="text-lg font-bold text-gray-400 mb-1">Belum Ada Reservasi</h3>
-        <p class="text-sm text-gray-400 mb-6">Anda belum pernah melakukan pemesanan kavling.</p>
-        <a href="{{ route('cluster.index') }}"
-           class="btn-press btn-ripple inline-flex items-center gap-2 px-6 py-3 bg-gray-900 text-white rounded-xl text-sm font-bold hover:bg-gray-800 transition-colors">
-            <span class="material-icons text-sm">search</span> Lihat Cluster Tersedia
-        </a>
-    </div>
-    @else
-    <div class="space-y-4">
-        @foreach($reservasis as $i => $res)
-        @php
-            // Prioritaskan status dari tabel pembayarans (diupdate admin)
-            // Fallback ke kolom status_pembayaran di tabel reservasis
-            $statusBayar = $res->pembayaran
-                ? $res->pembayaran->status_pembayaran
-                : $res->status_pembayaran;
-            $statusRes = $res->status_reservasi;
-        @endphp
-        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-md transition-all duration-300"
-             data-aos="fade-up" data-aos-delay="{{ ($i % 5) * 60 }}">
-
-            <div class="h-1 w-full
-                {{ $statusRes === 'Selesai' ? 'bg-emerald-500' :
-                   ($statusRes === 'Disetujui' ? 'bg-blue-500' :
-                   ($statusRes === 'Ditolak' ? 'bg-red-400' : 'bg-amber-400')) }}">
+        {{-- Header Section --}}
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-12 mb-24">
+            <div class="max-w-3xl">
+                <span class="inline-block text-slate-400 font-black tracking-[0.4em] uppercase text-[10px] mb-6">
+                    Manajemen Reservasi
+                </span>
+                <h1 class="text-7xl md:text-8xl font-black text-slate-900 tracking-tighter leading-[0.85] italic mb-8">
+                    Reservasi Saya
+                </h1>
+                <p class="text-slate-500 text-xl font-medium leading-relaxed">
+                    Pantau status kepemilikan dan administrasi lahan peristirahatan Anda di Mount Carmel.
+                </p>
             </div>
+            <a href="{{ route('cluster.index') }}"
+               class="inline-flex items-center justify-center px-10 py-6 bg-slate-900 text-white text-[11px] font-black uppercase tracking-[0.3em] rounded-2xl hover:bg-black transition-all active:scale-95 shadow-2xl shadow-slate-200">
+                Pesan Lahan Baru
+            </a>
+        </div>
 
-            <div class="p-5 flex flex-col md:flex-row md:items-center gap-4">
+        @if(session('success'))
+        <div class="mb-12 p-6 bg-emerald-50 dark:bg-emerald-950/20 border-l-4 border-emerald-500" data-aos="fade-up">
+            <p class="text-[11px] font-black uppercase tracking-widest text-emerald-700 dark:text-emerald-400">
+                {{ session('success') }}
+            </p>
+        </div>
+        @endif
 
-                <div class="w-12 h-12 rounded-xl {{ $res->kavling->cluster->kategori === 'Muslim' ? 'bg-emerald-50' : 'bg-amber-50' }} flex items-center justify-center shrink-0">
-                    <span class="material-icons {{ $res->kavling->cluster->kategori === 'Muslim' ? 'text-emerald-600' : 'text-amber-600' }}">
-                        {{ $res->kavling->cluster->kategori === 'Muslim' ? 'mosque' : 'church' }}
-                    </span>
-                </div>
+        @if(session('error'))
+        <div class="mb-12 p-6 bg-red-50 dark:bg-red-950/20 border-l-4 border-red-500" data-aos="fade-up">
+            <p class="text-[11px] font-black uppercase tracking-widest text-red-700 dark:text-red-400">
+                {{ session('error') }}
+            </p>
+        </div>
+        @endif
 
-                <div class="flex-grow">
-                    <div class="flex flex-wrap items-center gap-2 mb-1">
-                        <h3 class="font-bold text-gray-900">lahan #{{ $res->kavling->nomor_kavling }}</h3>
-                        <span class="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase
-                            {{ $statusRes === 'Selesai' ? 'bg-emerald-100 text-emerald-700' :
-                               ($statusRes === 'Disetujui' ? 'bg-blue-100 text-blue-700' :
-                               ($statusRes === 'Ditolak' ? 'bg-red-100 text-red-700' : 'bg-amber-100 text-amber-700')) }}">
-                            {{ $statusRes }}
-                        </span>
+        @if($reservasis->isEmpty())
+        <div class="py-40 text-center border-t-4 border-slate-900">
+            <h3 class="text-4xl font-black text-slate-200 uppercase tracking-tighter mb-8 italic">Belum Ada Reservasi</h3>
+            <a href="{{ route('cluster.index') }}"
+               class="text-[11px] font-black uppercase tracking-[0.4em] text-slate-900 border-b-4 border-slate-900 pb-2 transition-all">
+                Mulai Reservasi Pertama
+            </a>
+        </div>
+        @else
+        <div class="grid grid-cols-1 gap-12">
+            @foreach($reservasis as $i => $res)
+            @php
+                $statusBayar = $res->pembayaran ? $res->pembayaran->status_pembayaran : $res->status_pembayaran;
+                $statusRes = $res->status_reservasi;
+            @endphp
+            <div class="group bg-white border-t-8 border-slate-900 shadow-2xl shadow-slate-200/60 p-10 md:p-16 transition-all duration-500">
+                
+                <div class="flex flex-col lg:flex-row gap-16 items-start">
+                    {{-- Kavling Big Display --}}
+                    <div class="shrink-0">
+                        <div class="w-32 h-32 bg-slate-900 flex flex-col items-center justify-center shadow-2xl">
+                            <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Unit</span>
+                            <span class="text-4xl font-black text-white tracking-tighter">#{{ $res->lahan->nomor_lahan }}</span>
+                        </div>
                     </div>
-                    <p class="text-xs text-gray-400 mb-0.5">
-                        {{ $res->kavling->cluster->nama_cluster }} &middot; {{ $res->kavling->tipe_kavling }}
-                        @if($res->nama_jenazah)
-                        &middot; Alm. {{ $res->nama_jenazah }}
-                        @else
-                        &middot; <span class="italic">Pre-Need</span>
-                        @endif
-                    </p>
-                    <p class="text-xs text-gray-400">
-                        Dipesan: {{ $res->created_at->translatedFormat('d M Y') }}
-                        @if($res->tanggal_dimakamkan)
-                        &middot; Dimakamkan: {{ \Carbon\Carbon::parse($res->tanggal_dimakamkan)->translatedFormat('d M Y') }}
-                        @endif
-                    </p>
-                </div>
 
-                <div class="flex flex-col md:items-end gap-2 shrink-0">
-                    <p class="font-bold text-gray-900">Rp {{ number_format($res->kavling->harga, 0, ',', '.') }}</p>
+                    {{-- Main Info --}}
+                    <div class="flex-grow space-y-10">
+                        <div>
+                            <div class="flex flex-wrap items-center gap-6 mb-4">
+                                <span class="text-[11px] font-black uppercase tracking-[0.4em] text-slate-400">
+                                    {{ strtoupper($res->lahan->cluster->nama_cluster) }}
+                                </span>
+                                <span class="text-slate-200">/</span>
+                                <span class="text-[11px] font-black uppercase tracking-[0.4em] text-slate-400">
+                                    {{ strtoupper($res->lahan->tipe_lahan) }}
+                                </span>
+                            </div>
+                            
+                            <h3 class="text-5xl font-black text-slate-900 tracking-tighter leading-none mb-6">
+                                {{ $res->nama_jenazah ? 'ALM. ' . strtoupper($res->nama_jenazah) : 'LAHAN PERSIAPAN' }}
+                            </h3>
 
-                    <span class="px-3 py-1 rounded-full text-[11px] font-bold uppercase
-                        {{ $statusBayar === 'Lunas' ? 'bg-emerald-100 text-emerald-700' :
-                           ($statusBayar === 'Menunggu Konfirmasi' ? 'bg-blue-100 text-blue-700' :
-                           ($statusBayar === 'Ditolak' ? 'bg-red-100 text-red-700' : 'bg-gray-100 text-gray-500')) }}">
-                        @if($statusBayar === 'Belum Bayar') Belum Bayar
-                        @elseif($statusBayar === 'Menunggu Konfirmasi') Menunggu Konfirmasi
-                        @elseif($statusBayar === 'Lunas') Lunas ✓
-                        @elseif($statusBayar === 'Ditolak') Pembayaran Ditolak
-                        @else {{ $statusBayar }}
-                        @endif
-                    </span>
+                            <div class="flex flex-wrap gap-12">
+                                <div>
+                                    <p class="text-[10px] font-black uppercase tracking-widest text-slate-300 mb-1">Tanggal Pesan</p>
+                                    <p class="text-sm font-black text-slate-900">{{ $res->created_at->translatedFormat('d F Y') }}</p>
+                                </div>
+                                @if($res->tanggal_dimakamkan)
+                                <div>
+                                    <p class="text-[10px] font-black uppercase tracking-widest text-slate-300 mb-1">Rencana Pemakaman</p>
+                                    <p class="text-sm font-black text-slate-900">{{ \Carbon\Carbon::parse($res->tanggal_dimakamkan)->translatedFormat('d F Y') }}</p>
+                                </div>
+                                @endif
+                            </div>
+                        </div>
 
-                    <div class="flex gap-2 flex-wrap justify-end">
-                        {{-- Tombol Bayar: muncul kalau belum bayar dan reservasi tidak ditolak --}}
-                        @if($statusBayar === 'Belum Bayar' && $statusRes !== 'Ditolak')
-                        <a href="{{ route('pembeli.pembayaran.create', ['reservasi_id' => $res->id]) }}"
-                           class="btn-press px-4 py-2 bg-gray-900 text-white rounded-xl text-xs font-bold hover:bg-amber-500 transition-colors flex items-center gap-1.5">
-                            <span class="material-icons text-xs">payments</span> Bayar Sekarang
-                        </a>
-                        @endif
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 pt-10 border-t border-slate-50">
+                            <div>
+                                <p class="text-[10px] font-black uppercase tracking-widest text-slate-300 mb-2">Nilai Investasi</p>
+                                <p class="text-3xl font-black text-slate-900 tracking-tighter">
+                                    Rp {{ number_format($res->lahan->harga, 0, ',', '.') }}
+                                </p>
+                            </div>
+                            <div class="flex flex-wrap gap-4 md:justify-end items-center">
+                                <div class="text-right">
+                                    <p class="text-[10px] font-black uppercase tracking-widest text-slate-300 mb-2 text-right">Status Reservasi</p>
+                                    <span class="text-sm font-black uppercase tracking-[0.2em]
+                                        {{ $statusRes === 'Selesai' ? 'text-emerald-600' :
+                                           ($statusRes === 'Disetujui' ? 'text-blue-600' :
+                                           ($statusRes === 'Ditolak' ? 'text-red-600' : 'text-amber-600')) }}">
+                                        {{ $statusRes }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-                        {{-- Tombol Kirim Ulang: kalau pembayaran ditolak --}}
-                        @if($statusBayar === 'Ditolak')
-                        <a href="{{ route('pembeli.pembayaran.create', ['reservasi_id' => $res->id]) }}"
-                           class="btn-press px-4 py-2 bg-red-50 text-red-600 border border-red-200 rounded-xl text-xs font-bold hover:bg-red-100 transition-colors flex items-center gap-1.5">
-                            <span class="material-icons text-xs">refresh</span> Kirim Ulang
-                        </a>
-                        @endif
+                    {{-- Actions Panel --}}
+                    <div class="w-full lg:w-72 shrink-0 space-y-6 pt-10 lg:pt-0 lg:pl-16 lg:border-l border-slate-50">
+                        <p class="text-[10px] font-black uppercase tracking-widest text-slate-300 mb-4">Administrasi</p>
+                        
+                        <div class="mb-8">
+                            <p class="text-[10px] font-black uppercase tracking-widest text-slate-300 mb-1">Status Bayar</p>
+                            <p class="text-sm font-black uppercase tracking-widest {{ $statusBayar === 'Lunas' ? 'text-emerald-600' : 'text-slate-900' }}">
+                                {{ $statusBayar }}
+                            </p>
+                        </div>
 
-                        {{-- Tombol Invoice: hanya kalau sudah Lunas --}}
-                        @if($statusBayar === 'Lunas' && $res->pembayaran)
-                        <a href="{{ route('pembeli.pembayaran.invoice', $res->pembayaran->id) }}"
-                           class="btn-press px-4 py-2 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-xl text-xs font-bold hover:bg-emerald-100 transition-colors flex items-center gap-1.5">
-                            <span class="material-icons text-xs">receipt</span> Invoice
-                        </a>
-                        @endif
+                        <div class="space-y-4">
+                            @if($statusBayar === 'Belum Bayar' && $statusRes !== 'Ditolak')
+                            <a href="{{ route('pembeli.pembayaran.create', ['reservasi_id' => $res->id]) }}"
+                               class="w-full block bg-slate-900 text-white text-center py-5 rounded-2xl text-[10px] font-black uppercase tracking-[0.3em] hover:bg-black transition-all shadow-2xl shadow-slate-200">
+                                BAYAR SEKARANG
+                            </a>
+                            @endif
+
+                            @if($statusBayar === 'Ditolak')
+                            <a href="{{ route('pembeli.pembayaran.create', ['reservasi_id' => $res->id]) }}"
+                               class="w-full block bg-red-600 text-white text-center py-5 rounded-2xl text-[10px] font-black uppercase tracking-[0.3em] hover:bg-red-700 transition-all shadow-2xl shadow-red-100">
+                                KIRIM ULANG BUKTI
+                            </a>
+                            @endif
+
+                            @if($statusBayar === 'Lunas' && $res->pembayaran)
+                            <a href="{{ route('pembeli.pembayaran.invoice', $res->pembayaran->id) }}"
+                               class="w-full block bg-white border-2 border-slate-900 text-slate-900 text-center py-5 rounded-2xl text-[10px] font-black uppercase tracking-[0.3em] hover:bg-slate-50 transition-all">
+                                UNDUH INVOICE
+                            </a>
+                            @endif
+                        </div>
                     </div>
                 </div>
             </div>
+            @endforeach
         </div>
-        @endforeach
-    </div>
-    @endif
+        @endif
 
-</div>
+    </div>
 </div>
 @endsection

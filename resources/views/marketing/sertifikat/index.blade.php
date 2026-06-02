@@ -62,7 +62,7 @@
                 <div class="flex-grow">
                     <div class="flex flex-wrap items-center gap-2 mb-2">
                         <h3 class="font-bold text-slate-900 text-base">
-                            lahan #{{ $res->kavling->nomor_kavling }}
+                            lahan #{{ $res->lahan->nomor_lahan }}
                         </h3>
                         <span class="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase
                             {{ $sudahTerbit ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700' }}">
@@ -81,8 +81,8 @@
                         </div>
                         <div>
                             <p class="text-[10px] text-slate-400 uppercase tracking-wider font-semibold mb-0.5">Cluster</p>
-                            <p class="font-semibold text-slate-800">{{ $res->kavling->cluster->nama_cluster }}</p>
-                            <p class="text-xs text-slate-400">{{ $res->kavling->tipe_kavling }}</p>
+                            <p class="font-semibold text-slate-800">{{ $res->lahan->cluster->nama_cluster }}</p>
+                            <p class="text-xs text-slate-400">{{ $res->lahan->tipe_lahan }}</p>
                         </div>
                         <div>
                             <p class="text-[10px] text-slate-400 uppercase tracking-wider font-semibold mb-0.5">Jenazah</p>
@@ -94,7 +94,7 @@
                             <p class="text-[10px] text-slate-400 uppercase tracking-wider font-semibold mb-0.5">Invoice</p>
                             <p class="font-semibold text-slate-800">{{ $res->pembayaran->no_invoice ?? '-' }}</p>
                             <p class="text-xs text-slate-400">
-                                Rp {{ number_format($res->kavling->harga, 0, ',', '.') }}
+                                Rp {{ number_format($res->lahan->harga, 0, ',', '.') }}
                             </p>
                         </div>
                     </div>

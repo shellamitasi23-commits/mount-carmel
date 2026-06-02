@@ -26,27 +26,6 @@
                         </li>
 
                         @auth
-                        {{-- Kavling Dropdown --}}
-                        <li x-data="{ open: false }" class="relative">
-                            <button @click="open = !open" @click.away="open = false"
-                                    class="flex items-center gap-1 px-4 py-2 text-sm font-medium rounded-full transition-all {{ request()->routeIs('pembeli.kavling.*') ? 'bg-white text-primary shadow-sm' : 'text-gray-700 hover:text-primary hover:bg-white' }}">
-                                Kavling
-                                <span class="material-icons text-xs" :class="open ? 'rotate-180' : ''" style="transition: transform .2s">expand_more</span>
-                            </button>
-                            <div x-show="open" x-transition style="display:none"
-                                 class="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-52 bg-white border border-gray-100 rounded-2xl shadow-xl py-2 z-50">
-                                {{-- Arahkan ke cluster.index dulu karena kavling.index butuh cluster_id --}}
-                                <a href="{{ route('cluster.index') }}"
-                                   class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50">
-                                    <span class="material-icons text-primary" style="font-size:18px">search</span> Cari Kavling
-                                </a>
-                                <a href="{{ route('pembeli.kavling.index') }}"
-                                   class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 {{ request()->routeIs('pembeli.kavling.index') ? 'bg-primary/5 text-primary font-semibold' : '' }}">
-                                    <span class="material-icons text-primary" style="font-size:18px">layers</span> Semua Tipe
-                                </a>
-                            </div>
-                        </li>
-
                         {{-- Reservasi Dropdown --}}
                         <li x-data="{ open: false }" class="relative">
                             <button @click="open = !open" @click.away="open = false"
@@ -56,7 +35,6 @@
                             </button>
                             <div x-show="open" x-transition style="display:none"
                                  class="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-52 bg-white border border-gray-100 rounded-2xl shadow-xl py-2 z-50">
-                                {{-- index = riwayat, TANPA parameter, langsung bisa diklik --}}
                                 <a href="{{ route('pembeli.reservasi.index') }}"
                                    class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 {{ request()->routeIs('pembeli.reservasi.index') ? 'bg-primary/5 text-primary font-semibold' : '' }}">
                                     <span class="material-icons text-primary" style="font-size:18px">list_alt</span> Riwayat Reservasi
@@ -64,23 +42,6 @@
                                 <a href="{{ route('cluster.index') }}"
                                    class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50">
                                     <span class="material-icons text-primary" style="font-size:18px">add_circle</span> Pesan Baru
-                                </a>
-                            </div>
-                        </li>
-
-                        {{-- Pembayaran Dropdown --}}
-                        <li x-data="{ open: false }" class="relative">
-                            <button @click="open = !open" @click.away="open = false"
-                                    class="flex items-center gap-1 px-4 py-2 text-sm font-medium rounded-full transition-all {{ request()->routeIs('pembeli.pembayaran.*') ? 'bg-white text-primary shadow-sm' : 'text-gray-700 hover:text-primary hover:bg-white' }}">
-                                Pembayaran
-                                <span class="material-icons text-xs" :class="open ? 'rotate-180' : ''" style="transition: transform .2s">expand_more</span>
-                            </button>
-                            <div x-show="open" x-transition style="display:none"
-                                 class="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-52 bg-white border border-gray-100 rounded-2xl shadow-xl py-2 z-50">
-                                {{-- index = riwayat + invoice, TANPA parameter, langsung bisa diklik --}}
-                                <a href="{{ route('pembeli.pembayaran.index') }}"
-                                   class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 {{ request()->routeIs('pembeli.pembayaran.index') ? 'bg-primary/5 text-primary font-semibold' : '' }}">
-                                    <span class="material-icons text-primary" style="font-size:18px">receipt_long</span> Riwayat & Invoice
                                 </a>
                             </div>
                         </li>
@@ -115,6 +76,9 @@
                                  class="absolute top-full right-0 mt-3 w-44 bg-white border border-gray-100 rounded-2xl shadow-xl py-2 z-50">
                                 <a href="{{ route('profil.index') }}" class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50">
                                     <span class="material-icons" style="font-size:18px">manage_accounts</span> Profil
+                                </a>
+                                <a href="{{ route('profil.index', ['tab' => 'pembayaran']) }}" class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50">
+                                    <span class="material-icons text-amber-500" style="font-size:18px">payments</span> Pembayaran Saya
                                 </a>
                                 <hr class="my-1 border-gray-100" />
                                 <form method="POST" action="{{ route('logout') }}">
@@ -174,21 +138,6 @@
                 </a>
 
                 @auth
-                    {{-- Kavling --}}
-                    <div x-data="{ sub: false }">
-                        <button @click="sub = !sub" class="w-full flex items-center justify-between px-4 py-3.5 rounded-xl text-[15px] font-medium transition-colors {{ request()->routeIs('pembeli.kavling.*') ? 'bg-primary/10 text-primary' : 'text-gray-600 hover:bg-gray-50' }}">
-                            <div class="flex items-center gap-3">
-                                <span class="material-icons text-[20px] {{ request()->routeIs('pembeli.kavling.*') ? 'text-primary' : 'text-gray-400' }}">layers</span>
-                                Kavling
-                            </div>
-                            <span class="material-icons text-[20px] transition-transform duration-300" :class="sub ? 'rotate-180' : ''">expand_more</span>
-                        </button>
-                        <div x-show="sub" x-transition class="flex flex-col space-y-1 pl-12 pr-4 pt-1 pb-2">
-                            <a href="{{ route('cluster.index') }}" class="block py-2 text-sm text-gray-500 hover:text-gray-800">Cari Kavling</a>
-                            <a href="{{ route('pembeli.kavling.index') }}" class="block py-2 text-sm {{ request()->routeIs('pembeli.kavling.index') ? 'text-primary font-bold' : 'text-gray-500 hover:text-gray-800' }}">Semua Tipe</a>
-                        </div>
-                    </div>
-
                     {{-- Reservasi --}}
                     <div x-data="{ sub: {{ request()->routeIs('pembeli.reservasi.*') ? 'true' : 'false' }} }">
                         <button @click="sub = !sub" class="w-full flex items-center justify-between px-4 py-3.5 rounded-xl text-[15px] font-medium transition-colors {{ request()->routeIs('pembeli.reservasi.*') ? 'bg-primary/10 text-primary' : 'text-gray-600 hover:bg-gray-50' }}">
@@ -199,7 +148,6 @@
                             <span class="material-icons text-[20px] transition-transform duration-300" :class="sub ? 'rotate-180' : ''">expand_more</span>
                         </button>
                         <div x-show="sub" x-transition class="flex flex-col space-y-1 pl-12 pr-4 pt-1 pb-2">
-                            {{-- index TANPA parameter → aman diklik --}}
                             <a href="{{ route('pembeli.reservasi.index') }}" class="block py-2 text-sm {{ request()->routeIs('pembeli.reservasi.index') ? 'text-primary font-bold' : 'text-gray-500 hover:text-gray-800' }}">
                                 Riwayat Reservasi
                             </a>
@@ -208,23 +156,10 @@
                             </a>
                         </div>
                     </div>
-
-                    {{-- Pembayaran --}}
-                    <div x-data="{ sub: {{ request()->routeIs('pembeli.pembayaran.*') ? 'true' : 'false' }} }">
-                        <button @click="sub = !sub" class="w-full flex items-center justify-between px-4 py-3.5 rounded-xl text-[15px] font-medium transition-colors {{ request()->routeIs('pembeli.pembayaran.*') ? 'bg-primary/10 text-primary' : 'text-gray-600 hover:bg-gray-50' }}">
-                            <div class="flex items-center gap-3">
-                                <span class="material-icons text-[20px] {{ request()->routeIs('pembeli.pembayaran.*') ? 'text-primary' : 'text-gray-400' }}">payments</span>
-                                Pembayaran
-                            </div>
-                            <span class="material-icons text-[20px] transition-transform duration-300" :class="sub ? 'rotate-180' : ''">expand_more</span>
-                        </button>
-                        <div x-show="sub" x-transition class="flex flex-col space-y-1 pl-12 pr-4 pt-1 pb-2">
-                            {{-- index TANPA parameter → aman diklik --}}
-                            <a href="{{ route('pembeli.pembayaran.index') }}" class="block py-2 text-sm {{ request()->routeIs('pembeli.pembayaran.index') ? 'text-primary font-bold' : 'text-gray-500 hover:text-gray-800' }}">
-                                Riwayat & Invoice
-                            </a>
-                        </div>
-                    </div>
+                    <a href="{{ route('profil.index', ['tab' => 'pembayaran']) }}" class="flex items-center gap-3 px-4 py-3.5 rounded-xl text-[15px] font-medium transition-colors {{ request()->get('tab') === 'pembayaran' ? 'bg-primary/10 text-primary' : 'text-gray-600 hover:bg-gray-50' }}">
+                        <span class="material-icons text-[20px] {{ request()->get('tab') === 'pembayaran' ? 'text-primary' : 'text-gray-400' }}">payments</span>
+                        Pembayaran Saya
+                    </a>
                 @endauth
 
                 <a href="{{ route('kontak') }}" class="flex items-center gap-3 px-4 py-3.5 rounded-xl text-[15px] font-medium transition-colors {{ request()->routeIs('kontak') ? 'bg-primary/10 text-primary' : 'text-gray-600 hover:bg-gray-50' }}">

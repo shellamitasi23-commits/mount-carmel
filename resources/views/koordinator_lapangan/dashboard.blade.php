@@ -4,7 +4,7 @@
 @section('content')
 <div class="mb-8">
     <h1 class="text-2xl font-bold text-slate-800">Manajemen Lapangan</h1>
-    <p class="text-xs text-slate-500 mt-1">Kelola data Cluster makam, plot Lahan (Kavling), dan pantau ketersediaan lahan secara real-time.</p>
+    <p class="text-xs text-slate-500 mt-1">Kelola data Cluster makam, plot Lahan (Lahan), dan pantau ketersediaan lahan secara real-time.</p>
 </div>
 
 {{-- Stats Grid --}}
@@ -29,7 +29,7 @@
             <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Total Lahan</p>
             <h3 class="text-xl font-extrabold text-slate-800 mt-2">{{ $stats['total_lahan'] }} Unit</h3>
             <span class="inline-flex items-center gap-1 mt-2 text-[10px] font-bold text-slate-500">
-                Kavling Terdaftar
+                Lahan Terdaftar
             </span>
         </div>
         <div class="w-11 h-11 rounded-xl bg-slate-900/5 text-slate-900 flex items-center justify-center">
@@ -107,8 +107,8 @@
                 <div class="flex items-center gap-3 pb-3 border-b border-slate-50 last:border-b-0 last:pb-0">
                     <span class="material-icons-outlined text-slate-400">landscape</span>
                     <div class="flex-1 min-w-0">
-                        <p class="text-xs font-bold text-slate-800">Lahan #{{ $alloc->kavling?->nomor_kavling ?? '-' }}</p>
-                        <p class="text-[10px] text-slate-400 truncate">{{ $alloc->kavling?->cluster?->nama_cluster ?? 'N/A' }} • {{ $alloc->created_at->diffForHumans() }}</p>
+                        <p class="text-xs font-bold text-slate-800">Lahan #{{ $alloc->lahan?->nomor_lahan ?? '-' }}</p>
+                        <p class="text-[10px] text-slate-400 truncate">{{ $alloc->lahan?->cluster?->nama_cluster ?? 'N/A' }} • {{ $alloc->created_at->diffForHumans() }}</p>
                     </div>
                     <div>
                         <span class="px-2 py-0.5 rounded text-[8px] font-black uppercase

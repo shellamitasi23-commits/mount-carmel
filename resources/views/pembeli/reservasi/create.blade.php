@@ -1,230 +1,224 @@
 @extends('layouts.master')
-@section('title', 'Form Reservasi — Mount Carmel')
+@section('title', 'Reservasi — Mount Carmel')
 
 @section('content')
-<div class="min-h-screen bg-[#F3F4F6] pt-28 pb-20">
-<div class="max-w-4xl mx-auto px-6">
+<div class="min-h-screen bg-white dark:bg-gray-950 pt-32 pb-32">
+    <div class="max-w-6xl mx-auto px-8">
 
-    {{-- Breadcrumb --}}
-    <nav class="flex items-center gap-2 text-sm text-gray-400 mb-8" data-aos="fade-down">
-        <a href="{{ route('home') }}" class="hover:text-gray-600 transition-colors">Beranda</a>
-        <span class="material-icons text-xs">chevron_right</span>
-        <a href="{{ route('cluster.index') }}" class="hover:text-gray-600 transition-colors">Cluster</a>
-        <span class="material-icons text-xs">chevron_right</span>
-        <a href="{{ route('pembeli.kavling.index', ['cluster_id' => $kavling->cluster_id]) }}"
-           class="hover:text-gray-600 transition-colors">{{ $kavling->cluster->nama_cluster }}</a>
-        <span class="material-icons text-xs">chevron_right</span>
-        <a href="{{ route('pembeli.kavling.nomor', ['cluster_id' => $kavling->cluster_id, 'tipe_kavling' => $kavling->tipe_kavling]) }}"
-           class="hover:text-gray-600 transition-colors">{{ $kavling->tipe_kavling }}</a>
-        <span class="material-icons text-xs">chevron_right</span>
-        <span class="text-gray-700 font-semibold">Form Reservasi</span>
-    </nav>
+        {{-- Minimalist Breadcrumb --}}
+        <nav class="flex items-center gap-4 text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 mb-12" data-aos="fade-down">
+            <a href="{{ route('home') }}" class="hover:text-primary transition-colors">Beranda</a>
+            <span class="text-gray-200 dark:text-gray-800">/</span>
+            <a href="{{ route('cluster.index') }}" class="hover:text-primary transition-colors">Cluster</a>
+            <span class="text-gray-200 dark:text-gray-800">/</span>
+            <a href="{{ route('pembeli.lahan.index', ['cluster_id' => $lahan->cluster_id]) }}" class="hover:text-primary transition-colors">{{ $lahan->cluster->nama_cluster }}</a>
+            <span class="text-gray-200 dark:text-gray-800">/</span>
+            <span class="text-gray-900 dark:text-white">Isi Data Reservasi</span>
+        </nav>
 
-    {{-- Progress --}}
-    <div class="flex items-center mb-10" data-aos="fade-down" data-aos-delay="50">
-        @foreach([
-            ['label'=>'Pilih Lahan','done'=>true,'active'=>false],
-            ['label'=>'Pilih Nomor','done'=>true,'active'=>false],
-            ['label'=>'Isi Data','done'=>false,'active'=>true],
-            ['label'=>'Pembayaran','done'=>false,'active'=>false],
-        ] as $s)
-        <div class="flex items-center {{ !$loop->last ? 'flex-1' : '' }}">
-            <div class="flex flex-col items-center">
-                <div class="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold border-2
-                    {{ $s['active'] ? 'bg-gray-900 border-gray-900 text-white' :
-                       ($s['done'] ? 'bg-emerald-500 border-emerald-500 text-white' : 'border-gray-300 text-gray-400 bg-white') }}">
-                    @if($s['done'])<span class="material-icons text-xs">check</span>@else{{ $loop->index + 1 }}@endif
+        {{-- Minimalist Progress Bar --}}
+        <div class="flex items-center justify-between max-w-2xl mx-auto mb-20" data-aos="fade-down">
+            @foreach([
+                ['label'=>'Pilih Lahan','done'=>true,'active'=>false],
+                ['label'=>'Pilih Nomor','done'=>true,'active'=>false],
+                ['label'=>'Isi Data','done'=>false,'active'=>true],
+                ['label'=>'Pembayaran','done'=>false,'active'=>false],
+            ] as $s)
+            <div class="flex flex-col items-center gap-3 relative">
+                <div class="w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-black
+                    {{ $s['active'] ? 'bg-primary text-white ring-4 ring-primary/10' :
+                       ($s['done'] ? 'bg-gray-900 text-white dark:bg-white dark:text-gray-900' : 'bg-gray-100 text-gray-300 dark:bg-gray-900 dark:text-gray-700') }}">
+                    {{ $loop->index + 1 }}
                 </div>
-                <span class="text-[10px] font-semibold mt-1 whitespace-nowrap
-                    {{ $s['active'] ? 'text-gray-900' : ($s['done'] ? 'text-emerald-600' : 'text-gray-400') }}">
+                <span class="text-[9px] font-black uppercase tracking-widest whitespace-nowrap
+                    {{ $s['active'] ? 'text-primary' : ($s['done'] ? 'text-gray-900 dark:text-white' : 'text-gray-300 dark:text-gray-700') }}">
                     {{ $s['label'] }}
                 </span>
             </div>
             @if(!$loop->last)
-            <div class="flex-1 h-px {{ $s['done'] ? 'bg-emerald-300' : 'bg-gray-300' }} mx-3 mb-5"></div>
+            <div class="flex-1 h-px bg-gray-100 dark:bg-gray-900 mx-4 mb-8"></div>
             @endif
-        </div>
-        @endforeach
-    </div>
-
-    @if($errors->any())
-    <div class="mb-6 bg-red-50 border border-red-200 rounded-xl p-4" data-aos="fade-up">
-        <ul class="text-red-700 text-sm space-y-1">
-            @foreach($errors->all() as $err)
-            <li class="flex items-center gap-2"><span class="material-icons text-sm">error_outline</span>{{ $err }}</li>
             @endforeach
-        </ul>
-    </div>
-    @endif
-
-    @if(session('error'))
-    <div class="mb-6 bg-red-50 border border-red-200 text-red-700 px-5 py-4 rounded-xl text-sm flex items-center gap-2">
-        <span class="material-icons text-sm">error</span> {{ session('error') }}
-    </div>
-    @endif
-
-    <div class="flex flex-col lg:flex-row gap-8">
-
-        {{-- KIRI: Form --}}
-        <div class="flex-1" data-aos="fade-up">
-            <div class="mb-6">
-                <h1 class="text-3xl font-bold text-gray-900 mb-1">Isi Data Reservasi</h1>
-                <p class="text-gray-500 text-sm">Lengkapi data sesuai dokumen resmi. Semua data tercatat di Sertifikat Lahan.</p>
-            </div>
-
-            <form action="{{ route('pembeli.reservasi.store') }}" method="POST" enctype="multipart/form-data"
-                  x-data="{ jenis: '{{ old('jenis_reservasi', 'at-need') }}' }"
-                  class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 space-y-5">
-                @csrf
-                <input type="hidden" name="kavling_id" value="{{ $kavling->id }}">
-                <input type="hidden" name="jenis_reservasi" x-bind:value="jenis">
-
-                {{-- Toggle Jenis Reservasi --}}
-                <div>
-                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-3">
-                        Jenis Pemesanan <span class="text-red-400">*</span>
-                    </label>
-                    <div class="grid grid-cols-2 gap-3">
-                        <label class="flex flex-col gap-2 p-4 border-2 rounded-xl cursor-pointer transition-all"
-                               :class="jenis === 'at-need' ? 'border-gray-900 bg-gray-50' : 'border-gray-200 hover:border-gray-300'"
-                               @click="jenis = 'at-need'">
-                            <div class="flex items-center justify-between">
-                                <span class="material-icons text-xl" :class="jenis === 'at-need' ? 'text-gray-900' : 'text-gray-300'">local_hospital</span>
-                                <div class="w-4 h-4 rounded-full border-2 flex items-center justify-center" :class="jenis === 'at-need' ? 'border-gray-900' : 'border-gray-300'">
-                                    <div class="w-2 h-2 rounded-full bg-gray-900" :class="jenis === 'at-need' ? 'opacity-100' : 'opacity-0'"></div>
-                                </div>
-                            </div>
-                            <div>
-                                <p class="font-bold text-sm text-gray-900">Langsung (At-Need)</p>
-                                <p class="text-xs text-gray-400 mt-0.5">Jenazah sudah ada, segera dimakamkan</p>
-                            </div>
-                        </label>
-                        <label class="flex flex-col gap-2 p-4 border-2 rounded-xl cursor-pointer transition-all"
-                               :class="jenis === 'pre-need' ? 'border-gray-900 bg-gray-50' : 'border-gray-200 hover:border-gray-300'"
-                               @click="jenis = 'pre-need'">
-                            <div class="flex items-center justify-between">
-                                <span class="material-icons text-xl" :class="jenis === 'pre-need' ? 'text-gray-900' : 'text-gray-300'">bookmark_add</span>
-                                <div class="w-4 h-4 rounded-full border-2 flex items-center justify-center" :class="jenis === 'pre-need' ? 'border-gray-900' : 'border-gray-300'">
-                                    <div class="w-2 h-2 rounded-full bg-gray-900" :class="jenis === 'pre-need' ? 'opacity-100' : 'opacity-0'"></div>
-                                </div>
-                            </div>
-                            <div>
-                                <p class="font-bold text-sm text-gray-900">Persiapan (Pre-Need)</p>
-                                <p class="text-xs text-gray-400 mt-0.5">Pesan sekarang, jenazah menyusul</p>
-                            </div>
-                        </label>
-                    </div>
-                    <div x-show="jenis === 'pre-need'" x-transition
-                         class="mt-3 bg-blue-50 border border-blue-100 rounded-xl px-4 py-3 text-xs text-blue-700 flex items-start gap-2">
-                        <span class="material-icons text-sm mt-0.5">info</span>
-                        Nama jenazah dan tanggal tidak wajib diisi sekarang, bisa dilengkapi nanti melalui admin.
-                    </div>
-                </div>
-
-                {{-- Nama Jenazah --}}
-                <div>
-                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">
-                        Nama Lengkap Jenazah
-                        <span x-show="jenis === 'at-need'" class="text-red-400">*</span>
-                        <span x-show="jenis === 'pre-need'" class="text-gray-400 normal-case font-normal">(opsional)</span>
-                    </label>
-                    <input type="text" name="nama_jenazah" value="{{ old('nama_jenazah') }}"
-                        :required="jenis === 'at-need'"
-                        placeholder="Sesuai KTP / Sertifikat Kematian"
-                        class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-800 outline-none focus:border-gray-900 focus:ring-2 focus:ring-gray-900/10 transition-all placeholder:text-gray-400">
-                </div>
-
-                {{-- Tanggal Dimakamkan --}}
-                <div>
-                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">
-                        Tanggal Rencana Dimakamkan
-                        <span x-show="jenis === 'at-need'" class="text-red-400">*</span>
-                        <span x-show="jenis === 'pre-need'" class="text-gray-400 normal-case font-normal">(opsional)</span>
-                    </label>
-                    <input type="date" name="tanggal_dimakamkan" value="{{ old('tanggal_dimakamkan') }}"
-                        :required="jenis === 'at-need'"
-                        min="{{ date('Y-m-d') }}"
-                        class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-800 outline-none focus:border-gray-900 focus:ring-2 focus:ring-gray-900/10 transition-all">
-                </div>
-
-                {{-- Alamat --}}
-                <div>
-                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">
-                        Alamat Lengkap Pemesan <span class="text-red-400">*</span>
-                    </label>
-                    <textarea name="alamat_pemesan" rows="3" required
-                        placeholder="Alamat lengkap keluarga / pemesan"
-                        class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-800 outline-none focus:border-gray-900 focus:ring-2 focus:ring-gray-900/10 transition-all resize-none placeholder:text-gray-400">{{ old('alamat_pemesan', $user->alamat) }}</textarea>
-                    <p class="text-xs text-gray-400 mt-1">Otomatis diisi dari profil, bisa diubah.</p>
-                </div>
-
-                {{-- Tenor Cicilan --}}
-                <div>
-                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">
-                        Tenor Cicilan <span class="text-red-400">*</span>
-                    </label>
-                    <select name="tenor_cicilan" required
-                        class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-800 outline-none focus:border-gray-900 focus:ring-2 focus:ring-gray-900/10 transition-all">
-                        <option value="">Pilih Tenor</option>
-                        @for($i = 1; $i <= 24; $i++)
-                        <option value="{{ $i }}" {{ old('tenor_cicilan') == $i ? 'selected' : '' }}>{{ $i }} Bulan</option>
-                        @endfor
-                    </select>
-                    <p class="text-xs text-gray-400 mt-1">Maksimal 24 bulan. DP 20% dari Harga Lahan.</p>
-                </div>
-
-                {{-- Kontak Kerabat --}}
-                <div>
-                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">
-                        Kontak Kerabat (Opsional)
-                    </label>
-                    <input type="text" name="kontak_kerabat" value="{{ old('kontak_kerabat') }}"
-                        placeholder="No. HP atau email kerabat jenazah"
-                        class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-800 outline-none focus:border-gray-900 focus:ring-2 focus:ring-gray-900/10 transition-all placeholder:text-gray-400">
-                    <p class="text-xs text-gray-400 mt-1">Untuk notifikasi jika cicilan belum lunas saat at-need.</p>
-                </div>
-
-                {{-- Tombol --}}
-                <div class="flex flex-col sm:flex-row gap-3 pt-2">
-                    <a href="{{ route('pembeli.kavling.nomor', ['cluster_id' => $kavling->cluster_id, 'tipe_kavling' => $kavling->tipe_kavling]) }}"
-                       class="btn-press flex-none px-6 py-3 border-2 border-gray-200 rounded-xl text-sm font-semibold text-gray-500 hover:border-gray-400 transition-colors text-center flex items-center justify-center gap-2">
-                        <span class="material-icons text-sm">arrow_back</span> Ganti Nomor
-                    </a>
-                    <button type="submit"
-                        class="btn-press btn-ripple flex-1 bg-gray-900 hover:bg-gray-800 text-white py-3 rounded-xl text-sm font-bold transition-colors flex items-center justify-center gap-2 shadow-lg shadow-gray-900/20">
-                        Lanjut ke Pembayaran <span class="material-icons text-sm">arrow_forward</span>
-                    </button>
-                </div>
-            </form>
         </div>
 
-        {{-- KANAN: Info Kavling --}}
-        <div class="lg:w-72 shrink-0" data-aos="fade-left">
-            <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 sticky top-28">
-                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-4">Kavling Dipilih</p>
-                <div class="{{ $kavling->cluster->kategori === 'Muslim' ? 'bg-emerald-50 border-emerald-100' : 'bg-amber-50 border-amber-100' }} border rounded-xl p-4 mb-5">
-                    <p class="text-[10px] font-bold {{ $kavling->cluster->kategori === 'Muslim' ? 'text-emerald-600' : 'text-amber-600' }} uppercase tracking-wider mb-0.5">Nomor</p>
-                    <h3 class="text-2xl font-bold text-gray-900">#{{ $kavling->nomor_kavling }}</h3>
-                </div>
-                <div class="space-y-2.5 text-sm mb-5">
-                    <div class="flex justify-between"><span class="text-gray-400">Cluster</span><span class="font-semibold text-gray-800 text-right max-w-[150px] leading-tight">{{ $kavling->cluster->nama_cluster }}</span></div>
-                    <div class="flex justify-between"><span class="text-gray-400">Lahan</span><span class="font-semibold text-gray-800">{{ $kavling->tipe_kavling }}</span></div>
-                    <div class="flex justify-between"><span class="text-gray-400">Ukuran</span><span class="font-semibold text-gray-800">{{ $kavling->ukuran }}</span></div>
-                    <div class="flex justify-between"><span class="text-gray-400">Kapasitas</span><span class="font-semibold text-gray-800">{{ $kavling->kapasitas }} orang</span></div>
-                </div>
-                <div class="pt-4 border-t border-gray-100 flex justify-between items-center">
-                    <span class="text-sm text-gray-400">Total Harga</span>
-                    <span class="font-bold text-gray-900">Rp {{ number_format($kavling->harga, 0, ',', '.') }}</span>
-                </div>
-                <div class="mt-4 pt-4 border-t border-gray-100">
-                    <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Pemesan</p>
-                    <p class="text-sm font-bold text-gray-800">{{ $user->name }}</p>
-                    <p class="text-xs text-gray-400">{{ $user->email }}</p>
+        @if($errors->any())
+        <div class="mb-12 p-6 bg-red-50 dark:bg-red-950/20 border-l-4 border-red-500" data-aos="fade-up">
+            <ul class="space-y-2">
+                @foreach($errors->all() as $err)
+                <li class="text-xs font-bold uppercase tracking-widest text-red-600 dark:text-red-400">{{ $err }}</li>
+                @endforeach
+            </ul>
+        </div>
+        @endif
+
+        <div class="flex flex-col lg:flex-row gap-16 lg:gap-24">
+
+            {{-- LEFT: Form Section --}}
+            <div class="flex-1" data-aos="fade-up">
+                <header class="mb-12">
+                    <h1 class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white tracking-tighter mb-4 leading-none">
+                        Lengkapi Data Reservasi
+                    </h1>
+                    <p class="text-gray-400 dark:text-gray-500 text-lg font-light leading-relaxed">
+                        Mohon pastikan semua informasi sesuai dengan kartu identitas resmi untuk kelengkapan administrasi sertifikat lahan.
+                    </p>
+                </header>
+
+                <form action="{{ route('pembeli.reservasi.store') }}" method="POST" enctype="multipart/form-data" 
+                      class="space-y-12"
+                      x-data="{ metode: 'tunai' }">
+                    @csrf
+                    <input type="hidden" name="lahan_id" value="{{ $lahan->id }}">
+
+                    <div class="grid grid-cols-1 gap-12">
+                        {{-- Dokumen KTP --}}
+                        <div class="group">
+                            <label class="block text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 group-focus-within:text-primary transition-colors mb-4">
+                                Foto KTP Pemesan <span class="text-primary">*</span>
+                            </label>
+                            <input type="file" name="dokumen_ktp" accept=".jpg,.jpeg,.png,.pdf" required
+                                class="w-full px-6 py-5 bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-2xl text-sm text-gray-900 dark:text-white focus:border-primary focus:ring-0 transition-all">
+                            <p class="text-[10px] font-bold text-gray-300 mt-3 uppercase tracking-widest">Format: JPG, PNG, PDF (Maks. 2MB)</p>
+                        </div>
+
+                        {{-- Metode Pembayaran --}}
+                        <div class="group">
+                            <label class="block text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 mb-6">
+                                Metode Pembayaran <span class="text-primary">*</span>
+                            </label>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <label class="relative flex items-center p-6 bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-2xl cursor-pointer transition-all hover:border-primary/30"
+                                       :class="metode === 'tunai' ? 'ring-2 ring-primary border-primary bg-white dark:bg-gray-800 shadow-lg shadow-primary/5' : ''">
+                                    <input type="radio" name="metode_pembayaran" value="tunai" x-model="metode" class="hidden">
+                                    <div>
+                                        <p class="text-sm font-bold text-gray-900 dark:text-white mb-1 uppercase tracking-wider">Bayar Langsung</p>
+                                        <p class="text-[10px] font-medium text-gray-400 uppercase tracking-widest">Pelunasan penuh di awal</p>
+                                    </div>
+                                </label>
+                                <label class="relative flex items-center p-6 bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-2xl cursor-pointer transition-all hover:border-primary/30"
+                                       :class="metode === 'cicilan' ? 'ring-2 ring-primary border-primary bg-white dark:bg-gray-800 shadow-lg shadow-primary/5' : ''">
+                                    <input type="radio" name="metode_pembayaran" value="cicilan" x-model="metode" class="hidden">
+                                    <div>
+                                        <p class="text-sm font-bold text-gray-900 dark:text-white mb-1 uppercase tracking-wider">Cicilan</p>
+                                        <p class="text-[10px] font-medium text-gray-400 uppercase tracking-widest">DP 20% & angsuran bulanan</p>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                            {{-- Tenor --}}
+                            <div class="group" x-show="metode === 'cicilan'" x-transition x-cloak>
+                                <label class="block text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 group-focus-within:text-primary transition-colors mb-4">
+                                    Tenor Cicilan <span class="text-primary">*</span>
+                                </label>
+                                <select name="tenor_cicilan" :required="metode === 'cicilan'"
+                                    class="w-full px-6 py-5 bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-2xl text-lg font-medium text-gray-900 dark:text-white focus:border-primary focus:ring-0 transition-all appearance-none">
+                                    <option value="">Pilih Jangka Waktu</option>
+                                    @for($i = 1; $i <= 24; $i++)
+                                    <option value="{{ $i }}" {{ old('tenor_cicilan') == $i ? 'selected' : '' }}>{{ $i }} Bulan</option>
+                                    @endfor
+                                </select>
+                            </div>
+
+                            {{-- Kontak Kerabat --}}
+                            <div class="group">
+                                <label class="block text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 group-focus-within:text-primary transition-colors mb-4">
+                                    Kontak Kerabat <span class="text-gray-300 lowercase font-normal">(opsional)</span>
+                                </label>
+                                <input type="text" name="kontak_kerabat" value="{{ old('kontak_kerabat') }}"
+                                    placeholder="No. WhatsApp / HP"
+                                    class="w-full px-6 py-5 bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-2xl text-lg font-medium text-gray-900 dark:text-white focus:border-primary focus:ring-0 transition-all placeholder:text-gray-200 dark:placeholder:text-gray-800">
+                            </div>
+                        </div>
+
+                        {{-- Alamat --}}
+                        <div class="group">
+                            <label class="block text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 group-focus-within:text-primary transition-colors mb-4">
+                                Alamat Lengkap Pemesan <span class="text-primary">*</span>
+                            </label>
+                            <textarea name="alamat_pemesan" rows="3" required placeholder="Alamat pengiriman dokumen/sertifikat"
+                                class="w-full px-6 py-5 bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-2xl text-lg font-medium text-gray-900 dark:text-white focus:border-primary focus:ring-0 transition-all resize-none placeholder:text-gray-200 dark:placeholder:text-gray-800">{{ old('alamat_pemesan', $user->alamat) }}</textarea>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                            {{-- Nama Jenazah --}}
+                            <div class="group">
+                                <label class="block text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 group-focus-within:text-primary transition-colors mb-4">
+                                    Nama Lengkap Jenazah <span class="text-gray-300 lowercase font-normal">(opsional)</span>
+                                </label>
+                                <input type="text" name="nama_jenazah" value="{{ old('nama_jenazah') }}"
+                                    placeholder="Tulis nama lengkap sesuai KTP"
+                                    class="w-full px-6 py-5 bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-2xl text-lg font-medium text-gray-900 dark:text-white focus:border-primary focus:ring-0 transition-all placeholder:text-gray-200 dark:placeholder:text-gray-800">
+                            </div>
+
+                            {{-- Tanggal Dimakamkan --}}
+                            <div class="group">
+                                <label class="block text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 group-focus-within:text-primary transition-colors mb-4">
+                                    Rencana Tanggal Pemakaman <span class="text-gray-300 lowercase font-normal">(opsional)</span>
+                                </label>
+                                <input type="date" name="tanggal_dimakamkan" value="{{ old('tanggal_dimakamkan') }}" min="{{ date('Y-m-d') }}"
+                                    class="w-full px-6 py-5 bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-2xl text-lg font-medium text-gray-900 dark:text-white focus:border-primary focus:ring-0 transition-all">
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- Action Buttons --}}
+                    <div class="flex flex-col sm:flex-row items-center gap-8 pt-8">
+                        <button type="submit"
+                            class="w-full sm:flex-1 py-6 bg-gray-900 dark:bg-white text-white dark:text-gray-900 text-[11px] font-black uppercase tracking-[0.3em] rounded-2xl hover:bg-primary dark:hover:bg-primary dark:hover:text-white transition-all duration-300 shadow-xl shadow-gray-900/10">
+                            Lanjut ke Pembayaran
+                        </button>
+                        <a href="{{ route('pembeli.lahan.nomor', ['cluster_id' => $lahan->cluster_id, 'tipe_lahan' => $lahan->tipe_lahan]) }}"
+                           class="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors border-b border-transparent hover:border-gray-900">
+                            Ganti Nomor Kavling
+                        </a>
+                    </div>
+                </form>
+            </div>
+
+            {{-- RIGHT: Summary Sidebar --}}
+            <div class="lg:w-96 shrink-0" data-aos="fade-left">
+                <div class="sticky top-32">
+                    <div class="bg-gray-50/50 dark:bg-gray-900/50 border border-gray-100 dark:border-gray-800 rounded-[2rem] p-10">
+                        <span class="text-[9px] font-black uppercase tracking-[0.2em] text-primary block mb-10">Ringkasan Pesanan</span>
+                        
+                        <div class="space-y-10">
+                            <div>
+                                <span class="text-[9px] font-black uppercase tracking-[0.2em] text-gray-300 block mb-2">Lokasi Terpilih</span>
+                                <h3 class="text-4xl font-bold text-gray-900 dark:text-white tracking-tighter">#{{ $lahan->nomor_lahan }}</h3>
+                                <p class="text-xs font-bold text-primary mt-1 uppercase tracking-widest">{{ $lahan->tipe_lahan }}</p>
+                            </div>
+
+                            <div class="space-y-4">
+                                <div class="flex justify-between items-center border-b border-gray-100 dark:border-gray-800/50 pb-3">
+                                    <span class="text-[10px] font-bold uppercase tracking-widest text-gray-400">Cluster</span>
+                                    <span class="text-sm font-medium text-gray-900 dark:text-white">{{ $lahan->cluster->nama_cluster }}</span>
+                                </div>
+                                <div class="flex justify-between items-center border-b border-gray-100 dark:border-gray-800/50 pb-3">
+                                    <span class="text-[10px] font-bold uppercase tracking-widest text-gray-400">Dimensi</span>
+                                    <span class="text-sm font-medium text-gray-900 dark:text-white">{{ $lahan->ukuran }}</span>
+                                </div>
+                            </div>
+
+                            <div class="pt-6">
+                                <span class="text-[9px] font-black uppercase tracking-[0.2em] text-gray-300 block mb-2">Total Investasi</span>
+                                <h3 class="text-3xl font-bold text-gray-900 dark:text-white tracking-tighter font-poppins">
+                                    Rp {{ number_format($lahan->harga, 0, ',', '.') }}
+                                </h3>
+                            </div>
+
+                            <div class="pt-10 border-t border-gray-100 dark:border-gray-800/50">
+                                <span class="text-[9px] font-black uppercase tracking-[0.2em] text-gray-300 block mb-3">Identitas Pemesan</span>
+                                <p class="text-sm font-bold text-gray-900 dark:text-white mb-1">{{ $user->name }}</p>
+                                <p class="text-xs text-gray-400">{{ $user->email }}</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
 
+        </div>
     </div>
-</div>
 </div>
 @endsection

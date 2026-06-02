@@ -1,0 +1,42 @@
+/* ==========================================================================
+   MOUNT CARMEL — CORE ADMIN PANEL LAYOUT STYLESHEET
+   ========================================================================== */
+
+[x-cloak] {
+  display: none !important;
+}
+
+/* Kustomisasi scrollbar agar lebih rapi */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+
+/* Custom sidebar internal scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #f1f5f9;
+  border-radius: 10px;
+}
+.custom-scrollbar:hover::-webkit-scrollbar-thumb {
+  background: #e2e8f0;
+}
+

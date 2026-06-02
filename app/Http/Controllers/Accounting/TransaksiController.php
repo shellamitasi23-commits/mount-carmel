@@ -6,13 +6,13 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Pembayaran;
 use App\Models\Reservasi;
-use App\Models\Kavling;
+use App\Models\Lahan;
 
 class TransaksiController extends Controller
 {
     public function pembayaran(Request $request)
     {
-        $query = Pembayaran::with(['reservasi.user', 'reservasi.kavling.cluster']);
+        $query = Pembayaran::with(['reservasi.user', 'reservasi.lahan.cluster']);
 
         if ($request->filled('search')) {
             $search = $request->search;
@@ -22,11 +22,11 @@ class TransaksiController extends Controller
                         $userQuery->where('name', 'like', '%' . $search . '%')
                             ->orWhere('email', 'like', '%' . $search . '%');
                     })
-                    ->orWhereHas('reservasi.kavling', function ($kavlingQuery) use ($search) {
-                        $kavlingQuery->where('nomor_kavling', 'like', '%' . $search . '%')
-                            ->orWhere('tipe_kavling', 'like', '%' . $search . '%');
+                    ->orWhereHas('reservasi.lahan', function ($lahanQuery) use ($search) {
+                        $lahanQuery->where('nomor_lahan', 'like', '%' . $search . '%')
+                            ->orWhere('tipe_lahan', 'like', '%' . $search . '%');
                     })
-                    ->orWhereHas('reservasi.kavling.cluster', function ($clusterQuery) use ($search) {
+                    ->orWhereHas('reservasi.lahan.cluster', function ($clusterQuery) use ($search) {
                         $clusterQuery->where('nama_cluster', 'like', '%' . $search . '%');
                     });
             });
@@ -47,7 +47,7 @@ class TransaksiController extends Controller
             'status_pembayaran' => 'required|in:Lunas,Ditolak',
         ]);
 
-        $pembayaran = Pembayaran::with(['reservasi', 'reservasi.kavling'])->findOrFail($id);
+        $pembayaran = Pembayaran::with(['reservasi', 'reservasi.lahan'])->findOrFail($id);
 
         $pembayaran->update(['status_pembayaran' => $request->status_pembayaran]);
 
@@ -55,7 +55,7 @@ class TransaksiController extends Controller
             ->update(['status_pembayaran' => $request->status_pembayaran]);
 
         if ($request->status_pembayaran === 'Lunas') {
-            Kavling::where('id', $pembayaran->reservasi->kavling_id)
+            Lahan::where('id', $pembayaran->reservasi->lahan_id)
                 ->update(['status' => 'Terjual']);
 
             Reservasi::where('id', $pembayaran->reservasi_id)
@@ -63,7 +63,7 @@ class TransaksiController extends Controller
         }
 
         if ($request->status_pembayaran === 'Ditolak') {
-            Kavling::where('id', $pembayaran->reservasi->kavling_id)
+            Lahan::where('id', $pembayaran->reservasi->lahan_id)
                 ->update(['status' => 'Tersedia']);
 
             Reservasi::where('id', $pembayaran->reservasi_id)

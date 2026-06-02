@@ -3,7 +3,7 @@
 <aside :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'" class="fixed inset-y-0 left-0 z-30 w-60 bg-white border-r border-slate-100 transition-transform duration-300 lg:translate-x-0 lg:static lg:inset-auto flex flex-col h-full shadow-sm">
 
     <div class="p-5 pb-4 border-b border-slate-50 mb-2">
-        <p class="text-[10px] text-slate-400 mb-0.5 font-bold uppercase tracking-widest italic">
+        <p class="text-[10px] text-slate-400 mb-0.5 font-bold uppercase tracking-widest">
             @php
                 $role = auth()->user()->role;
                 $roleLabel = str_replace('_', ' ', $role);
@@ -46,10 +46,17 @@
                 {{ in_array($role, ['marketing', 'koordinator_lapangan']) ? 'Data Cluster' : 'View Cluster' }}
             </a>
 
-            <a href="{{ route($role . '.kavling.index') }}" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-semibold transition-all {{ request()->routeIs('*.kavling.*') ? 'bg-slate-900 text-white shadow-sm' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800' }}">
+            <a href="{{ route($role . '.lahan.index') }}" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-semibold transition-all {{ request()->routeIs('*.lahan.*') ? 'bg-slate-900 text-white shadow-sm' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800' }}">
                 <span class="material-icons-outlined text-[18px]">crop_square</span>
                 {{ in_array($role, ['marketing', 'koordinator_lapangan']) ? 'Data Lahan' : 'View Lahan' }}
             </a>
+
+            @if(in_array($role, ['marketing', 'manajer']))
+            <a href="{{ route('marketing.jenazah.index') }}" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-semibold transition-all {{ request()->routeIs('*.jenazah.*') ? 'bg-slate-900 text-white shadow-sm' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800' }}">
+                <span class="material-icons-outlined text-[18px]">person</span>
+                Data Jenazah
+            </a>
+            @endif
         @endif
 
         {{-- ─── KELOLA HARGA (ACCOUNTING ONLY) ────────────────────────── --}}
@@ -117,6 +124,11 @@
     </nav>
 
     <div class="p-3 border-t border-slate-50">
+        <a href="{{ route('admin.profil.index') }}" class="flex items-center gap-2.5 px-3 py-2 text-xs font-bold text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-all mb-1 {{ request()->routeIs('admin.profil.*') ? 'bg-slate-900 text-white shadow-sm' : '' }}">
+            <span class="material-icons-outlined text-[18px]">account_circle</span>
+            Profile Saya
+        </a>
+
         <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">@csrf</form>
         <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="flex items-center gap-2.5 px-3 py-2 text-xs font-bold text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all group">
             <span class="material-icons-outlined text-[18px] group-hover:rotate-12 transition-transform">logout</span>
@@ -124,10 +136,3 @@
         </a>
     </div>
 </aside>
-
-<style>
-    .custom-scrollbar::-webkit-scrollbar { width: 4px; }
-    .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
-    .custom-scrollbar::-webkit-scrollbar-thumb { background: #f1f5f9; border-radius: 10px; }
-    .custom-scrollbar:hover::-webkit-scrollbar-thumb { background: #e2e8f0; }
-</style>

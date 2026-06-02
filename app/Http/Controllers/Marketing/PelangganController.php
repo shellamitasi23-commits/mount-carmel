@@ -9,9 +9,23 @@ use Illuminate\Support\Facades\Hash;
 
 class PelangganController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $pembelis = User::where('role', 'pembeli')->latest()->get();
+        $query = User::where('role', 'pembeli');
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'like', '%' . $search . '%')
+                  ->orWhere('email', 'like', '%' . $search . '%')
+                  ->orWhere('no_telepon', 'like', '%' . $search . '%');
+            });
+        }
+
+        $pembelis = $query->latest()
+            ->paginate(50)
+            ->appends($request->all());
+
         return view('marketing.pelanggan.index', compact('pembelis'));
     }
 

@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Reservasi;
 use App\Models\Pembayaran;
-use App\Models\Kavling;
+use App\Models\Lahan;
 use App\Models\Cluster;
 use App\Models\User;
 use Carbon\Carbon;
@@ -58,7 +58,7 @@ class DashboardController extends Controller
         }
 
         // 4. Laporan penjualan terbaru
-        $recentSales = Reservasi::with(['user', 'kavling.cluster', 'pembayaran'])
+        $recentSales = Reservasi::with(['user', 'lahan.cluster', 'pembayaran'])
             ->latest()
             ->take(5)
             ->get()
@@ -81,24 +81,40 @@ class DashboardController extends Controller
                 return [
                     'name' => $reservasi->user->name ?? 'N/A',
                     'email' => $reservasi->user->email ?? 'N/A',
-                    'type' => $reservasi->kavling ? ($reservasi->kavling->cluster->nama_cluster . ' - ' . $reservasi->kavling->tipe_kavling) : 'N/A',
-                    'price' => $reservasi->kavling ? 'Rp ' . number_format($reservasi->kavling->harga, 0, ',', '.') : 'N/A',
+                    'type' => $reservasi->lahan ? ($reservasi->lahan->cluster->nama_cluster . ' - ' . $reservasi->lahan->tipe_lahan) : 'N/A',
+                    'price' => $reservasi->lahan ? 'Rp ' . number_format($reservasi->lahan->harga, 0, ',', '.') : 'N/A',
                     'status' => $statusAsli,
                     'status_color' => $statusColor
                 ];
             });
 
-        // 5. Kavling premium
-        $premiumKavlings = Kavling::with('cluster')
+        // 5. Lahan premium
+        $premiumLahans = Lahan::with('cluster')
             ->whereIn('status', ['Tersedia', 'tersedia'])
             ->orderBy('harga', 'desc')
             ->take(2)
             ->get();
 
-        // 6. Statistik kavling keseluruhan
-        $totalKavling = Kavling::count();
-        $availableKavling = Kavling::whereIn('status', ['Tersedia', 'tersedia'])->count();
-        $occupiedKavling = Kavling::whereIn('status', ['Terjual', 'terjual', 'Dipesan', 'dipesan', 'Terisi', 'terisi'])->count();
+        // 6. Statistik lahan mendalam (Sesuai Data Asli User)
+        $muslimStats = [
+            'total'     => 3000,
+            'terjual'   => 500,
+            'used'      => 100,
+            'available' => 3000 - 500, // Sisa Lahan
+            'booked'    => Lahan::whereHas('cluster', fn($q) => $q->where('kategori', 'Muslim'))->whereIn('status', ['Dipesan', 'dipesan'])->count(), // Live data tetap dipantau
+        ];
+
+        $nonMuslimStats = [
+            'total'     => 2800,
+            'terjual'   => 600,
+            'used'      => 200,
+            'available' => 2800 - 600, // Sisa Lahan
+            'booked'    => Lahan::whereHas('cluster', fn($q) => $q->where('kategori', 'Non-Muslim'))->whereIn('status', ['Dipesan', 'dipesan'])->count(),
+        ];
+
+        $totalLahan = 5800; // Total 3000 + 2800
+        $occupiedLahan = 500 + 600; // Total Terjual
+        $availableLahan = $totalLahan - $occupiedLahan;
 
         return view('marketing.dashboard', compact(
             'totalRevenue',
@@ -108,10 +124,12 @@ class DashboardController extends Controller
             'revenueData',
             'labels',
             'recentSales',
-            'premiumKavlings',
-            'totalKavling',
-            'availableKavling',
-            'occupiedKavling'
+            'premiumLahans',
+            'totalLahan',
+            'availableLahan',
+            'occupiedLahan',
+            'muslimStats',
+            'nonMuslimStats'
         ));
     }
 }

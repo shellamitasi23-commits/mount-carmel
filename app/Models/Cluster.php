@@ -16,10 +16,10 @@ class Cluster extends Model
     ];
 
     /**
-     * Relasi: Cluster memiliki banyak Kavling
+     * Relasi: Cluster memiliki banyak Lahan
      */
-    public function kavlings()
+    public function lahans()
     {
-        return $this->hasMany(Kavling::class);
+        return $this->hasMany(Lahan::class);
     }
 }

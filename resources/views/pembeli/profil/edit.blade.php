@@ -14,22 +14,34 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div class="field">
                     <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 block ml-1">Nama Lengkap</label>
-                    <input type="text" name="name" value="{{ $user->name }}" class="w-full bg-slate-50 border-none rounded-2xl px-5 py-4 font-bold text-sm focus:ring-2 focus:ring-primary/20">
+                    <input type="text" name="name" value="{{ old('name', $user->name) }}" class="w-full bg-slate-50 border-none rounded-2xl px-5 py-4 font-bold text-sm focus:ring-2 focus:ring-primary/20">
+                    @error('name')
+                        <p class="text-rose-500 text-[10px] mt-2 font-bold ml-1">{{ $message }}</p>
+                    @enderror
                 </div>
                 <div class="field">
                     <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 block ml-1">No. Telepon</label>
-                    <input type="text" name="no_telepon" value="{{ $user->no_telepon }}" class="w-full bg-slate-50 border-none rounded-2xl px-5 py-4 font-bold text-sm focus:ring-2 focus:ring-primary/20">
+                    <input type="text" name="no_telepon" value="{{ old('no_telepon', $user->no_telepon) }}" class="w-full bg-slate-50 border-none rounded-2xl px-5 py-4 font-bold text-sm focus:ring-2 focus:ring-primary/20">
+                    @error('no_telepon')
+                        <p class="text-rose-500 text-[10px] mt-2 font-bold ml-1">{{ $message }}</p>
+                    @enderror
                 </div>
             </div>
 
             <div class="field">
                 <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 block ml-1">Alamat Email</label>
-                <input type="email" name="email" value="{{ $user->email }}" class="w-full bg-slate-50 border-none rounded-2xl px-5 py-4 font-bold text-sm focus:ring-2 focus:ring-primary/20">
+                <input type="email" name="email" value="{{ old('email', $user->email) }}" class="w-full bg-slate-50 border-none rounded-2xl px-5 py-4 font-bold text-sm focus:ring-2 focus:ring-primary/20">
+                @error('email')
+                    <p class="text-rose-500 text-[10px] mt-2 font-bold ml-1">{{ $message }}</p>
+                @enderror
             </div>
 
             <div class="field">
                 <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 block ml-1">Alamat Domisili</label>
-                <textarea name="alamat" rows="3" class="w-full bg-slate-50 border-none rounded-2xl px-5 py-4 font-bold text-sm focus:ring-2 focus:ring-primary/20 resize-none">{{ $user->alamat }}</textarea>
+                <textarea name="alamat" rows="3" class="w-full bg-slate-50 border-none rounded-2xl px-5 py-4 font-bold text-sm focus:ring-2 focus:ring-primary/20 resize-none">{{ old('alamat', $user->alamat) }}</textarea>
+                @error('alamat')
+                    <p class="text-rose-500 text-[10px] mt-2 font-bold ml-1">{{ $message }}</p>
+                @enderror
             </div>
 
             <div class="flex gap-4 pt-4">

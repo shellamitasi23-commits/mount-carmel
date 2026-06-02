@@ -11,7 +11,7 @@ class SertifikatController extends Controller
 {
     public function index()
     {
-        $reservasis = Reservasi::with(['user', 'kavling.cluster'])
+        $reservasis = Reservasi::with(['user', 'lahan.cluster'])
             ->where('status_reservasi', 'Selesai')
             ->latest()
             ->get();

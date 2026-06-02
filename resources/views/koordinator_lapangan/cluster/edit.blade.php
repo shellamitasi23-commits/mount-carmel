@@ -39,7 +39,7 @@
                 <button type="button" onclick="closeEditModal({{ $cluster->id }})" class="px-5 py-2.5 text-sm font-semibold text-slate-600 hover:bg-slate-200 bg-slate-100 rounded-xl transition-colors">
                     Batal
                 </button>
-                <button type="submit" class="px-5 py-2.5 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-xl shadow-md transition-colors flex items-center gap-2">
+                <button type="submit" class="px-5 py-2.5 text-sm font-semibold text-white bg-slate-900 hover:bg-black rounded-xl shadow-md transition-colors flex items-center gap-2">
                     <span class="material-icons-outlined text-sm">save</span> Simpan Perubahan
                 </button>
             </div>

@@ -15,8 +15,12 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
+            $table->string('avatar')->nullable();
+            $table->enum('role', ['pembeli', 'marketing', 'manajer', 'accounting', 'koordinator_lapangan'])->default('pembeli');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('no_telepon')->nullable();
+            $table->text('alamat')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

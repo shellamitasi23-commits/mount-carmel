@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\AdminLoginController;
 
 // Controller untuk Pembeli
@@ -13,7 +14,7 @@ use App\Http\Controllers\Pembeli\HomeController as PembeliHome;
 use App\Http\Controllers\Pembeli\ReservasiController as PembeliReservasi;
 use App\Http\Controllers\Pembeli\PembayaranController as PembeliPembayaran;
 use App\Http\Controllers\Pembeli\ClusterController as PembeliCluster;
-use App\Http\Controllers\Pembeli\KavlingController as PembeliKavling;
+use App\Http\Controllers\Pembeli\LahanController as PembeliLahan;
 use App\Http\Controllers\Pembeli\ProfilController as PembeliProfil;
 
 
@@ -24,6 +25,20 @@ use App\Http\Controllers\Pembeli\ProfilController as PembeliProfil;
 // Halaman utama
 Route::get('/', [PembeliHome::class, 'index'])->name('home');
 
+Route::get('/db-test', function () {
+    try {
+        $db = Illuminate\Support\Facades\DB::connection()->getDatabaseName();
+        $users = Illuminate\Support\Facades\DB::table('users')->get();
+        return response()->json([
+            'database' => $db,
+            'users_count' => $users->count(),
+            'users' => $users
+        ]);
+    } catch (\Exception $e) {
+        return response()->json(['error' => $e->getMessage()]);
+    }
+});
+
 // Browsing cluster
 Route::get('/cluster', [PembeliCluster::class, 'index'])->name('cluster.index');
 Route::get('/cluster/{id}', [PembeliCluster::class, 'show'])->name('cluster.show');
@@ -31,6 +46,8 @@ Route::get('/cluster/{id}', [PembeliCluster::class, 'show'])->name('cluster.show
 // Halaman kontak
 Route::get('/kontak', [\App\Http\Controllers\Pembeli\KontakController::class, 'index'])->name('kontak');
 Route::post('/kontak', [\App\Http\Controllers\Pembeli\KontakController::class, 'send'])->name('kontak.send');
+
+use App\Http\Controllers\Auth\GoogleController;
 
 // ──────────────────────────────────────────────────────────────────────────
 //  Hanya untuk pengguna yang belum login
@@ -40,12 +57,18 @@ Route::middleware('guest')->group(function () {
     // Reset password
     Route::get('/forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
     Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+    Route::get('/reset-password/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
+    Route::post('/reset-password', [ResetPasswordController::class, 'reset'])->name('password.update');
 
     // Autentikasi pengguna
     Route::get('/login', [LoginController::class, 'index'])->name('login');
     Route::post('/login', [LoginController::class, 'login'])->name('login.submit');
     Route::get('/register', [RegisterController::class, 'index'])->name('register');
     Route::post('/register', [RegisterController::class, 'register'])->name('register.submit');
+
+    // Login Google
+    Route::get('auth/google', [GoogleController::class, 'redirectToGoogle'])->name('auth.google');
+    Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallback']);
 
     // Autentikasi marketing/staf
     Route::prefix('marketing')->name('marketing.')->group(function () {
@@ -80,11 +103,11 @@ Route::middleware('auth')->group(function () {
         Route::post('/reservasi', [\App\Http\Controllers\Marketing\TransaksiController::class, 'storeReservasi'])->name('reservasi.store');
         Route::put('/reservasi/{id}/status', [\App\Http\Controllers\Marketing\TransaksiController::class, 'updateStatus'])->name('reservasi.updateStatus');
 
-        // Manajemen Lahan (Kavling)
-        Route::get('/kavling', [\App\Http\Controllers\Marketing\KavlingController::class, 'index'])->name('kavling.index');
-        Route::post('/kavling', [\App\Http\Controllers\Marketing\KavlingController::class, 'store'])->name('kavling.store');
-        Route::put('/kavling/{id}', [\App\Http\Controllers\Marketing\KavlingController::class, 'update'])->name('kavling.update');
-        Route::delete('/kavling/{id}', [\App\Http\Controllers\Marketing\KavlingController::class, 'destroy'])->name('kavling.destroy');
+        // Manajemen Lahan
+        Route::get('/lahan', [\App\Http\Controllers\Marketing\LahanController::class, 'index'])->name('lahan.index');
+        Route::post('/lahan', [\App\Http\Controllers\Marketing\LahanController::class, 'store'])->name('lahan.store');
+        Route::put('/lahan/{id}', [\App\Http\Controllers\Marketing\LahanController::class, 'update'])->name('lahan.update');
+        Route::delete('/lahan/{id}', [\App\Http\Controllers\Marketing\LahanController::class, 'destroy'])->name('lahan.destroy');
 
         // Manajemen cluster
         Route::get('/cluster', [\App\Http\Controllers\Marketing\ClusterController::class, 'index'])->name('cluster.index');
@@ -103,6 +126,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/sertifikat', [\App\Http\Controllers\Marketing\SertifikatController::class, 'index'])->name('sertifikat.index');
         Route::post('/sertifikat/{id}/upload', [\App\Http\Controllers\Marketing\SertifikatController::class, 'upload'])->name('sertifikat.upload');
         Route::delete('/sertifikat/{id}', [\App\Http\Controllers\Marketing\SertifikatController::class, 'destroy'])->name('sertifikat.destroy');
+
+        // Database Jenazah
+        Route::get('/jenazah', [\App\Http\Controllers\Marketing\JenazahController::class, 'index'])->name('jenazah.index');
     });
 
     // ──────────────────────────────────────────────────────────────────────
@@ -114,7 +140,7 @@ Route::middleware('auth')->group(function () {
 
         // Akses view-only ke berbagai data (Mengarahkan ke Controller Marketing)
         Route::get('/cluster', [\App\Http\Controllers\Marketing\ClusterController::class, 'index'])->name('cluster.index');
-        Route::get('/kavling', [\App\Http\Controllers\Marketing\KavlingController::class, 'index'])->name('kavling.index');
+        Route::get('/lahan', [\App\Http\Controllers\Marketing\LahanController::class, 'index'])->name('lahan.index');
         Route::get('/pembeli', [\App\Http\Controllers\Marketing\PelangganController::class, 'index'])->name('pembeli.index');
         Route::get('/reservasi', [\App\Http\Controllers\Marketing\TransaksiController::class, 'reservasi'])->name('reservasi.index');
         Route::get('/pembayaran', [\App\Http\Controllers\Marketing\TransaksiController::class, 'pembayaran'])->name('pembayaran.index');
@@ -122,6 +148,9 @@ Route::middleware('auth')->group(function () {
         // Laporan
         Route::get('/laporan', [\App\Http\Controllers\Manajer\LaporanController::class, 'index'])->name('laporan.index');
         Route::get('/laporan/cetak', [\App\Http\Controllers\Manajer\LaporanController::class, 'cetak'])->name('laporan.cetak');
+
+        // Database Jenazah (View Only)
+        Route::get('/jenazah', [\App\Http\Controllers\Marketing\JenazahController::class, 'index'])->name('jenazah.index');
     });
 
     // ──────────────────────────────────────────────────────────────────────
@@ -159,20 +188,20 @@ Route::middleware('auth')->group(function () {
         Route::put('/cluster/{id}', [\App\Http\Controllers\KoordinatorLapangan\ClusterController::class, 'update'])->name('cluster.update');
         Route::delete('/cluster/{id}', [\App\Http\Controllers\KoordinatorLapangan\ClusterController::class, 'destroy'])->name('cluster.destroy');
 
-        // Kelola Lahan (Kavling)
-        Route::get('/kavling', [\App\Http\Controllers\KoordinatorLapangan\KavlingController::class, 'index'])->name('kavling.index');
-        Route::post('/kavling', [\App\Http\Controllers\KoordinatorLapangan\KavlingController::class, 'store'])->name('kavling.store');
-        Route::put('/kavling/{id}', [\App\Http\Controllers\KoordinatorLapangan\KavlingController::class, 'update'])->name('kavling.update');
-        Route::delete('/kavling/{id}', [\App\Http\Controllers\KoordinatorLapangan\KavlingController::class, 'destroy'])->name('kavling.destroy');
+        // Kelola Lahan
+        Route::get('/lahan', [\App\Http\Controllers\KoordinatorLapangan\LahanController::class, 'index'])->name('lahan.index');
+        Route::post('/lahan', [\App\Http\Controllers\KoordinatorLapangan\LahanController::class, 'store'])->name('lahan.store');
+        Route::put('/lahan/{id}', [\App\Http\Controllers\KoordinatorLapangan\LahanController::class, 'update'])->name('lahan.update');
+        Route::delete('/lahan/{id}', [\App\Http\Controllers\KoordinatorLapangan\LahanController::class, 'destroy'])->name('lahan.destroy');
     });
 
     // ──────────────────────────────────────────────────────────────────────
     // RUTE PEMBELI - Untuk pembeli/pelanggan
     // ──────────────────────────────────────────────────────────────────────
     Route::middleware('role:pembeli')->prefix('pembeli')->name('pembeli.')->group(function () {
-        // Browsing dan pemilihan Lahan (Kavling)
-        Route::get('/kavling', [PembeliKavling::class, 'index'])->name('kavling.index');
-        Route::get('/kavling/nomor', [PembeliKavling::class, 'nomorKavling'])->name('kavling.nomor');
+        // Browsing dan pemilihan Lahan
+        Route::get('/lahan', [PembeliLahan::class, 'index'])->name('lahan.index');
+        Route::get('/lahan/nomor', [PembeliLahan::class, 'nomorLahan'])->name('lahan.nomor');
 
         // Manajemen reservasi
         Route::get('/reservasi', [PembeliReservasi::class, 'index'])->name('reservasi.index'); // Riwayat
@@ -190,7 +219,16 @@ Route::middleware('auth')->group(function () {
     });
 
     // ──────────────────────────────────────────────────────────────────────
-    // RUTE PROFIL - Untuk semua pengguna terautentikasi
+    // RUTE PROFIL ADMIN - Untuk semua staf (Marketing, Manajer, dsb.)
+    // ──────────────────────────────────────────────────────────────────────
+    Route::middleware('auth')->prefix('admin/profil')->name('admin.profil.')->group(function () {
+        Route::get('/', [\App\Http\Controllers\Admin\ProfilController::class, 'index'])->name('index');
+        Route::patch('/update', [\App\Http\Controllers\Admin\ProfilController::class, 'update'])->name('update');
+        Route::put('/password', [\App\Http\Controllers\Admin\ProfilController::class, 'updatePassword'])->name('password');
+    });
+
+    // ──────────────────────────────────────────────────────────────────────
+    // RUTE PROFIL - Untuk pembeli/pelanggan umum
     // ──────────────────────────────────────────────────────────────────────
     Route::prefix('profil')->name('profil.')->group(function () {
         Route::get('/', [PembeliProfil::class, 'index'])->name('index');

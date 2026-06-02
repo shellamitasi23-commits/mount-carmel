@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -29,9 +29,7 @@
             }
         }
     </script>
-    <style>
-        [x-cloak] { display: none !important; }
-    </style>
+    <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
 </head>
 <body class="bg-slate-50 min-h-screen flex items-center justify-center p-6 relative overflow-hidden">
 
@@ -44,11 +42,8 @@
             <div class="absolute inset-0 bg-white/40 backdrop-blur-sm"></div>
             
             <div class="relative z-10">
-                <div class="w-12 h-12 bg-slate-900 rounded-xl flex items-center justify-center mx-auto mb-4 shadow-xl shadow-slate-200 transform rotate-3 transition-transform hover:rotate-0 hover:scale-110 duration-300">
-                    <i class="fa-solid fa-user-shield text-xl text-white -rotate-3"></i>
-                </div>
-                <h1 class="text-xl font-extrabold text-slate-900 tracking-tight">Portal Manajemen</h1>
-                <p class="text-[10px] text-slate-400 mt-1 font-bold uppercase tracking-widest leading-none">Mount Carmel System</p>
+                <h1 class="text-xl font-extrabold text-slate-900 tracking-tight">Login Manajemen</h1>
+                <h4 class="text-xs text-slate-400 mt-1 font-bold uppercase tracking-widest leading-none">Sistem Mount Carmel</h2>
             </div>
         </div>
 
@@ -60,7 +55,7 @@
                     <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Alamat Email</label>
                     <div class="relative group">
                         <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-300 group-focus-within:text-slate-900 transition-colors">
-                            <i class="fa-solid fa-envelope text-xs"></i>
+                            <i class="bi bi-envelope text-xs"></i>
                         </div>
                         <input type="email" name="email" value="{{ old('email') }}" 
                             class="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-100 rounded-xl focus:ring-4 focus:ring-slate-900/5 focus:border-slate-900 transition-all outline-none text-slate-700 font-medium text-xs placeholder:text-slate-300 shadow-sm" 
@@ -74,7 +69,7 @@
                     </div>
                     <div class="relative group">
                         <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-300 group-focus-within:text-slate-900 transition-colors">
-                            <i class="fa-solid fa-lock text-xs"></i>
+                            <i class="bi bi-lock text-xs"></i>
                         </div>
                         
                         <input type="password" id="password" name="password" 
@@ -82,31 +77,22 @@
                             placeholder="••••••••" required>
                         
                         <button type="button" onclick="togglePassword()" class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-300 hover:text-slate-900 transition-colors focus:outline-none">
-                            <i id="eye-icon" class="fa-solid fa-eye text-xs"></i>
+                            <i id="eye-icon" class="bi bi-eye text-xs"></i>
                         </button>
                     </div>
                 </div>
 
                 @error('email')
                 <div class="mb-5 flex items-center gap-2 bg-red-50 border border-red-100 px-3 py-2 rounded-lg text-red-600">
-                    <i class="fa-solid fa-circle-exclamation text-[10px]"></i>
+                    <i class="bi bi-exclamation-circle text-[10px]"></i>
                     <span class="text-[10px] font-bold uppercase tracking-wide leading-none">{{ $message }}</span>
                 </div>
                 @enderror
 
                 <button type="submit" class="w-full bg-slate-900 hover:bg-black text-white py-3 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 shadow-xl shadow-slate-200 hover:shadow-2xl hover:-translate-y-0.5 active:scale-[0.98]">
-                    <span class="text-xs uppercase font-bold tracking-widest">Masuk Sistem</span>
-                    <i class="fa-solid fa-arrow-right-to-bracket text-xs transition-transform group-hover:translate-x-1"></i>
+                    <span class="text-xs uppercase font-bold tracking-widest">Login Sistem</span>
                 </button>
             </form>
-        </div>
-
-        <div class="px-8 py-4 bg-slate-50 border-t border-slate-100 text-center relative overflow-hidden">
-             <div class="absolute inset-0 bg-white/40 backdrop-blur-sm"></div>
-            
-            <a href="{{ route('home') }}" class="relative z-10 text-[10px] font-black text-slate-400 hover:text-slate-900 transition-colors flex items-center justify-center gap-1.5 uppercase tracking-widest">
-                <i class="fa-solid fa-house"></i> Beranda
-            </a>
         </div>
     </div>
 
@@ -117,10 +103,10 @@
             
             if (passwordInput.type === 'password') {
                 passwordInput.type = 'text';
-                eyeIcon.classList.replace('fa-eye', 'fa-eye-slash');
+                eyeIcon.classList.replace('bi-eye', 'bi-eye-slash');
             } else {
                 passwordInput.type = 'password';
-                eyeIcon.classList.replace('fa-eye-slash', 'fa-eye');
+                eyeIcon.classList.replace('bi-eye-slash', 'bi-eye');
             }
         }
     </script>

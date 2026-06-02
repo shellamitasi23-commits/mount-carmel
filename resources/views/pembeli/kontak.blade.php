@@ -139,7 +139,7 @@
                         <select name="subjek"
                             class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-800 outline-none focus:border-gray-900 focus:ring-2 focus:ring-gray-900/10 transition-all">
                             <option value="" disabled {{ old('subjek') ? '' : 'selected' }}>-- Pilih Subjek --</option>
-                            <option value="Informasi Kavling" {{ old('subjek') === 'Informasi Kavling' ? 'selected' : '' }}>Informasi Kavling</option>
+                            <option value="Informasi Lahan" {{ old('subjek') === 'Informasi Lahan' ? 'selected' : '' }}>Informasi Lahan</option>
                             <option value="Informasi Harga" {{ old('subjek') === 'Informasi Harga' ? 'selected' : '' }}>Informasi Harga</option>
                             <option value="Proses Reservasi" {{ old('subjek') === 'Proses Reservasi' ? 'selected' : '' }}>Proses Reservasi</option>
                             <option value="Status Pembayaran" {{ old('subjek') === 'Status Pembayaran' ? 'selected' : '' }}>Status Pembayaran</option>

@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Reservasi;
 use App\Models\Pembayaran;
-use App\Models\Kavling;
+use App\Models\Lahan;
 use App\Models\User;
 use Carbon\Carbon;
 
@@ -56,7 +56,7 @@ class DashboardController extends Controller
         }
 
         // Latest financial activity
-        $latestPayments = Pembayaran::with(['reservasi.user', 'reservasi.kavling.cluster'])
+        $latestPayments = Pembayaran::with(['reservasi.user', 'reservasi.lahan.cluster'])
             ->latest()
             ->take(5)
             ->get();

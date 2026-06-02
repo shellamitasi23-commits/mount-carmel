@@ -16,23 +16,7 @@ class PembayaranController extends Controller
      */
     public function index()
     {
-        $userReservasiIds = Reservasi::where('user_id', auth()->id())->pluck('id');
-
-        // Semua riwayat pembayaran milik user ini
-        $pembayarans = Pembayaran::with(['reservasi.kavling.cluster'])
-            ->whereIn('reservasi_id', $userReservasiIds)
-            ->latest()
-            ->get();
-
-        // Reservasi yang disetujui tapi belum dibayar
-        $sudahDibayarIds = $pembayarans->pluck('reservasi_id');
-        $reservasiSiapBayar = Reservasi::with(['kavling.cluster'])
-            ->where('user_id', auth()->id())
-            ->where('status_reservasi', 'Disetujui')
-            ->whereNotIn('id', $sudahDibayarIds)
-            ->get();
-
-        return view('pembeli.pembayaran.index', compact('pembayarans', 'reservasiSiapBayar'));
+        return redirect()->route('profil.index', ['tab' => 'pembayaran']);
     }
 
     /**
@@ -47,7 +31,7 @@ class PembayaranController extends Controller
         ]);
 
         // Pastikan reservasi milik user ini
-        $reservasi = Reservasi::with(['kavling.cluster', 'user'])
+        $reservasi = Reservasi::with(['lahan.cluster', 'user'])
             ->where('user_id', auth()->id())
             ->findOrFail($request->reservasi_id);
 
@@ -129,11 +113,14 @@ class PembayaranController extends Controller
      */
     public function invoice($id)
     {
-        $userReservasiIds = Reservasi::where('user_id', auth()->id())->pluck('id');
+        $pembayaran = Pembayaran::with(['reservasi.lahan.cluster', 'reservasi.user'])->findOrFail($id);
 
-        $pembayaran = Pembayaran::with(['reservasi.kavling.cluster', 'reservasi.user'])
-            ->whereIn('reservasi_id', $userReservasiIds)
-            ->findOrFail($id);
+        // Jika pembeli, pastikan hanya bisa lihat invoice miliknya sendiri
+        if (auth()->user()->role === 'pembeli') {
+            if ($pembayaran->reservasi->user_id !== auth()->id()) {
+                abort(403, 'Anda tidak memiliki akses ke invoice ini.');
+            }
+        }
 
         return view('pembeli.pembayaran.invoice', compact('pembayaran'));
     }

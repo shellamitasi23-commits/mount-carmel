@@ -10,7 +10,7 @@ class ClusterController extends Controller
 {
     public function index()
     {
-        $clusters = Cluster::withCount('kavlings')->latest()->get();
+        $clusters = Cluster::withCount('lahans')->latest()->get();
 
         return view('koordinator_lapangan.cluster.index', compact('clusters'));
     }

@@ -11,7 +11,7 @@ class Reservasi extends Model
 
     protected $fillable = [
         'user_id',
-        'kavling_id',
+        'lahan_id',
         'nama_jenazah',
         'tanggal_reservasi',
         'dokumen_ktp',
@@ -39,11 +39,11 @@ class Reservasi extends Model
     }
 
     /**
-     * Relasi: Reservasi terhubung ke satu Kavling
+     * Relasi: Reservasi terhubung ke satu Lahan
      */
-    public function kavling()
+    public function lahan()
     {
-        return $this->belongsTo(Kavling::class);
+        return $this->belongsTo(Lahan::class, 'lahan_id');
     }
 
     /**
