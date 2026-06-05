@@ -14,6 +14,8 @@ class AdminLoginController extends Controller
         return view('auth.marketing-login');
     }
 
+    
+
     // Memproses Login
     public function login(Request $request)
     {

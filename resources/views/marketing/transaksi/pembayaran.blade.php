@@ -18,58 +18,49 @@
 </div>
 
 {{-- Search Bar --}}
-<div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 mb-8">
-    <form method="GET" action="{{ route('marketing.pembayaran.index') }}" class="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div class="md:col-span-3">
-            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Cari Transaksi</label>
-            <div class="relative">
-                <span class="absolute left-4 top-1/2 -translate-y-1/2 material-icons-outlined text-slate-400 text-sm">search</span>
-                <input type="text" name="search" value="{{ request('search') }}" placeholder="Nama pembeli, unit lahan, atau nomor invoice..."
-                       class="w-full pl-12 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-slate-900/5 outline-none transition-all">
-            </div>
-        </div>
-        <div class="flex items-end gap-2">
-            <button type="submit" class="flex-1 bg-slate-900 text-white px-5 py-3 rounded-xl font-semibold text-sm hover:bg-black transition-all shadow-md">
-                Cari
-            </button>
-            @if(request('search'))
-            <a href="{{ route('marketing.pembayaran.index') }}" class="px-5 py-3 bg-slate-100 text-slate-600 rounded-xl font-semibold text-sm hover:bg-slate-200 transition-all text-center">
-                Reset
-            </a>
-            @endif
-        </div>
-    </form>
-</div>
+<form method="GET" action="{{ route('marketing.pembayaran.index') }}" class="relative mb-6 group">
+    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+        <span class="material-icons-outlined text-slate-400 group-focus-within:text-slate-900 transition-colors">search</span>
+    </div>
+    <input type="text" name="search" value="{{ request('search') }}" placeholder="Nama pembeli, unit lahan, atau nomor invoice..."
+           class="w-full pl-11 pr-10 py-2 bg-white border border-slate-100 rounded-xl text-sm font-medium shadow-sm focus:ring-4 focus:ring-slate-900/5 focus:border-slate-900 outline-none transition-all placeholder:text-slate-300">
+    
+    @if(request('search'))
+    <a href="{{ route('marketing.pembayaran.index') }}" class="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400 hover:text-slate-600 transition-colors">
+        <span class="material-icons-outlined text-xl">close</span>
+    </a>
+    @endif
+</form>
 
-<div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+<div class="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
     <div class="overflow-x-auto">
         <table class="w-full text-left text-sm whitespace-nowrap">
             <thead>
                 <tr class="text-slate-500 font-semibold bg-slate-50/80 border-b border-slate-100 uppercase tracking-wider text-[11px]">
-                    <th class="px-6 py-4">Invoice & Tanggal</th>
-                    <th class="px-6 py-4">Pembeli</th>
-                    <th class="px-6 py-4">Unit Lahan</th>
-                    <th class="px-6 py-4">Rekening Tujuan</th>
-                    <th class="px-6 py-4">Nominal</th>
-                    <th class="px-6 py-4 text-center">Status</th>
+                    <th class="px-4 py-2.5">Invoice & Tanggal</th>
+                    <th class="px-4 py-2.5">Pembeli</th>
+                    <th class="px-4 py-2.5">Unit Lahan</th>
+                    <th class="px-4 py-2.5">Rekening Tujuan</th>
+                    <th class="px-4 py-2.5">Nominal</th>
+                    <th class="px-4 py-2.5 text-center">Status</th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-slate-50 text-slate-700">
                 @forelse($pembayarans as $p)
                 <tr class="hover:bg-slate-50/50 transition-colors">
-                    <td class="px-6 py-5">
+                    <td class="px-4 py-2.5">
                         <p class="font-bold text-slate-900">{{ $p->no_invoice }}</p>
                         <p class="text-[10px] text-slate-400 mt-0.5 uppercase">{{ $p->created_at->format('d M Y') }}</p>
                     </td>
-                    <td class="px-6 py-5">
+                    <td class="px-4 py-2.5">
                         <p class="font-bold text-slate-800">{{ $p->reservasi?->user?->name ?? 'N/A' }}</p>
                         <p class="text-[10px] text-slate-400 mt-0.5 uppercase tracking-tighter">{{ $p->reservasi?->user?->email ?? '-' }}</p>
                     </td>
-                    <td class="px-6 py-5">
+                    <td class="px-4 py-2.5">
                         <p class="font-bold text-slate-800 uppercase">UNIT {{ $p->reservasi?->lahan?->nomor_lahan ?? '-' }}</p>
                         <p class="text-[10px] text-slate-400 mt-0.5 uppercase">{{ $p->reservasi?->lahan?->cluster?->nama_cluster ?? '-' }}</p>
                     </td>
-                    <td class="px-6 py-5">
+                    <td class="px-4 py-2.5">
                         @if($p->nama_bank)
                             <p class="font-bold text-slate-800 uppercase">{{ $p->nama_bank }}</p>
                             <p class="text-[10px] text-slate-400 mt-0.5">{{ $p->rekening_tujuan }}</p>
@@ -77,10 +68,10 @@
                             <span class="text-slate-300">—</span>
                         @endif
                     </td>
-                    <td class="px-6 py-5 font-bold text-slate-900">
+                    <td class="px-4 py-2.5 font-bold text-slate-900">
                         Rp {{ number_format($p->jumlah_bayar, 0, ',', '.') }}
                     </td>
-                    <td class="px-6 py-5 text-center">
+                    <td class="px-4 py-2.5 text-center">
                         @php
                             $status = $p->status_pembayaran;
                             $badgeClass = match($status) {
@@ -96,7 +87,7 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="6" class="px-6 py-12 text-center text-slate-400 font-medium">Belum ada riwayat pembayaran yang terdata.</td>
+                    <td colspan="6" class="px-4 py-8 text-center text-slate-400 font-medium">Belum ada riwayat pembayaran yang terdata.</td>
                 </tr>
                 @endforelse
             </tbody>
@@ -104,7 +95,7 @@
     </div>
 
     @if(method_exists($pembayarans, 'hasPages') && $pembayarans->hasPages())
-    <div class="px-6 py-4 border-t border-slate-50 bg-slate-50/30">
+    <div class="px-4 py-3 border-t border-slate-50 bg-slate-50/30">
         {{ $pembayarans->appends(request()->query())->links() }}
     </div>
     @endif

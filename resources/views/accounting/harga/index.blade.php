@@ -18,32 +18,35 @@
 </div>
 
 {{-- Form Filter --}}
-<div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 mb-8">
-    <form action="{{ route('accounting.harga.index') }}" method="GET" class="grid grid-cols-1 md:grid-cols-3 gap-6 items-end">
-        <div>
-            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Cari Nomor Lahan</label>
-            <input type="text" name="search" value="{{ request('search') }}" placeholder="Contoh: A-01" 
-                   class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-slate-900/5 outline-none text-sm transition-all">
+<div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100 mb-6">
+    <form action="{{ route('accounting.harga.index') }}" method="GET" class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
+        <div class="md:col-span-2">
+            <label class="block text-xs font-black text-slate-400 uppercase tracking-widest mb-1.5">Cari Nomor Lahan</label>
+            <div class="relative">
+                <span class="absolute left-4 top-1/2 -translate-y-1/2 material-icons-outlined text-slate-400 text-sm">search</span>
+                <input type="text" name="search" value="{{ request('search') }}" placeholder="Contoh: A-01" 
+                       class="w-full pl-11 pr-4 py-2 bg-white border border-slate-100 rounded-xl text-sm font-medium shadow-sm focus:ring-4 focus:ring-slate-900/5 focus:border-slate-900 outline-none transition-all placeholder:text-slate-300">
+            </div>
         </div>
 
         <div>
-            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Cluster Filter</label>
-            <select name="cluster_id" onchange="this.form.submit()" class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-slate-900/5 outline-none text-sm transition-all">
-                <option value="">SEMUA CLUSTER</option>
-                @foreach($clusters as $cluster)
-                    <option value="{{ $cluster->id }}" {{ request('cluster_id') == $cluster->id ? 'selected' : '' }}>
-                        {{ strtoupper($cluster->nama_cluster) }}
-                    </option>
-                @endforeach
-            </select>
+            <label class="block text-xs font-black text-slate-400 uppercase tracking-widest mb-1.5">Cluster Filter</label>
+            <div class="relative">
+                <select name="cluster_id" onchange="this.form.submit()" class="w-full px-4 py-2 bg-white border border-slate-100 rounded-xl text-sm font-medium shadow-sm focus:ring-4 focus:ring-slate-900/5 focus:border-slate-900 outline-none transition-all appearance-none cursor-pointer">
+                    <option value="">SEMUA CLUSTER</option>
+                    @foreach($clusters as $cluster)
+                        <option value="{{ $cluster->id }}" {{ request('cluster_id') == $cluster->id ? 'selected' : '' }}>
+                            {{ strtoupper($cluster->nama_cluster) }}
+                        </option>
+                    @endforeach
+                </select>
+                <span class="material-icons-outlined absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-sm">expand_more</span>
+            </div>
         </div>
 
-        <div class="flex gap-2">
-            <button type="submit" class="flex-1 bg-slate-900 hover:bg-slate-800 text-white px-5 py-3 rounded-xl font-semibold text-sm transition-all shadow-md">
-                Terapkan Filter
-            </button>
+        <div class="flex">
             @if(request('search') || request('cluster_id'))
-            <a href="{{ route('accounting.harga.index') }}" class="px-5 py-3 bg-slate-100 text-slate-600 rounded-xl font-semibold text-sm hover:bg-slate-200 transition-all text-center">
+            <a href="{{ route('accounting.harga.index') }}" class="w-full px-5 py-2 bg-slate-100 text-slate-500 rounded-xl font-bold text-xs uppercase tracking-widest hover:bg-slate-200 transition-all text-center flex items-center justify-center">
                 Reset
             </a>
             @endif
@@ -51,38 +54,38 @@
     </form>
 </div>
 
-<div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+<div class="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
     <div class="overflow-x-auto">
         <table class="w-full text-left text-sm whitespace-nowrap">
             <thead>
                 <tr class="text-slate-500 font-semibold bg-slate-50/80 border-b border-slate-100 uppercase tracking-wider text-[11px]">
-                    <th class="px-6 py-4 text-center">ID</th>
-                    <th class="px-6 py-4">Nomor Lahan</th>
-                    <th class="px-6 py-4">Cluster</th>
-                    <th class="px-6 py-4">Tipe</th>
-                    <th class="px-6 py-4">Harga Lahan</th>
-                    <th class="px-6 py-4 text-center">Aksi</th>
+                    <th class="px-4 py-2.5 text-center">ID</th>
+                    <th class="px-4 py-2.5">Nomor Lahan</th>
+                    <th class="px-4 py-2.5">Cluster</th>
+                    <th class="px-4 py-2.5">Tipe</th>
+                    <th class="px-4 py-2.5">Harga Lahan</th>
+                    <th class="px-4 py-2.5 text-center">Aksi</th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-slate-50 text-slate-700">
                 @forelse($lahans as $lahan)
                 <tr class="hover:bg-slate-50/50 transition-colors group">
-                    <td class="px-6 py-4 text-center text-slate-400 font-mono text-xs">#{{ $lahan->id }}</td>
-                    <td class="px-6 py-4">
+                    <td class="px-4 py-2.5 text-center text-slate-400 font-mono text-xs">#{{ $lahan->id }}</td>
+                    <td class="px-4 py-2.5">
                         <p class="font-bold text-slate-900">Lahan {{ $lahan->nomor_lahan }}</p>
                         <p class="text-[10px] text-slate-400 mt-0.5 uppercase tracking-tighter italic">Status: {{ $lahan->status_lahan }}</p>
                     </td>
-                    <td class="px-6 py-4">
+                    <td class="px-4 py-2.5">
                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-50 text-indigo-700">
                             {{ $lahan->cluster?->nama_cluster ?? '-' }}
                         </span>
                     </td>
-                    <td class="px-6 py-4 text-slate-500">{{ $lahan->tipe_lahan }}</td>
-                    <td class="px-6 py-4">
+                    <td class="px-4 py-2.5 text-slate-500">{{ $lahan->tipe_lahan }}</td>
+                    <td class="px-4 py-2.5">
                         <p class="font-bold text-slate-900">Rp {{ number_format($lahan->harga, 0, ',', '.') }}</p>
                         <p class="text-[10px] text-slate-400 mt-0.5">Terakhir diupdate: {{ $lahan->updated_at->format('d/m/Y') }}</p>
                     </td>
-                    <td class="px-6 py-4 text-center">
+                    <td class="px-4 py-2.5 text-center">
                         <button onclick="openModal('modal-edit-{{ $lahan->id }}')" class="bg-white border border-slate-200 text-slate-600 hover:text-slate-900 hover:border-slate-400 p-2 rounded-lg transition-all shadow-sm" title="Ubah Harga">
                             <span class="material-icons-outlined text-lg block">edit</span>
                         </button>
@@ -90,7 +93,7 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="6" class="px-6 py-10 text-center text-slate-500 font-medium">Belum ada data lahan yang tersedia.</td>
+                    <td colspan="6" class="px-4 py-8 text-center text-slate-500 font-medium">Belum ada data lahan yang tersedia.</td>
                 </tr>
                 @endforelse
             </tbody>
@@ -98,7 +101,7 @@
     </div>
 
     @if($lahans->hasPages())
-    <div class="px-6 py-4 border-t border-slate-50">
+    <div class="px-4 py-3 border-t border-slate-50">
         {{ $lahans->links() }}
     </div>
     @endif

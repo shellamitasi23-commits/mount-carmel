@@ -18,31 +18,31 @@
 </div>
 
 {{-- Filtering System --}}
-<div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 mb-8">
-    <form method="GET" action="{{ route('accounting.pembayaran.index') }}" class="grid grid-cols-1 md:grid-cols-4 gap-4">
+<div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100 mb-6">
+    <form method="GET" action="{{ route('accounting.pembayaran.index') }}" class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
         <div class="md:col-span-2">
-            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Cari Transaksi</label>
+            <label class="block text-xs font-black text-slate-400 uppercase tracking-widest mb-1.5">Cari Transaksi</label>
             <div class="relative">
                 <span class="absolute left-4 top-1/2 -translate-y-1/2 material-icons-outlined text-slate-400 text-sm">search</span>
                 <input type="text" name="search" value="{{ request('search') }}" placeholder="Nama pembeli, unit lahan, atau invoice..."
-                       class="w-full pl-12 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-slate-900/5 outline-none transition-all">
+                       class="w-full pl-11 pr-4 py-2 bg-white border border-slate-100 rounded-xl text-sm font-medium shadow-sm focus:ring-4 focus:ring-slate-900/5 focus:border-slate-900 outline-none transition-all placeholder:text-slate-300">
             </div>
         </div>
         <div>
-            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Status</label>
-            <select name="status" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-slate-900/5 outline-none transition-all appearance-none">
-                <option value="">Semua Status</option>
-                <option value="Lunas" {{ request('status') == 'Lunas' ? 'selected' : '' }}>Terverifikasi</option>
-                <option value="Menunggu Konfirmasi" {{ request('status') == 'Menunggu Konfirmasi' ? 'selected' : '' }}>Pending</option>
-                <option value="Ditolak" {{ request('status') == 'Ditolak' ? 'selected' : '' }}>Ditolak</option>
-            </select>
+            <label class="block text-xs font-black text-slate-400 uppercase tracking-widest mb-1.5">Status</label>
+            <div class="relative">
+                <select name="status" onchange="this.form.submit()" class="w-full px-4 py-2 bg-white border border-slate-100 rounded-xl text-sm font-medium shadow-sm focus:ring-4 focus:ring-slate-900/5 focus:border-slate-900 outline-none transition-all appearance-none cursor-pointer">
+                    <option value="">Semua Status</option>
+                    <option value="Lunas" {{ request('status') == 'Lunas' ? 'selected' : '' }}>Terverifikasi</option>
+                    <option value="Menunggu Konfirmasi" {{ request('status') == 'Menunggu Konfirmasi' ? 'selected' : '' }}>Pending</option>
+                    <option value="Ditolak" {{ request('status') == 'Ditolak' ? 'selected' : '' }}>Ditolak</option>
+                </select>
+                <span class="material-icons-outlined absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-sm">expand_more</span>
+            </div>
         </div>
-        <div class="flex items-end gap-2">
-            <button type="submit" class="flex-1 bg-slate-900 text-white px-5 py-3 rounded-xl font-semibold text-sm hover:bg-black transition-all shadow-md">
-                Filter
-            </button>
+        <div class="flex">
             @if(request('search') || request('status'))
-            <a href="{{ route('accounting.pembayaran.index') }}" class="px-5 py-3 bg-slate-100 text-slate-600 rounded-xl font-semibold text-sm hover:bg-slate-200 transition-all text-center">
+            <a href="{{ route('accounting.pembayaran.index') }}" class="w-full px-5 py-2 bg-slate-100 text-slate-500 rounded-xl font-bold text-xs uppercase tracking-widest hover:bg-slate-200 transition-all text-center flex items-center justify-center">
                 Reset
             </a>
             @endif
@@ -50,38 +50,38 @@
     </form>
 </div>
 
-<div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+<div class="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
     <div class="overflow-x-auto">
         <table class="w-full text-left text-sm whitespace-nowrap">
             <thead>
                 <tr class="text-slate-500 font-semibold bg-slate-50/80 border-b border-slate-100 uppercase tracking-wider text-[11px]">
-                    <th class="px-6 py-4">Invoice & Tanggal</th>
-                    <th class="px-6 py-4">Pembeli</th>
-                    <th class="px-6 py-4">Detail Lahan</th>
-                    <th class="px-6 py-4 text-right">Nominal</th>
-                    <th class="px-6 py-4 text-center">Bukti Bayar</th>
-                    <th class="px-6 py-4 text-center">Tindakan</th>
+                    <th class="px-4 py-2.5">Invoice & Tanggal</th>
+                    <th class="px-4 py-2.5">Pembeli</th>
+                    <th class="px-4 py-2.5">Detail Lahan</th>
+                    <th class="px-4 py-2.5 text-right">Nominal</th>
+                    <th class="px-4 py-2.5 text-center">Bukti Bayar</th>
+                    <th class="px-4 py-2.5 text-center">Tindakan</th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-slate-50 text-slate-700">
                 @forelse($pembayarans as $p)
                 <tr class="hover:bg-slate-50/50 transition-colors">
-                    <td class="px-6 py-5">
+                    <td class="px-4 py-2.5">
                         <p class="font-bold text-slate-900">{{ $p->no_invoice }}</p>
                         <p class="text-[10px] text-slate-400 mt-0.5 uppercase tracking-tighter">{{ $p->created_at->format('d M Y') }}</p>
                     </td>
-                    <td class="px-6 py-5">
+                    <td class="px-4 py-2.5">
                         <p class="font-bold text-slate-800">{{ $p->reservasi?->user?->name ?? 'N/A' }}</p>
                         <p class="text-[10px] text-slate-400 mt-0.5 uppercase tracking-tighter">{{ $p->reservasi?->user?->email ?? '-' }}</p>
                     </td>
-                    <td class="px-6 py-5">
+                    <td class="px-4 py-2.5">
                         <p class="font-bold text-slate-800 uppercase">UNIT {{ $p->reservasi?->lahan?->nomor_lahan ?? '-' }}</p>
                         <p class="text-[10px] text-slate-400 mt-0.5 uppercase tracking-tighter">{{ $p->reservasi?->lahan?->cluster?->nama_cluster ?? '-' }}</p>
                     </td>
-                    <td class="px-6 py-5 text-right font-bold text-slate-900">
+                    <td class="px-4 py-2.5 text-right font-bold text-slate-900">
                         Rp {{ number_format($p->jumlah_bayar, 0, ',', '.') }}
                     </td>
-                    <td class="px-6 py-5 text-center">
+                    <td class="px-4 py-2.5 text-center">
                         @if($p->bukti_pembayaran)
                         <a href="{{ asset('storage/' . $p->bukti_pembayaran) }}" target="_blank"
                            class="inline-flex items-center gap-1.5 text-indigo-600 hover:text-indigo-800 font-bold text-[11px] uppercase tracking-wider">
@@ -91,7 +91,7 @@
                         <span class="text-slate-300 text-[10px] font-bold uppercase tracking-widest italic">No Data</span>
                         @endif
                     </td>
-                    <td class="px-6 py-5">
+                    <td class="px-4 py-2.5">
                         <div class="flex justify-center items-center gap-3">
                             @if($p->status_pembayaran === 'Menunggu Konfirmasi' || $p->status_pembayaran === 'Pending' || $p->status_pembayaran === 'menunggu konfirmasi')
                             <form id="form-approve-{{ $p->id }}" action="{{ route('accounting.pembayaran.konfirmasi', $p->id) }}" method="POST">
@@ -105,7 +105,7 @@
                                         type: 'success',
                                         action: () => document.getElementById('form-approve-{{ $p->id }}').submit() 
                                     })"
-                                    class="bg-emerald-600 text-white px-4 py-2 rounded-lg text-[10px] font-bold uppercase tracking-wider hover:bg-emerald-700 transition-all shadow-sm">
+                                    class="bg-emerald-600 text-white px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider hover:bg-emerald-700 transition-all shadow-sm">
                                     Setujui
                                 </button>
                             </form>
@@ -121,15 +121,15 @@
                                         type: 'danger',
                                         action: () => document.getElementById('form-reject-{{ $p->id }}').submit() 
                                     })"
-                                    class="bg-white border border-rose-200 text-rose-600 px-4 py-2 rounded-lg text-[10px] font-bold uppercase tracking-wider hover:bg-rose-50 transition-all">
+                                    class="bg-white border border-rose-200 text-rose-600 px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider hover:bg-rose-50 transition-all">
                                     Tolak
                                 </button>
                             </form>
                             @elseif($p->status_pembayaran === 'Lunas' || $p->status_pembayaran === 'Dikonfirmasi')
                             <div class="flex flex-col items-center">
-                                <span class="text-[10px] font-bold text-emerald-600 uppercase tracking-widest mb-2">Terverifikasi</span>
+                                <span class="text-[10px] font-bold text-emerald-600 uppercase tracking-widest mb-1.5">Terverifikasi</span>
                                 <a href="{{ route('accounting.pembayaran.invoice', $p->id) }}" target="_blank"
-                                   class="px-3 py-1.5 bg-slate-100 text-slate-700 text-[9px] font-bold uppercase tracking-wider rounded-lg hover:bg-slate-200 transition-all border border-slate-200">
+                                   class="px-2.5 py-1 bg-slate-100 text-slate-700 text-[9px] font-bold uppercase tracking-wider rounded-lg hover:bg-slate-200 transition-all border border-slate-200">
                                     Invoice
                                 </a>
                             </div>
@@ -141,7 +141,7 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="6" class="px-6 py-12 text-center text-slate-400 font-medium">Belum ada data pembayaran yang masuk.</td>
+                    <td colspan="6" class="px-4 py-8 text-center text-slate-400 font-medium">Belum ada data pembayaran yang masuk.</td>
                 </tr>
                 @endforelse
             </tbody>
@@ -149,7 +149,7 @@
     </div>
 
     @if(method_exists($pembayarans, 'hasPages') && $pembayarans->hasPages())
-    <div class="px-6 py-4 border-t border-slate-50 bg-slate-50/30">
+    <div class="px-4 py-3 border-t border-slate-50 bg-slate-50/30">
         {{ $pembayarans->appends(request()->query())->links() }}
     </div>
     @endif

@@ -17,7 +17,7 @@
 </div>
 @endif
 
-<div class="flex justify-between items-start mb-8">
+<div class="flex justify-between items-start mb-6">
     <div>
         <h1 class="text-2xl font-bold text-slate-800">Penerbitan Sertifikat</h1>
         <p class="text-sm text-slate-500 mt-1">Upload sertifikat hak guna lahan untuk pembeli yang sudah melunasi pembayaran.</p>
@@ -25,11 +25,11 @@
 
     {{-- Statistik kecil --}}
     <div class="flex gap-3">
-        <div class="bg-white border border-slate-100 rounded-xl px-4 py-3 text-center shadow-sm">
+        <div class="bg-white border border-slate-100 rounded-xl px-3 py-2 text-center shadow-sm">
             <p class="text-xl font-bold text-slate-900">{{ $reservasis->whereNotNull('file_sertifikat')->count() }}</p>
             <p class="text-[10px] text-slate-400 uppercase tracking-wider font-semibold">Sudah Terbit</p>
         </div>
-        <div class="bg-white border border-slate-100 rounded-xl px-4 py-3 text-center shadow-sm">
+        <div class="bg-white border border-slate-100 rounded-xl px-3 py-2 text-center shadow-sm">
             <p class="text-xl font-bold text-amber-600">{{ $reservasis->whereNull('file_sertifikat')->count() }}</p>
             <p class="text-[10px] text-slate-400 uppercase tracking-wider font-semibold">Belum Terbit</p>
         </div>
@@ -37,26 +37,26 @@
 </div>
 
 @if($reservasis->isEmpty())
-<div class="py-20 text-center bg-white rounded-2xl border border-slate-100 shadow-sm">
+<div class="py-10 text-center bg-white rounded-xl border border-slate-100 shadow-sm">
     <span class="material-icons-outlined text-5xl text-slate-200 block mb-3">workspace_premium</span>
     <p class="font-medium text-slate-500">Belum ada pembayaran yang lunas.</p>
     <p class="text-xs text-slate-400 mt-1">Sertifikat bisa diterbitkan setelah pembayaran dikonfirmasi Lunas.</p>
 </div>
 @else
 
-<div class="space-y-4">
+<div class="space-y-3">
     @foreach($reservasis as $res)
     @php
         $sudahTerbit = !is_null($res->file_sertifikat);
     @endphp
 
-    <div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+    <div class="bg-white rounded-xl border border-slate-100 shadow-sm overflow-hidden">
 
         {{-- Bar status --}}
         <div class="h-1 w-full {{ $sudahTerbit ? 'bg-emerald-500' : 'bg-amber-400' }}"></div>
 
-        <div class="p-6">
-            <div class="flex flex-col lg:flex-row lg:items-center gap-6">
+        <div class="p-4">
+            <div class="flex flex-col lg:flex-row lg:items-center gap-4">
 
                 {{-- Info Reservasi --}}
                 <div class="flex-grow">
@@ -107,19 +107,19 @@
                     {{-- Sudah ada sertifikat --}}
                     <div class="flex items-center gap-2">
                         <a href="{{ asset('storage/sertifikat/' . $res->file_sertifikat) }}" target="_blank"
-                           class="inline-flex items-center gap-1.5 px-4 py-2 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-xl text-xs font-bold hover:bg-emerald-100 transition-colors">
+                           class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-xl text-xs font-bold hover:bg-emerald-100 transition-colors">
                             <span class="material-icons-outlined text-sm">open_in_new</span> Lihat Sertifikat
                         </a>
                         <a href="{{ asset('storage/sertifikat/' . $res->file_sertifikat) }}" download
-                           class="inline-flex items-center gap-1.5 px-4 py-2 bg-slate-100 text-slate-700 rounded-xl text-xs font-bold hover:bg-slate-200 transition-colors">
+                           class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 text-slate-700 rounded-xl text-xs font-bold hover:bg-slate-200 transition-colors">
                             <span class="material-icons-outlined text-sm">download</span>
                         </a>
                         @if(auth()->user()->role == 'marketing')
                         <form action="{{ route('marketing.sertifikat.destroy', $res->id) }}" method="POST"
-                              onsubmit="return confirm('Hapus sertifikat ini? Pembeli tidak bisa lagi mengunduhnya.')">
+                               onsubmit="return confirm('Hapus sertifikat ini? Pembeli tidak bisa lagi mengunduhnya.')">
                             @csrf @method('DELETE')
                             <button type="submit"
-                                    class="inline-flex items-center gap-1.5 px-3 py-2 bg-red-50 text-red-500 border border-red-100 rounded-xl text-xs font-bold hover:bg-red-100 transition-colors">
+                                    class="inline-flex items-center gap-1.5 px-2.5 py-1.5 bg-red-50 text-red-500 border border-red-100 rounded-xl text-xs font-bold hover:bg-red-100 transition-colors">
                                 <span class="material-icons-outlined text-sm">delete</span>
                             </button>
                         </form>
@@ -158,7 +158,7 @@
                           class="flex flex-col gap-2">
                         @csrf
                         <div class="border-2 border-dashed border-slate-200 rounded-xl bg-slate-50 hover:border-slate-400 transition-colors">
-                            <label class="flex items-center gap-3 px-4 py-3 cursor-pointer">
+                            <label class="flex items-center gap-3 px-4 py-2 cursor-pointer">
                                 <span class="material-icons-outlined text-slate-400 text-xl">upload_file</span>
                                 <div>
                                     <p class="text-xs font-bold text-slate-600">Upload Sertifikat</p>
@@ -172,7 +172,7 @@
                         <div class="flex items-center justify-between gap-2">
                             <span class="file-name text-[10px] text-slate-400 truncate max-w-[160px]"></span>
                             <button type="submit"
-                                    class="px-4 py-2 bg-slate-900 hover:bg-black text-white rounded-xl text-xs font-bold transition-colors flex items-center gap-1.5 whitespace-nowrap">
+                                    class="px-3.5 py-1.5 bg-slate-900 hover:bg-black text-white rounded-xl text-xs font-bold transition-colors flex items-center gap-1.5 whitespace-nowrap">
                                 <span class="material-icons-outlined text-sm">send</span> Terbitkan Sertifikat
                             </button>
                         </div>

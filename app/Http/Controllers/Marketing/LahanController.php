@@ -26,6 +26,10 @@ class LahanController extends Controller
             });
         }
 
+        if ($request->filled('cluster_id') && $request->cluster_id !== 'semua') {
+            $query->where('cluster_id', $request->cluster_id);
+        }
+
         $lahans = $query->orderBy('cluster_id')
             ->orderBy('nomor_lahan')
             ->paginate(50);

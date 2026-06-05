@@ -32,8 +32,6 @@
             <span class="material-icons-outlined text-[18px]">grid_view</span>
             Dashboard
         </a>
-
-        {{-- ─── MASTER DATA / LAHAN ────────────────────────────────── --}}
         @if(in_array($role, ['marketing', 'manajer', 'koordinator_lapangan']))
             <div class="pt-4 pb-1">
                 <p class="px-3 text-[9px] font-black tracking-widest text-slate-400 uppercase leading-none">
@@ -58,8 +56,6 @@
             </a>
             @endif
         @endif
-
-        {{-- ─── KELOLA HARGA (ACCOUNTING ONLY) ────────────────────────── --}}
         @if($role === 'accounting')
             <div class="pt-4 pb-1">
                 <p class="px-3 text-[9px] font-black tracking-widest text-slate-400 uppercase leading-none">Keuangan</p>
@@ -70,8 +66,6 @@
                 Kelola Harga Lahan
             </a>
         @endif
-
-        {{-- ─── TRANSAKSI ────────────────────────────────────────── --}}
         @if(in_array($role, ['marketing', 'manajer', 'accounting']))
             <div class="pt-4 pb-1">
                 <p class="px-3 text-[9px] font-black tracking-widest text-slate-400 uppercase leading-none">
@@ -96,8 +90,6 @@
                 {{ $role === 'accounting' ? 'Kelola Pembayaran' : ($role === 'marketing' ? 'Data Pembayaran' : 'View Pembayaran') }}
             </a>
         @endif
-
-        {{-- ─── REPORTING ────────────────────────────────────────── --}}
         @if(in_array($role, ['marketing', 'manajer']))
             <div class="pt-4 pb-1">
                 <p class="px-3 text-[9px] font-black tracking-widest text-slate-400 uppercase leading-none">Reporting</p>
@@ -108,8 +100,6 @@
                 Laporan Penjualan
             </a>
         @endif
-
-        {{-- ─── DOKUMEN (MARKETING ONLY) ─────────────────────────── --}}
         @if($role === 'marketing')
             <div class="pt-4 pb-1">
                 <p class="px-3 text-[9px] font-black tracking-widest text-slate-400 uppercase leading-none">Dokumen</p>
@@ -132,7 +122,7 @@
         <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">@csrf</form>
         <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="flex items-center gap-2.5 px-3 py-2 text-xs font-bold text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all group">
             <span class="material-icons-outlined text-[18px] group-hover:rotate-12 transition-transform">logout</span>
-            Logout System
+            Logout
         </a>
     </div>
 </aside>

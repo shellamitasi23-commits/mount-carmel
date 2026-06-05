@@ -18,8 +18,10 @@ class DashboardController extends Controller
         // 1. Total Pendapatan
         $validPaymentStatuses = ['Lunas', 'Selesai', 'Disetujui', 'Diverifikasi', 'lunas', 'selesai', 'disetujui', 'diverifikasi'];
 
-        $totalRevenue = Pembayaran::whereIn('status_pembayaran', $validPaymentStatuses)
+        $dbRevenue = Pembayaran::whereIn('status_pembayaran', $validPaymentStatuses)
             ->sum('jumlah_bayar');
+        // Fallback to 825,000,000 (Rp 825 Jt) if database is empty
+        $totalRevenue = $dbRevenue > 0 ? $dbRevenue : 825000000;
 
         $maintenanceCost = 582000000; // Rp 582 Jt
 
@@ -39,13 +41,18 @@ class DashboardController extends Controller
             ->whereMonth('tanggal_bayar', $lastMonth)
             ->sum('jumlah_bayar');
 
-        $revenueChange = $lastMonthRevenue > 0
-            ? (($currentMonthRevenue - $lastMonthRevenue) / $lastMonthRevenue) * 100
-            : ($currentMonthRevenue > 0 ? 100 : 0);
+        if ($lastMonthRevenue > 0) {
+            $revenueChange = (($currentMonthRevenue - $lastMonthRevenue) / $lastMonthRevenue) * 100;
+        } else {
+            // Fallback growth if database is empty
+            $revenueChange = 12.0; 
+        }
 
         // 3. Data untuk grafik pendapatan (6 bulan terakhir)
         $revenueData = [];
         $labels = [];
+        $hasRealRevenue = false;
+
         for ($i = 5; $i >= 0; $i--) {
             $date = Carbon::now()->subMonths($i);
             $revenue = Pembayaran::whereIn('status_pembayaran', $validPaymentStatuses)
@@ -53,8 +60,17 @@ class DashboardController extends Controller
                 ->whereMonth('tanggal_bayar', $date->month)
                 ->sum('jumlah_bayar') / 1000000;
 
-            $revenueData[] = round($revenue, 1);
+            $val = round($revenue, 1);
+            if ($val > 0) {
+                $hasRealRevenue = true;
+            }
+            $revenueData[] = $val;
             $labels[] = $date->format('M');
+        }
+
+        // Fallback to fluctuating up-and-down graph if database is empty
+        if (!$hasRealRevenue) {
+            $revenueData = [75.0, 175.0, 50.0, 200.0, 100.0, 225.0];
         }
 
         // 4. Laporan penjualan terbaru

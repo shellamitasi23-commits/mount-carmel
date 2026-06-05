@@ -22,14 +22,14 @@
 </div>
 
 {{-- Search --}}
-<div class="relative mb-10 group">
-    <div class="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
+<div class="relative mb-6 group">
+    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
         <span class="material-icons-outlined text-slate-400 group-focus-within:text-slate-900 transition-colors">search</span>
     </div>
     <form action="{{ route('koordinator_lapangan.lahan.index') }}" method="GET">
         <input type="text" name="search" value="{{ request('search') }}"
                placeholder="Cari nomor lahan, tipe, cluster, atau status..." 
-               class="w-full pl-14 pr-6 py-4 bg-white border border-slate-100 rounded-[1.5rem] text-sm font-bold shadow-sm focus:ring-4 focus:ring-slate-900/5 focus:border-slate-900 outline-none transition-all placeholder:text-slate-300">
+               class="w-full pl-11 pr-10 py-2 bg-white border border-slate-100 rounded-xl text-sm font-bold shadow-sm focus:ring-4 focus:ring-slate-900/5 focus:border-slate-900 outline-none transition-all placeholder:text-slate-300">
     </form>
 </div>
 
@@ -37,16 +37,16 @@
 <div x-data="{ activeCluster: 'semua' }">
 
     {{-- Tab Nav --}}
-    <div class="flex flex-wrap gap-1.5 mb-6 p-1.5 bg-white border border-slate-100 rounded-xl w-fit shadow-sm">
+    <div class="flex items-center gap-1.5 mb-6 p-1.5 bg-white border border-slate-100 rounded-xl w-full shadow-sm">
         <button @click="activeCluster='semua'"
                 :class="activeCluster==='semua'?'bg-slate-900 text-white shadow-sm':'text-slate-500 hover:text-slate-800'"
-                class="px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all">
+                class="flex-1 text-center px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all">
             Semua ({{ $lahans->total() }})
         </button>
         @foreach($clusters as $cl)
         <button @click="activeCluster='{{ $cl->id }}'"
                 :class="activeCluster==='{{ $cl->id }}'?'bg-slate-900 text-white shadow-sm':'text-slate-500 hover:text-slate-800'"
-                class="px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all flex items-center gap-1.5">
+                class="flex-1 text-center px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all flex items-center justify-center gap-1.5">
             <span class="material-icons-outlined text-[14px]">{{ $cl->kategori==='Muslim'?'mosque':'church' }}</span>
             {{ $cl->nama_cluster }}
             <span class="text-[10px] opacity-70">({{ $cl->lahans()->count() }})</span>
@@ -55,26 +55,26 @@
     </div>
 
     {{-- Tabel --}}
-    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+    <div class="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
         <div class="overflow-x-auto">
             <table class="w-full text-left text-sm whitespace-nowrap">
                 <thead>
                     <tr class="text-slate-500 font-bold bg-slate-50/80 border-b border-slate-100 uppercase tracking-widest text-[10px]">
-                        <th class="px-6 py-4">Nomor</th>
-                        <th class="px-6 py-4">Lahan & Cluster</th>
-                        <th class="px-6 py-4">Hadap</th>
-                        <th class="px-6 py-4">Ukuran & Kapasitas</th>
-                        <th class="px-6 py-4">Harga</th>
-                        <th class="px-6 py-4">Status</th>
-                        <th class="px-6 py-4 text-center">Aksi</th>
+                        <th class="px-4 py-2.5">Nomor</th>
+                        <th class="px-4 py-2.5">Lahan & Cluster</th>
+                        <th class="px-4 py-2.5">Hadap</th>
+                        <th class="px-4 py-2.5">Ukuran & Kapasitas</th>
+                        <th class="px-4 py-2.5">Harga</th>
+                        <th class="px-4 py-2.5">Status</th>
+                        <th class="px-4 py-2.5 text-center">Aksi</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-50 text-slate-700">
                     @forelse($lahans as $lahan)
                     <tr class="hover:bg-slate-50/50 transition-colors"
                         x-show="activeCluster==='semua' || activeCluster==='{{ $lahan->cluster_id }}'">
-                        <td class="px-6 py-4 font-bold text-slate-900">#{{ $lahan->nomor_lahan }}</td>
-                        <td class="px-6 py-4">
+                        <td class="px-4 py-2.5 font-bold text-slate-900">#{{ $lahan->nomor_lahan }}</td>
+                        <td class="px-4 py-2.5">
                             <p class="font-bold text-slate-900 uppercase tracking-tight">{{ $lahan->tipe_lahan }}</p>
                             <p class="text-[10px] font-bold mt-0.5 flex items-center gap-1
                                 {{ $lahan->cluster->kategori==='Muslim' ? 'text-teal-600' : 'text-blue-600' }}">
@@ -82,17 +82,17 @@
                                 {{ $lahan->cluster->nama_cluster ?? '—' }}
                             </p>
                         </td>
-                        <td class="px-6 py-4">
+                        <td class="px-4 py-2.5">
                             <span class="px-2 py-1 bg-slate-100 text-slate-600 rounded text-[10px] font-bold uppercase">{{ $lahan->hadap ?? '—' }}</span>
                         </td>
-                        <td class="px-6 py-4">
+                        <td class="px-4 py-2.5">
                             <p class="font-bold text-slate-800">{{ $lahan->ukuran }}</p>
                             <p class="text-[10px] font-bold text-slate-400 mt-0.5">{{ $lahan->kapasitas }} Orang</p>
                         </td>
-                        <td class="px-6 py-4 font-bold text-slate-900">
+                        <td class="px-4 py-2.5 font-bold text-slate-900">
                             Rp {{ number_format($lahan->harga, 0, ',', '.') }}
                         </td>
-                        <td class="px-6 py-4">
+                        <td class="px-4 py-2.5">
                             @if($lahan->status == 'Tersedia')
                                 <span class="px-3 py-1 bg-slate-100 text-slate-700 rounded-md text-[10px] font-black uppercase tracking-tighter">Tersedia</span>
                             @elseif($lahan->status == 'Dipesan')
@@ -101,7 +101,7 @@
                                 <span class="px-3 py-1 bg-slate-200 text-slate-600 rounded-md text-[10px] font-black uppercase tracking-tighter">Terjual</span>
                             @endif
                         </td>
-                        <td class="px-6 py-4 text-center">
+                        <td class="px-4 py-2.5 text-center">
                             <div class="flex justify-center gap-2">
                                 <button onclick="openEditModal({{ $lahan->id }})"
                                         class="text-slate-400 hover:text-slate-900 bg-white border border-slate-100 p-2 rounded-lg shadow-sm transition-all">
@@ -127,7 +127,7 @@
                     @include('koordinator_lapangan.lahan.edit')
                     @empty
                     <tr>
-                        <td colspan="7" class="px-6 py-14 text-center text-slate-400">
+                        <td colspan="7" class="px-4 py-8 text-center text-slate-400">
                             <span class="material-icons-outlined text-4xl text-slate-200 block mb-2">inventory_2</span>
                             <p class="font-bold uppercase tracking-widest text-xs">Belum ada Data Lahan.</p>
                         </td>
@@ -139,7 +139,7 @@
 
         {{-- Pagination --}}
         @if($lahans->hasPages())
-        <div class="px-6 py-4 border-t border-slate-50">{{ $lahans->links() }}</div>
+        <div class="px-4 py-3 border-t border-slate-50">{{ $lahans->links() }}</div>
         @endif
     </div>
 

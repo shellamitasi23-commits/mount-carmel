@@ -7,7 +7,6 @@
                     <span class="text-xl font-bold tracking-tight text-gray-900 dark:text-gray-100">Mount Carmel</span>
                 </a>
 
-                {{-- Desktop Nav --}}
                 <div class="hidden md:flex flex-1 justify-center">
                     <ul class="flex items-center space-x-1 lg:space-x-2 bg-gray-100/50 dark:bg-gray-800/50 rounded-full px-2 py-1">
 
@@ -26,7 +25,6 @@
                         </li>
 
                         @auth
-                        {{-- Reservasi Dropdown --}}
                         <li x-data="{ open: false }" class="relative">
                             <button @click="open = !open" @click.away="open = false"
                                     class="flex items-center gap-1 px-4 py-2 text-sm font-medium rounded-full transition-all {{ request()->routeIs('pembeli.reservasi.*') ? 'bg-white text-primary shadow-sm' : 'text-gray-700 hover:text-primary hover:bg-white' }}">
@@ -56,7 +54,6 @@
                     </ul>
                 </div>
 
-                {{-- Desktop Auth --}}
                 <div class="hidden md:flex items-center gap-3 shrink-0 ml-4">
                     @guest
                         <a href="{{ route('login') }}" class="text-sm font-semibold text-gray-600 hover:text-gray-900 transition-colors px-3">Masuk</a>
@@ -92,7 +89,6 @@
                     @endauth
                 </div>
 
-                {{-- Hamburger Mobile --}}
                 <button @click="mobileMenuOpen = true" class="md:hidden p-2 text-gray-600 focus:outline-none">
                     <span class="material-icons">menu</span>
                 </button>
@@ -138,7 +134,6 @@
                 </a>
 
                 @auth
-                    {{-- Reservasi --}}
                     <div x-data="{ sub: {{ request()->routeIs('pembeli.reservasi.*') ? 'true' : 'false' }} }">
                         <button @click="sub = !sub" class="w-full flex items-center justify-between px-4 py-3.5 rounded-xl text-[15px] font-medium transition-colors {{ request()->routeIs('pembeli.reservasi.*') ? 'bg-primary/10 text-primary' : 'text-gray-600 hover:bg-gray-50' }}">
                             <div class="flex items-center gap-3">

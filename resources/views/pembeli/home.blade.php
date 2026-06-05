@@ -467,49 +467,6 @@ document.addEventListener('DOMContentLoaded', function() {
     </div>
 </section>
 
-{{-- ═══════════════════════════════════════════════════════════════
-     FAQ
-     ═══════════════════════════════════════════════════════════════ --}}
-     
-<section class="py-16 md:py-24 px-4 md:px-8 xl:px-24 bg-gray-50">
-    <div class="max-w-4xl mx-auto">
-        <div class="text-center mb-10 md:mb-14">
-            <span data-aos="fade-up" class="text-primary font-bold tracking-widest uppercase text-xs">FAQ</span>
-            <h2 data-aos="fade-up" data-aos-delay="100" class="text-3xl md:text-5xl font-bold mt-2 leading-tight">Pertanyaan yang Sering Ditanyakan</h2>
-        </div>
-
-        @php
-        $faqs = [
-            ['q' => 'Apakah lahan bisa dibeli untuk persiapan ke depan (pre-need)?',
-             'a' => 'Ya, kami menyediakan pilihan pembelian pre-need. Anda dapat memesan dan memiliki lahan sejak sekarang untuk keperluan di masa mendatang, dengan harga yang terkunci saat pembelian.'],
-            ['q' => 'Apa perbedaan Cluster Muslim dan Non-Muslim?',
-             'a' => 'Cluster Muslim dirancang dengan orientasi kiblat terverifikasi, fasilitas mushola internal, dan tata cara pemakaman sesuai syariat Islam. Cluster Non-Muslim memiliki desain yang lebih umum dan dapat digunakan oleh berbagai kepercayaan.'],
-            ['q' => 'Apakah ada biaya perawatan tahunan?',
-             'a' => 'Ya, terdapat biaya perawatan tahunan yang mencakup kebersihan area, perawatan tanaman, dan penerangan. Biaya ini sangat terjangkau dan dapat dibayarkan sekaligus untuk beberapa tahun ke depan.'],
-            ['q' => 'Bagaimana dengan legalitas dan Sertifikat Lahan?',
-             'a' => 'Setiap lahan dilengkapi dengan sertifikat resmi dan dokumen legal yang transparan. Kami bekerja sama dengan notaris terpercaya untuk memastikan seluruh proses kepemilikan berjalan dengan benar.'],
-            ['q' => 'Bisakah lahan dijual atau dipindahtangankan?',
-             'a' => 'Lahan dapat dipindahtangankan kepada anggota keluarga inti. Proses pemindahan kepemilikan dilakukan melalui tim administrasi kami dengan prosedur yang jelas dan transparan.'],
-        ];
-        @endphp
-
-        <div class="space-y-3" id="faq-list">
-            @foreach($faqs as $i => $faq)
-            <div data-aos="fade-up" data-aos-delay="{{ $i * 80 }}"
-                 class="faq-item bg-white border border-gray-100 rounded-2xl overflow-hidden">
-                <button onclick="toggleFaq(this)"
-                        class="w-full flex items-center justify-between px-5 md:px-7 py-4 md:py-5 text-left gap-4">
-                    <span class="font-semibold text-gray-900 text-sm md:text-base">{{ $faq['q'] }}</span>
-                    <span class="material-icons faq-icon text-gray-400 shrink-0">add</span>
-                </button>
-                <div class="faq-answer px-5 md:px-7 pb-0">
-                    <p class="text-sm text-gray-500 leading-relaxed pb-5">{{ $faq['a'] }}</p>
-                </div>
-            </div>
-            @endforeach
-        </div>
-    </div>
-</section>
 
 {{-- External Home Scripts --}}
 <script src="{{ asset('js/home.js') }}"></script>

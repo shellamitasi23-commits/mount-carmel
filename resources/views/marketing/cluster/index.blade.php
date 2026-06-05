@@ -15,26 +15,10 @@
         <h1 class="text-2xl font-bold text-slate-800">Data Cluster</h1>
         <p class="text-sm text-slate-500 mt-1">Kelola zona pemakaman Muslim dan Non-Muslim.</p>
     </div>
-    @if(auth()->user()->role == 'marketing')
-    <button onclick="openModal()"
-            class="bg-slate-900 hover:bg-slate-800 text-white px-5 py-2.5 rounded-xl font-semibold flex items-center gap-2 transition-all shadow-md text-sm hover:shadow-lg hover:-translate-y-0.5">
-        <span class="material-icons-outlined text-sm">add</span> Tambah Cluster
-    </button>
-    @endif
-</div>
 
-{{-- Search --}}
-<div class="relative mb-10 group">
-    <div class="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
-        <span class="material-icons-outlined text-slate-400 group-focus-within:text-slate-900 transition-colors">search</span>
-    </div>
-    <input type="text" id="cluster-search" 
-           placeholder="Cari nama sektor, kategori, atau deskripsi cluster..." 
-           class="w-full pl-14 pr-6 py-4 bg-white border border-slate-100 rounded-[1.5rem] text-sm font-medium shadow-sm focus:ring-4 focus:ring-slate-900/5 focus:border-slate-900 outline-none transition-all placeholder:text-slate-300">
 </div>
-
 {{-- Ringkasan Cluster List --}}
-<div id="cluster-container" class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+<div id="cluster-container" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
     @forelse($clusters as $cluster)
     @php
         $isMuslim    = $cluster->kategori === 'Muslim';
@@ -44,89 +28,66 @@
         $terjual     = $cluster->lahans()->where('status','Terjual')->count();
         $tipeList    = $cluster->lahans()->pluck('tipe_lahan')->unique()->sort()->values();
     @endphp
-    <div class="bg-white border border-slate-100 rounded-[2rem] shadow-sm hover:shadow-xl hover:shadow-slate-200/50 transition-all duration-500 overflow-hidden group">
-        <div class="p-10">
-            <div class="flex items-start justify-between mb-8">
-                <div class="flex items-center gap-5">
-                    <div class="w-14 h-14 rounded-2xl {{ $isMuslim ? 'bg-teal-500' : 'bg-indigo-600' }} flex items-center justify-center shadow-lg shadow-slate-200">
-                        <span class="text-white font-black text-xl italic tracking-tighter">{{ substr($cluster->nama_cluster, 0, 1) }}</span>
+    <div class="bg-white border border-slate-100 rounded-xl shadow-sm hover:shadow-xl hover:shadow-slate-200/50 transition-all duration-500 overflow-hidden group">
+        <div class="p-5">
+            <div class="flex items-start justify-between mb-4">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-xl {{ $isMuslim ? 'bg-teal-500' : 'bg-indigo-600' }} flex items-center justify-center shadow-lg shadow-slate-200">
+                        <span class="text-white font-black text-lg italic tracking-tighter">{{ substr($cluster->nama_cluster, 0, 1) }}</span>
                     </div>
                     <div>
-                        <h3 class="font-black text-slate-900 text-xl tracking-tight leading-none mb-2 uppercase">{{ $cluster->nama_cluster }}</h3>
-                        <span class="inline-block px-3 py-1 rounded-md text-[9px] font-black uppercase tracking-widest {{ $isMuslim ? 'bg-teal-50 text-teal-600' : 'bg-indigo-50 text-indigo-600' }}">
+                        <h3 class="font-black text-slate-900 text-base tracking-tight leading-none mb-1.5 uppercase">{{ $cluster->nama_cluster }}</h3>
+                        <span class="inline-block px-2.5 py-0.5 rounded-md text-[8px] font-black uppercase tracking-widest {{ $isMuslim ? 'bg-teal-50 text-teal-600' : 'bg-indigo-50 text-indigo-600' }}">
                             {{ strtoupper($cluster->kategori) }} SECTOR
                         </span>
                     </div>
                 </div>
                 
-                @if(auth()->user()->role == 'marketing')
-                <div class="flex gap-2">
-                    <button onclick="openEditModal({{ $cluster->id }})"
-                            class="w-10 h-10 flex items-center justify-center bg-white border border-slate-100 text-slate-400 hover:text-slate-900 hover:border-slate-200 rounded-xl transition-all shadow-sm" title="Edit Configuration">
-                        <span class="material-icons-outlined text-lg">edit</span>
-                    </button>
-                    <form id="form-delete-cluster-{{ $cluster->id }}" action="{{ route('marketing.cluster.destroy', $cluster->id) }}" method="POST">
-                        @csrf @method('DELETE')
-                        <button type="button"
-                                @click="$dispatch('confirm-modal', { 
-                                    title: 'Hapus Cluster', 
-                                    message: 'Apakah Anda yakin ingin menghapus <b>{{ $cluster->nama_cluster }}</b>? <br><br> Seluruh data lahan di dalamnya akan ikut terhapus secara permanen.', 
-                                    confirmText: 'Hapus Permanen',
-                                    type: 'danger',
-                                    action: () => document.getElementById('form-delete-cluster-{{ $cluster->id }}').submit() 
-                                })"
-                                class="w-10 h-10 flex items-center justify-center bg-white border border-slate-100 text-slate-400 hover:text-rose-600 hover:border-rose-100 rounded-xl transition-all shadow-sm" title="Remove Cluster">
-                            <span class="material-icons-outlined text-lg">delete</span>
-                        </button>
-                    </form>
-                </div>
-                @endif
+    
             </div>
 
-            <p class="text-xs font-medium text-slate-400 leading-relaxed mb-8 uppercase tracking-wide">
+            <p class="text-[11px] font-medium text-slate-400 leading-relaxed mb-4 uppercase tracking-wide">
                 {{ $cluster->deskripsi ?? 'No sector description available.' }}
             </p>
 
             {{-- Stat Matrix --}}
-            <div class="grid grid-cols-3 gap-4 mb-10">
-                <div class="bg-slate-50/50 p-5 rounded-3xl text-center">
-                    <p class="text-2xl font-black text-slate-900 tracking-tighter">{{ $tersedia }}</p>
-                    <p class="text-[9px] font-black text-slate-300 uppercase tracking-widest mt-1">Ready</p>
+            <div class="grid grid-cols-3 gap-3 mb-6">
+                <div class="bg-slate-50/50 p-3 rounded-xl text-center">
+                    <p class="text-xl font-black text-slate-900 tracking-tighter">{{ $tersedia }}</p>
+                    <p class="text-[8px] font-black text-slate-300 uppercase tracking-widest mt-0.5">Ready</p>
                 </div>
-                <div class="bg-indigo-50/30 p-5 rounded-3xl text-center">
-                    <p class="text-2xl font-black text-indigo-600 tracking-tighter">{{ $dipesan }}</p>
-                    <p class="text-[9px] font-black text-indigo-300 uppercase tracking-widest mt-1">Booked</p>
+                <div class="bg-indigo-50/30 p-3 rounded-xl text-center">
+                    <p class="text-xl font-black text-indigo-600 tracking-tighter">{{ $dipesan }}</p>
+                    <p class="text-[8px] font-black text-indigo-300 uppercase tracking-widest mt-0.5">Booked</p>
                 </div>
-                <div class="bg-slate-900 p-5 rounded-3xl text-center">
-                    <p class="text-2xl font-black text-white tracking-tighter">{{ $terjual }}</p>
-                    <p class="text-[9px] font-black text-slate-500 uppercase tracking-widest mt-1">Sold</p>
+                <div class="bg-slate-900 p-3 rounded-xl text-center">
+                    <p class="text-xl font-black text-white tracking-tighter">{{ $terjual }}</p>
+                    <p class="text-[8px] font-black text-slate-500 uppercase tracking-widest mt-0.5">Sold</p>
                 </div>
             </div>
 
-            <div class="flex items-center justify-between pt-6 border-t border-slate-50">
-                <div class="flex -space-x-2">
+            <div class="flex items-center justify-between pt-4 border-t border-slate-50">
+                <div class="flex -space-x-1.5">
                     @foreach($tipeList->take(3) as $tipe)
-                        <div class="px-3 py-1.5 bg-white border border-slate-100 rounded-lg text-[9px] font-black text-slate-500 uppercase tracking-widest shadow-sm">
+                        <div class="px-2.5 py-1 bg-white border border-slate-100 rounded-md text-[8px] font-black text-slate-500 uppercase tracking-widest shadow-sm">
                             {{ $tipe }}
                         </div>
                     @endforeach
                     @if($tipeList->count() > 3)
-                        <div class="px-2 py-1.5 text-[9px] font-black text-slate-300 uppercase tracking-widest">+{{ $tipeList->count() - 3 }}</div>
+                        <div class="px-2 py-1 text-[8px] font-black text-slate-300 uppercase tracking-widest">+{{ $tipeList->count() - 3 }}</div>
                     @endif
                 </div>
                 <div class="text-right">
-                    <p class="text-[9px] font-black text-slate-300 uppercase tracking-widest leading-none mb-1 italic">Total Capacity</p>
-                    <p class="text-lg font-black text-slate-900 tracking-tighter leading-none">{{ $totalKav }} Units</p>
+                    <p class="text-[8px] font-black text-slate-300 uppercase tracking-widest leading-none mb-1 italic">Total Capacity</p>
+                    <p class="text-base font-black text-slate-900 tracking-tighter leading-none">{{ $totalKav }} Units</p>
                 </div>
             </div>
         </div>
     </div>
-    @if(auth()->user()->role == 'marketing')
-    @include('marketing.cluster.edit')
-    @endif
+
     @empty
-    <div class="col-span-2 py-32 bg-white border border-slate-100 rounded-[3rem] text-center shadow-inner">
-        <p class="text-3xl font-black text-slate-100 uppercase tracking-[0.3em] italic mb-4">No Sector Data</p>
+    <div class="col-span-2 py-16 bg-white border border-slate-100 rounded-xl text-center shadow-inner">
+        <p class="text-xl font-black text-slate-100 uppercase tracking-[0.3em] italic mb-2">No Sector Data</p>
         <p class="text-xs text-slate-400 font-bold uppercase tracking-widest">No results found for your criteria</p>
     </div>
     @endforelse
@@ -138,15 +99,10 @@
 </div>
 @endif
 
-@if(auth()->user()->role == 'marketing')
-@include('marketing.cluster.create')
-@endif
+
 
 <script>
-    function openModal()        { document.getElementById('createModal').classList.remove('hidden'); }
-    function closeModal()       { document.getElementById('createModal').classList.add('hidden'); }
-    function openEditModal(id)  { document.getElementById('editModal'+id).classList.remove('hidden'); }
-    function closeEditModal(id) { document.getElementById('editModal'+id).classList.add('hidden'); }
+
 
     // Live Search for Clusters
     document.getElementById('cluster-search')?.addEventListener('input', function(e) {

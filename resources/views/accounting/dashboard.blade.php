@@ -12,38 +12,38 @@
 @endpush
 
 @section('content')
-<div class="mb-8">
-    <h1 class="text-2xl font-extrabold text-slate-800 tracking-tight uppercase">Ringkasan Keuangan</h1>
-    <p class="text-sm text-slate-500 mt-1">Monitoring arus kas dan verifikasi transaksi pembayaran.</p>
+<div class="mb-6">
+    <h1 class="text-xl font-extrabold text-slate-800 tracking-tight uppercase">Ringkasan Keuangan</h1>
+    <p class="text-xs text-slate-500 mt-1">Monitoring arus kas dan verifikasi transaksi pembayaran.</p>
 </div>
 
 {{-- Stats Grid --}}
-<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 border-l-4 border-l-slate-900">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+    <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100 border-l-4 border-l-slate-900">
         <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Total Pendapatan</p>
-        <h3 class="text-2xl font-black text-slate-900 tracking-tighter">Rp {{ number_format($totalRevenue, 0, ',', '.') }}</h3>
+        <h3 class="text-xl font-black text-slate-900 tracking-tighter">Rp {{ number_format($totalRevenue, 0, ',', '.') }}</h3>
         <p class="text-[9px] font-bold mt-2 {{ $revenueChange >= 0 ? 'text-emerald-500' : 'text-rose-500' }}">
             {{ $revenueChange >= 0 ? '▲' : '▼' }} {{ number_format(abs($revenueChange), 1) }}% <span class="text-slate-300">vs bulan lalu</span>
         </p>
     </div>
 
-    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 border-l-4 border-l-amber-500">
+    <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100 border-l-4 border-l-amber-500">
         <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Menunggu Verifikasi</p>
-        <h3 class="text-2xl font-black text-slate-900 tracking-tighter">{{ $pendingPayments }} <span class="text-xs text-slate-300 uppercase">Transaksi</span></h3>
+        <h3 class="text-xl font-black text-slate-900 tracking-tighter">{{ $pendingPayments }} <span class="text-xs text-slate-300 uppercase">Transaksi</span></h3>
         <p class="text-[9px] font-bold text-amber-600 mt-2 uppercase tracking-widest">Perlu Konfirmasi Segera</p>
     </div>
 
-    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 border-l-4 border-l-indigo-500">
+    <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100 border-l-4 border-l-indigo-500">
         <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Pendapatan Bulan Ini</p>
-        <h3 class="text-2xl font-black text-slate-900 tracking-tighter">Rp {{ number_format($currentMonthRevenue, 0, ',', '.') }}</h3>
+        <h3 class="text-xl font-black text-slate-900 tracking-tighter">Rp {{ number_format($currentMonthRevenue, 0, ',', '.') }}</h3>
         <p class="text-[9px] font-bold text-slate-300 mt-2 uppercase tracking-widest">Periode {{ date('F Y') }}</p>
     </div>
 </div>
 
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
     {{-- Chart Pendapatan --}}
-    <div class="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-slate-100 p-8">
-        <h4 class="text-[10px] font-black text-slate-800 uppercase tracking-widest mb-8">Tren Pendapatan (6 Bulan Terakhir)</h4>
+    <div class="lg:col-span-2 bg-white rounded-xl shadow-sm border border-slate-100 p-5">
+        <h4 class="text-[10px] font-black text-slate-800 uppercase tracking-widest mb-4">Tren Pendapatan (6 Bulan Terakhir)</h4>
         <div class="h-64 flex items-end justify-between gap-4">
             @foreach($revenueData as $index => $rev)
                 @php
@@ -63,15 +63,15 @@
     </div>
 
     {{-- Recent Activities --}}
-    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden flex flex-col">
-        <div class="px-6 py-4 border-b border-slate-50 flex items-center justify-between">
+    <div class="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden flex flex-col">
+        <div class="px-4 py-3 border-b border-slate-50 flex items-center justify-between">
             <h4 class="text-[10px] font-black text-slate-800 uppercase tracking-widest">Aktivitas Terbaru</h4>
             <a href="{{ route('accounting.pembayaran.index') }}" class="text-[9px] font-bold text-slate-400 hover:text-slate-900 uppercase">Lihat Semua</a>
         </div>
         <div class="flex-1 overflow-y-auto">
             <div class="divide-y divide-slate-50">
                 @forelse($latestPayments as $payment)
-                <div class="px-6 py-4 hover:bg-slate-50 transition-colors">
+                <div class="px-4 py-2.5 hover:bg-slate-50 transition-colors">
                     <div class="flex justify-between items-start mb-1">
                         <p class="text-xs font-extrabold text-slate-900 uppercase tracking-tight truncate max-w-[120px]">
                             {{ $payment->reservasi?->user?->name ?? 'USER' }}

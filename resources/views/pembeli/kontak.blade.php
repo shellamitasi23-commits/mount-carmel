@@ -216,15 +216,6 @@
                     </div>
                     @endforeach
                 </div>
-
-                {{-- Info layanan darurat --}}
-                <div class="mt-4 bg-amber-50 border border-amber-100 rounded-xl px-4 py-3 flex items-start gap-2">
-                    <span class="material-icons text-amber-500 text-sm mt-0.5">info</span>
-                    <p class="text-xs text-amber-700">
-                        Untuk kebutuhan pemakaman darurat di luar jam operasional, hubungi hotline 24 jam kami di
-                        <a href="tel:+628111234567" class="font-bold hover:underline">+62 811 1234 567</a>
-                    </p>
-                </div>
             </div>
 
            

@@ -153,20 +153,6 @@
         </div>
     </div>
 
-    {{-- Luxury Footer CTA --}}
-    @guest
-    <div class="px-8 xl:px-24 pb-32">
-        <div class="max-w-7xl mx-auto py-24 border-t border-gray-100 dark:border-gray-900 text-center">
-            <h3 class="text-4xl font-bold tracking-tighter mb-6">Mulai Perencanaan Masa Depan</h3>
-            <p class="text-gray-400 font-light max-w-xl mx-auto mb-10 text-lg">Bergabunglah bersama kami untuk mendapatkan kemudahan dalam memilih dan mengelola lahan pemakaman keluarga Anda.</p>
-            <div class="flex flex-col sm:flex-row justify-center gap-6">
-                <a href="{{ route('register') }}" class="px-12 py-4 bg-gray-900 dark:bg-white text-white dark:text-gray-900 text-xs font-black uppercase tracking-[0.2em] hover:bg-primary transition-colors duration-500">Daftar Sekarang</a>
-                <a href="{{ route('login') }}" class="px-12 py-4 border border-gray-200 dark:border-gray-800 text-gray-900 dark:text-white text-xs font-black uppercase tracking-[0.2em] hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors duration-500">Masuk Akun</a>
-            </div>
-        </div>
-    </div>
-    @endguest
-
 </div>
 @endsection
 
