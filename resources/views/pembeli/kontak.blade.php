@@ -158,7 +158,7 @@
                     </div>
 
                     <button type="submit"
-                        class="btn-press btn-ripple w-full bg-gray-900 hover:bg-gray-800 text-white py-3.5 rounded-xl font-bold text-sm transition-colors shadow-lg shadow-gray-900/20 flex items-center justify-center gap-2">
+                        class="btn-press btn-ripple w-full bg-[#800000] hover:bg-[#800000]/90 text-white py-3.5 rounded-xl font-bold text-sm transition-colors shadow-lg shadow-[#800000]/20 flex items-center justify-center gap-2">
                         <span class="material-icons text-sm">send</span>
                         Kirim Pesan
                     </button>

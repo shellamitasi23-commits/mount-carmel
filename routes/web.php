@@ -145,6 +145,11 @@ Route::middleware('auth')->group(function () {
         Route::get('/reservasi', [\App\Http\Controllers\Marketing\TransaksiController::class, 'reservasi'])->name('reservasi.index');
         Route::get('/pembayaran', [\App\Http\Controllers\Marketing\TransaksiController::class, 'pembayaran'])->name('pembayaran.index');
 
+        // Approval Transaksi
+        Route::get('/approval', [\App\Http\Controllers\Manajer\ApprovalController::class, 'index'])->name('approval.index');
+        Route::put('/approval/{id}/approve', [\App\Http\Controllers\Manajer\ApprovalController::class, 'approve'])->name('approval.approve');
+        Route::put('/approval/{id}/reject', [\App\Http\Controllers\Manajer\ApprovalController::class, 'reject'])->name('approval.reject');
+
         // Laporan
         Route::get('/laporan', [\App\Http\Controllers\Manajer\LaporanController::class, 'index'])->name('laporan.index');
         Route::get('/laporan/cetak', [\App\Http\Controllers\Manajer\LaporanController::class, 'cetak'])->name('laporan.cetak');
@@ -192,6 +197,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/lahan', [\App\Http\Controllers\KoordinatorLapangan\LahanController::class, 'index'])->name('lahan.index');
         Route::post('/lahan', [\App\Http\Controllers\KoordinatorLapangan\LahanController::class, 'store'])->name('lahan.store');
         Route::put('/lahan/{id}', [\App\Http\Controllers\KoordinatorLapangan\LahanController::class, 'update'])->name('lahan.update');
+        Route::put('/lahan/{id}/progres', [\App\Http\Controllers\KoordinatorLapangan\LahanController::class, 'updateProgres'])->name('lahan.updateProgres');
         Route::delete('/lahan/{id}', [\App\Http\Controllers\KoordinatorLapangan\LahanController::class, 'destroy'])->name('lahan.destroy');
     });
 

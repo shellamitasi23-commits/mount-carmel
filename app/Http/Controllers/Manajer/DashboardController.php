@@ -78,25 +78,25 @@ class DashboardController extends Controller
                 ];
             });
 
-        // Lahan Stats (Baseline 5800)
-        $totalLahan = 5800;
-        $occupiedLahan = 1100;
-        $availableLahan = 4700;
+        // Lahan Stats (Dinamis sinkron dengan DB)
+        $totalLahan = Lahan::count();
+        $occupiedLahan = Lahan::where('status', 'Terjual')->count();
+        $availableLahan = Lahan::where('status', 'Tersedia')->count();
 
         $muslimStats = [
-            'total' => 3000,
-            'terjual' => 500,
-            'used' => 100,
-            'available' => 2500,
-            'booked' => Lahan::whereHas('cluster', fn($q) => $q->where('kategori', 'Muslim'))->whereIn('status', ['Dipesan', 'dipesan'])->count(),
+            'total' => Lahan::whereHas('cluster', fn($q) => $q->where('kategori', 'Muslim'))->count(),
+            'terjual' => Lahan::whereHas('cluster', fn($q) => $q->where('kategori', 'Muslim'))->where('status', 'Terjual')->count(),
+            'used' => Lahan::whereHas('cluster', fn($q) => $q->where('kategori', 'Muslim'))->where('status', 'Terjual')->count(),
+            'available' => Lahan::whereHas('cluster', fn($q) => $q->where('kategori', 'Muslim'))->where('status', 'Tersedia')->count(),
+            'booked' => Lahan::whereHas('cluster', fn($q) => $q->where('kategori', 'Muslim'))->where('status', 'Dipesan')->count(),
         ];
 
         $nonMuslimStats = [
-            'total' => 2800,
-            'terjual' => 600,
-            'used' => 200,
-            'available' => 2200,
-            'booked' => Lahan::whereHas('cluster', fn($q) => $q->where('kategori', 'Non-Muslim'))->whereIn('status', ['Dipesan', 'dipesan'])->count(),
+            'total' => Lahan::whereHas('cluster', fn($q) => $q->where('kategori', 'Non-Muslim'))->count(),
+            'terjual' => Lahan::whereHas('cluster', fn($q) => $q->where('kategori', 'Non-Muslim'))->where('status', 'Terjual')->count(),
+            'used' => Lahan::whereHas('cluster', fn($q) => $q->where('kategori', 'Non-Muslim'))->where('status', 'Terjual')->count(),
+            'available' => Lahan::whereHas('cluster', fn($q) => $q->where('kategori', 'Non-Muslim'))->where('status', 'Tersedia')->count(),
+            'booked' => Lahan::whereHas('cluster', fn($q) => $q->where('kategori', 'Non-Muslim'))->where('status', 'Dipesan')->count(),
         ];
 
         return view('manajer.dashboard', compact(

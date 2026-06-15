@@ -18,7 +18,7 @@
                 Area Pemakaman
             </span>
         </div>
-        <div class="w-10 h-10 rounded-lg bg-slate-900/5 text-slate-900 flex items-center justify-center">
+        <div class="w-10 h-10 rounded-lg bg-[#800000]/5 text-[#800000] flex items-center justify-center">
             <span class="material-icons-outlined text-lg">map</span>
         </div>
     </div>
@@ -32,7 +32,7 @@
                 Lahan Terdaftar
             </span>
         </div>
-        <div class="w-10 h-10 rounded-lg bg-slate-900/5 text-slate-900 flex items-center justify-center">
+        <div class="w-10 h-10 rounded-lg bg-[#800000]/5 text-[#800000] flex items-center justify-center">
             <span class="material-icons-outlined text-lg">view_module</span>
         </div>
     </div>
@@ -83,7 +83,7 @@
                     <span>{{ $percentTerisi }}%</span>
                 </div>
                 <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
-                    <div style="width: {{ $percentTerisi }}%" class="bg-slate-900 h-full rounded-full shadow-inner"></div>
+                    <div style="width: {{ $percentTerisi }}%" class="bg-[#800000] h-full rounded-full shadow-inner"></div>
                 </div>
             </div>
 

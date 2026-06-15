@@ -32,7 +32,7 @@
             </div>
             <div class="px-6 py-4 border-t border-slate-100 bg-slate-50 flex justify-end gap-3 sticky bottom-0">
                 <button type="button" onclick="closeModal()" class="px-5 py-2.5 text-sm font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors">Batal</button>
-                <button type="submit" class="px-5 py-2.5 text-sm font-semibold text-white bg-slate-900 hover:bg-slate-800 rounded-xl shadow-md transition-colors flex items-center gap-2">
+                <button type="submit" class="px-5 py-2.5 text-sm font-semibold text-white bg-[#800000] hover:bg-[#800000]/80 rounded-xl shadow-md transition-colors flex items-center gap-2">
                     <i class="fa-solid fa-user-plus text-xs"></i> Simpan Pembeli
                 </button>
             </div>

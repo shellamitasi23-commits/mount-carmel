@@ -111,4 +111,31 @@ class LahanController extends Controller
         return redirect()->route('koordinator_lapangan.lahan.index')
             ->with('success', 'Lahan #' . $nomor . ' berhasil dihapus!');
     }
+
+    public function updateProgres(Request $request, $id)
+    {
+        $request->validate([
+            'foto_progres' => 'required|image|mimes:jpeg,png,jpg|max:5120',
+            'catatan_progres' => 'nullable|string'
+        ]);
+
+        $lahan = Lahan::findOrFail($id);
+
+        if ($request->hasFile('foto_progres')) {
+            if ($lahan->foto_progres && \Illuminate\Support\Facades\Storage::disk('public')->exists($lahan->foto_progres)) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($lahan->foto_progres);
+            }
+            $path = $request->file('foto_progres')->store('progres_lahan', 'public');
+            $lahan->foto_progres = $path;
+        }
+
+        if ($request->filled('catatan_progres')) {
+            $lahan->catatan_progres = $request->catatan_progres;
+        }
+        
+        $lahan->save();
+
+        return redirect()->route('koordinator_lapangan.lahan.index')
+            ->with('success', 'Foto progres bangunan lahan #' . $lahan->nomor_lahan . ' berhasil diperbarui!');
+    }
 }

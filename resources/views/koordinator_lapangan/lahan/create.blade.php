@@ -72,7 +72,7 @@
             </div>
             <div class="px-8 py-6 border-t border-slate-100 bg-slate-50 flex justify-end gap-3 sticky bottom-0">
                 <button type="button" onclick="closeModal()" class="px-6 py-3 text-[10px] font-black uppercase tracking-widest text-slate-500 bg-slate-100 hover:bg-slate-200 rounded-xl transition-all">Batal</button>
-                <button type="submit" class="px-6 py-3 text-[10px] font-black uppercase tracking-widest text-white bg-slate-900 hover:bg-black rounded-xl shadow-lg active:scale-95 transition-all">Simpan Lahan</button>
+                <button type="submit" class="px-6 py-3 text-[10px] font-black uppercase tracking-widest text-white bg-[#800000] hover:bg-[#800000]/90 rounded-xl shadow-lg active:scale-95 transition-all">Simpan Lahan</button>
             </div>
         </form>
     </div>

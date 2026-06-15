@@ -24,7 +24,7 @@
                 
                 {{-- Avatar Clickable Circle --}}
                 <button type="button" onclick="document.getElementById('avatar-input').click()" 
-                        class="w-full h-full rounded-[2.5rem] overflow-hidden bg-slate-900 flex items-center justify-center font-black text-5xl text-white shadow-2xl shadow-slate-300 relative focus:outline-none group">
+                        class="w-full h-full rounded-[2.5rem] overflow-hidden bg-[#800000] flex items-center justify-center font-black text-5xl text-white shadow-2xl shadow-slate-300 relative focus:outline-none group">
                     @if($user->avatar)
                         <img src="{{ asset('storage/avatars/' . $user->avatar) }}" class="w-full h-full object-cover" alt="Foto Profil">
                     @else
@@ -46,7 +46,7 @@
                 <h1 class="text-5xl font-black text-slate-900 leading-none tracking-tighter mb-2">{{ $user->name }}</h1>
                 <p class="text-xl text-slate-400 font-medium mb-8">{{ $user->email }}</p>
                 <div class="flex flex-wrap gap-4 justify-center md:justify-start">
-                    <button @click.stop="modalEdit = true" class="bg-slate-900 text-white px-10 py-5 rounded-2xl font-black text-[11px] uppercase tracking-[0.2em] shadow-2xl shadow-slate-300 hover:bg-black transition-all active:scale-95">EDIT PROFIL</button>
+                    <button @click.stop="modalEdit = true" class="bg-[#800000] text-white px-10 py-5 rounded-2xl font-black text-[11px] uppercase tracking-[0.2em] shadow-2xl shadow-slate-300 hover:bg-[#800000]/90 transition-all active:scale-95">EDIT PROFIL</button>
                     <button @click.stop="modalPass = true" class="bg-slate-100 text-slate-600 px-10 py-5 rounded-2xl font-black text-[11px] uppercase tracking-[0.2em] hover:bg-slate-200 transition-all active:scale-95">GANTI PASSWORD</button>
                 </div>
             </div>
@@ -55,13 +55,13 @@
         {{-- Tab Navigasi --}}
         <div class="flex flex-wrap gap-3 mb-12">
             <button @click="tab = 'data'" 
-                    :class="tab === 'data' ? 'bg-slate-900 text-white shadow-2xl shadow-slate-200' : 'bg-white text-slate-400 hover:text-slate-900 border border-slate-100'" 
+                    :class="tab === 'data' ? 'bg-[#800000] text-white shadow-2xl shadow-slate-200' : 'bg-white text-slate-400 hover:text-slate-900 border border-slate-100'" 
                     class="px-10 py-4 rounded-2xl font-black text-[11px] transition-all uppercase tracking-[0.2em]">Data Diri</button>
             <button @click="tab = 'riwayat'" 
-                    :class="tab === 'riwayat' ? 'bg-slate-900 text-white shadow-2xl shadow-slate-200' : 'bg-white text-slate-400 hover:text-slate-900 border border-slate-100'" 
+                    :class="tab === 'riwayat' ? 'bg-[#800000] text-white shadow-2xl shadow-slate-200' : 'bg-white text-slate-400 hover:text-slate-900 border border-slate-100'" 
                     class="px-10 py-4 rounded-2xl font-black text-[11px] transition-all uppercase tracking-[0.2em]">Riwayat</button>
             <button @click="tab = 'sertifikat'" 
-                    :class="tab === 'sertifikat' ? 'bg-slate-900 text-white shadow-2xl shadow-slate-200' : 'bg-white text-slate-400 hover:text-slate-900 border border-slate-100'" 
+                    :class="tab === 'sertifikat' ? 'bg-[#800000] text-white shadow-2xl shadow-slate-200' : 'bg-white text-slate-400 hover:text-slate-900 border border-slate-100'" 
                     class="px-10 py-4 rounded-2xl font-black text-[11px] transition-all uppercase tracking-[0.2em] flex items-center gap-3">
                 Sertifikat
                 @if($sertifikats->count() > 0)
@@ -69,7 +69,7 @@
                 @endif
             </button>
             <button @click="tab = 'pembayaran'" 
-                    :class="tab === 'pembayaran' ? 'bg-slate-900 text-white shadow-2xl shadow-slate-200' : 'bg-white text-slate-400 hover:text-slate-900 border border-slate-100'" 
+                    :class="tab === 'pembayaran' ? 'bg-[#800000] text-white shadow-2xl shadow-slate-200' : 'bg-white text-slate-400 hover:text-slate-900 border border-slate-100'" 
                     class="px-10 py-4 rounded-2xl font-black text-[11px] transition-all uppercase tracking-[0.2em] flex items-center gap-3">
                 Pembayaran
                 @if($reservasiSiapBayar->count() > 0)
@@ -164,7 +164,7 @@
                     
                     <div class="flex flex-col gap-3">
                         <a href="{{ asset('storage/sertifikat/' . $s->file_sertifikat) }}" target="_blank"
-                           class="w-full py-5 bg-slate-900 text-white rounded-2xl font-black text-[11px] uppercase tracking-[0.2em] text-center hover:bg-black transition-all">LIHAT DOKUMEN</a>
+                           class="w-full py-5 bg-[#800000] text-white rounded-2xl font-black text-[11px] uppercase tracking-[0.2em] text-center hover:bg-[#800000]/90 transition-all">LIHAT DOKUMEN</a>
                         <a href="{{ asset('storage/sertifikat/' . $s->file_sertifikat) }}" download
                            class="w-full py-5 bg-slate-100 text-slate-600 rounded-2xl font-black text-[11px] uppercase tracking-[0.2em] text-center hover:bg-slate-200 transition-all">UNDUH BERKAS</a>
                     </div>
@@ -232,7 +232,7 @@
                                 <div class="flex gap-3">
                                     @if($bayar->status_pembayaran === 'Lunas')
                                     <a href="{{ route('pembeli.pembayaran.invoice', $bayar->id) }}"
-                                       class="px-8 py-4 bg-slate-900 text-white rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-black transition-all">INVOICE</a>
+                                       class="px-8 py-4 bg-[#800000] text-white rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-[#800000]/90 transition-all">INVOICE</a>
                                     @endif
                                     @if($bayar->status_pembayaran === 'Ditolak')
                                     <a href="{{ route('pembeli.pembayaran.create', ['reservasi_id' => $bayar->reservasi_id]) }}"

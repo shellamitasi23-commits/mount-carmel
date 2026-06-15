@@ -19,7 +19,7 @@
 
 {{-- Main Stats --}}
 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-    <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100 border-l-4 border-l-slate-900">
+    <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100 border-l-4 border-l-[#800000]">
         <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Total Kapasitas Lahan</p>
         <h3 class="text-2xl font-black text-slate-900 tracking-tighter">{{ number_format($totalLahan) }} <span class="text-xs text-slate-300 uppercase">Unit</span></h3>
     </div>
@@ -135,11 +135,11 @@
     {{-- KANAN (Span 1) --}}
     <div class="flex flex-col gap-6">
         {{-- Revenue Summary --}}
-        <div class="bg-slate-900 text-white p-5 rounded-xl shadow-xl relative overflow-hidden group">
-            <div class="absolute top-[-20%] right-[-10%] w-32 h-32 bg-slate-800 rounded-full blur-3xl opacity-50"></div>
-            <p class="text-[9px] font-black text-slate-500 uppercase tracking-[0.3em] mb-2 relative z-10">Sales Revenue</p>
+        <div class="bg-[#800000] text-white p-5 rounded-xl shadow-xl relative overflow-hidden group">
+            <div class="absolute top-[-20%] right-[-10%] w-32 h-32 bg-[#800000]/80 rounded-full blur-3xl opacity-50"></div>
+            <p class="text-[9px] font-black text-white/50 uppercase tracking-[0.3em] mb-2 relative z-10">Sales Revenue</p>
             <h3 class="text-xl font-black tracking-tighter relative z-10">Rp {{ number_format($totalRevenue, 0, ',', '.') }}</h3>
-            <div class="mt-4 pt-4 border-t border-slate-800 flex justify-between items-center relative z-10">
+            <div class="mt-4 pt-4 border-t border-white/10 flex justify-between items-center relative z-10">
                 <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Growth</span>
                 <span class="text-[10px] font-black {{ $revenueChange >= 0 ? 'text-emerald-400' : 'text-rose-400' }} flex items-center gap-1">
                     <span class="material-icons-outlined text-xs">{{ $revenueChange >= 0 ? 'north_east' : 'south_west' }}</span>

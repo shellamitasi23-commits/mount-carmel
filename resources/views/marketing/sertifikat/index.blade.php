@@ -142,7 +142,7 @@
                                        required
                                        class="text-xs text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-slate-100 file:text-slate-700 hover:file:bg-slate-200 cursor-pointer">
                                 <button type="submit"
-                                        class="px-3 py-1.5 bg-slate-900 text-white rounded-lg text-xs font-bold hover:bg-black transition-colors whitespace-nowrap">
+                                        class="px-3 py-1.5 bg-[#800000] text-white rounded-lg text-xs font-bold hover:bg-[#800000]/90 transition-colors whitespace-nowrap">
                                     Upload
                                 </button>
                             </form>
@@ -172,7 +172,7 @@
                         <div class="flex items-center justify-between gap-2">
                             <span class="file-name text-[10px] text-slate-400 truncate max-w-[160px]"></span>
                             <button type="submit"
-                                    class="px-3.5 py-1.5 bg-slate-900 hover:bg-black text-white rounded-xl text-xs font-bold transition-colors flex items-center gap-1.5 whitespace-nowrap">
+                                    class="px-3.5 py-1.5 bg-[#800000] hover:bg-[#800000]/90 text-white rounded-xl text-xs font-bold transition-colors flex items-center gap-1.5 whitespace-nowrap">
                                 <span class="material-icons-outlined text-sm">send</span> Terbitkan Sertifikat
                             </button>
                         </div>

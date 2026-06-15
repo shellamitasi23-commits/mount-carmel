@@ -7,11 +7,11 @@
 
         {{-- Minimalist Breadcrumb --}}
         <nav class="flex items-center gap-4 text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 mb-12" data-aos="fade-down">
-            <a href="{{ route('home') }}" class="hover:text-primary transition-colors">Beranda</a>
+            <a href="{{ route('home') }}" class="hover:text-[#800000] transition-colors">Beranda</a>
             <span class="text-gray-200 dark:text-gray-800">/</span>
-            <a href="{{ route('cluster.index') }}" class="hover:text-primary transition-colors">Cluster</a>
+            <a href="{{ route('cluster.index') }}" class="hover:text-[#800000] transition-colors">Cluster</a>
             <span class="text-gray-200 dark:text-gray-800">/</span>
-            <a href="{{ route('pembeli.lahan.index', ['cluster_id' => $lahan->cluster_id]) }}" class="hover:text-primary transition-colors">{{ $lahan->cluster->nama_cluster }}</a>
+            <a href="{{ route('pembeli.lahan.index', ['cluster_id' => $lahan->cluster_id]) }}" class="hover:text-[#800000] transition-colors">{{ $lahan->cluster->nama_cluster }}</a>
             <span class="text-gray-200 dark:text-gray-800">/</span>
             <span class="text-gray-900 dark:text-white">Isi Data Reservasi</span>
         </nav>
@@ -26,12 +26,12 @@
             ] as $s)
             <div class="flex flex-col items-center gap-3 relative">
                 <div class="w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-black
-                    {{ $s['active'] ? 'bg-primary text-white ring-4 ring-primary/10' :
-                       ($s['done'] ? 'bg-gray-900 text-white dark:bg-white dark:text-gray-900' : 'bg-gray-100 text-gray-300 dark:bg-gray-900 dark:text-gray-700') }}">
+                    {{ $s['active'] ? 'bg-[#800000] text-white ring-4 ring-[#800000]/10' :
+                       ($s['done'] ? 'bg-[#800000]/20 text-[#800000]' : 'bg-gray-100 text-gray-300 dark:bg-gray-900 dark:text-gray-700') }}">
                     {{ $loop->index + 1 }}
                 </div>
                 <span class="text-[9px] font-black uppercase tracking-widest whitespace-nowrap
-                    {{ $s['active'] ? 'text-primary' : ($s['done'] ? 'text-gray-900 dark:text-white' : 'text-gray-300 dark:text-gray-700') }}">
+                    {{ $s['active'] ? 'text-[#800000]' : ($s['done'] ? 'text-[#800000]/80' : 'text-gray-300 dark:text-gray-700') }}">
                     {{ $s['label'] }}
                 </span>
             </div>
@@ -166,7 +166,7 @@
                     {{-- Action Buttons --}}
                     <div class="flex flex-col sm:flex-row items-center gap-8 pt-8">
                         <button type="submit"
-                            class="w-full sm:flex-1 py-6 bg-gray-900 dark:bg-white text-white dark:text-gray-900 text-[11px] font-black uppercase tracking-[0.3em] rounded-2xl hover:bg-primary dark:hover:bg-primary dark:hover:text-white transition-all duration-300 shadow-xl shadow-gray-900/10">
+                            class="w-full sm:flex-1 py-6 bg-[#800000] text-white text-[11px] font-black uppercase tracking-[0.3em] rounded-2xl hover:bg-[#800000]/90 transition-all duration-300 shadow-xl shadow-[#800000]/10">
                             Lanjut ke Pembayaran
                         </button>
                         <a href="{{ route('pembeli.lahan.nomor', ['cluster_id' => $lahan->cluster_id, 'tipe_lahan' => $lahan->tipe_lahan]) }}"

@@ -23,7 +23,7 @@
                     colors: {
                         background: '#f8f9fc',
                         card: '#ffffff',
-                        primary: '#1e1b4b',
+                        primary: '#800000',
                         accent: '#eef2ff',
                         textMain: '#111827',
                         textMuted: '#6b7280',
@@ -84,7 +84,7 @@
                 <button @click="confirmModal.confirm()"
                         class="w-full py-3 rounded-xl text-xs font-bold uppercase tracking-wider transition-all active:scale-95 shadow-lg"
                         :class="{
-                            'bg-slate-900 text-white hover:bg-black': confirmModal.type === 'primary',
+                            'bg-[#800000] text-white hover:bg-[#800000]/90': confirmModal.type === 'primary',
                             'bg-emerald-600 text-white': confirmModal.type === 'success',
                             'bg-rose-600 text-white': confirmModal.type === 'danger'
                         }"

@@ -11,7 +11,7 @@
             <p class="text-gray-500 text-sm">Riwayat pembayaran dan invoice lahan Anda.</p>
         </div>
         <a href="{{ route('cluster.index') }}"
-           class="btn-press btn-ripple inline-flex items-center gap-2 px-5 py-2.5 bg-gray-900 text-white rounded-xl text-sm font-bold hover:bg-gray-800 transition-colors shadow-md">
+           class="btn-press btn-ripple inline-flex items-center gap-2 px-5 py-2.5 bg-[#800000] text-white rounded-xl text-sm font-bold hover:bg-[#800000]/90 transition-colors shadow-md">
             <span class="material-icons text-sm">add</span> Pesan Lahan Baru
         </a>
     </div>
@@ -51,7 +51,7 @@
                         <p class="font-bold text-gray-900">Rp {{ number_format($res->lahan->harga, 0, ',', '.') }}</p>
                     </div>
                     <a href="{{ route('pembeli.pembayaran.create', ['reservasi_id' => $res->id]) }}"
-                       class="btn-press btn-ripple px-5 py-2.5 bg-gray-900 text-white rounded-xl text-sm font-bold hover:bg-amber-500 transition-colors flex items-center gap-2 whitespace-nowrap">
+                       class="btn-press btn-ripple px-5 py-2.5 bg-[#800000] text-white rounded-xl text-sm font-bold hover:bg-[#800000]/90 transition-colors flex items-center gap-2 whitespace-nowrap">
                         <span class="material-icons text-sm">payments</span> Bayar Sekarang
                     </a>
                 </div>

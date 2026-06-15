@@ -19,7 +19,7 @@
                 </p>
             </div>
             <a href="{{ route('cluster.index') }}"
-               class="inline-flex items-center justify-center px-10 py-6 bg-slate-900 text-white text-[11px] font-black uppercase tracking-[0.3em] rounded-2xl hover:bg-black transition-all active:scale-95 shadow-2xl shadow-slate-200">
+               class="inline-flex items-center justify-center px-10 py-6 bg-[#800000] text-white text-[11px] font-black uppercase tracking-[0.3em] rounded-2xl hover:bg-[#800000]/90 transition-all active:scale-95 shadow-2xl shadow-slate-200">
                 Pesan Lahan Baru
             </a>
         </div>
@@ -60,8 +60,8 @@
                 <div class="flex flex-col lg:flex-row gap-16 items-start">
                     {{-- Kavling Big Display --}}
                     <div class="shrink-0">
-                        <div class="w-32 h-32 bg-slate-900 flex flex-col items-center justify-center shadow-2xl">
-                            <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Unit</span>
+                        <div class="w-32 h-32 bg-[#800000] flex flex-col items-center justify-center shadow-2xl">
+                            <span class="text-[10px] font-black text-slate-200 uppercase tracking-widest mb-1">Unit</span>
                             <span class="text-4xl font-black text-white tracking-tighter">#{{ $res->lahan->nomor_lahan }}</span>
                         </div>
                     </div>
@@ -132,7 +132,7 @@
                         <div class="space-y-4">
                             @if($statusBayar === 'Belum Bayar' && $statusRes !== 'Ditolak')
                             <a href="{{ route('pembeli.pembayaran.create', ['reservasi_id' => $res->id]) }}"
-                               class="w-full block bg-slate-900 text-white text-center py-5 rounded-2xl text-[10px] font-black uppercase tracking-[0.3em] hover:bg-black transition-all shadow-2xl shadow-slate-200">
+                               class="w-full block bg-[#800000] text-white text-center py-5 rounded-2xl text-[10px] font-black uppercase tracking-[0.3em] hover:bg-[#800000]/90 transition-all shadow-2xl shadow-[#800000]/10">
                                 BAYAR SEKARANG
                             </a>
                             @endif

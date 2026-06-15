@@ -58,7 +58,7 @@
                             <i class="bi bi-envelope text-xs"></i>
                         </div>
                         <input type="email" name="email" value="{{ old('email') }}" 
-                            class="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-100 rounded-xl focus:ring-4 focus:ring-slate-900/5 focus:border-slate-900 transition-all outline-none text-slate-700 font-medium text-xs placeholder:text-slate-300 shadow-sm" 
+                            class="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-100 rounded-xl focus:ring-4 focus:ring-[#800000]/5 focus:border-[#800000] transition-all outline-none text-slate-700 font-medium text-xs placeholder:text-slate-300 shadow-sm" 
                             placeholder="example@mountcarmel.id" required autofocus>
                     </div>
                 </div>
@@ -73,7 +73,7 @@
                         </div>
                         
                         <input type="password" id="password" name="password" 
-                            class="w-full pl-10 pr-10 py-2.5 bg-white border border-slate-100 rounded-xl focus:ring-4 focus:ring-slate-900/5 focus:border-slate-900 transition-all outline-none text-slate-700 font-medium text-xs placeholder:text-slate-300 shadow-sm" 
+                            class="w-full pl-10 pr-10 py-2.5 bg-white border border-slate-100 rounded-xl focus:ring-4 focus:ring-[#800000]/5 focus:border-[#800000] transition-all outline-none text-slate-700 font-medium text-xs placeholder:text-slate-300 shadow-sm" 
                             placeholder="••••••••" required>
                         
                         <button type="button" onclick="togglePassword()" class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-300 hover:text-slate-900 transition-colors focus:outline-none">
@@ -89,7 +89,7 @@
                 </div>
                 @enderror
 
-                <button type="submit" class="w-full bg-slate-900 hover:bg-black text-white py-3 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 shadow-xl shadow-slate-200 hover:shadow-2xl hover:-translate-y-0.5 active:scale-[0.98]">
+                <button type="submit" class="w-full bg-[#800000] hover:bg-[#800000]/90 text-white py-3 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 shadow-xl shadow-slate-200 hover:shadow-2xl hover:-translate-y-0.5 active:scale-[0.98]">
                     <span class="text-xs uppercase font-bold tracking-widest">Login Sistem</span>
                 </button>
             </form>

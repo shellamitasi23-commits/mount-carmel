@@ -41,7 +41,7 @@ Lahan — {{ $cluster->nama_cluster }}
                 <a href="{{ route('pembeli.lahan.index', ['cluster_id' => $cl->id]) }}"
                    class="px-8 py-4 rounded-full text-[10px] font-black uppercase tracking-[0.2em] transition-all duration-300
                        {{ $cl->id === $cluster->id 
-                           ? 'bg-slate-900 text-white shadow-2xl shadow-slate-200' 
+                           ? 'bg-[#800000] text-white shadow-2xl shadow-slate-200' 
                            : 'bg-slate-50 text-slate-400 hover:text-slate-900 border border-slate-100' }}">
                     {{ $cl->nama_cluster }}
                 </a>
@@ -104,7 +104,7 @@ Lahan — {{ $cluster->nama_cluster }}
 
                 <div class="mt-auto pt-4">
                     <a href="{{ route('pembeli.lahan.nomor', ['cluster_id' => $cluster->id, 'tipe_lahan' => $tipe['tipe_lahan']]) }}"
-                       class="w-full block bg-slate-900 text-white text-center py-5 rounded-2xl text-[10px] font-black uppercase tracking-[0.3em] hover:bg-black transition-all active:scale-95 shadow-2xl shadow-slate-200">
+                       class="w-full block bg-[#800000] text-white text-center py-5 rounded-2xl text-[10px] font-black uppercase tracking-[0.3em] hover:bg-[#800000]/90 transition-all shadow-2xl shadow-[#800000]/10">
                         Pilih Nomor Kavling
                     </a>
                 </div>

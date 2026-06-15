@@ -24,10 +24,10 @@
                 ['label'=>'Pembayaran','active'=>true],
             ] as $s)
             <div class="flex flex-col gap-2">
-                <span class="text-[10px] font-black uppercase tracking-widest {{ isset($s['active']) ? 'text-slate-900' : 'text-slate-300' }}">
+                <span class="text-[10px] font-black uppercase tracking-widest {{ isset($s['active']) ? 'text-[#800000]' : 'text-slate-300' }}">
                     {{ $s['label'] }}
                 </span>
-                <div class="h-1 w-12 {{ isset($s['active']) ? 'bg-slate-900' : (isset($s['done']) ? 'bg-slate-200' : 'bg-slate-50') }}"></div>
+                <div class="h-1 w-12 {{ isset($s['active']) ? 'bg-[#800000]' : (isset($s['done']) ? 'bg-slate-200' : 'bg-slate-50') }}"></div>
             </div>
             @endforeach
         </div>
@@ -83,14 +83,14 @@
                             <input type="radio" name="bank_radio" id="bank_{{ $rek['bank'] }}" class="hidden peer"
                                    @change="pilihanBank = '{{ $rek['bank'] }}'; nomorRek = '{{ $rek['nomor'] }}'; atasNama = '{{ $rek['atas_nama'] }}'">
                             <label for="bank_{{ $rek['bank'] }}" 
-                                   class="flex items-center justify-between p-8 border-2 rounded-2xl cursor-pointer transition-all duration-300 peer-checked:border-slate-900 peer-checked:bg-slate-50 border-slate-100 hover:border-slate-200">
+                                   class="flex items-center justify-between p-8 border-2 rounded-2xl cursor-pointer transition-all duration-300 peer-checked:border-[#800000] peer-checked:bg-slate-50 border-slate-100 hover:border-slate-200">
                                 <div>
                                     <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">{{ $rek['bank'] }}</p>
                                     <p class="text-2xl font-black text-slate-900 tracking-widest">{{ $rek['nomor'] }}</p>
                                     <p class="text-sm font-medium text-slate-500 mt-1">a.n {{ $rek['atas_nama'] }}</p>
                                 </div>
-                                <div class="w-6 h-6 rounded-full border-2 border-slate-200 flex items-center justify-center peer-checked:border-slate-900">
-                                    <div class="w-3 h-3 rounded-full bg-slate-900 opacity-0 peer-checked:opacity-100 transition-opacity"
+                                <div class="w-6 h-6 rounded-full border-2 border-slate-200 flex items-center justify-center peer-checked:border-[#800000]">
+                                    <div class="w-3 h-3 rounded-full bg-[#800000] opacity-0 peer-checked:opacity-100 transition-opacity"
                                          :class="pilihanBank === '{{ $rek['bank'] }}' ? 'opacity-100' : 'opacity-0'"></div>
                                 </div>
                             </label>
@@ -106,7 +106,7 @@
                         <input type="file" name="bukti_pembayaran" id="bukti_pembayaran" class="hidden" accept=".jpg,.jpeg,.png,.pdf" required
                                onchange="document.getElementById('file_name_display').textContent = this.files[0]?.name">
                         <label for="bukti_pembayaran" 
-                               class="flex flex-col items-center justify-center p-12 border-2 border-dashed border-slate-200 rounded-[2rem] bg-slate-50 hover:bg-white hover:border-slate-900 transition-all cursor-pointer text-center">
+                               class="flex flex-col items-center justify-center p-12 border-2 border-dashed border-slate-200 rounded-[2rem] bg-slate-50 hover:bg-white hover:border-[#800000] transition-all cursor-pointer text-center">
                             <span class="text-sm font-black text-slate-900 uppercase tracking-widest mb-2" id="file_name_display">Pilih Foto Bukti</span>
                             <span class="text-xs text-slate-400 font-medium italic">Format: JPG, PNG, atau PDF (Maks. 4MB)</span>
                         </label>
@@ -117,13 +117,13 @@
                 <div>
                     <label class="block text-[11px] font-black text-slate-900 uppercase tracking-[0.2em] mb-6">Catatan Tambahan (Opsional)</label>
                     <textarea name="catatan" rows="3" placeholder="Misal: Dari rekening Bapak Budi..."
-                        class="w-full px-8 py-6 bg-slate-50 border border-slate-100 rounded-2xl text-base font-medium outline-none focus:bg-white focus:border-slate-900 transition-all placeholder:text-slate-300"></textarea>
+                        class="w-full px-8 py-6 bg-slate-50 border border-slate-100 rounded-2xl text-base font-medium outline-none focus:bg-white focus:border-[#800000] transition-all placeholder:text-slate-300"></textarea>
                 </div>
 
                 {{-- Submit Button (Ultra Large) --}}
                 <div class="pt-6">
                     <button type="submit"
-                        class="w-full bg-slate-900 hover:bg-black text-white py-6 rounded-2xl font-black text-xs uppercase tracking-[0.3em] transition-all active:scale-95 shadow-2xl shadow-slate-200 disabled:opacity-30 disabled:cursor-not-allowed"
+                        class="w-full bg-[#800000] hover:bg-[#800000]/90 text-white py-6 rounded-2xl font-black text-xs uppercase tracking-[0.3em] transition-all active:scale-95 shadow-2xl shadow-slate-200 disabled:opacity-30 disabled:cursor-not-allowed"
                         :disabled="!pilihanBank">
                         Kirim Konfirmasi Sekarang
                     </button>
@@ -135,7 +135,7 @@
         {{-- RIGHT: Premium Summary Card --}}
         <div class="lg:col-span-5">
             <div class="sticky top-32">
-                <div class="bg-white border-t-[12px] border-slate-900 shadow-2xl shadow-slate-200/60 overflow-hidden">
+                <div class="bg-white border-t-[12px] border-[#800000] shadow-2xl shadow-slate-200/60 overflow-hidden">
                     
                     {{-- Header Document Style --}}
                     <div class="p-12 border-b border-slate-100">

@@ -19,7 +19,7 @@
 
 {{-- Stats Grid --}}
 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-    <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100 border-l-4 border-l-slate-900">
+    <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100 border-l-4 border-l-[#800000]">
         <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Total Pendapatan</p>
         <h3 class="text-xl font-black text-slate-900 tracking-tighter">Rp {{ number_format($totalRevenue, 0, ',', '.') }}</h3>
         <p class="text-[9px] font-bold mt-2 {{ $revenueChange >= 0 ? 'text-emerald-500' : 'text-rose-500' }}">
@@ -55,7 +55,7 @@
                         {{ $rev }}M
                     </div>
                     <div style="height: {{ max($percent, 5) }}%" 
-                         class="w-full bg-slate-100 group-hover:bg-slate-900 transition-all rounded-t-lg"></div>
+                         class="w-full bg-slate-100 group-hover:bg-[#800000] transition-all rounded-t-lg"></div>
                     <span class="text-[9px] font-bold text-slate-400 mt-3 uppercase">{{ $labels[$index] }}</span>
                 </div>
             @endforeach

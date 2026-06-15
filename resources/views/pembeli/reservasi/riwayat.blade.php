@@ -12,7 +12,7 @@
             <p class="text-gray-500 text-sm">Daftar semua pemesanan lahan yang telah Anda buat.</p>
         </div>
         <a href="{{ route('cluster.index') }}"
-           class="btn-press btn-ripple inline-flex items-center gap-2 px-5 py-2.5 bg-gray-900 text-white rounded-xl text-sm font-bold hover:bg-gray-800 transition-colors shadow-md">
+           class="btn-press btn-ripple inline-flex items-center gap-2 px-5 py-2.5 bg-[#800000] text-white rounded-xl text-sm font-bold hover:bg-[#800000]/90 transition-colors shadow-md">
             <span class="material-icons text-sm">add</span> Pesan Lahan Baru
         </a>
     </div>
@@ -36,7 +36,7 @@
         <h3 class="text-lg font-bold text-gray-400 mb-1">Belum Ada Reservasi</h3>
         <p class="text-sm text-gray-400 mb-6">Anda belum pernah melakukan pemesanan lahan.</p>
         <a href="{{ route('cluster.index') }}"
-           class="btn-press btn-ripple inline-flex items-center gap-2 px-6 py-3 bg-gray-900 text-white rounded-xl text-sm font-bold hover:bg-gray-800 transition-colors">
+           class="btn-press btn-ripple inline-flex items-center gap-2 px-6 py-3 bg-[#800000] text-white rounded-xl text-sm font-bold hover:bg-[#800000]/90 transition-colors">
             <span class="material-icons text-sm">search</span> Lihat Cluster Tersedia
         </a>
     </div>
@@ -112,7 +112,7 @@
                     <div class="flex gap-2 flex-wrap justify-end">
                         @if($statusBayar === 'Belum Bayar' && $statusReservasi !== 'Ditolak')
                         <a href="{{ route('pembeli.pembayaran.form', ['reservasi_id' => $res->id]) }}"
-                           class="btn-press px-4 py-2 bg-gray-900 text-white rounded-xl text-xs font-bold hover:bg-amber-500 transition-colors flex items-center gap-1.5">
+                           class="btn-press px-4 py-2 bg-[#800000] text-white rounded-xl text-xs font-bold hover:bg-[#800000]/90 transition-colors flex items-center gap-1.5">
                             <span class="material-icons text-xs">payments</span> Bayar Sekarang
                         </a>
                         @endif

@@ -1,4 +1,4 @@
-﻿@extends('layouts.master')
+@extends('layouts.master')
 
 @section('title', 'Beranda - Mount Carmel Cluster')
 
@@ -55,7 +55,7 @@ $reservedLahans = $reservedLahans ?? [];
             
             <div data-aos="fade-up" data-aos-delay="900" class="absolute bottom-4 md:bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-3 md:gap-6 bg-white/50 backdrop-blur-sm py-2 md:py-3 px-4 md:px-8 rounded-full whitespace-nowrap">
                 <span class="text-xs md:text-sm font-medium uppercase tracking-wider text-gray-800">Watch a video</span>
-                <button class="btn-ripple btn-press w-10 h-10 md:w-16 md:h-16 bg-primary text-gray-900 rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform">
+                <button class="btn-ripple btn-press w-10 h-10 md:w-16 md:h-16 bg-[#800000] text-gray-900 rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform">
                     <span class="material-icons text-xl md:text-3xl">play_arrow</span>
                 </button>
                 <span class="text-xs md:text-sm font-medium uppercase tracking-wider text-gray-800">Tentang Kami</span>
@@ -121,7 +121,7 @@ $reservedLahans = $reservedLahans ?? [];
             </div>
         </div>
         <div class="md:w-1/2 flex flex-col items-start md:items-end gap-6 md:gap-0">
-            <a data-aos="fade-left" class="btn-ripple btn-press px-6 md:px-8 py-3 md:py-4 bg-gray-900 text-white font-semibold rounded-full hover:bg-gray-800 transition-colors md:mb-16 shadow-md inline-block" href="#">
+            <a data-aos="fade-left" class="btn-ripple btn-press px-6 md:px-8 py-3 md:py-4 bg-[#800000] text-white font-semibold rounded-full hover:bg-[#800000]/90 transition-colors md:mb-16 shadow-md inline-block" href="#">
                 Pelajari Lebih Lanjut
             </a>
             <p data-aos="fade-left" data-aos-delay="100" class="text-gray-600 leading-relaxed max-w-md md:text-right md:mb-12">
@@ -224,7 +224,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="flex justify-between text-emerald-600 font-bold"><span>Harga:</span><span>${formatRupiah(l.harga)}</span></div>
                 </div>
                 ${l.status === 'Tersedia' 
-                    ? `<a href="{{ url('/register') }}?lahan_id=${l.id}" class="block w-full py-2 bg-slate-900 text-white text-center rounded-lg text-xs font-bold hover:bg-slate-800 transition-colors">Pesan Sekarang</a>`
+                    ? `<a href="{{ url('/register') }}?lahan_id=${l.id}" class="block w-full py-2 bg-[#800000] text-white text-center rounded-lg text-xs font-bold hover:bg-[#800000]/80 transition-colors">Pesan Sekarang</a>`
                     : `<button disabled class="block w-full py-2 bg-slate-100 text-slate-400 rounded-lg text-xs font-bold cursor-not-allowed">Tidak Tersedia</button>`
                 }
             </div>
@@ -460,7 +460,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         <div data-aos="fade-up" class="text-center mt-10 md:mt-14">
             <a href="{{ url('/register') }}"
-               class="btn-press btn-ripple inline-flex items-center gap-2 px-6 md:px-8 py-3 md:py-4 bg-gray-900 text-white font-bold rounded-full hover:bg-gray-800 transition-colors shadow-lg">
+               class="btn-press btn-ripple inline-flex items-center gap-2 px-6 md:px-8 py-3 md:py-4 bg-[#800000] text-white font-bold rounded-full hover:bg-[#800000]/90 transition-colors shadow-lg">
                 Mulai Sekarang <span class="material-icons text-sm">arrow_forward</span>
             </a>
         </div>

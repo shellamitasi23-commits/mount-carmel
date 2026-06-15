@@ -26,6 +26,10 @@ class LahanController extends Controller
             });
         }
 
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
         if ($request->filled('cluster_id') && $request->cluster_id !== 'semua') {
             $query->where('cluster_id', $request->cluster_id);
         }

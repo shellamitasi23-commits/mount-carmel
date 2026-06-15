@@ -21,6 +21,8 @@ class Lahan extends Model
         'kapasitas',
         'harga',
         'status',
+        'foto_progres',
+        'catatan_progres',
     ];
 
     /**

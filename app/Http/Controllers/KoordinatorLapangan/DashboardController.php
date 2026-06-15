@@ -12,12 +12,12 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        // Statistik sinkron dengan data riil (5800 Unit)
+        // Statistik sinkron dengan data riil
         $stats = [
             'total_cluster' => Cluster::count(),
-            'total_lahan'   => 5800,
-            'tersedia'      => 4700,
-            'terisi'        => 1100,
+            'total_lahan'   => Lahan::count(),
+            'tersedia'      => Lahan::where('status', 'Tersedia')->count(),
+            'terisi'        => Lahan::where('status', 'Terjual')->count(),
         ];
 
         $latest_allocations = Reservasi::with(['user', 'lahan.cluster'])

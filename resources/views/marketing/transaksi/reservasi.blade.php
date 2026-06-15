@@ -18,7 +18,7 @@
 
     @if(auth()->user()->role == 'marketing')
     <button onclick="document.getElementById('modalTambah').classList.remove('hidden')"
-            class="bg-slate-900 text-white px-5 py-2.5 rounded-xl font-semibold text-sm hover:bg-black transition-all shadow-md flex items-center gap-2">
+            class="bg-[#800000] text-white px-5 py-2.5 rounded-xl font-semibold text-sm hover:bg-[#800000]/90 transition-all shadow-md flex items-center gap-2">
         <span class="material-icons-outlined text-sm">add</span> Input Reservasi
     </button>
     @endif
@@ -200,7 +200,7 @@
                 <button type="button" onclick="document.getElementById('modalTambah').classList.add('hidden')" class="flex-1 px-5 py-2.5 bg-slate-100 text-slate-600 rounded-xl font-semibold text-sm hover:bg-slate-200 transition-all">
                     Batal
                 </button>
-                <button type="submit" class="flex-1 bg-slate-900 text-white px-5 py-2.5 rounded-xl font-semibold text-sm hover:bg-black transition-all shadow-md">
+                <button type="submit" class="flex-1 bg-[#800000] text-white px-5 py-2.5 rounded-xl font-semibold text-sm hover:bg-[#800000]/90 transition-all shadow-md">
                     Simpan Reservasi
                 </button>
             </div>

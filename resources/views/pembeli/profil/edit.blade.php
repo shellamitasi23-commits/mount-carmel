@@ -45,7 +45,7 @@
             </div>
 
             <div class="flex gap-4 pt-4">
-                <button type="submit" class="flex-1 bg-primary text-white py-5 rounded-2xl font-black text-xs tracking-widest uppercase shadow-xl shadow-primary/30">SIMPAN</button>
+                <button type="submit" class="flex-1 bg-[#800000] text-white py-5 rounded-2xl font-black text-xs tracking-widest uppercase shadow-xl shadow-primary/30">SIMPAN</button>
                 <button type="button" @click="modalEdit = false" class="px-8 py-5 bg-slate-100 text-slate-500 rounded-2xl font-black text-xs uppercase tracking-widest">BATAL</button>
             </div>
         </form>

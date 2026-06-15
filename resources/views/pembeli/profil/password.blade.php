@@ -52,7 +52,7 @@
                 </div>
             </div>
 
-            <button type="submit" class="w-full bg-slate-900 text-white py-5 rounded-[1.5rem] font-black text-xs tracking-widest shadow-xl uppercase">Update Password</button>
+            <button type="submit" class="w-full bg-[#800000] text-white py-5 rounded-[1.5rem] font-black text-xs tracking-widest shadow-xl uppercase">Update Password</button>
         </form>
     </div>
 </div>

@@ -17,7 +17,7 @@
     </div>
     @if(auth()->user()->role == 'koordinator_lapangan')
     <button onclick="openModal()"
-            class="bg-slate-900 hover:bg-slate-800 text-white px-5 py-2.5 rounded-xl font-semibold flex items-center gap-2 transition-all shadow-md text-sm hover:shadow-lg hover:-translate-y-0.5">
+            class="bg-[#800000] hover:bg-[#800000]/80 text-white px-5 py-2.5 rounded-xl font-semibold flex items-center gap-2 transition-all shadow-md text-sm hover:shadow-lg hover:-translate-y-0.5">
         <span class="material-icons-outlined text-sm">add</span> Tambah Cluster
     </button>
     @endif
@@ -93,9 +93,9 @@
                     <p class="text-xl font-black text-indigo-600 tracking-tighter">{{ $dipesan }}</p>
                     <p class="text-[8px] font-black text-indigo-300 uppercase tracking-widest mt-0.5">Booked</p>
                 </div>
-                <div class="bg-slate-900 p-3 rounded-xl text-center">
+                <div class="bg-[#800000] p-3 rounded-xl text-center">
                     <p class="text-xl font-black text-white tracking-tighter">{{ $terjual }}</p>
-                    <p class="text-[8px] font-black text-slate-500 uppercase tracking-widest mt-0.5">Sold</p>
+                    <p class="text-[8px] font-black text-slate-300 uppercase tracking-widest mt-0.5">Sold</p>
                 </div>
             </div>
 

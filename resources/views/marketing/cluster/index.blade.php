@@ -60,9 +60,9 @@
                     <p class="text-xl font-black text-indigo-600 tracking-tighter">{{ $dipesan }}</p>
                     <p class="text-[8px] font-black text-indigo-300 uppercase tracking-widest mt-0.5">Booked</p>
                 </div>
-                <div class="bg-slate-900 p-3 rounded-xl text-center">
+                <div class="bg-[#800000] p-3 rounded-xl text-center">
                     <p class="text-xl font-black text-white tracking-tighter">{{ $terjual }}</p>
-                    <p class="text-[8px] font-black text-slate-500 uppercase tracking-widest mt-0.5">Sold</p>
+                    <p class="text-[8px] font-black text-slate-300 uppercase tracking-widest mt-0.5">Sold</p>
                 </div>
             </div>
 

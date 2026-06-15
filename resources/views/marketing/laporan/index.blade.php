@@ -12,7 +12,7 @@
         <p class="text-sm text-slate-500 mt-1">Data operasional dan performa penjualan Mount Carmel.</p>
     </div>
     <a href="{{ route('marketing.laporan.pdf', array_merge(request()->all(), ['type' => $type])) }}" 
-       class="bg-slate-900 hover:bg-slate-800 text-white px-5 py-2.5 rounded-xl text-xs font-bold uppercase tracking-widest transition-all shadow-md flex items-center gap-2">
+       class="bg-[#800000] hover:bg-[#800000]/90 text-white px-5 py-2.5 rounded-xl text-xs font-bold uppercase tracking-widest transition-all shadow-md flex items-center gap-2">
         <span class="material-icons-outlined text-sm">picture_as_pdf</span> Export PDF
     </a>
 </div>
@@ -31,7 +31,7 @@
     @foreach($tabs as $tabKey => $tabLabel)
         <a href="{{ route('marketing.laporan.index', array_merge(request()->except(['type', 'page']), ['type' => $tabKey])) }}" 
            class="flex-1 text-center px-5 py-2.5 rounded-xl text-xs font-bold transition-all 
-           {{ $type === $tabKey ? 'bg-slate-900 text-white shadow-sm' : 'text-slate-500 hover:text-slate-800' }}">
+           {{ $type === $tabKey ? 'bg-[#800000] text-white shadow-sm' : 'text-slate-500 hover:text-slate-800' }}">
             {{ $tabLabel }}
         </a>
     @endforeach
@@ -225,6 +225,33 @@
                     @empty
                     <tr>
                         <td colspan="4" class="px-4 py-8 text-center font-bold text-slate-300 uppercase text-xs">Data Kosong</td>
+                    </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        @elseif($type === 'cluster')
+            <table class="w-full text-left text-sm whitespace-nowrap">
+                <thead>
+                    <tr class="bg-slate-50/80 border-b border-slate-100">
+                        <th class="px-4 py-2.5 text-[10px] font-black text-slate-400 uppercase tracking-widest">Nama Cluster</th>
+                        <th class="px-4 py-2.5 text-[10px] font-black text-slate-400 uppercase tracking-widest">Kategori</th>
+                        <th class="px-4 py-2.5 text-[10px] font-black text-slate-400 uppercase tracking-widest text-center">Total Lahan</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-50">
+                    @forelse($clusters as $c)
+                    <tr class="hover:bg-slate-50/50 transition-colors">
+                        <td class="px-4 py-2.5 font-bold text-slate-900 uppercase tracking-tight">{{ $c->nama_cluster }}</td>
+                        <td class="px-4 py-2.5">
+                            <span class="inline-block px-3 py-1 rounded-md text-[10px] font-black uppercase tracking-tighter {{ $c->kategori == 'Muslim' ? 'bg-emerald-50 text-emerald-600' : 'bg-blue-50 text-blue-600' }}">
+                                {{ $c->kategori }}
+                            </span>
+                        </td>
+                        <td class="px-4 py-2.5 text-center font-bold text-slate-900 text-sm">{{ $c->lahans_count }} UNIT</td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td colspan="3" class="px-4 py-8 text-center font-bold text-slate-300 uppercase text-xs">Belum Ada Data Cluster</td>
                     </tr>
                     @endforelse
                 </tbody>

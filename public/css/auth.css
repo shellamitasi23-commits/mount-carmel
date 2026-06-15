@@ -19,6 +19,8 @@
   --gray-light: #D1D5DB;
   --white: #FFFFFF;
   --red: #D94040;
+  --maroon: #800000;
+  --maroon-soft: #9c1c1c;
   --font-sans: 'Poppins', sans-serif;
 }
 
@@ -41,7 +43,7 @@ html, body {
    -------------------------------------------------------------------------- */
 .visual-panel {
   position: relative;
-  background-image: linear-gradient(to bottom, rgba(30, 34, 41, 0.4), rgba(30, 34, 41, 0.8)), url('https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1200&q=80');
+  background-image: linear-gradient(to bottom, rgba(128, 0, 0, 0.4), rgba(128, 0, 0, 0.8)), url('https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1200&q=80');
   background-size: cover;
   background-position: center;
   display: flex;
@@ -362,7 +364,7 @@ html, body {
    -------------------------------------------------------------------------- */
 .submit-button {
   width: 100%;
-  background-color: var(--slate-dark);
+  background-color: var(--maroon);
   color: var(--white);
   border: none;
   border-radius: 12px;
@@ -371,14 +373,14 @@ html, body {
   font-weight: 700;
   font-size: 0.95rem;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(30, 34, 41, 0.15);
+  box-shadow: 0 4px 12px rgba(128, 0, 0, 0.15);
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .submit-button:hover {
-  background-color: var(--slate-soft);
+  background-color: var(--maroon-soft);
   transform: translateY(-1px);
-  box-shadow: 0 6px 16px rgba(30, 34, 41, 0.22);
+  box-shadow: 0 6px 16px rgba(128, 0, 0, 0.22);
 }
 
 .submit-button:active {
@@ -507,7 +509,7 @@ html, body {
   bottom: 2rem;
   left: 50%;
   transform: translateX(-50%) translateY(60px);
-  background: var(--slate-dark);
+  background: var(--maroon);
   color: #white;
   padding: 0.85rem 1.75rem;
   border-radius: 12px;
@@ -638,7 +640,7 @@ html, body {
 }
 
 .modal-footer .modal-btn {
-  background: var(--slate-dark);
+  background: var(--maroon);
   color: var(--white);
   border: none;
   border-radius: 12px;
@@ -651,8 +653,8 @@ html, body {
 }
 
 .modal-footer .modal-btn:hover {
-  background: var(--slate-soft);
-  box-shadow: 0 4px 12px rgba(30, 34, 41, 0.15);
+  background: var(--maroon-soft);
+  box-shadow: 0 4px 12px rgba(128, 0, 0, 0.15);
 }
 
 /* --------------------------------------------------------------------------

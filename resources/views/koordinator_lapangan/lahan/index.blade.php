@@ -16,7 +16,7 @@
         <p class="text-sm text-slate-500 mt-1">Status dan inventori unit Mount Carmel (Non-Muslim) & Madinah (Muslim).</p>
     </div>
     <button onclick="openModal()"
-            class="bg-slate-900 hover:bg-slate-800 text-white px-5 py-2.5 rounded-xl font-bold flex items-center gap-2 shadow-md text-xs uppercase tracking-widest transition-all active:scale-95">
+            class="bg-[#800000] hover:bg-[#800000]/80 text-white px-5 py-2.5 rounded-xl font-bold flex items-center gap-2 shadow-md text-xs uppercase tracking-widest transition-all active:scale-95">
         <span class="material-icons-outlined text-sm">add</span> Tambah Lahan
     </button>
 </div>
@@ -39,13 +39,13 @@
     {{-- Tab Nav --}}
     <div class="flex items-center gap-1.5 mb-6 p-1.5 bg-white border border-slate-100 rounded-xl w-full shadow-sm">
         <button @click="activeCluster='semua'"
-                :class="activeCluster==='semua'?'bg-slate-900 text-white shadow-sm':'text-slate-500 hover:text-slate-800'"
+                :class="activeCluster==='semua'?'bg-[#800000] text-white shadow-sm':'text-slate-500 hover:text-slate-800'"
                 class="flex-1 text-center px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all">
             Semua ({{ $lahans->total() }})
         </button>
         @foreach($clusters as $cl)
         <button @click="activeCluster='{{ $cl->id }}'"
-                :class="activeCluster==='{{ $cl->id }}'?'bg-slate-900 text-white shadow-sm':'text-slate-500 hover:text-slate-800'"
+                :class="activeCluster==='{{ $cl->id }}'?'bg-[#800000] text-white shadow-sm':'text-slate-500 hover:text-slate-800'"
                 class="flex-1 text-center px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all flex items-center justify-center gap-1.5">
             <span class="material-icons-outlined text-[14px]">{{ $cl->kategori==='Muslim'?'mosque':'church' }}</span>
             {{ $cl->nama_cluster }}
@@ -107,6 +107,10 @@
                                         class="text-slate-400 hover:text-slate-900 bg-white border border-slate-100 p-2 rounded-lg shadow-sm transition-all">
                                     <span class="material-icons-outlined text-lg">edit</span>
                                 </button>
+                                <button onclick="openProgresModal({{ $lahan->id }})"
+                                        class="text-emerald-500 hover:text-emerald-700 bg-emerald-50 border border-emerald-100 p-2 rounded-lg shadow-sm transition-all" title="Update Progres">
+                                    <span class="material-icons-outlined text-lg">add_a_photo</span>
+                                </button>
                                 <form id="form-delete-{{ $lahan->id }}" action="{{ route('koordinator_lapangan.lahan.destroy', $lahan->id) }}" method="POST">
                                     @csrf @method('DELETE')
                                     <button type="button"
@@ -125,6 +129,7 @@
                         </td>
                     </tr>
                     @include('koordinator_lapangan.lahan.edit')
+                    @include('koordinator_lapangan.lahan.progres')
                     @empty
                     <tr>
                         <td colspan="7" class="px-4 py-8 text-center text-slate-400">
@@ -152,5 +157,7 @@
     function closeModal()       { document.getElementById('createModal').classList.add('hidden'); }
     function openEditModal(id)  { document.getElementById('editModal'+id).classList.remove('hidden'); }
     function closeEditModal(id) { document.getElementById('editModal'+id).classList.add('hidden'); }
+    function openProgresModal(id)  { document.getElementById('progresModal'+id).classList.remove('hidden'); }
+    function closeProgresModal(id) { document.getElementById('progresModal'+id).classList.add('hidden'); }
 </script>
 @endsection

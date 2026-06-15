@@ -57,7 +57,7 @@
                 <div class="hidden md:flex items-center gap-3 shrink-0 ml-4">
                     @guest
                         <a href="{{ route('login') }}" class="text-sm font-semibold text-gray-600 hover:text-gray-900 transition-colors px-3">Masuk</a>
-                        <a href="{{ route('register') }}" class="inline-flex items-center px-5 py-2.5 bg-gray-900 text-white text-sm font-semibold rounded-full hover:bg-gray-800 transition-all shadow-lg hover:-translate-y-0.5">Pesan Sekarang</a>
+                        <a href="{{ route('register') }}" class="inline-flex items-center px-5 py-2.5 bg-[#800000] text-white text-sm font-semibold rounded-full hover:bg-[#800000]/90 transition-all shadow-lg hover:-translate-y-0.5">Pesan Sekarang</a>
                     @endguest
                     @auth
                         <div x-data="{ open: false }" class="relative">
@@ -168,7 +168,7 @@
                     <div class="flex flex-col gap-3">
                         <p class="text-[11px] text-center text-gray-500 uppercase tracking-wider font-bold mb-1">Akun Saya</p>
                         <a href="{{ route('login') }}" class="text-center font-bold text-gray-700 bg-white border border-gray-200 py-3 rounded-xl w-full shadow-sm hover:bg-gray-50">Masuk</a>
-                        <a href="{{ route('register') }}" class="text-center font-bold bg-gray-900 text-white py-3 rounded-xl w-full shadow-md hover:bg-gray-800">Daftar Akun</a>
+                        <a href="{{ route('register') }}" class="text-center font-bold bg-[#800000] text-white py-3 rounded-xl w-full shadow-md hover:bg-[#800000]/90">Daftar Akun</a>
                     </div>
                 @endguest
                 @auth
@@ -183,7 +183,7 @@
                             </div>
                         </div>
                         <div class="flex gap-2">
-                            <a href="{{ route('profil.index') }}" class="flex-1 text-center font-bold text-primary bg-primary/10 py-2.5 rounded-xl text-xs hover:bg-primary/20 transition-colors">Profil</a>
+                            <a href="{{ route('profil.index') }}" class="flex-1 text-center font-bold text-[#800000] bg-[#800000]/10 py-2.5 rounded-xl text-xs hover:bg-[#800000]/20 transition-colors">Profil</a>
                             <form method="POST" action="{{ route('logout') }}" class="flex-1">
                                 @csrf
                                 <button type="submit" class="w-full text-center font-bold text-red-600 bg-red-50 border border-red-100 py-2.5 rounded-xl text-xs hover:bg-red-100 transition-colors">Keluar</button>

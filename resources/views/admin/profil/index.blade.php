@@ -83,7 +83,7 @@
                         </div>
                     </div>
                     <div class="pt-4">
-                        <button type="submit" class="bg-slate-900 text-white px-8 py-4 rounded-xl text-[10px] font-black uppercase tracking-[0.3em] hover:bg-black transition-all shadow-xl shadow-slate-200 active:scale-95">
+                        <button type="submit" class="bg-[#800000] text-white px-8 py-4 rounded-xl text-[10px] font-black uppercase tracking-[0.3em] hover:bg-[#800000]/90 transition-all shadow-xl shadow-slate-200 active:scale-95">
                             Perbarui Profil
                         </button>
                     </div>
@@ -133,7 +133,7 @@
                         </div>
                     </div>
                     <div class="pt-4">
-                        <button type="submit" class="bg-slate-900 text-white px-8 py-4 rounded-xl text-[10px] font-black uppercase tracking-[0.3em] hover:bg-black transition-all shadow-xl shadow-slate-200 active:scale-95">
+                        <button type="submit" class="bg-[#800000] text-white px-8 py-4 rounded-xl text-[10px] font-black uppercase tracking-[0.3em] hover:bg-[#800000]/90 transition-all shadow-xl shadow-slate-200 active:scale-95">
                             Ganti Kata Sandi
                         </button>
                     </div>

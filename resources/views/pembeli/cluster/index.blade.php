@@ -20,19 +20,19 @@
          x-data="{ filter: 'semua' }">
         <div class="max-w-7xl mx-auto flex flex-wrap items-center gap-8">
             <button @click="filter = 'semua'"
-                    :class="filter === 'semua' ? 'text-gray-900 dark:text-white border-b-2 border-primary' : 'text-gray-400 hover:text-gray-600'"
+                    :class="filter === 'semua' ? 'text-[#800000] border-b-2 border-[#800000]' : 'text-gray-400 hover:text-[#800000]'"
                     class="pb-2 text-xs font-bold uppercase tracking-widest transition-all">
                 Semua Koleksi
             </button>
 
             <button @click="filter = 'Muslim'"
-                    :class="filter === 'Muslim' ? 'text-gray-900 dark:text-white border-b-2 border-primary' : 'text-gray-400 hover:text-gray-600'"
+                    :class="filter === 'Muslim' ? 'text-[#800000] border-b-2 border-[#800000]' : 'text-gray-400 hover:text-[#800000]'"
                     class="pb-2 text-xs font-bold uppercase tracking-widest transition-all">
                 Kawasan Muslim
             </button>
 
             <button @click="filter = 'Non-Muslim'"
-                    :class="filter === 'Non-Muslim' ? 'text-gray-900 dark:text-white border-b-2 border-primary' : 'text-gray-400 hover:text-gray-600'"
+                    :class="filter === 'Non-Muslim' ? 'text-[#800000] border-b-2 border-[#800000]' : 'text-gray-400 hover:text-[#800000]'"
                     class="pb-2 text-xs font-bold uppercase tracking-widest transition-all">
                 Kawasan Non-Muslim
             </button>
@@ -133,13 +133,13 @@
                         <div class="mt-auto pt-6 border-t border-gray-50 dark:border-gray-900">
                             @auth
                             <a href="{{ route('pembeli.lahan.index', ['cluster_id' => $cluster->id]) }}"
-                               class="group/btn inline-flex items-center text-xs font-black uppercase tracking-[0.3em] text-gray-900 dark:text-white transition-all">
-                                <span class="border-b-2 border-primary pb-1 group-hover/btn:pr-4 transition-all duration-300">Lihat Detail Lahan</span>
+                               class="group/btn inline-flex items-center text-xs font-black uppercase tracking-[0.3em] text-[#800000] transition-all">
+                                <span class="border-b-2 border-[#800000] pb-1 group-hover/btn:pr-4 transition-all duration-300">Lihat Detail Lahan</span>
                             </a>
                             @else
                             <a href="{{ route('login') }}"
                                class="group/btn inline-flex items-center text-xs font-black uppercase tracking-[0.3em] text-gray-400 transition-all">
-                                <span class="border-b-2 border-gray-200 pb-1 group-hover/btn:text-gray-900 group-hover/btn:border-primary transition-all duration-300">Login Untuk Memesan</span>
+                                <span class="border-b-2 border-gray-200 pb-1 group-hover/btn:text-[#800000] group-hover/btn:border-[#800000] transition-all duration-300">Login Untuk Memesan</span>
                             </a>
                             @endauth
                         </div>

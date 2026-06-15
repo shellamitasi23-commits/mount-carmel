@@ -17,31 +17,48 @@
     </div>
     @if(auth()->user()->role == 'marketing')
     <button onclick="openModal()"
-            class="bg-slate-900 hover:bg-slate-800 text-white px-5 py-2.5 rounded-xl font-semibold flex items-center gap-2 shadow-md text-sm hover:-translate-y-0.5 transition-all">
+            class="bg-[#800000] hover:bg-[#800000]/80 text-white px-5 py-2.5 rounded-xl font-semibold flex items-center gap-2 shadow-md text-sm hover:-translate-y-0.5 transition-all">
         <span class="material-icons-outlined text-sm">add</span> Tambah Lahan
     </button>
     @endif
 </div>
 
-{{-- Search --}}
-<form action="{{ route('marketing.lahan.index') }}" method="GET" class="relative mb-6 group">
-    @if(request('cluster_id'))
-    <input type="hidden" name="cluster_id" value="{{ request('cluster_id') }}">
-    @endif
-    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-        <span class="material-icons-outlined text-slate-400 group-focus-within:text-slate-900 transition-colors">search</span>
-    </div>
-    <input type="text" name="search" id="lahan-search" 
-           value="{{ request('search') }}"
-           placeholder="Cari nomor lahan, tipe, cluster, atau status..." 
-           class="w-full pl-11 pr-10 py-2 bg-white border border-slate-100 rounded-xl text-sm font-medium shadow-sm focus:ring-4 focus:ring-slate-900/5 focus:border-slate-900 outline-none transition-all placeholder:text-slate-300">
-    
-    @if(request('search'))
-    <a href="{{ route('marketing.lahan.index') }}" class="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400 hover:text-slate-600 transition-colors">
-        <span class="material-icons-outlined text-xl">close</span>
-    </a>
-    @endif
-</form>
+{{-- Filtering System --}}
+<div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100 mb-6">
+    <form method="GET" action="{{ route('marketing.lahan.index') }}" class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
+        @if(request('cluster_id'))
+        <input type="hidden" name="cluster_id" value="{{ request('cluster_id') }}">
+        @endif
+        
+        <div class="md:col-span-2">
+            <label class="block text-xs font-black text-slate-400 uppercase tracking-widest mb-1.5">Cari Data</label>
+            <div class="relative">
+                <span class="absolute left-4 top-1/2 -translate-y-1/2 material-icons-outlined text-slate-400 text-sm">search</span>
+                <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nomor lahan, tipe, cluster, atau status..."
+                       class="w-full pl-11 pr-4 py-2 bg-white border border-slate-100 rounded-xl text-sm font-medium shadow-sm focus:ring-4 focus:ring-slate-900/5 focus:border-slate-900 outline-none transition-all placeholder:text-slate-300">
+            </div>
+        </div>
+        <div>
+            <label class="block text-xs font-black text-slate-400 uppercase tracking-widest mb-1.5">Status Lahan</label>
+            <div class="relative">
+                <select name="status" onchange="this.form.submit()" class="w-full px-4 py-2 bg-white border border-slate-100 rounded-xl text-sm font-medium shadow-sm focus:ring-4 focus:ring-slate-900/5 focus:border-slate-900 outline-none transition-all appearance-none cursor-pointer">
+                    <option value="">Semua Status</option>
+                    <option value="Tersedia" {{ request('status') == 'Tersedia' ? 'selected' : '' }}>Tersedia</option>
+                    <option value="Dipesan" {{ request('status') == 'Dipesan' ? 'selected' : '' }}>Dipesan</option>
+                    <option value="Terjual" {{ request('status') == 'Terjual' ? 'selected' : '' }}>Terjual</option>
+                </select>
+                <span class="material-icons-outlined absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-sm">expand_more</span>
+            </div>
+        </div>
+        <div class="flex">
+            @if(request('search') || request('status') || request('cluster_id'))
+            <a href="{{ route('marketing.lahan.index') }}" class="w-full px-5 py-2 bg-slate-100 text-slate-500 rounded-xl font-bold text-xs uppercase tracking-widest hover:bg-slate-200 transition-all text-center flex items-center justify-center">
+                Reset
+            </a>
+            @endif
+        </div>
+    </form>
+</div>
 
 {{-- Tab per Cluster --}}
 <div x-data="{ activeCluster: '{{ request('cluster_id', 'semua') }}' }">
@@ -49,12 +66,12 @@
     {{-- Tab Nav --}}
     <div class="flex items-center gap-1.5 mb-6 p-1.5 bg-white border border-slate-100 rounded-xl w-full shadow-sm">
         <a href="{{ route('marketing.lahan.index', array_merge(request()->query(), ['cluster_id' => 'semua', 'page' => 1])) }}"
-           class="flex-1 text-center px-4 py-2 rounded-lg text-xs font-bold transition-all {{ request('cluster_id', 'semua') === 'semua' ? 'bg-slate-900 text-white shadow-sm' : 'text-slate-500 hover:text-slate-800' }}">
+           class="flex-1 text-center px-4 py-2 rounded-lg text-xs font-bold transition-all {{ request('cluster_id', 'semua') === 'semua' ? 'bg-[#800000] text-white shadow-sm' : 'text-slate-500 hover:text-slate-800' }}">
             Semua ({{ \App\Models\Lahan::count() }})
         </a>
         @foreach($clusters as $cl)
         <a href="{{ route('marketing.lahan.index', array_merge(request()->query(), ['cluster_id' => $cl->id, 'page' => 1])) }}"
-           class="flex-1 text-center px-4 py-2 rounded-lg text-xs font-bold transition-all {{ request('cluster_id') == $cl->id ? 'bg-slate-900 text-white shadow-sm' : 'text-slate-500 hover:text-slate-800' }}">
+           class="flex-1 text-center px-4 py-2 rounded-lg text-xs font-bold transition-all {{ request('cluster_id') == $cl->id ? 'bg-[#800000] text-white shadow-sm' : 'text-slate-500 hover:text-slate-800' }}">
             {{ $cl->nama_cluster }}
             <span class="text-[10px] opacity-70">({{ $cl->lahans()->count() }})</span>
         </a>

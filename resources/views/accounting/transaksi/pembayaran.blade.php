@@ -105,7 +105,7 @@
                                         type: 'success',
                                         action: () => document.getElementById('form-approve-{{ $p->id }}').submit() 
                                     })"
-                                    class="bg-emerald-600 text-white px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider hover:bg-emerald-700 transition-all shadow-sm">
+                                    class="bg-[#800000] text-white px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider hover:bg-[#800000]/90 transition-all shadow-sm">
                                     Setujui
                                 </button>
                             </form>

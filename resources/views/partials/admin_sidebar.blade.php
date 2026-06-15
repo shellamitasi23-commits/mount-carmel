@@ -28,7 +28,7 @@
             }
         @endphp
 
-        <a href="{{ route($dashboardRoute) }}" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-semibold transition-all {{ request()->routeIs('*.dashboard') ? 'bg-slate-900 text-white shadow-sm' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800' }}">
+        <a href="{{ route($dashboardRoute) }}" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-semibold transition-all {{ request()->routeIs('*.dashboard') ? 'bg-[#800000] text-white shadow-sm' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800' }}">
             <span class="material-icons-outlined text-[18px]">grid_view</span>
             Dashboard
         </a>
@@ -39,18 +39,18 @@
                 </p>
             </div>
 
-            <a href="{{ route($role . '.cluster.index') }}" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-semibold transition-all {{ request()->routeIs('*.cluster.*') ? 'bg-slate-900 text-white shadow-sm' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800' }}">
+            <a href="{{ route($role . '.cluster.index') }}" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-semibold transition-all {{ request()->routeIs('*.cluster.*') ? 'bg-[#800000] text-white shadow-sm' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800' }}">
                 <span class="material-icons-outlined text-[18px]">map</span>
                 {{ in_array($role, ['marketing', 'koordinator_lapangan']) ? 'Data Cluster' : 'View Cluster' }}
             </a>
 
-            <a href="{{ route($role . '.lahan.index') }}" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-semibold transition-all {{ request()->routeIs('*.lahan.*') ? 'bg-slate-900 text-white shadow-sm' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800' }}">
+            <a href="{{ route($role . '.lahan.index') }}" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-semibold transition-all {{ request()->routeIs('*.lahan.*') ? 'bg-[#800000] text-white shadow-sm' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800' }}">
                 <span class="material-icons-outlined text-[18px]">crop_square</span>
                 {{ in_array($role, ['marketing', 'koordinator_lapangan']) ? 'Data Lahan' : 'View Lahan' }}
             </a>
 
             @if(in_array($role, ['marketing', 'manajer']))
-            <a href="{{ route('marketing.jenazah.index') }}" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-semibold transition-all {{ request()->routeIs('*.jenazah.*') ? 'bg-slate-900 text-white shadow-sm' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800' }}">
+            <a href="{{ route('marketing.jenazah.index') }}" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-semibold transition-all {{ request()->routeIs('*.jenazah.*') ? 'bg-[#800000] text-white shadow-sm' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800' }}">
                 <span class="material-icons-outlined text-[18px]">person</span>
                 Data Jenazah
             </a>
@@ -61,7 +61,7 @@
                 <p class="px-3 text-[9px] font-black tracking-widest text-slate-400 uppercase leading-none">Keuangan</p>
             </div>
 
-            <a href="{{ route('accounting.harga.index') }}" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-semibold transition-all {{ request()->routeIs('*.harga.*') ? 'bg-slate-900 text-white shadow-sm' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800' }}">
+            <a href="{{ route('accounting.harga.index') }}" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-semibold transition-all {{ request()->routeIs('*.harga.*') ? 'bg-[#800000] text-white shadow-sm' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800' }}">
                 <span class="material-icons-outlined text-[18px]">sell</span>
                 Kelola Harga Lahan
             </a>
@@ -73,19 +73,26 @@
                 </p>
             </div>
 
-            <a href="{{ route($role . '.pembeli.index') }}" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-semibold transition-all {{ request()->routeIs('*.pembeli.*') ? 'bg-slate-900 text-white shadow-sm' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800' }}">
+            <a href="{{ route($role . '.pembeli.index') }}" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-semibold transition-all {{ request()->routeIs('*.pembeli.*') ? 'bg-[#800000] text-white shadow-sm' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800' }}">
                 <span class="material-icons-outlined text-[18px]">group</span>
                 {{ $role === 'manajer' ? 'View Pembeli' : ($role === 'accounting' ? 'View Data Pembeli' : 'Data Pembeli') }}
             </a>
 
             @if(in_array($role, ['marketing', 'manajer']))
-                <a href="{{ route($role . '.reservasi.index') }}" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-semibold transition-all {{ request()->routeIs('*.reservasi.*') ? 'bg-slate-900 text-white shadow-sm' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800' }}">
+                <a href="{{ route($role . '.reservasi.index') }}" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-semibold transition-all {{ request()->routeIs('*.reservasi.*') ? 'bg-[#800000] text-white shadow-sm' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800' }}">
                     <span class="material-icons-outlined text-[18px]">book_online</span>
                     {{ $role === 'manajer' ? 'View Reservasi' : 'Data Reservasi' }}
                 </a>
             @endif
 
-            <a href="{{ route($role . '.pembayaran.index') }}" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-semibold transition-all {{ request()->routeIs('*.pembayaran.*') ? 'bg-slate-900 text-white shadow-sm' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800' }}">
+            @if($role === 'manajer')
+                <a href="{{ route('manajer.approval.index') }}" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-semibold transition-all {{ request()->routeIs('*.approval.*') ? 'bg-[#800000] text-white shadow-sm' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800' }}">
+                    <span class="material-icons-outlined text-[18px]">fact_check</span>
+                    Approval Transaksi
+                </a>
+            @endif
+
+            <a href="{{ route($role . '.pembayaran.index') }}" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-semibold transition-all {{ request()->routeIs('*.pembayaran.*') ? 'bg-[#800000] text-white shadow-sm' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800' }}">
                 <span class="material-icons-outlined text-[18px]">payments</span>
                 {{ $role === 'accounting' ? 'Kelola Pembayaran' : ($role === 'marketing' ? 'Data Pembayaran' : 'View Pembayaran') }}
             </a>
@@ -95,7 +102,7 @@
                 <p class="px-3 text-[9px] font-black tracking-widest text-slate-400 uppercase leading-none">Reporting</p>
             </div>
 
-            <a href="{{ route($role . '.laporan.index') }}" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-semibold transition-all {{ request()->routeIs('*.laporan.*') ? 'bg-slate-900 text-white shadow-sm' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800' }}">
+            <a href="{{ route($role . '.laporan.index') }}" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-semibold transition-all {{ request()->routeIs('*.laporan.*') ? 'bg-[#800000] text-white shadow-sm' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800' }}">
                 <span class="material-icons-outlined text-[18px]">analytics</span>
                 Laporan Penjualan
             </a>
@@ -105,7 +112,7 @@
                 <p class="px-3 text-[9px] font-black tracking-widest text-slate-400 uppercase leading-none">Dokumen</p>
             </div>
 
-            <a href="{{ route('marketing.sertifikat.index') }}" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-semibold transition-all {{ request()->routeIs('*.sertifikat.*') ? 'bg-slate-900 text-white shadow-sm' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800' }}">
+            <a href="{{ route('marketing.sertifikat.index') }}" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-semibold transition-all {{ request()->routeIs('*.sertifikat.*') ? 'bg-[#800000] text-white shadow-sm' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800' }}">
                 <span class="material-icons-outlined text-[18px]">workspace_premium</span>
                 Sertifikat Lahan
             </a>
@@ -114,7 +121,7 @@
     </nav>
 
     <div class="p-3 border-t border-slate-50">
-        <a href="{{ route('admin.profil.index') }}" class="flex items-center gap-2.5 px-3 py-2 text-xs font-bold text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-all mb-1 {{ request()->routeIs('admin.profil.*') ? 'bg-slate-900 text-white shadow-sm' : '' }}">
+        <a href="{{ route('admin.profil.index') }}" class="flex items-center gap-2.5 px-3 py-2 text-xs font-bold text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-all mb-1 {{ request()->routeIs('admin.profil.*') ? 'bg-[#800000] text-white shadow-sm' : '' }}">
             <span class="material-icons-outlined text-[18px]">account_circle</span>
             Profile Saya
         </a>

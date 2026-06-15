@@ -16,7 +16,7 @@
         <p class="text-sm text-slate-500 mt-1">Kelola data pembeli lahan di Mount Carmel.</p>
     </div>
     @if(auth()->user()->role == 'marketing')
-    <button onclick="openModal()" class="bg-slate-900 hover:bg-slate-800 text-white px-5 py-2.5 rounded-xl font-semibold text-sm transition-all shadow-md flex items-center gap-2">
+    <button onclick="openModal()" class="bg-[#800000] hover:bg-[#800000]/80 text-white px-5 py-2.5 rounded-xl font-semibold text-sm transition-all shadow-md flex items-center gap-2">
         <span class="material-icons-outlined text-lg">add</span>
         Tambah Pembeli Baru
     </button>

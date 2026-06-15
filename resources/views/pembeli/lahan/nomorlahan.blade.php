@@ -63,8 +63,8 @@ Nomor Lahan — {{ $sample?->tipe_lahan ?? 'N/A' }}
                         <span class="text-[11px] font-black uppercase tracking-widest text-slate-200">Terjual</span>
                     </div>
                     <div class="flex items-center gap-4">
-                        <div class="w-5 h-5 rounded-full bg-slate-900 shadow-2xl shadow-slate-300"></div>
-                        <span class="text-[11px] font-black uppercase tracking-widest text-slate-900">Pilihan Anda</span>
+                        <div class="w-5 h-5 rounded-full bg-[#800000] shadow-2xl shadow-[#800000]/30"></div>
+                        <span class="text-[11px] font-black uppercase tracking-widest text-[#800000]">Pilihan Anda</span>
                     </div>
                 </div>
 
@@ -81,7 +81,7 @@ Nomor Lahan — {{ $sample?->tipe_lahan ?? 'N/A' }}
                                 ? 'bg-white border-slate-100 text-slate-900 hover:border-slate-900 cursor-pointer' 
                                 : 'bg-slate-50 border-transparent text-slate-200 cursor-not-allowed' }}"
                              :class="{ 
-                                 'bg-slate-900 border-slate-900 text-white scale-110 shadow-2xl shadow-slate-300 z-10': selected == {{ $lahan->id }}
+                                 'bg-[#800000] border-[#800000] text-white scale-110 shadow-2xl shadow-[#800000]/30 z-10': selected == {{ $lahan->id }}
                              }"
                              @if($isAvailable)
                                  @click="pilih({{ $lahan->id }}, '{{ $lahan->nomor_lahan }}', {{ $lahan->harga }}, '{{ $lahan->ukuran }}', {{ $lahan->kapasitas }})"
@@ -97,7 +97,7 @@ Nomor Lahan — {{ $sample?->tipe_lahan ?? 'N/A' }}
                 <div class="sticky top-40">
                     
                     {{-- Premium Summary Card --}}
-                    <div class="bg-white border-t-[12px] border-slate-900 shadow-2xl shadow-slate-200/60 overflow-hidden">
+                    <div class="bg-white border-t-[12px] border-[#800000] shadow-2xl shadow-slate-200/60 overflow-hidden">
                         
                         {{-- Placeholder / Specs --}}
                         <div class="p-12 border-b border-slate-100">
@@ -147,7 +147,7 @@ Nomor Lahan — {{ $sample?->tipe_lahan ?? 'N/A' }}
                                     </div>
                                 </div>
                                 <a :href="'{{ route('pembeli.reservasi.create') }}?lahan_id=' + selected"
-                                   class="w-full block bg-slate-900 text-white text-center py-6 rounded-2xl font-black text-xs uppercase tracking-[0.3em] hover:bg-black transition-all active:scale-95 shadow-2xl shadow-slate-200">
+                                   class="w-full block bg-[#800000] text-white text-center py-6 rounded-2xl font-black text-xs uppercase tracking-[0.3em] hover:bg-[#800000]/90 transition-all active:scale-95 shadow-2xl shadow-slate-200">
                                     Lanjutkan Pemesanan
                                 </a>
                             </div>
