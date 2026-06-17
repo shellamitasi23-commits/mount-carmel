@@ -67,6 +67,7 @@
                         <option value="Tersedia">Tersedia</option>
                         <option value="Dipesan">Dipesan</option>
                         <option value="Terjual">Terjual</option>
+                        <option value="Terpakai">Terpakai</option>
                     </select>
                 </div>
             </div>

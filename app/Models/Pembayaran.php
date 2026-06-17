@@ -24,7 +24,25 @@ class Pembayaran extends Model
         'total_cicilan',
         'jatuh_tempo',
         'dibayar_oleh',
+        'dikonfirmasi_oleh',
     ];
+
+    /**
+     * Get human-readable status label for payments (especially DP/Installments)
+     */
+    public function getStatusLabelAttribute()
+    {
+        if ($this->status_pembayaran === 'Lunas') {
+            if ($this->reservasi && $this->reservasi->jenis_pembayaran === 'cicilan') {
+                if ($this->cicilan_ke === 0) {
+                    return 'DP Terbayar';
+                } elseif ($this->cicilan_ke < $this->total_cicilan) {
+                    return "Cicilan Ke-{$this->cicilan_ke} Terbayar";
+                }
+            }
+        }
+        return $this->status_pembayaran;
+    }
     /**
      * Relasi: Pembayaran dimiliki oleh satu Reservasi
      */

@@ -82,7 +82,7 @@
           </div>
           @error('email') <span class="invalid-feedback">{{ $message }}</span> @enderror
         </div>
-x
+
         {{-- Password Field --}}
         <div class="field-group">
           <label for="lPass" class="field-label">Kata Sandi</label>

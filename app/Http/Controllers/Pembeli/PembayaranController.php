@@ -31,16 +31,79 @@ class PembayaranController extends Controller
         ]);
 
         // Pastikan reservasi milik user ini
-        $reservasi = Reservasi::with(['lahan.cluster', 'user'])
+        $reservasi = Reservasi::with(['lahan.cluster', 'user', 'pembayarans'])
             ->where('user_id', auth()->id())
             ->findOrFail($request->reservasi_id);
 
-        // Kalau sudah pernah bayar, redirect ke index
-        $sudahBayar = Pembayaran::where('reservasi_id', $reservasi->id)->exists();
-        if ($sudahBayar) {
+        // Cek jika ada pembayaran yang masih Menunggu Konfirmasi
+        $hasPending = $reservasi->pembayarans->where('status_pembayaran', 'Menunggu Konfirmasi')->isNotEmpty();
+        if ($hasPending) {
             return redirect()
                 ->route('pembeli.pembayaran.index')
-                ->with('error', 'Pembayaran untuk reservasi ini sudah pernah dikirim.');
+                ->with('error', 'Pembayaran Anda sebelumnya masih dalam verifikasi admin.');
+        }
+
+        $isTunai = $reservasi->jenis_pembayaran === 'tunai';
+        $tenor = $reservasi->tenor_cicilan ?? 1;
+
+        if ($isTunai) {
+            // Cek apakah sudah pernah lunas
+            $sudahLunas = $reservasi->pembayarans->where('status_pembayaran', 'Lunas')->isNotEmpty();
+            if ($sudahLunas) {
+                return redirect()
+                    ->route('pembeli.pembayaran.index')
+                    ->with('error', 'Pembayaran untuk reservasi ini sudah lunas.');
+            }
+
+            $pembayaranKe = 1;
+            $totalCicilan = 1;
+            $namaPembayaran = 'Pembayaran Penuh';
+            $jumlahBayar = $reservasi->biaya_penuh;
+        } else {
+            $menggunakanDP = $reservasi->biaya_reservasi > 0;
+            if ($menggunakanDP) {
+                // Cek apakah DP sudah lunas
+                $dpLunas = $reservasi->pembayarans->where('cicilan_ke', 0)->where('status_pembayaran', 'Lunas')->isNotEmpty();
+                if (!$dpLunas) {
+                    $pembayaranKe = 0;
+                    $totalCicilan = $tenor;
+                    $namaPembayaran = 'Uang Muka / DP';
+                    $jumlahBayar = $reservasi->biaya_reservasi;
+                } else {
+                    // Cari cicilan tertinggi yang sudah lunas
+                    $highestLunas = $reservasi->pembayarans->where('status_pembayaran', 'Lunas')
+                        ->where('cicilan_ke', '>', 0)
+                        ->max('cicilan_ke') ?? 0;
+
+                    if ($highestLunas >= $tenor) {
+                        return redirect()
+                            ->route('pembeli.pembayaran.index')
+                            ->with('error', 'Semua cicilan untuk reservasi ini sudah lunas.');
+                    }
+
+                    $pembayaranKe = $highestLunas + 1;
+                    $totalCicilan = $tenor;
+                    $namaPembayaran = "Cicilan Ke-{$pembayaranKe} dari {$totalCicilan}";
+                    // sisa dibagi tenor
+                    $jumlahBayar = ($reservasi->biaya_penuh - $reservasi->biaya_reservasi) / $tenor;
+                }
+            } else {
+                // Cicilan langsung (tanpa DP)
+                $highestLunas = $reservasi->pembayarans->where('status_pembayaran', 'Lunas')
+                    ->where('cicilan_ke', '>', 0)
+                    ->max('cicilan_ke') ?? 0;
+
+                if ($highestLunas >= $tenor) {
+                    return redirect()
+                        ->route('pembeli.pembayaran.index')
+                        ->with('error', 'Semua cicilan untuk reservasi ini sudah lunas.');
+                }
+
+                $pembayaranKe = $highestLunas + 1;
+                $totalCicilan = $tenor;
+                $namaPembayaran = "Cicilan Ke-{$pembayaranKe} dari {$totalCicilan}";
+                $jumlahBayar = $reservasi->biaya_penuh / $tenor;
+            }
         }
 
         $rekening = [
@@ -49,7 +112,7 @@ class PembayaranController extends Controller
             ['bank' => 'Mandiri', 'nomor' => '1380012345678', 'atas_nama' => 'PT Mount Carmel'],
         ];
 
-        return view('pembeli.pembayaran.create', compact('reservasi', 'rekening'));
+        return view('pembeli.pembayaran.create', compact('reservasi', 'rekening', 'jumlahBayar', 'pembayaranKe', 'namaPembayaran', 'isTunai'));
     }
 
     /**
@@ -60,7 +123,6 @@ class PembayaranController extends Controller
     {
         $request->validate([
             'reservasi_id' => 'required|exists:reservasis,id',
-            'jumlah_bayar' => 'required|numeric|min:1',
             'nama_bank' => 'required|string|max:50',
             'rekening_tujuan' => 'required|string|max:50',
             'atas_nama_rekening' => 'required|string|max:100',
@@ -72,25 +134,81 @@ class PembayaranController extends Controller
             'bukti_pembayaran.max' => 'Ukuran file maksimal 4MB.',
         ]);
 
-        $reservasi = Reservasi::where('user_id', auth()->id())
+        $reservasi = Reservasi::with(['pembayarans'])
+            ->where('user_id', auth()->id())
             ->findOrFail($request->reservasi_id);
 
         // Cegah double submit
-        $sudahBayar = Pembayaran::where('reservasi_id', $reservasi->id)->exists();
-        if ($sudahBayar) {
+        $hasPending = $reservasi->pembayarans->where('status_pembayaran', 'Menunggu Konfirmasi')->isNotEmpty();
+        if ($hasPending) {
             return redirect()
                 ->route('pembeli.pembayaran.index')
-                ->with('error', 'Pembayaran sudah pernah dikirim sebelumnya.');
+                ->with('error', 'Pembayaran Anda sebelumnya masih dalam verifikasi admin.');
+        }
+
+        $isTunai = $reservasi->jenis_pembayaran === 'tunai';
+        $tenor = $reservasi->tenor_cicilan ?? 1;
+
+        if ($isTunai) {
+            $sudahLunas = $reservasi->pembayarans->where('status_pembayaran', 'Lunas')->isNotEmpty();
+            if ($sudahLunas) {
+                return redirect()
+                    ->route('pembeli.pembayaran.index')
+                    ->with('error', 'Pembayaran untuk reservasi ini sudah lunas.');
+            }
+
+            $cicilanKe = 1;
+            $totalCicilan = 1;
+            $jumlahBayar = $reservasi->biaya_penuh;
+        } else {
+            $menggunakanDP = $reservasi->biaya_reservasi > 0;
+            if ($menggunakanDP) {
+                $dpLunas = $reservasi->pembayarans->where('cicilan_ke', 0)->where('status_pembayaran', 'Lunas')->isNotEmpty();
+                if (!$dpLunas) {
+                    $cicilanKe = 0;
+                    $totalCicilan = $tenor;
+                    $jumlahBayar = $reservasi->biaya_reservasi;
+                } else {
+                    $highestLunas = $reservasi->pembayarans->where('status_pembayaran', 'Lunas')
+                        ->where('cicilan_ke', '>', 0)
+                        ->max('cicilan_ke') ?? 0;
+
+                    if ($highestLunas >= $tenor) {
+                        return redirect()
+                            ->route('pembeli.pembayaran.index')
+                            ->with('error', 'Semua cicilan untuk reservasi ini sudah lunas.');
+                    }
+
+                    $cicilanKe = $highestLunas + 1;
+                    $totalCicilan = $tenor;
+                    $jumlahBayar = ($reservasi->biaya_penuh - $reservasi->biaya_reservasi) / $tenor;
+                }
+            } else {
+                // Cicilan langsung (tanpa DP)
+                $highestLunas = $reservasi->pembayarans->where('status_pembayaran', 'Lunas')
+                    ->where('cicilan_ke', '>', 0)
+                    ->max('cicilan_ke') ?? 0;
+
+                if ($highestLunas >= $tenor) {
+                    return redirect()
+                        ->route('pembeli.pembayaran.index')
+                        ->with('error', 'Semua cicilan untuk reservasi ini sudah lunas.');
+                }
+
+                $cicilanKe = $highestLunas + 1;
+                $totalCicilan = $tenor;
+                $jumlahBayar = $reservasi->biaya_penuh / $tenor;
+            }
         }
 
         $path = $request->file('bukti_pembayaran')->store('bukti_bayar', 'public');
 
         $noInvoice = 'INV-' . date('Ymd') . '-' . strtoupper(substr(md5($reservasi->id . time()), 0, 6));
 
-        Pembayaran::create([
+        $pembayaran = Pembayaran::create([
             'reservasi_id' => $reservasi->id,
             'no_invoice' => $noInvoice,
-            'jumlah_bayar' => $request->jumlah_bayar,
+            'jumlah_bayar' => $jumlahBayar,
             'tanggal_bayar' => now()->toDateString(),
             'nama_bank' => $request->nama_bank,
             'rekening_tujuan' => $request->rekening_tujuan,
@@ -98,12 +216,14 @@ class PembayaranController extends Controller
             'bukti_pembayaran' => $path,
             'catatan' => $request->catatan,
             'status_pembayaran' => 'Menunggu Konfirmasi',
+            'cicilan_ke' => $cicilanKe,
+            'total_cicilan' => $totalCicilan,
         ]);
 
         $reservasi->update(['status_pembayaran' => 'Menunggu Konfirmasi']);
 
         return redirect()
-            ->route('pembeli.pembayaran.index')
+            ->route('pembeli.pembayaran.invoice', $pembayaran->id)
             ->with('success', 'Bukti pembayaran berhasil dikirim! Admin akan memverifikasi dalam 1×24 jam.');
     }
 

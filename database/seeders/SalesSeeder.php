@@ -102,6 +102,8 @@ class SalesSeeder extends Seeder
                     'jenis_pembayaran' => 'tunai',
                     'biaya_reservasi' => 1000000,
                     'biaya_penuh' => $lahan->harga,
+                    'marketing_oleh' => ['Marketing Rendi', 'Marketing Siska', 'Marketing Adi'][rand(0, 2)],
+                    'disetujui_oleh' => 'Manajer Mount Carmel',
                 ]);
 
                 // Create Pembayaran
@@ -115,6 +117,7 @@ class SalesSeeder extends Seeder
                     'nama_bank' => ['BCA', 'Mandiri', 'BNI', 'BRI'][rand(0, 3)],
                     'rekening_tujuan' => '1234567890',
                     'atas_nama_rekening' => $buyer->name,
+                    'dikonfirmasi_oleh' => ['Accounting Clara', 'Accounting Hendra', 'Accounting Budi'][rand(0, 2)],
                 ]);
 
                 // Update Lahan status to Terjual

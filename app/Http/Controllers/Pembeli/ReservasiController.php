@@ -21,7 +21,7 @@ class ReservasiController extends Controller
             return redirect()->route('pembeli.reservasi.create', ['lahan_id' => $request->lahan_id]);
         }
 
-        $reservasis = Reservasi::with(['lahan.cluster', 'pembayaran'])
+        $reservasis = Reservasi::with(['lahan.cluster', 'pembayaran', 'pembayarans'])
             ->where('user_id', auth()->id())
             ->latest()
             ->get();
@@ -53,8 +53,9 @@ class ReservasiController extends Controller
         }
 
         $user = auth()->user();
+        $marketingStaff = \App\Models\User::where('role', 'marketing')->orderBy('name')->get();
 
-        return view('pembeli.reservasi.create', compact('lahan', 'user'));
+        return view('pembeli.reservasi.create', compact('lahan', 'user', 'marketingStaff'));
     }
 
     /**
@@ -65,18 +66,24 @@ class ReservasiController extends Controller
     {
         $request->validate([
             'lahan_id' => 'required|exists:lahans,id',
-            'nama_jenazah' => 'nullable|string|max:255',
-            'tanggal_dimakamkan' => 'nullable|date|after_or_equal:today',
+            'kategori_kebutuhan' => 'required|in:end_user,pre_need',
+            'nama_jenazah' => 'required_if:kategori_kebutuhan,end_user|nullable|string|max:255',
+            'tanggal_dimakamkan' => 'required_if:kategori_kebutuhan,end_user|nullable|date|after_or_equal:today',
             'alamat_pemesan' => 'required|string',
             'dokumen_ktp' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048',
-            'metode_pembayaran' => 'required|in:tunai,cicilan',
-            'tenor_cicilan' => 'required_if:metode_pembayaran,cicilan|nullable|integer|min:1|max:24',
+            'metode_pembayaran' => 'required|in:tunai,cicilan_dp',
+            'nominal_dp' => 'required_if:metode_pembayaran,cicilan_dp|nullable|numeric',
             'kontak_kerabat' => 'nullable|string|max:255',
+            'request_tambahan' => 'nullable|string',
+            'biaya_tambahan' => 'nullable|numeric|min:0',
+            'marketing_oleh' => 'nullable|string|max:255',
         ], [
             'alamat_pemesan.required' => 'Alamat pemesan wajib diisi.',
             'dokumen_ktp.required' => 'Dokumen KTP wajib diunggah.',
             'metode_pembayaran.required' => 'Metode pembayaran wajib dipilih.',
-            'tenor_cicilan.required_if' => 'Tenor cicilan wajib dipilih jika Anda memilih metode cicilan.',
+            'nama_jenazah.required_if' => 'Nama lengkap jenazah wajib diisi untuk kebutuhan segera.',
+            'tanggal_dimakamkan.required_if' => 'Rencana tanggal pemakaman wajib diisi untuk kebutuhan segera.',
+            'nominal_dp.required_if' => 'Nominal DP wajib diisi untuk metode cicilan dengan DP.',
         ]);
 
         // Cek ulang lahan masih tersedia (cegah race condition)
@@ -85,13 +92,31 @@ class ReservasiController extends Controller
             return back()->with('error', 'Maaf, lahan ini baru saja dipesan orang lain. Silakan pilih nomor lain.');
         }
 
-        // Hitung biaya
-        $biayaPenuh = $lahan->harga ?? 10000000;
-        
-        // Jika tunai, tenor = 1, DP = harga penuh. Jika cicilan, DP = 20%
-        $isTunai = $request->metode_pembayaran === 'tunai';
-        $tenor = $isTunai ? 1 : $request->tenor_cicilan;
-        $biayaReservasi = $isTunai ? $biayaPenuh : ($biayaPenuh * 0.2);
+        // Kategori kebutuhan & metode pembayaran rule check
+        if ($request->kategori_kebutuhan === 'end_user' && $request->metode_pembayaran !== 'tunai') {
+            return back()->withErrors(['metode_pembayaran' => 'Pembayaran untuk kebutuhan segera (end-user) wajib menggunakan metode Tunai.'])->withInput();
+        }
+
+        // Hitung biaya tambahan & biaya penuh
+        $biayaTambahan = 0;
+        $requestTambahan = null;
+        if (str_contains(strtolower($lahan->tipe_lahan), 'special')) {
+            $biayaTambahan = floatval($request->input('biaya_tambahan', 0));
+            $requestTambahan = $request->input('request_tambahan');
+        }
+        $biayaPenuh = $lahan->harga + $biayaTambahan;
+
+        // Tentukan tenor & DP
+        $metode = $request->metode_pembayaran;
+        if ($metode === 'tunai') {
+            $tenor = 1;
+            $biayaReservasi = $biayaPenuh;
+            $jenisPembayaran = 'tunai';
+        } else { // cicilan_dp
+            $tenor = 12; // Jangka panjang pre-need = 12 bulan
+            $biayaReservasi = $lahan->harga * 0.2; // DP otomatis 20% dari harga lahan cash
+            $jenisPembayaran = 'cicilan';
+        }
 
         // Upload KTP
         $ktpPath = $request->file('dokumen_ktp')->store('dokumen_reservasi', 'public');
@@ -100,6 +125,7 @@ class ReservasiController extends Controller
         $reservasi = Reservasi::create([
             'user_id' => auth()->id(),
             'lahan_id' => $request->lahan_id,
+            'kategori_kebutuhan' => $request->kategori_kebutuhan,
             'nama_jenazah' => $request->nama_jenazah ?? null,
             'tanggal_reservasi' => now()->toDateString(),
             'tanggal_dimakamkan' => $request->tanggal_dimakamkan ?? null,
@@ -107,19 +133,35 @@ class ReservasiController extends Controller
             'dokumen_ktp' => $ktpPath,
             'status_reservasi' => 'Menunggu Validasi',
             'status_pembayaran' => 'Belum Bayar',
-            'jenis_pembayaran' => $request->metode_pembayaran,
+            'jenis_pembayaran' => $jenisPembayaran,
             'tenor_cicilan' => $tenor,
             'biaya_reservasi' => $biayaReservasi,
             'biaya_penuh' => $biayaPenuh,
             'kontak_kerabat' => $request->kontak_kerabat,
+            'request_tambahan' => $requestTambahan,
+            'biaya_tambahan' => $biayaTambahan,
+            'marketing_oleh' => $request->marketing_oleh,
         ]);
 
         // Kunci lahan agar tidak bisa dipesan orang lain
         $lahan->update(['status' => 'Dipesan']);
 
-        // Redirect ke form pembayaran
+        // Redirect ke konfirmasi pesanan
         return redirect()
-            ->route('pembeli.pembayaran.create', ['reservasi_id' => $reservasi->id])
-            ->with('success', 'Reservasi berhasil dibuat! Silakan lanjutkan pembayaran DP.');
+            ->route('pembeli.reservasi.konfirmasi', ['id' => $reservasi->id])
+            ->with('success', 'Data reservasi berhasil disimpan! Silakan periksa kembali detail pesanan Anda.');
+    }
+
+    /**
+     * Tampilkan halaman konfirmasi pesanan (review) sebelum lanjut ke transfer pembayaran
+     * URL: GET /pembeli/reservasi/{id}/konfirmasi
+     */
+    public function konfirmasi($id)
+    {
+        $reservasi = Reservasi::with(['lahan.cluster', 'user'])
+            ->where('user_id', auth()->id())
+            ->findOrFail($id);
+
+        return view('pembeli.reservasi.konfirmasi', compact('reservasi'));
     }
 }

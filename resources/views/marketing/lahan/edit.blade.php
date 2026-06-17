@@ -70,6 +70,7 @@
                         <option value="Tersedia" {{ $lahan->status == 'Tersedia' ? 'selected' : '' }}>Tersedia</option>
                         <option value="Dipesan" {{ $lahan->status == 'Dipesan' ? 'selected' : '' }}>Dipesan</option>
                         <option value="Terjual" {{ $lahan->status == 'Terjual' ? 'selected' : '' }}>Terjual</option>
+                        <option value="Terpakai" {{ $lahan->status == 'Terpakai' ? 'selected' : '' }}>Terpakai</option>
                     </select>
                 </div>
             </div>

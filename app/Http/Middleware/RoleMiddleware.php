@@ -13,6 +13,21 @@ class RoleMiddleware
     {
         // Pastikan user sudah login
         if (!Auth::check()) {
+            if ($request->is('marketing*')) {
+                return redirect()->route('marketing.login');
+            }
+            if ($request->is('accounting*')) {
+                return redirect()->route('accounting.login');
+            }
+            if ($request->is('koordinator-lapangan*')) {
+                return redirect()->route('koordinator_lapangan.login');
+            }
+            if ($request->is('manajer*')) {
+                return redirect()->route('manajer.login');
+            }
+            if ($request->is('admin*')) {
+                return redirect()->route('marketing.login');
+            }
             return redirect('login');
         }
 

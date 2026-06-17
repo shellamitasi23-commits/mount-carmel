@@ -70,8 +70,26 @@ Route::middleware('guest')->group(function () {
     Route::get('auth/google', [GoogleController::class, 'redirectToGoogle'])->name('auth.google');
     Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallback']);
 
-    // Autentikasi marketing/staf
+    // Autentikasi marketing
     Route::prefix('marketing')->name('marketing.')->group(function () {
+        Route::get('/login', [AdminLoginController::class, 'showLoginForm'])->name('login');
+        Route::post('/login', [AdminLoginController::class, 'login'])->name('login.submit');
+    });
+
+    // Autentikasi accounting
+    Route::prefix('accounting')->name('accounting.')->group(function () {
+        Route::get('/login', [AdminLoginController::class, 'showLoginForm'])->name('login');
+        Route::post('/login', [AdminLoginController::class, 'login'])->name('login.submit');
+    });
+
+    // Autentikasi koordinator lapangan
+    Route::prefix('koordinator-lapangan')->name('koordinator_lapangan.')->group(function () {
+        Route::get('/login', [AdminLoginController::class, 'showLoginForm'])->name('login');
+        Route::post('/login', [AdminLoginController::class, 'login'])->name('login.submit');
+    });
+
+    // Autentikasi manajer
+    Route::prefix('manajer')->name('manajer.')->group(function () {
         Route::get('/login', [AdminLoginController::class, 'showLoginForm'])->name('login');
         Route::post('/login', [AdminLoginController::class, 'login'])->name('login.submit');
     });
@@ -213,6 +231,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/reservasi', [PembeliReservasi::class, 'index'])->name('reservasi.index'); // Riwayat
         Route::get('/reservasi/create', [PembeliReservasi::class, 'create'])->name('reservasi.create'); // Form
         Route::post('/reservasi', [PembeliReservasi::class, 'store'])->name('reservasi.store'); // Simpan
+        Route::get('/reservasi/{id}/konfirmasi', [PembeliReservasi::class, 'konfirmasi'])->name('reservasi.konfirmasi'); // Konfirmasi
 
         // Manajemen pembayaran
         Route::get('/pembayaran', [PembeliPembayaran::class, 'index'])->name('pembayaran.index'); // Riwayat

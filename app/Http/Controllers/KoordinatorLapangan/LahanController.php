@@ -11,7 +11,9 @@ class LahanController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Lahan::with('cluster');
+        $query = Lahan::with(['cluster', 'reservasis' => function ($q) {
+            $q->where('status_reservasi', '!=', 'Ditolak')->latest();
+        }]);
 
         if ($request->filled('search')) {
             $search = $request->search;
@@ -73,7 +75,7 @@ class LahanController extends Controller
             'ukuran' => 'required|string',
             'kapasitas' => 'required|integer|min:1',
             'harga' => 'required|numeric|min:0',
-            'status' => 'required|in:Tersedia,Dipesan,Terjual',
+            'status' => 'required|in:Tersedia,Dipesan,Terjual,Terpakai',
         ]);
 
         Lahan::create($validated);
@@ -92,7 +94,7 @@ class LahanController extends Controller
             'ukuran' => 'required|string',
             'kapasitas' => 'required|integer|min:1',
             'harga' => 'required|numeric|min:0',
-            'status' => 'required|in:Tersedia,Dipesan,Terjual',
+            'status' => 'required|in:Tersedia,Dipesan,Terjual,Terpakai',
         ]);
 
         $lahan = Lahan::findOrFail($id);

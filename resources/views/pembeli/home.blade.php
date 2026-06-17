@@ -1,4 +1,4 @@
-@extends('layouts.master')
+﻿@extends('layouts.master')
 
 @section('title', 'Beranda - Mount Carmel Cluster')
 
@@ -51,14 +51,6 @@ $reservedLahans = $reservedLahans ?? [];
                     <span class="font-semibold text-gray-900">Layanan Kami</span>
                     <span class="material-icons text-gray-500">arrow_forward</span>
                 </div>
-            </div>
-            
-            <div data-aos="fade-up" data-aos-delay="900" class="absolute bottom-4 md:bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-3 md:gap-6 bg-white/50 backdrop-blur-sm py-2 md:py-3 px-4 md:px-8 rounded-full whitespace-nowrap">
-                <span class="text-xs md:text-sm font-medium uppercase tracking-wider text-gray-800">Watch a video</span>
-                <button class="btn-ripple btn-press w-10 h-10 md:w-16 md:h-16 bg-[#800000] text-gray-900 rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform">
-                    <span class="material-icons text-xl md:text-3xl">play_arrow</span>
-                </button>
-                <span class="text-xs md:text-sm font-medium uppercase tracking-wider text-gray-800">Tentang Kami</span>
             </div>
         </div>
 

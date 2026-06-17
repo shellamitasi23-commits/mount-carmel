@@ -4,18 +4,18 @@ Nomor Lahan — {{ $sample?->tipe_lahan ?? 'N/A' }}
 @endsection
 
 @section('content')
-<div class="min-h-screen bg-white pt-40 pb-32">
+<div class="min-h-screen bg-white pt-28 pb-20">
     <div class="max-w-7xl mx-auto px-10">
 
-        {{-- Editorial Breadcrumb --}}
-        <nav class="flex items-center gap-4 text-[11px] font-black uppercase tracking-[0.3em] text-slate-300 mb-16">
+        {{-- Minimalist Breadcrumb --}}
+        <nav class="flex items-center gap-2 text-xs text-gray-400 mb-8">
             <a href="{{ route('home') }}" class="hover:text-slate-900 transition-colors">Beranda</a>
             <span>/</span>
             <a href="{{ route('cluster.index') }}" class="hover:text-slate-900 transition-colors">Cluster</a>
             <span>/</span>
             <a href="{{ route('pembeli.lahan.index', ['cluster_id' => $cluster->id]) }}" class="hover:text-slate-900 transition-colors">{{ $cluster->nama_cluster }}</a>
             <span>/</span>
-            <span class="text-slate-900">{{ $sample?->tipe_lahan ?? 'N/A' }}</span>
+            <span class="text-slate-900 font-medium">{{ $sample?->tipe_lahan ?? 'N/A' }}</span>
         </nav>
 
         {{-- Alpine Container --}}
@@ -40,32 +40,38 @@ Nomor Lahan — {{ $sample?->tipe_lahan ?? 'N/A' }}
 
             {{-- LEFT: Grid Section --}}
             <div class="flex-1">
-                <header class="mb-20">
-                    <span class="inline-block text-slate-400 font-black tracking-[0.4em] uppercase text-[10px] mb-6">
+                <header class="mb-6">
+                    <span class="inline-block text-xs font-bold text-slate-400 mb-1.5">
                         {{ $cluster->nama_cluster }} &middot; {{ $sample?->tipe_lahan ?? 'N/A' }}
                     </span>
-                    <h1 class="text-7xl md:text-8xl font-black text-slate-900 tracking-tighter mb-8 leading-[0.85] italic">
+                    <h1 class="text-2xl font-bold text-slate-900 tracking-tight mb-2">
                         Pilih Kavling
                     </h1>
-                    <p class="text-slate-500 text-xl font-medium leading-relaxed max-w-xl">
+                    <p class="text-slate-555 text-xs leading-relaxed max-w-xl">
                         Tentukan lokasi terbaik untuk peristirahatan terakhir. Tersedia {{ collect($lahans)->where('status','Tersedia')->count() }} unit di cluster ini.
                     </p>
                 </header>
 
                 {{-- Legend --}}
-                <div class="flex flex-wrap gap-12 mb-16 border-b-2 border-slate-50 pb-12">
-                    <div class="flex items-center gap-4">
-                        <div class="w-5 h-5 rounded-full border-2 border-slate-200 bg-slate-50"></div>
-                        <span class="text-[11px] font-black uppercase tracking-widest text-slate-400">Tersedia</span>
+                <div class="flex flex-wrap gap-6 mb-6 border-b border-slate-100 pb-6">
+                    <div class="flex items-center gap-2">
+                        <div class="w-3.5 h-3.5 rounded-full border border-slate-200 bg-slate-50"></div>
+                        <span class="text-[10px] font-bold text-slate-400">Tersedia</span>
                     </div>
-                    <div class="flex items-center gap-4">
-                        <div class="w-5 h-5 rounded-full bg-slate-100"></div>
-                        <span class="text-[11px] font-black uppercase tracking-widest text-slate-200">Terjual</span>
+                    <div class="flex items-center gap-2">
+                        <div class="w-3.5 h-3.5 rounded-full bg-slate-100"></div>
+                        <span class="text-[10px] font-bold text-slate-300">Terjual</span>
                     </div>
-                    <div class="flex items-center gap-4">
-                        <div class="w-5 h-5 rounded-full bg-[#800000] shadow-2xl shadow-[#800000]/30"></div>
-                        <span class="text-[11px] font-black uppercase tracking-widest text-[#800000]">Pilihan Anda</span>
+                    <div class="flex items-center gap-2">
+                        <div class="w-3.5 h-3.5 rounded-full bg-[#800000] shadow-sm shadow-[#800000]/30"></div>
+                        <span class="text-[10px] font-bold text-[#800000]">Pilihan Anda</span>
                     </div>
+                </div>
+
+                {{-- Cluster Layout Map --}}
+                <div class="mb-8 bg-slate-50 p-4 rounded-2xl border border-slate-100 flex flex-col items-center">
+                    <span class="text-[9px] font-black uppercase tracking-[0.2em] text-slate-400 mb-2 block">Peta Lokasi Kavling (Blok A, B, C)</span>
+                    <img src="{{ asset('images/cluster_map.png') }}" alt="Peta Layout Cluster" class="max-h-[220px] w-auto object-contain rounded-xl shadow-sm border border-white">
                 </div>
 
                 {{-- Grid --}}
@@ -93,71 +99,80 @@ Nomor Lahan — {{ $sample?->tipe_lahan ?? 'N/A' }}
             </div>
 
             {{-- RIGHT: Sidebar Section --}}
-            <div class="lg:w-[450px] shrink-0">
+            <div class="lg:w-[420px] shrink-0">
                 <div class="sticky top-40">
                     
                     {{-- Premium Summary Card --}}
-                    <div class="bg-white border-t-[12px] border-[#800000] shadow-2xl shadow-slate-200/60 overflow-hidden">
+                    <div class="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-[2rem] shadow-xl shadow-gray-100/30 dark:shadow-none overflow-hidden">
                         
                         {{-- Placeholder / Specs --}}
-                        <div class="p-12 border-b border-slate-100">
-                            <div x-show="selected === null">
-                                <p class="text-[11px] font-black text-slate-300 uppercase tracking-[0.4em] mb-12">Detail Kavling</p>
-                                <h3 class="text-3xl font-black text-slate-900 tracking-tighter leading-tight mb-8">Pilih nomor kavling untuk melihat rincian</h3>
-                                <div class="h-1 w-12 bg-slate-100"></div>
+                        <div class="p-8 border-b border-gray-50 dark:border-gray-800">
+                            <div x-show="selected === null" class="py-6 text-center">
+                                <div class="w-12 h-12 rounded-full bg-gray-50 dark:bg-gray-800 flex items-center justify-center mx-auto mb-4 text-gray-400">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"/></svg>
+                                </div>
+                                <h3 class="text-sm font-semibold text-gray-800 dark:text-gray-200 mb-1">Pilih Nomor Kavling</h3>
+                                <p class="text-xs text-gray-400 dark:text-gray-500">Tentukan nomor lahan pada grid untuk melihat rincian lokasi dan detail harga.</p>
                             </div>
-
-                            <div x-show="selected !== null" x-cloak>
-                                <p class="text-[11px] font-black text-slate-300 uppercase tracking-[0.4em] mb-12">Kavling Terpilih</p>
-                                
-                                <div class="mb-12">
-                                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Nomor Lahan</p>
-                                    <h2 class="text-7xl font-black text-slate-900 tracking-tighter leading-none italic" x-text="'#' + nomor"></h2>
+ 
+                            <div x-show="selected !== null" x-cloak class="space-y-6">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-0.5">Kavling Terpilih</span>
+                                        <h2 class="text-3xl font-bold text-gray-900 dark:text-white tracking-tight" x-text="'#' + nomor"></h2>
+                                    </div>
+                                    <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                                        Tersedia
+                                    </span>
                                 </div>
 
-                                <div class="space-y-8">
-                                    <div class="grid grid-cols-2 gap-8">
-                                        <div>
-                                            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Luas</p>
-                                            <p class="text-lg font-black text-slate-900" x-text="ukuran"></p>
+                                <div class="grid grid-cols-2 gap-4 pt-4 border-t border-gray-50 dark:border-gray-850">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-9 h-9 rounded-xl bg-gray-50 dark:bg-gray-800 flex items-center justify-center text-gray-400 shrink-0">
+                                            <svg class="w-4.5 h-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/></svg>
                                         </div>
                                         <div>
-                                            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Kapasitas</p>
-                                            <p class="text-lg font-black text-slate-900" x-text="kap + ' Slot'"></p>
+                                            <span class="text-[9px] font-semibold text-gray-400 uppercase tracking-wider block">Luas</span>
+                                            <span class="text-xs font-bold text-gray-800 dark:text-gray-200" x-text="ukuran"></span>
                                         </div>
                                     </div>
-                                    <div>
-                                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Status Lahan</p>
-                                        <p class="text-sm font-black text-emerald-600 uppercase tracking-widest">Tersedia Untuk Dipesan</p>
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-9 h-9 rounded-xl bg-gray-50 dark:bg-gray-800 flex items-center justify-center text-gray-400 shrink-0">
+                                            <svg class="w-4.5 h-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                                        </div>
+                                        <div>
+                                            <span class="text-[9px] font-semibold text-gray-400 uppercase tracking-wider block">Kapasitas</span>
+                                            <span class="text-xs font-bold text-gray-800 dark:text-gray-200" x-text="kap + ' Slot'"></span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
                         {{-- Final Action --}}
-                        <div class="p-12 bg-slate-50/50">
-                            <div x-show="selected === null" class="text-slate-300 font-bold text-sm italic">
-                                Belum ada lokasi terpilih.
+                        <div class="p-8 bg-gray-50/50 dark:bg-gray-950/20">
+                            <div x-show="selected === null" class="text-gray-400 dark:text-gray-500 text-xs italic text-center">
+                                Silakan pilih salah satu nomor kavling.
                             </div>
-                            <div x-show="selected !== null" x-cloak class="space-y-8">
-                                <div class="flex justify-between items-end">
-                                    <div>
-                                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Nilai Investasi</p>
-                                        <p class="text-3xl font-black text-slate-900 tracking-tight" x-text="rupiah(harga)"></p>
-                                    </div>
+                            <div x-show="selected !== null" x-cloak class="space-y-4">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-xs font-medium text-gray-400 dark:text-gray-500">Nilai Investasi</span>
+                                    <span class="text-xl font-bold text-[#800000] tracking-tight" x-text="rupiah(harga)"></span>
                                 </div>
                                 <a :href="'{{ route('pembeli.reservasi.create') }}?lahan_id=' + selected"
-                                   class="w-full block bg-[#800000] text-white text-center py-6 rounded-2xl font-black text-xs uppercase tracking-[0.3em] hover:bg-[#800000]/90 transition-all active:scale-95 shadow-2xl shadow-slate-200">
+                                   class="w-full py-4 bg-[#800000] text-white text-center rounded-xl font-semibold text-xs transition-all hover:bg-[#900000] hover:shadow-lg hover:shadow-[#800000]/20 flex items-center justify-center gap-2">
                                     Lanjutkan Pemesanan
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                                 </a>
                             </div>
                         </div>
                     </div>
 
-                    <div class="mt-12 text-center">
+                    <div class="mt-8 text-center">
                         <a href="{{ route('pembeli.lahan.index', ['cluster_id' => $cluster->id]) }}"
-                           class="text-[11px] font-black uppercase tracking-[0.3em] text-slate-400 hover:text-slate-900 transition-all border-b-2 border-transparent hover:border-slate-900 pb-1">
-                            Kembali Pilih Tipe Lahan
+                           class="text-xs font-bold text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors pb-1 border-b border-dashed border-gray-200 hover:border-gray-950">
+                            Pilih Tipe Lahan Lainnya
                         </a>
                     </div>
                 </div>

@@ -21,6 +21,7 @@ class Reservasi extends Model
         'file_sertifikat',
         'alamat_pemesan',
         'tanggal_dimakamkan',
+        'kategori_kebutuhan',
         'jenis_pembayaran',
         'tenor_cicilan',
         'biaya_reservasi',
@@ -28,6 +29,10 @@ class Reservasi extends Model
         'pembayar_akhir',
         'catatan_kerabat',
         'kontak_kerabat',
+        'request_tambahan',
+        'biaya_tambahan',
+        'disetujui_oleh',
+        'marketing_oleh',
     ];
 
     /**
@@ -52,5 +57,13 @@ class Reservasi extends Model
     public function pembayaran()
     {
         return $this->hasOne(Pembayaran::class);
+    }
+
+    /**
+     * Relasi: Reservasi memiliki banyak Pembayaran
+     */
+    public function pembayarans()
+    {
+        return $this->hasMany(Pembayaran::class);
     }
 }

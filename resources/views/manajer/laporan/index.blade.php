@@ -182,7 +182,8 @@
                         <td class="px-4 py-2.5 text-[10px] font-bold text-slate-600 uppercase">{{ $k->tipe_lahan }}</td>
                         <td class="px-4 py-2.5 font-bold text-slate-900 text-sm">Rp {{ number_format($k->harga, 0, ',', '.') }}</td>
                         <td class="px-4 py-2.5 text-center">
-                            <span class="inline-block px-3 py-1 rounded-md text-[10px] font-black uppercase tracking-tighter {{ $k->status == 'Tersedia' ? 'bg-emerald-50 text-emerald-600' : 'bg-amber-50 text-amber-700' }}">
+                            <span class="inline-block px-3 py-1 rounded-md text-[10px] font-black uppercase tracking-tighter 
+                                {{ $k->status == 'Terpakai' ? 'bg-rose-100 text-rose-700 border border-rose-200' : 'bg-amber-50 text-amber-700' }}">
                                 {{ $k->status }}
                             </span>
                         </td>

@@ -47,27 +47,90 @@ class TransaksiController extends Controller
             'status_pembayaran' => 'required|in:Lunas,Ditolak',
         ]);
 
-        $pembayaran = Pembayaran::with(['reservasi', 'reservasi.lahan'])->findOrFail($id);
+        $pembayaran = Pembayaran::with(['reservasi.lahan'])->findOrFail($id);
+        $reservasi = $pembayaran->reservasi;
 
-        $pembayaran->update(['status_pembayaran' => $request->status_pembayaran]);
-
-        Reservasi::where('id', $pembayaran->reservasi_id)
-            ->update(['status_pembayaran' => $request->status_pembayaran]);
+        $pembayaran->update([
+            'status_pembayaran' => $request->status_pembayaran,
+            'dikonfirmasi_oleh' => auth()->user()->name
+        ]);
 
         if ($request->status_pembayaran === 'Lunas') {
-            Lahan::where('id', $pembayaran->reservasi->lahan_id)
-                ->update(['status' => 'Terjual']);
+            if ($reservasi->jenis_pembayaran === 'cicilan') {
+                if ($pembayaran->cicilan_ke === 0) {
+                    // Jika DP lunas, setujui reservasi secara otomatis
+                    $reservasi->update([
+                        'status_pembayaran' => 'DP Lunas',
+                        'status_reservasi' => 'Disetujui'
+                    ]);
+                    if ($reservasi->lahan_id) {
+                        $reservasi->lahan->update(['status' => 'Dipesan']);
+                    }
+                } else {
+                    $tenor = $reservasi->tenor_cicilan ?? 1;
+                    if ($pembayaran->cicilan_ke >= $tenor) {
+                        // Jika cicilan terakhir lunas
+                        $reservasi->update([
+                            'status_pembayaran' => 'Lunas',
+                            'status_reservasi' => 'Selesai'
+                        ]);
+                        if ($reservasi->lahan_id) {
+                            $statusLahan = $reservasi->nama_jenazah ? 'Dipesan' : 'Terjual';
+                            $reservasi->lahan->update(['status' => $statusLahan]);
+                        }
+                    } else {
+                        // Jika cicilan antara lunas
+                        $reservasi->update([
+                            'status_pembayaran' => "Cicilan Ke-{$pembayaran->cicilan_ke} Lunas"
+                        ]);
+                        if ($reservasi->lahan_id) {
+                            $reservasi->lahan->update(['status' => 'Dipesan']);
+                        }
+                    }
+                }
+            } else {
+                // Jika tunai lunas
+                $reservasi->update([
+                    'status_pembayaran' => 'Lunas',
+                    'status_reservasi' => 'Selesai'
+                ]);
+                if ($reservasi->lahan_id) {
+                    $statusLahan = $reservasi->nama_jenazah ? 'Dipesan' : 'Terjual';
+                    $reservasi->lahan->update(['status' => $statusLahan]);
+                }
+            }
+        } else if ($request->status_pembayaran === 'Ditolak') {
+            // Cari status lunas sebelumnya
+            $hasDpLunas = Pembayaran::where('reservasi_id', $pembayaran->reservasi_id)
+                ->where('cicilan_ke', 0)
+                ->where('status_pembayaran', 'Lunas')
+                ->exists();
 
-            Reservasi::where('id', $pembayaran->reservasi_id)
-                ->update(['status_reservasi' => 'Selesai']);
-        }
+            if ($reservasi->jenis_pembayaran === 'cicilan' && $hasDpLunas) {
+                // Cari cicilan tertinggi yang disetujui sebelumnya
+                $highestLunas = Pembayaran::where('reservasi_id', $pembayaran->reservasi_id)
+                    ->where('status_pembayaran', 'Lunas')
+                    ->where('cicilan_ke', '>', 0)
+                    ->max('cicilan_ke');
 
-        if ($request->status_pembayaran === 'Ditolak') {
-            Lahan::where('id', $pembayaran->reservasi->lahan_id)
-                ->update(['status' => 'Tersedia']);
-
-            Reservasi::where('id', $pembayaran->reservasi_id)
-                ->update(['status_pembayaran' => 'Ditolak']);
+                if ($highestLunas) {
+                    $reservasi->update([
+                        'status_pembayaran' => "Cicilan Ke-{$highestLunas} Lunas"
+                    ]);
+                } else {
+                    $reservasi->update([
+                        'status_pembayaran' => 'DP Lunas'
+                    ]);
+                }
+            } else {
+                // Jika tidak ada DP lunas sebelumnya, kembalikan status
+                $reservasi->update([
+                    'status_pembayaran' => 'Ditolak'
+                ]);
+                if ($reservasi->lahan_id) {
+                    $reservasi->lahan->update(['status' => 'Tersedia']);
+                }
+            }
         }
 
         return redirect()->back()->with('success', 'Status pembayaran berhasil dikonfirmasi oleh Accounting.');

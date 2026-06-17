@@ -190,8 +190,8 @@
                         </div>
                         <div class="flex flex-col md:items-end gap-6">
                             <div class="text-right">
-                                <p class="text-[11px] font-black text-slate-400 uppercase tracking-widest mb-1">Harus Dibayar</p>
-                                <p class="text-3xl font-black text-slate-900 tracking-tight">Rp {{ number_format($res->lahan->harga, 0, ',', '.') }}</p>
+                                <p class="text-[11px] font-black text-slate-400 uppercase tracking-widest mb-1">{{ $res->tipe_tagihan ?? 'Harus Dibayar' }}</p>
+                                <p class="text-3xl font-black text-[#800000] tracking-tight">Rp {{ number_format($res->nominal_tagihan ?? $res->lahan->harga, 0, ',', '.') }}</p>
                             </div>
                             <a href="{{ route('pembeli.pembayaran.create', ['reservasi_id' => $res->id]) }}"
                                class="bg-amber-500 text-white px-12 py-5 rounded-2xl font-black text-[11px] uppercase tracking-[0.2em] shadow-2xl shadow-amber-200 hover:bg-amber-600 transition-all active:scale-95">BAYAR SEKARANG</a>
@@ -216,14 +216,32 @@
                                 <div class="flex items-center gap-4 mb-4">
                                     <p class="text-lg font-black text-slate-900 tracking-tight">{{ $bayar->no_invoice }}</p>
                                     <span class="px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-widest
-                                        {{ $bayar->status_pembayaran === 'Lunas' ? 'bg-emerald-100 text-emerald-700' :
-                                           ($bayar->status_pembayaran === 'Ditolak' ? 'bg-rose-100 text-rose-700' : 'bg-amber-100 text-amber-700') }}">
-                                        {{ $bayar->status_pembayaran }}
+                                        @if($bayar->status_pembayaran === 'Lunas')
+                                            @if($bayar->reservasi?->jenis_pembayaran === 'cicilan' && ($bayar->cicilan_ke === 0 || $bayar->cicilan_ke < $bayar->total_cicilan))
+                                                bg-blue-100 text-blue-700
+                                            @else
+                                                bg-emerald-100 text-emerald-700
+                                            @endif
+                                        @elseif($bayar->status_pembayaran === 'Ditolak')
+                                            bg-rose-100 text-rose-700
+                                        @else
+                                            bg-amber-100 text-amber-700
+                                        @endif">
+                                        {{ $bayar->status_label }}
                                     </span>
                                 </div>
                                 <p class="text-[11px] font-bold text-slate-400 uppercase tracking-widest">
                                     Lahan #{{ $bayar->reservasi->lahan->nomor_lahan }} &middot;
-                                    {{ $bayar->reservasi->lahan->cluster->nama_cluster }}
+                                    {{ $bayar->reservasi->lahan->cluster->nama_cluster }} &middot;
+                                    @if($bayar->reservasi?->jenis_pembayaran === 'cicilan')
+                                        @if($bayar->cicilan_ke === 0)
+                                            Uang Muka / DP Awal (20%)
+                                        @else
+                                            Cicilan Ke-{{ $bayar->cicilan_ke }} dari {{ $bayar->total_cicilan }}
+                                        @endif
+                                    @else
+                                        Pembayaran Penuh
+                                    @endif
                                 </p>
                                 <p class="text-[10px] font-bold text-slate-300 uppercase tracking-widest mt-2">{{ $bayar->created_at->translatedFormat('d M Y, H:i') }}</p>
                             </div>

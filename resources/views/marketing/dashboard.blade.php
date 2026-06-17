@@ -45,19 +45,19 @@
         </div>
         <div class="p-4 grid grid-cols-4 gap-3 text-center">
             <div class="bg-slate-50 p-2.5 rounded-lg">
-                <p class="text-[8px] font-bold text-slate-400 uppercase mb-1">Sold</p>
+                <p class="text-[8px] font-bold text-slate-400 uppercase mb-1">Terjual</p>
                 <p class="text-base font-black text-slate-900 leading-none">{{ number_format($muslimStats['terjual']) }}</p>
             </div>
             <div class="bg-slate-50 p-2.5 rounded-lg">
-                <p class="text-[8px] font-bold text-slate-400 uppercase mb-1">Booked</p>
+                <p class="text-[8px] font-bold text-slate-400 uppercase mb-1">Reservasi</p>
                 <p class="text-base font-black text-slate-900 leading-none">{{ number_format($muslimStats['booked']) }}</p>
             </div>
             <div class="bg-slate-50 p-2.5 rounded-lg">
-                <p class="text-[8px] font-bold text-slate-400 uppercase mb-1">Used</p>
+                <p class="text-[8px] font-bold text-slate-400 uppercase mb-1">Terpakai</p>
                 <p class="text-base font-black text-slate-900 leading-none">{{ number_format($muslimStats['used']) }}</p>
             </div>
             <div class="bg-teal-50 p-2.5 rounded-lg border border-teal-100">
-                <p class="text-[8px] font-bold text-teal-600 uppercase mb-1">Ready</p>
+                <p class="text-[8px] font-bold text-teal-600 uppercase mb-1">Tersedia</p>
                 <p class="text-base font-black text-teal-700 leading-none">{{ number_format($muslimStats['available']) }}</p>
             </div>
         </div>
@@ -107,6 +107,7 @@
                             <th class="px-4 py-2 font-bold uppercase text-[9px]">Nama Pembeli</th>
                             <th class="px-4 py-2 font-bold uppercase text-[9px]">Unit</th>
                             <th class="px-4 py-2 font-bold uppercase text-[9px]">Nama Jenazah</th>
+                            <th class="px-4 py-2 font-bold uppercase text-[9px]">Harga Lahan</th>
                             <th class="px-4 py-2 font-bold uppercase text-[9px] text-right">Status</th>
                         </tr>
                     </thead>
@@ -118,6 +119,7 @@
                                 <p class="text-[8px] text-slate-400 mt-1 uppercase">{{ $sale['email'] }}</p>
                             </td>
                             <td class="px-4 py-2.5 font-bold text-slate-500 uppercase">{{ $sale['type'] }}</td>
+                            <td class="px-4 py-2.5 font-bold text-slate-650 uppercase">{{ $sale['nama_jenazah'] }}</td>
                             <td class="px-4 py-2.5 font-black text-slate-900">{{ $sale['price'] }}</td>
                             <td class="px-4 py-2.5 text-right">
                                 <span class="inline-block px-2 py-1 rounded text-[8px] font-black uppercase tracking-tighter {{ $sale['status_color'] }}">

@@ -35,7 +35,10 @@ class ApprovalController extends Controller
     public function approve(Request $request, $id)
     {
         $reservasi = Reservasi::findOrFail($id);
-        $reservasi->update(['status_reservasi' => 'Disetujui']);
+        $reservasi->update([
+            'status_reservasi' => 'Disetujui',
+            'disetujui_oleh' => auth()->user()->name
+        ]);
 
         return redirect()->back()->with('success', 'Reservasi berhasil disetujui.');
     }
@@ -45,7 +48,8 @@ class ApprovalController extends Controller
         $reservasi = Reservasi::findOrFail($id);
         $reservasi->update([
             'status_reservasi' => 'Ditolak',
-            'status_pembayaran' => 'Belum Bayar'
+            'status_pembayaran' => 'Belum Bayar',
+            'disetujui_oleh' => auth()->user()->name
         ]);
 
         if ($reservasi->lahan_id) {

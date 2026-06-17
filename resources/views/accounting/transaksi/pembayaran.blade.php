@@ -68,7 +68,10 @@
                 <tr class="hover:bg-slate-50/50 transition-colors">
                     <td class="px-4 py-2.5">
                         <p class="font-bold text-slate-900">{{ $p->no_invoice }}</p>
-                        <p class="text-[10px] text-slate-400 mt-0.5 uppercase tracking-tighter">{{ $p->created_at->format('d M Y') }}</p>
+                        <p class="text-[10px] text-slate-400 mt-0.5 uppercase tracking-tighter mb-1">{{ $p->created_at->format('d M Y') }}</p>
+                        @if($p->dikonfirmasi_oleh)
+                            <span class="inline-block text-[9px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md">Oleh: {{ $p->dikonfirmasi_oleh }}</span>
+                        @endif
                     </td>
                     <td class="px-4 py-2.5">
                         <p class="font-bold text-slate-800">{{ $p->reservasi?->user?->name ?? 'N/A' }}</p>
@@ -76,7 +79,10 @@
                     </td>
                     <td class="px-4 py-2.5">
                         <p class="font-bold text-slate-800 uppercase">UNIT {{ $p->reservasi?->lahan?->nomor_lahan ?? '-' }}</p>
-                        <p class="text-[10px] text-slate-400 mt-0.5 uppercase tracking-tighter">{{ $p->reservasi?->lahan?->cluster?->nama_cluster ?? '-' }}</p>
+                        <p class="text-[10px] text-slate-400 mt-0.5 uppercase tracking-tighter mb-1">{{ $p->reservasi?->lahan?->cluster?->nama_cluster ?? '-' }}</p>
+                        @if($p->reservasi?->marketing_oleh)
+                            <span class="inline-block text-[9px] font-bold text-[#800000] bg-[#800000]/5 px-2 py-0.5 rounded-md">Sales: {{ $p->reservasi->marketing_oleh }}</span>
+                        @endif
                     </td>
                     <td class="px-4 py-2.5 text-right font-bold text-slate-900">
                         Rp {{ number_format($p->jumlah_bayar, 0, ',', '.') }}

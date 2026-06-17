@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal Manajemen - Mount Carmel</title>
+    <title>Portal {{ $role }} - Mount Carmel</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -42,15 +42,14 @@
             <div class="absolute inset-0 bg-white/40 backdrop-blur-sm"></div>
             
             <div class="relative z-10">
-                <h1 class="text-xl font-extrabold text-slate-900 tracking-tight">Login Manajemen</h1>
+                <h1 class="text-xl font-extrabold text-slate-900 tracking-tight">Login {{ $role }}</h1>
                 <h4 class="text-xs text-slate-400 mt-1 font-bold uppercase tracking-widest leading-none">Sistem Mount Carmel</h2>
             </div>
         </div>
 
         <div class="p-7">
-            <form action="{{ route('marketing.login.submit') }}" method="POST">
+            <form action="{{ $postUrl }}" method="POST">
                 @csrf
-
                 <div class="mb-4">
                     <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Alamat Email</label>
                     <div class="relative group">

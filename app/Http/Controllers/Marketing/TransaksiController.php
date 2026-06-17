@@ -64,6 +64,7 @@ class TransaksiController extends Controller
             'tanggal_dimakamkan' => $request->tanggal_dimakamkan,
             'status_reservasi' => 'Menunggu Validasi',
             'status_pembayaran' => 'Belum Bayar',
+            'marketing_oleh' => auth()->user()->name,
         ]);
 
         Lahan::where('id', $request->lahan_id)->update(['status' => 'Dipesan']);
@@ -82,7 +83,8 @@ class TransaksiController extends Controller
         }
 
         if ($request->status === 'Selesai') {
-            Lahan::where('id', $reservasi->lahan_id)->update(['status' => 'Terjual']);
+            $statusLahan = $reservasi->nama_jenazah ? 'Dipesan' : 'Terjual';
+            Lahan::where('id', $reservasi->lahan_id)->update(['status' => $statusLahan]);
         }
 
         return redirect()->back()->with('success', 'Status reservasi diperbarui.');

@@ -21,7 +21,12 @@ class LaporanController extends Controller
 
         switch ($type) {
             case 'lahan':
-                $lahanQuery = Lahan::with('cluster')->where('status', 'Terjual');
+                $lahanQuery = Lahan::with('cluster');
+                if ($request->filled('status')) {
+                    $lahanQuery->where('status', $request->status);
+                } else {
+                    $lahanQuery->whereIn('status', ['Terjual', 'Terpakai']);
+                }
                 if ($request->filled('search')) {
                     $search = $request->search;
                     $lahanQuery->where(function ($q) use ($search) {
@@ -31,9 +36,6 @@ class LaporanController extends Controller
                                 $cq->where('nama_cluster', 'like', "%{$search}%");
                             });
                     });
-                }
-                if ($request->filled('status')) {
-                    $lahanQuery->where('status', $request->status);
                 }
                 $data['lahans'] = $lahanQuery->get();
                 break;
@@ -94,7 +96,12 @@ class LaporanController extends Controller
 
         switch ($type) {
             case 'lahan':
-                $lahanQuery = Lahan::with('cluster')->where('status', 'Terjual');
+                $lahanQuery = Lahan::with('cluster');
+                if ($request->filled('status')) {
+                    $lahanQuery->where('status', $request->status);
+                } else {
+                    $lahanQuery->whereIn('status', ['Terjual', 'Terpakai']);
+                }
                 if ($request->filled('search')) {
                     $search = $request->search;
                     $lahanQuery->where(function ($q) use ($search) {
@@ -104,9 +111,6 @@ class LaporanController extends Controller
                                 $cq->where('nama_cluster', 'like', "%{$search}%");
                             });
                     });
-                }
-                if ($request->filled('status')) {
-                    $lahanQuery->where('status', $request->status);
                 }
                 $data['lahans'] = $lahanQuery->get();
                 break;

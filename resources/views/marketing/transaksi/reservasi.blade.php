@@ -81,7 +81,15 @@
                     </td>
                     <td class="px-4 py-2.5">
                         <p class="font-bold text-slate-800 uppercase">UNIT {{ $rs->lahan->nomor_lahan }}</p>
-                        <p class="text-[10px] text-slate-400 mt-0.5 uppercase tracking-tighter">{{ $rs->lahan->cluster->nama_cluster }} / {{ $rs->lahan->tipe_lahan }}</p>
+                        <p class="text-[10px] text-slate-400 mt-0.5 uppercase tracking-tighter mb-1">{{ $rs->lahan->cluster->nama_cluster }} / {{ $rs->lahan->tipe_lahan }}</p>
+                        <div class="flex flex-wrap gap-1.5 mt-1">
+                            @if($rs->marketing_oleh)
+                                <span class="inline-block text-[9px] font-bold text-[#800000] bg-[#800000]/5 px-2 py-0.5 rounded-md">Sales: {{ $rs->marketing_oleh }}</span>
+                            @endif
+                            @if($rs->disetujui_oleh)
+                                <span class="inline-block text-[9px] font-bold text-slate-700 bg-slate-100 px-2 py-0.5 rounded-md">Oleh: {{ $rs->disetujui_oleh }}</span>
+                            @endif
+                        </div>
                     </td>
                     <td class="px-4 py-2.5">
                         @if($rs->nama_jenazah)

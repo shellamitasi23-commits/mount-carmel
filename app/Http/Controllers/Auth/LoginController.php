@@ -24,6 +24,18 @@ class LoginController extends Controller
 
         if (Auth::attempt($credentials, $remember)) {
             $request->session()->regenerate();
+
+            $user = Auth::user();
+            if ($user->role === 'marketing') {
+                return redirect()->route('marketing.dashboard');
+            } elseif ($user->role === 'manajer') {
+                return redirect()->route('manajer.dashboard');
+            } elseif ($user->role === 'accounting') {
+                return redirect()->route('accounting.dashboard');
+            } elseif ($user->role === 'koordinator_lapangan') {
+                return redirect()->route('koordinator_lapangan.dashboard');
+            }
+
             return redirect('/');
         }
 

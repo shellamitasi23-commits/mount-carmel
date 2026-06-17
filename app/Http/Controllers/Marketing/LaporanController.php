@@ -24,7 +24,7 @@ class LaporanController extends Controller
 
         switch ($type) {
             case 'lahan':
-                $lahanQuery = Lahan::with('cluster')->where('status', 'Terjual');
+                $lahanQuery = Lahan::with('cluster')->whereIn('status', ['Terjual', 'Terpakai']);
                 if ($request->filled('search')) {
                     $search = $request->search;
                     $lahanQuery->where(function ($q) use ($search) {
@@ -97,7 +97,7 @@ class LaporanController extends Controller
 
         switch ($type) {
             case 'lahan':
-                $lahanQuery = Lahan::with('cluster')->where('status', 'Terjual');
+                $lahanQuery = Lahan::with('cluster')->whereIn('status', ['Terjual', 'Terpakai']);
                 if ($request->filled('search')) {
                     $search = $request->search;
                     $lahanQuery->where(function ($q) use ($search) {

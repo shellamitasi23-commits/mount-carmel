@@ -27,12 +27,75 @@ class ProfilController extends Controller
             ->latest()
             ->get();
 
-        $sudahDibayarIds = $pembayarans->pluck('reservasi_id');
-        $reservasiSiapBayar = Reservasi::with(['lahan.cluster'])
+        // Ambil semua reservasi yang disetujui ATAU menunggu validasi untuk di-filter siap bayar
+        $allReservasis = Reservasi::with(['lahan.cluster', 'pembayarans'])
             ->where('user_id', $user->id)
-            ->where('status_reservasi', 'Disetujui')
-            ->whereNotIn('id', $sudahDibayarIds)
+            ->whereIn('status_reservasi', ['Disetujui', 'Menunggu Validasi'])
             ->get();
+
+        $reservasiSiapBayar = $allReservasis->filter(function ($res) {
+            // Jika status reservasi masih Menunggu Validasi, hanya tampilkan jika pembayaran Belum Bayar
+            if ($res->status_reservasi === 'Menunggu Validasi' && $res->status_pembayaran !== 'Belum Bayar') {
+                return false;
+            }
+
+            // Cek jika ada pembayaran yang masih Menunggu Konfirmasi untuk reservasi ini
+            $hasPending = $res->pembayarans->where('status_pembayaran', 'Menunggu Konfirmasi')->isNotEmpty();
+            if ($hasPending) {
+                return false; // tidak siap bayar karena ada yang pending
+            }
+
+            $isTunai = $res->jenis_pembayaran === 'tunai';
+            $tenor = $res->tenor_cicilan ?? 1;
+
+            if ($isTunai) {
+                // Tunai siap bayar jika belum ada pembayaran Lunas
+                $sudahLunas = $res->pembayarans->where('status_pembayaran', 'Lunas')->isNotEmpty();
+                if (!$sudahLunas) {
+                    $res->tipe_tagihan = 'Pembayaran Penuh';
+                    $res->nominal_tagihan = $res->biaya_penuh;
+                    return true;
+                }
+            } else {
+                $menggunakanDP = $res->biaya_reservasi > 0;
+                
+                if ($menggunakanDP) {
+                    // Cicilan siap bayar jika DP belum lunas
+                    $dpLunas = $res->pembayarans->where('cicilan_ke', 0)->where('status_pembayaran', 'Lunas')->isNotEmpty();
+                    if (!$dpLunas) {
+                        $res->tipe_tagihan = 'Uang Muka / DP';
+                        $res->nominal_tagihan = $res->biaya_reservasi;
+                        return true;
+                    } else {
+                        // Cari cicilan tertinggi yang lunas
+                        $highestLunas = $res->pembayarans->where('status_pembayaran', 'Lunas')
+                            ->where('cicilan_ke', '>', 0)
+                            ->max('cicilan_ke') ?? 0;
+
+                        if ($highestLunas < $tenor) {
+                            $nextCicilan = $highestLunas + 1;
+                            $res->tipe_tagihan = "Cicilan Ke-{$nextCicilan} dari {$tenor}";
+                            $res->nominal_tagihan = ($res->biaya_penuh - $res->biaya_reservasi) / $tenor;
+                            return true;
+                        }
+                    }
+                } else {
+                    // Cicilan langsung (tanpa DP)
+                    $highestLunas = $res->pembayarans->where('status_pembayaran', 'Lunas')
+                        ->where('cicilan_ke', '>', 0)
+                        ->max('cicilan_ke') ?? 0;
+
+                    if ($highestLunas < $tenor) {
+                        $nextCicilan = $highestLunas + 1;
+                        $res->tipe_tagihan = "Cicilan Ke-{$nextCicilan} dari {$tenor}";
+                        $res->nominal_tagihan = $res->biaya_penuh / $tenor;
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        });
 
         return view('pembeli.profil.index', compact('user', 'riwayat', 'sertifikats', 'pembayarans', 'reservasiSiapBayar'));
     }

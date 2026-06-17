@@ -46,6 +46,7 @@
                     <option value="Tersedia" {{ request('status') == 'Tersedia' ? 'selected' : '' }}>Tersedia</option>
                     <option value="Dipesan" {{ request('status') == 'Dipesan' ? 'selected' : '' }}>Dipesan</option>
                     <option value="Terjual" {{ request('status') == 'Terjual' ? 'selected' : '' }}>Terjual</option>
+                    <option value="Terpakai" {{ request('status') == 'Terpakai' ? 'selected' : '' }}>Terpakai</option>
                 </select>
                 <span class="material-icons-outlined absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-sm">expand_more</span>
             </div>
@@ -120,8 +121,10 @@
                                 <span class="px-3 py-1 bg-slate-100 text-slate-700 rounded-md text-[11px] font-bold uppercase">Tersedia</span>
                             @elseif($lahan->status == 'Dipesan')
                                 <span class="px-3 py-1 bg-yellow-100 text-yellow-700 rounded-md text-[11px] font-bold uppercase">Dipesan</span>
-                            @else
+                            @elseif($lahan->status == 'Terjual')
                                 <span class="px-3 py-1 bg-slate-200 text-slate-600 rounded-md text-[11px] font-bold uppercase">Terjual</span>
+                            @else
+                                <span class="px-3 py-1 bg-[#800000] text-white rounded-md text-[11px] font-bold uppercase">Terpakai</span>
                             @endif
                         </td>
                         @if(auth()->user()->role == 'marketing')
