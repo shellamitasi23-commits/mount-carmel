@@ -2,7 +2,7 @@
 @section('title', 'Data Pembeli')
 
 @section('content')
-<div class="flex justify-between items-start mb-6">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
     <div>
         <h1 class="text-xl font-bold text-slate-800">Data Akun Pembeli</h1>
         <p class="text-xs text-slate-500 mt-1">Daftar lengkap pembeli yang terdaftar di Mount Carmel.</p>

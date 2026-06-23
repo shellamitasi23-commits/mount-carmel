@@ -12,6 +12,21 @@
 @endpush
 
 @section('content')
+
+@if(session('success'))
+<div class="mb-6 bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-xl flex items-center gap-3">
+    <span class="material-icons-outlined">check_circle</span>
+    <span class="font-medium text-sm">{{ session('success') }}</span>
+</div>
+@endif
+
+@if(session('error'))
+<div class="mb-6 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl flex items-center gap-3">
+    <span class="material-icons-outlined">error</span>
+    <span class="font-medium text-sm">{{ session('error') }}</span>
+</div>
+@endif
+
 <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
     <div>
         <h1 class="text-2xl font-extrabold text-slate-800 tracking-tight uppercase">Data Jenazah</h1>
@@ -44,7 +59,10 @@
                     <th class="px-4 py-2.5">Lokasi Lahan</th>
                     <th class="px-4 py-2.5">Tanggal Dimakamkan</th>
                     <th class="px-4 py-2.5">Nama Pembeli</th>
-                    <th class="px-4 py-2.5 text-right">Status Reservasi</th>
+                    <th class="px-4 py-2.5">Status Validasi</th>
+                    @if(auth()->user()->role === 'marketing')
+                    <th class="px-4 py-2.5 text-center">Aksi</th>
+                    @endif
                 </tr>
             </thead>
             <tbody class="divide-y divide-slate-50">
@@ -57,13 +75,13 @@
                             </div>
                             <div>
                                 <p class="font-extrabold text-slate-900 uppercase tracking-tight">{{ $j->nama_jenazah }}</p>
-                                <p class="text-[9px] text-slate-400 font-bold uppercase tracking-widest mt-0.5">ID: #RE-{{ $j->id }}</p>
+                                <p class="text-[9px] text-slate-400 font-bold uppercase tracking-widest mt-0.5">ID: #RE-{{ $j->reservasi->id }} (Slot {{ $j->nomor_slot }})</p>
                             </div>
                         </div>
                     </td>
                     <td class="px-4 py-2.5">
-                        <p class="font-extrabold text-slate-800 uppercase tracking-tight">Unit {{ $j->lahan->nomor_lahan }}</p>
-                        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-0.5">{{ $j->lahan->cluster->nama_cluster }}</p>
+                        <p class="font-extrabold text-slate-800 uppercase tracking-tight">Unit {{ $j->reservasi->lahan->nomor_lahan }}</p>
+                        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-0.5">{{ $j->reservasi->lahan->cluster->nama_cluster }}</p>
                     </td>
                     <td class="px-4 py-2.5">
                         @if($j->tanggal_dimakamkan)
@@ -73,27 +91,48 @@
                         @endif
                     </td>
                     <td class="px-4 py-2.5">
-                        <p class="font-bold text-slate-800 uppercase text-xs">{{ $j->user->name }}</p>
-                        <p class="text-[10px] text-slate-400 mt-0.5">{{ $j->user->email }}</p>
+                        <p class="font-bold text-slate-800 uppercase text-xs">{{ $j->reservasi->user->name }}</p>
+                        <p class="text-[10px] text-slate-400 mt-0.5">{{ $j->reservasi->user->email }}</p>
                     </td>
-                    <td class="px-4 py-2.5 text-right">
+                    <td class="px-4 py-2.5">
                         @php
-                            $status = $j->status_reservasi;
-                            $badgeClass = match($status) {
-                                'Selesai' => 'bg-emerald-50 text-emerald-600',
-                                'Ditolak' => 'bg-rose-50 text-rose-600',
-                                'Disetujui' => 'bg-indigo-50 text-indigo-600',
-                                default => 'bg-amber-50 text-amber-600',
+                            $vStatus = $j->status ?? 'Menunggu Validasi';
+                            $vBadgeClass = match($vStatus) {
+                                'Disetujui' => 'bg-emerald-50 text-emerald-600 border border-emerald-200',
+                                'Ditolak' => 'bg-rose-50 text-rose-600 border border-rose-200',
+                                default => 'bg-amber-50 text-amber-600 border border-amber-200',
                             };
                         @endphp
-                        <span class="inline-flex items-center px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest {{ $badgeClass }}">
-                            {{ $status }}
+                        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-[9px] font-black uppercase tracking-widest {{ $vBadgeClass }}">
+                            {{ $vStatus }}
                         </span>
                     </td>
+                    @if(auth()->user()->role === 'marketing')
+                    <td class="px-4 py-2.5 text-center">
+                        @if(($j->status ?? 'Menunggu Validasi') === 'Menunggu Validasi')
+                            <div class="flex items-center justify-center gap-2">
+                                <form action="{{ route('marketing.jenazah.setujui', $j->id) }}" method="POST" class="inline">
+                                    @csrf
+                                    <button type="submit" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[9px] uppercase px-2.5 py-1.5 rounded-lg transition-all active:scale-95 shadow-sm inline-flex items-center gap-1">
+                                        <span class="material-icons-outlined text-[11px]">check</span> Setujui
+                                    </button>
+                                </form>
+                                <form action="{{ route('marketing.jenazah.tolak', $j->id) }}" method="POST" class="inline">
+                                    @csrf
+                                    <button type="submit" class="bg-rose-600 hover:bg-rose-700 text-white font-bold text-[9px] uppercase px-2.5 py-1.5 rounded-lg transition-all active:scale-95 shadow-sm inline-flex items-center gap-1">
+                                        <span class="material-icons-outlined text-[11px]">close</span> Tolak
+                                    </button>
+                                </form>
+                            </div>
+                        @else
+                            <span class="text-xs text-slate-400 italic font-semibold">Tervalidasi</span>
+                        @endif
+                    </td>
+                    @endif
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="5" class="px-4 py-8 text-center">
+                    <td colspan="6" class="px-4 py-8 text-center">
                         <div class="flex flex-col items-center gap-4">
                             <span class="material-icons-outlined text-4xl text-slate-100">person_off</span>
                             <p class="text-slate-400 font-bold uppercase text-[10px] tracking-[0.3em]">Belum ada data jenazah yang tercatat</p>

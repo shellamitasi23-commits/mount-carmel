@@ -9,6 +9,59 @@ class Reservasi extends Model
 {
     use HasFactory;
 
+    protected static function booted()
+    {
+        static::created(function ($reservasi) {
+            if (!empty($reservasi->nama_jenazah)) {
+                $status = in_array($reservasi->status_reservasi, ['Disetujui', 'Selesai']) ? 'Disetujui' : 'Menunggu Validasi';
+                \App\Models\DetailJenazah::updateOrCreate(
+                    [
+                        'reservasi_id' => $reservasi->id,
+                        'nomor_slot' => 1,
+                    ],
+                    [
+                        'nama_jenazah' => $reservasi->nama_jenazah,
+                        'tanggal_dimakamkan' => $reservasi->tanggal_dimakamkan,
+                        'status' => $status,
+                    ]
+                );
+            }
+        });
+
+        static::updated(function ($reservasi) {
+            // Sync nama_jenazah and tanggal_dimakamkan to Slot 1 if they were changed and not null
+            if ($reservasi->isDirty('nama_jenazah') || $reservasi->isDirty('tanggal_dimakamkan')) {
+                if (!empty($reservasi->nama_jenazah)) {
+                    $status = in_array($reservasi->status_reservasi, ['Disetujui', 'Selesai']) ? 'Disetujui' : 'Menunggu Validasi';
+                    \App\Models\DetailJenazah::updateOrCreate(
+                        [
+                            'reservasi_id' => $reservasi->id,
+                            'nomor_slot' => 1,
+                        ],
+                        [
+                            'nama_jenazah' => $reservasi->nama_jenazah,
+                            'tanggal_dimakamkan' => $reservasi->tanggal_dimakamkan,
+                            'status' => $status,
+                        ]
+                    );
+                }
+            }
+
+            // Sync status approval to Slot 1 when status_reservasi becomes Disetujui or Selesai
+            if ($reservasi->isDirty('status_reservasi') && in_array($reservasi->status_reservasi, ['Disetujui', 'Selesai'])) {
+                \App\Models\DetailJenazah::updateOrCreate(
+                    [
+                        'reservasi_id' => $reservasi->id,
+                        'nomor_slot' => 1,
+                    ],
+                    [
+                        'status' => 'Disetujui'
+                    ]
+                );
+            }
+        });
+    }
+
     protected $fillable = [
         'user_id',
         'lahan_id',
@@ -65,5 +118,24 @@ class Reservasi extends Model
     public function pembayarans()
     {
         return $this->hasMany(Pembayaran::class);
+    }
+
+    /**
+     * Relasi: Reservasi memiliki banyak DetailJenazah (slot)
+     */
+    public function detailJenazahs()
+    {
+        return $this->hasMany(DetailJenazah::class, 'reservasi_id');
+    }
+
+    /**
+     * Helper: Dapatkan list nama jenazah digabungkan dengan koma
+     */
+    public function getNamaSemuaJenazahAttribute()
+    {
+        if ($this->detailJenazahs->isEmpty()) {
+            return $this->nama_jenazah ?: '—';
+        }
+        return $this->detailJenazahs->sortBy('nomor_slot')->pluck('nama_jenazah')->implode(', ');
     }
 }

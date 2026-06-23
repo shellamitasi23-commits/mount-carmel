@@ -45,19 +45,19 @@
         </div>
         <div class="p-4 grid grid-cols-4 gap-3 text-center">
             <div class="bg-slate-50 p-2.5 rounded-lg">
-                <p class="text-[8px] font-bold text-slate-400 uppercase mb-1">Sold</p>
+                <p class="text-[8px] font-bold text-slate-400 uppercase mb-1">Terjual</p>
                 <p class="text-base font-black text-slate-900 leading-none">{{ number_format($muslimStats['terjual']) }}</p>
             </div>
             <div class="bg-slate-50 p-2.5 rounded-lg">
-                <p class="text-[8px] font-bold text-slate-400 uppercase mb-1">Booked</p>
+                <p class="text-[8px] font-bold text-slate-400 uppercase mb-1">Reservasi</p>
                 <p class="text-base font-black text-slate-900 leading-none">{{ number_format($muslimStats['booked']) }}</p>
             </div>
             <div class="bg-slate-50 p-2.5 rounded-lg">
-                <p class="text-[8px] font-bold text-slate-400 uppercase mb-1">Used</p>
+                <p class="text-[8px] font-bold text-slate-400 uppercase mb-1">Digunakan</p>
                 <p class="text-base font-black text-slate-900 leading-none">{{ number_format($muslimStats['used']) }}</p>
             </div>
             <div class="bg-teal-50 p-2.5 rounded-lg border border-teal-100">
-                <p class="text-[8px] font-bold text-teal-600 uppercase mb-1">Ready</p>
+                <p class="text-[8px] font-bold text-teal-600 uppercase mb-1">Tersedia</p>
                 <p class="text-base font-black text-teal-700 leading-none">{{ number_format($muslimStats['available']) }}</p>
             </div>
         </div>
@@ -81,7 +81,7 @@
                 <p class="text-base font-black text-slate-900 leading-none">{{ number_format($nonMuslimStats['booked']) }}</p>
             </div>
             <div class="bg-slate-50 p-2.5 rounded-lg">
-                <p class="text-[8px] font-bold text-slate-400 uppercase mb-1">Terpakai</p>
+                <p class="text-[8px] font-bold text-slate-400 uppercase mb-1">Digunakan</p>
                 <p class="text-base font-black text-slate-900 leading-none">{{ number_format($nonMuslimStats['used']) }}</p>
             </div>
             <div class="bg-indigo-50 p-2.5 rounded-lg border border-indigo-100">

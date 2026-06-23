@@ -153,7 +153,7 @@
                         <span class="text-xs font-bold text-[#800000] block mb-4">IV. Rincian & Skema Pembayaran</span>
                         <div class="space-y-3">
                             <div class="flex justify-between items-center text-gray-500">
-                                <span>Harga Dasar Lahan</span>
+                                <span>Harga Lahan</span>
                                 <span class="font-bold text-gray-900 dark:text-white">Rp {{ number_format($reservasi->lahan->harga, 0, ',', '.') }}</span>
                             </div>
                             @if($reservasi->biaya_tambahan > 0)
@@ -163,7 +163,7 @@
                             </div>
                             @endif
                             <div class="flex justify-between items-center text-gray-900 dark:text-white font-bold border-t border-gray-200/50 dark:border-gray-800 pt-3 text-xs">
-                                <span>Total Investasi Lahan</span>
+                                <span>Total Harga Lahan</span>
                                 <span>Rp {{ number_format($reservasi->biaya_penuh, 0, ',', '.') }}</span>
                             </div>
                         </div>

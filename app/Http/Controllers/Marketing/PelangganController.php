@@ -33,7 +33,18 @@ class PelangganController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+            'email' => [
+                'required',
+                'string',
+                'email',
+                'max:255',
+                'unique:users',
+                function ($attribute, $value, $fail) {
+                    if (str_ends_with(strtolower($value), '@mountcarmel.id')) {
+                        $fail('Email dengan domain @mountcarmel.id tidak boleh digunakan untuk pembeli.');
+                    }
+                },
+            ],
             'password' => 'required|string|min:8',
             'no_telepon' => 'nullable|string|max:20',
             'alamat' => 'nullable|string'
@@ -54,10 +65,21 @@ class PelangganController extends Controller
     public function update(Request $request, $id)
     {
         $pembeli = User::findOrFail($id);
-
+ 
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $id,
+            'email' => [
+                'required',
+                'string',
+                'email',
+                'max:255',
+                'unique:users,email,' . $id,
+                function ($attribute, $value, $fail) {
+                    if (str_ends_with(strtolower($value), '@mountcarmel.id')) {
+                        $fail('Email dengan domain @mountcarmel.id tidak boleh digunakan untuk pembeli.');
+                    }
+                },
+            ],
             'no_telepon' => 'nullable|string|max:20',
             'alamat' => 'nullable|string'
         ]);

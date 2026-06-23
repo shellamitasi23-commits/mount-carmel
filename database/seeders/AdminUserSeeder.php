@@ -20,63 +20,62 @@ class AdminUserSeeder extends Seeder
             ]
         );
 
-        // Seeding 3 Marketing Staff
         User::updateOrCreate(
-            ['email' => 'marketing@mountcarmel.id'],
+            ['email' => 'marketingrendi@mountcarmel.id'],
             [
                 'name' => 'Marketing Rendi',
-                'password' => Hash::make('marketing123'),
+                'password' => Hash::make('rendi123'),
                 'role' => 'marketing',
                 'no_telepon' => '081234560003'
             ]
         );
 
         User::updateOrCreate(
-            ['email' => 'marketing2@mountcarmel.id'],
+            ['email' => 'marketingsiska@mountcarmel.id'],
             [
                 'name' => 'Marketing Siska',
-                'password' => Hash::make('marketing123'),
+                'password' => Hash::make('siska123'),
                 'role' => 'marketing',
                 'no_telepon' => '081234560013'
             ]
         );
 
         User::updateOrCreate(
-            ['email' => 'marketing3@mountcarmel.id'],
+            ['email' => 'marketingacha@mountcarmel.id'],
             [
-                'name' => 'Marketing Adi',
-                'password' => Hash::make('marketing123'),
+                'name' => 'Marketing Acha',
+                'password' => Hash::make('acha123'),
                 'role' => 'marketing',
-                'no_telepon' => '081234560023'
+                'no_telepon' => '081234560033'
             ]
         );
 
         // Seeding 3 Accounting Staff
         User::updateOrCreate(
-            ['email' => 'accounting@mountcarmel.id'],
+            ['email' => 'accountingclara@mountcarmel.id'],
             [
                 'name' => 'Accounting Clara',
-                'password' => Hash::make('accounting123'),
+                'password' => Hash::make('clara123'),
                 'role' => 'accounting',
                 'no_telepon' => '081234560004'
             ]
         );
 
         User::updateOrCreate(
-            ['email' => 'accounting2@mountcarmel.id'],
+            ['email' => 'accountinghendra@mountcarmel.id'],
             [
                 'name' => 'Accounting Hendra',
-                'password' => Hash::make('accounting123'),
+                'password' => Hash::make('hendra123'),
                 'role' => 'accounting',
                 'no_telepon' => '081234560014'
             ]
         );
 
         User::updateOrCreate(
-            ['email' => 'accounting3@mountcarmel.id'],
+            ['email' => 'accountingbudi@mountcarmel.id'],
             [
                 'name' => 'Accounting Budi',
-                'password' => Hash::make('accounting123'),
+                'password' => Hash::make('budi123'),
                 'role' => 'accounting',
                 'no_telepon' => '081234560024'
             ]
@@ -91,5 +90,19 @@ class AdminUserSeeder extends Seeder
                 'no_telepon' => '081234560005'
             ]
         );
+
+        // Seed requested testing users
+        foreach (['sapira' => 'sapira@email.com', 'rizky' => 'rizky@email.com', 'ali' => 'ali@email.com'] as $name => $email) {
+            User::updateOrCreate(
+                ['email' => $email],
+                [
+                    'name' => ucfirst($name),
+                    'password' => Hash::make('password'),
+                    'role' => 'pembeli',
+                    'no_telepon' => '0812' . rand(10000000, 99999999),
+                    'alamat' => 'Semarang, Jawa Tengah'
+                ]
+            );
+        }
     }
 }

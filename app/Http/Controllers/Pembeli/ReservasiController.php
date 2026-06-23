@@ -21,7 +21,7 @@ class ReservasiController extends Controller
             return redirect()->route('pembeli.reservasi.create', ['lahan_id' => $request->lahan_id]);
         }
 
-        $reservasis = Reservasi::with(['lahan.cluster', 'pembayaran', 'pembayarans'])
+        $reservasis = Reservasi::with(['lahan.cluster', 'pembayaran', 'pembayarans', 'detailJenazahs'])
             ->where('user_id', auth()->id())
             ->latest()
             ->get();
@@ -112,10 +112,12 @@ class ReservasiController extends Controller
             $tenor = 1;
             $biayaReservasi = $biayaPenuh;
             $jenisPembayaran = 'tunai';
+            $statusLahan = 'Reservasi (Lunas)';
         } else { // cicilan_dp
             $tenor = 12; // Jangka panjang pre-need = 12 bulan
             $biayaReservasi = $lahan->harga * 0.2; // DP otomatis 20% dari harga lahan cash
             $jenisPembayaran = 'cicilan';
+            $statusLahan = 'Reservasi Cicilan dengan DP';
         }
 
         // Upload KTP
@@ -144,7 +146,7 @@ class ReservasiController extends Controller
         ]);
 
         // Kunci lahan agar tidak bisa dipesan orang lain
-        $lahan->update(['status' => 'Dipesan']);
+        $lahan->update(['status' => $statusLahan]);
 
         // Redirect ke konfirmasi pesanan
         return redirect()
@@ -163,5 +165,118 @@ class ReservasiController extends Controller
             ->findOrFail($id);
 
         return view('pembeli.reservasi.konfirmasi', compact('reservasi'));
+    }
+
+    /**
+     * Tampilkan form untuk mengisi data diri pada slot tertentu
+     */
+    public function isiSlotForm($reservasi_id, $nomor_slot)
+    {
+        $reservasi = Reservasi::with(['lahan.cluster', 'detailJenazahs'])
+            ->where('user_id', auth()->id())
+            ->findOrFail($reservasi_id);
+
+        $lahan = $reservasi->lahan;
+        $kapasitas = $lahan->kapasitas;
+
+        // Validasi nomor slot
+        if ($nomor_slot < 1 || $nomor_slot > $kapasitas) {
+            return redirect()->route('pembeli.reservasi.index')->with('error', 'Nomor slot tidak valid.');
+        }
+
+        // Cek status reservasi & pembayaran
+        $statusBayar = $reservasi->status_pembayaran;
+        $statusRes = $reservasi->status_reservasi;
+        $isPaid = ($statusBayar === 'Lunas' || $statusBayar === 'DP Lunas' || str_contains($statusBayar, 'Lunas'));
+        
+        if (($statusRes !== 'Disetujui' && $statusRes !== 'Selesai') || !$isPaid) {
+            return redirect()->route('pembeli.reservasi.index')->with('error', 'Data slot hanya dapat diisi setelah reservasi disetujui dan pembayaran terverifikasi.');
+        }
+
+        // Cek apakah slot sudah terisi (kecuali jika statusnya Ditolak)
+        $slotTerisi = $reservasi->detailJenazahs->where('nomor_slot', $nomor_slot)->first();
+        if ($slotTerisi && $slotTerisi->status !== 'Ditolak') {
+            return redirect()->route('pembeli.reservasi.index')->with('error', 'Slot #' . $nomor_slot . ' sudah terisi.');
+        }
+
+        $existingDetail = $slotTerisi;
+
+        return view('pembeli.reservasi.isi_slot', compact('reservasi', 'lahan', 'nomor_slot', 'existingDetail'));
+    }
+
+    /**
+     * Simpan data diri jenazah ke detail_jenazahs
+     */
+    public function simpanSlot(Request $request, $reservasi_id, $nomor_slot)
+    {
+        $reservasi = Reservasi::with(['lahan', 'detailJenazahs'])
+            ->where('user_id', auth()->id())
+            ->findOrFail($reservasi_id);
+
+        $lahan = $reservasi->lahan;
+        $kapasitas = $lahan->kapasitas;
+
+        // Validasi nomor slot
+        if ($nomor_slot < 1 || $nomor_slot > $kapasitas) {
+            return redirect()->route('pembeli.reservasi.index')->with('error', 'Nomor slot tidak valid.');
+        }
+
+        // Cek status reservasi & pembayaran
+        $statusBayar = $reservasi->status_pembayaran;
+        $statusRes = $reservasi->status_reservasi;
+        $isPaid = ($statusBayar === 'Lunas' || $statusBayar === 'DP Lunas' || str_contains($statusBayar, 'Lunas'));
+        
+        if (($statusRes !== 'Disetujui' && $statusRes !== 'Selesai') || !$isPaid) {
+            return redirect()->route('pembeli.reservasi.index')->with('error', 'Data slot hanya dapat diisi setelah reservasi disetujui dan pembayaran terverifikasi.');
+        }
+
+        // Cek apakah slot sudah terisi (kecuali jika statusnya Ditolak)
+        $slotTerisi = $reservasi->detailJenazahs->where('nomor_slot', $nomor_slot)->first();
+        if ($slotTerisi && $slotTerisi->status !== 'Ditolak') {
+            return redirect()->route('pembeli.reservasi.index')->with('error', 'Slot #' . $nomor_slot . ' sudah terisi.');
+        }
+
+        $request->validate([
+            'nama_jenazah' => 'required|string|max:255',
+            'tanggal_dimakamkan' => 'nullable|date|after_or_equal:today',
+        ], [
+            'nama_jenazah.required' => 'Nama lengkap jenazah wajib diisi.',
+            'tanggal_dimakamkan.after_or_equal' => 'Rencana tanggal pemakaman tidak boleh di masa lalu.',
+        ]);
+
+        if ($slotTerisi) {
+            // Edit data yang ditolak
+            $slotTerisi->update([
+                'nama_jenazah' => $request->nama_jenazah,
+                'tanggal_dimakamkan' => $request->tanggal_dimakamkan,
+                'status' => 'Menunggu Validasi', // Reset status kembali ke pending
+            ]);
+        } else {
+            // Simpan baru
+            \App\Models\DetailJenazah::create([
+                'reservasi_id' => $reservasi->id,
+                'nomor_slot' => $nomor_slot,
+                'nama_jenazah' => $request->nama_jenazah,
+                'tanggal_dimakamkan' => $request->tanggal_dimakamkan,
+                'status' => 'Menunggu Validasi',
+            ]);
+        }
+
+        // Sinkronisasi ke tabel reservasis jika nomor_slot == 1 (untuk backward compatibility,
+        // kita set ke null dulu di reservasi utama agar admin tahu ini sedang dalam status pending validasi baru)
+        if ($nomor_slot == 1) {
+            $reservasi->update([
+                'nama_jenazah' => null,
+                'tanggal_dimakamkan' => null,
+            ]);
+        }
+
+        // Jika semua slot sudah terisi penuh
+        $totalTerisi = \App\Models\DetailJenazah::where('reservasi_id', $reservasi->id)->count();
+        if ($totalTerisi >= $kapasitas) {
+            $lahan->update(['status' => 'Digunakan']);
+        }
+
+        return redirect()->route('pembeli.reservasi.index')->with('success', 'Data diri jenazah untuk slot #' . $nomor_slot . ' berhasil dikirimkan ke Marketing untuk divalidasi.');
     }
 }

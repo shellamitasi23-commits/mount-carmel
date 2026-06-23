@@ -50,6 +50,10 @@ class TransaksiController extends Controller
         $pembayaran = Pembayaran::with(['reservasi.lahan'])->findOrFail($id);
         $reservasi = $pembayaran->reservasi;
 
+        if ($request->status_pembayaran === 'Lunas' && $reservasi && $reservasi->status_reservasi === 'Menunggu Validasi') {
+            return redirect()->back()->with('error', 'Pembayaran tidak dapat disetujui karena reservasi pembeli belum divalidasi oleh Marketing.');
+        }
+
         $pembayaran->update([
             'status_pembayaran' => $request->status_pembayaran,
             'dikonfirmasi_oleh' => auth()->user()->name
@@ -64,7 +68,7 @@ class TransaksiController extends Controller
                         'status_reservasi' => 'Disetujui'
                     ]);
                     if ($reservasi->lahan_id) {
-                        $reservasi->lahan->update(['status' => 'Dipesan']);
+                        $reservasi->lahan->update(['status' => 'Reservasi Cicilan dengan DP']);
                     }
                 } else {
                     $tenor = $reservasi->tenor_cicilan ?? 1;
@@ -75,7 +79,7 @@ class TransaksiController extends Controller
                             'status_reservasi' => 'Selesai'
                         ]);
                         if ($reservasi->lahan_id) {
-                            $statusLahan = $reservasi->nama_jenazah ? 'Dipesan' : 'Terjual';
+                            $statusLahan = $reservasi->nama_jenazah ? 'Digunakan' : 'Terjual';
                             $reservasi->lahan->update(['status' => $statusLahan]);
                         }
                     } else {
@@ -84,7 +88,7 @@ class TransaksiController extends Controller
                             'status_pembayaran' => "Cicilan Ke-{$pembayaran->cicilan_ke} Lunas"
                         ]);
                         if ($reservasi->lahan_id) {
-                            $reservasi->lahan->update(['status' => 'Dipesan']);
+                            $reservasi->lahan->update(['status' => 'Reservasi Cicilan dengan DP']);
                         }
                     }
                 }
@@ -95,7 +99,7 @@ class TransaksiController extends Controller
                     'status_reservasi' => 'Selesai'
                 ]);
                 if ($reservasi->lahan_id) {
-                    $statusLahan = $reservasi->nama_jenazah ? 'Dipesan' : 'Terjual';
+                    $statusLahan = $reservasi->nama_jenazah ? 'Digunakan' : 'Terjual';
                     $reservasi->lahan->update(['status' => $statusLahan]);
                 }
             }

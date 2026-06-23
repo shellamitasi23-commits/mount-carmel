@@ -16,7 +16,7 @@ class ProfilController extends Controller
         $user = auth()->user(); // Mengambil data user yang sedang login
 
         // Data tambahan untuk tab lain
-        $riwayat = $user->reservasis()->with(['lahan', 'pembayaran'])->latest()->get();
+        $riwayat = $user->reservasis()->with(['lahan', 'pembayaran', 'detailJenazahs'])->latest()->get();
         $sertifikats = $user->reservasis()->whereNotNull('file_sertifikat')->get();
 
         // Data Pembayaran Saya (dipindah dari PembayaranController)
@@ -104,7 +104,16 @@ class ProfilController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . Auth::id(),
+            'email' => [
+                'required',
+                'email',
+                'unique:users,email,' . Auth::id(),
+                function ($attribute, $value, $fail) {
+                    if (str_ends_with(strtolower($value), '@mountcarmel.id')) {
+                        $fail('Email dengan domain @mountcarmel.id tidak boleh digunakan untuk pembeli.');
+                    }
+                },
+            ],
             'no_telepon' => 'nullable|string|max:50',
             'alamat' => 'nullable|string',
         ]);

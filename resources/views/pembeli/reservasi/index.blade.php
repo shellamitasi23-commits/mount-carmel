@@ -59,7 +59,7 @@
             <div class="group bg-white border-t-4 border-slate-900 shadow-lg p-8 md:p-10 transition-all duration-500">
                 
                 <div class="flex flex-col lg:flex-row gap-8 items-start">
-                    {{-- Kavling Big Display --}}
+                    {{-- Unit Big Display --}}
                     <div class="shrink-0">
                         <div class="w-20 h-20 bg-[#800000] flex flex-col items-center justify-center shadow-md rounded-xl">
                             <span class="text-[9px] font-bold text-slate-200 uppercase tracking-wider mb-0.5">Unit</span>
@@ -80,22 +80,159 @@
                                 </span>
                             </div>
                             
-                            <h3 class="text-xl font-bold text-slate-900 tracking-tight mb-4">
-                                {{ $res->nama_jenazah ? 'ALM. ' . strtoupper($res->nama_jenazah) : 'LAHAN PERSIAPAN' }}
-                            </h3>
+                            @if($res->lahan->kapasitas == 1)
+                                @php
+                                    $detail = $res->detailJenazahs->where('nomor_slot', 1)->first();
+                                    $isApproved = $statusRes === 'Disetujui';
+                                    $isPaid = ($statusBayar === 'Lunas' || $statusBayar === 'DP Lunas' || str_contains($statusBayar, 'Lunas'));
+                                    $canFill = $isApproved && $isPaid;
+                                @endphp
 
-                            <div class="flex flex-wrap gap-12">
-                                <div>
-                                    <p class="text-[10px] font-black uppercase tracking-widest text-slate-300 mb-1">Tanggal Pesan</p>
-                                    <p class="text-sm font-black text-slate-900">{{ $res->created_at->translatedFormat('d F Y') }}</p>
+                                <h3 class="text-xl font-bold text-slate-900 tracking-tight mb-4">
+                                    {{ $detail ? 'ALM. ' . strtoupper($detail->nama_jenazah) : 'LAHAN PERSIAPAN' }}
+                                </h3>
+
+                                <div class="flex flex-wrap gap-12 items-center">
+                                    <div>
+                                        <p class="text-[10px] font-black uppercase tracking-widest text-slate-300 mb-1">Tanggal Pesan</p>
+                                        <p class="text-sm font-black text-slate-900">{{ $res->created_at->translatedFormat('d F Y') }}</p>
+                                    </div>
+                                    @if($detail && $detail->tanggal_dimakamkan)
+                                    <div>
+                                        <p class="text-[10px] font-black uppercase tracking-widest text-slate-300 mb-1">Rencana Pemakaman</p>
+                                        <p class="text-sm font-black text-slate-900">{{ \Carbon\Carbon::parse($detail->tanggal_dimakamkan)->translatedFormat('d F Y') }}</p>
+                                    </div>
+                                    @endif
+
+                                    @if($detail)
+                                    <div>
+                                        <p class="text-[10px] font-black uppercase tracking-widest text-slate-300 mb-1">Status Data Jenazah</p>
+                                        <div class="flex items-center gap-2 mt-1">
+                                            @if($detail->status === 'Menunggu Validasi')
+                                                <span class="px-2.5 py-1 bg-amber-100 text-amber-800 text-[10px] font-bold uppercase rounded-full">
+                                                    Menunggu Validasi
+                                                </span>
+                                            @elseif($detail->status === 'Disetujui')
+                                                <span class="px-2.5 py-1 bg-emerald-100 text-emerald-800 text-[10px] font-bold uppercase rounded-full inline-flex items-center gap-1">
+                                                    <span class="material-icons text-xs">check_circle</span> Disetujui
+                                                </span>
+                                            @elseif($detail->status === 'Ditolak')
+                                                <span class="px-2.5 py-1 bg-red-100 text-red-800 text-[10px] font-bold uppercase rounded-full inline-flex items-center gap-1">
+                                                    <span class="material-icons text-xs">cancel</span> Ditolak
+                                                </span>
+                                                <a href="{{ route('pembeli.reservasi.isi_slot_form', ['reservasi_id' => $res->id, 'nomor_slot' => 1]) }}"
+                                                   class="inline-flex items-center gap-1.5 px-3 py-1 bg-[#800000] text-white rounded-lg text-[10px] font-bold hover:bg-[#800000]/90 transition-colors shadow-sm ml-2">
+                                                    <span class="material-icons text-xs">edit</span> Edit Data Diri
+                                                </a>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    @else
+                                        @if($canFill)
+                                        <div>
+                                            <p class="text-[10px] font-black uppercase tracking-widest text-slate-300 mb-1">Data Jenazah</p>
+                                            <a href="{{ route('pembeli.reservasi.isi_slot_form', ['reservasi_id' => $res->id, 'nomor_slot' => 1]) }}"
+                                               class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#800000] text-white rounded-lg text-[10px] font-bold hover:bg-[#800000]/90 transition-colors shadow-sm">
+                                                <span class="material-icons text-xs">edit</span> Isi Data Diri
+                                            </a>
+                                        </div>
+                                        @endif
+                                    @endif
                                 </div>
-                                @if($res->tanggal_dimakamkan)
-                                <div>
-                                    <p class="text-[10px] font-black uppercase tracking-widest text-slate-300 mb-1">Rencana Pemakaman</p>
-                                    <p class="text-sm font-black text-slate-900">{{ \Carbon\Carbon::parse($res->tanggal_dimakamkan)->translatedFormat('d F Y') }}</p>
+                            @else
+                                <h3 class="text-xl font-bold text-slate-900 tracking-tight mb-4">
+                                    {{ strtoupper($res->lahan->tipe_lahan) }} — {{ $res->lahan->kapasitas }} SLOT
+                                </h3>
+
+                                <div class="flex flex-wrap gap-12 mb-4">
+                                    <div>
+                                        <p class="text-[10px] font-black uppercase tracking-widest text-slate-300 mb-1">Tanggal Pesan</p>
+                                        <p class="text-sm font-black text-slate-900">{{ $res->created_at->translatedFormat('d F Y') }}</p>
+                                    </div>
                                 </div>
-                                @endif
-                            </div>
+
+                                {{-- Slot Grid for Multi-slot --}}
+                                <div class="mt-4 p-5 bg-slate-50 border border-slate-100 rounded-2xl">
+                                    <div class="flex items-center justify-between mb-4">
+                                        <h4 class="text-xs font-black uppercase tracking-wider text-slate-400">Daftar Slot Lahan</h4>
+                                        @php
+                                            $filledCount = $res->detailJenazahs->where('status', 'Disetujui')->count();
+                                            $kapasitas = $res->lahan->kapasitas;
+                                        @endphp
+                                        <span class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase {{ $filledCount >= $kapasitas ? 'bg-emerald-100 text-emerald-700' : 'bg-blue-100 text-blue-700' }}">
+                                            {{ $filledCount }} / {{ $kapasitas }} Terisi & Disetujui
+                                        </span>
+                                    </div>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                        @for($slot = 1; $slot <= $kapasitas; $slot++)
+                                            @php
+                                                $detail = $res->detailJenazahs->where('nomor_slot', $slot)->first();
+                                                $isApproved = $statusRes === 'Disetujui';
+                                                $isPaid = ($statusBayar === 'Lunas' || $statusBayar === 'DP Lunas' || str_contains($statusBayar, 'Lunas'));
+                                                $canFill = $isApproved && $isPaid;
+                                            @endphp
+                                            
+                                            <div class="p-3.5 bg-white border border-slate-100 rounded-xl flex items-center justify-between shadow-sm">
+                                                <div>
+                                                    <div class="flex items-center gap-2">
+                                                        <p class="text-[9px] font-black text-slate-300 uppercase tracking-widest">Slot #{{ $slot }}</p>
+                                                        @if($detail)
+                                                            @if($detail->status === 'Menunggu Validasi')
+                                                                <span class="px-1.5 py-0.5 bg-amber-50 text-amber-700 border border-amber-200 rounded text-[8px] font-bold uppercase">
+                                                                    Pending
+                                                                </span>
+                                                            @elseif($detail->status === 'Disetujui')
+                                                                <span class="px-1.5 py-0.5 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded text-[8px] font-bold uppercase">
+                                                                    Disetujui
+                                                                </span>
+                                                            @elseif($detail->status === 'Ditolak')
+                                                                <span class="px-1.5 py-0.5 bg-red-50 text-red-700 border border-red-200 rounded text-[8px] font-bold uppercase">
+                                                                    Ditolak
+                                                                </span>
+                                                            @endif
+                                                        @endif
+                                                    </div>
+                                                    @if($detail)
+                                                        <p class="text-xs font-extrabold text-slate-800 uppercase tracking-tight mt-1">Alm. {{ $detail->nama_jenazah }}</p>
+                                                        @if($detail->tanggal_dimakamkan)
+                                                            <p class="text-[10px] text-slate-400 mt-0.5">Dimakamkan: {{ \Carbon\Carbon::parse($detail->tanggal_dimakamkan)->translatedFormat('d M Y') }}</p>
+                                                        @else
+                                                            <p class="text-[10px] text-slate-400 mt-0.5">Belum dimakamkan</p>
+                                                        @endif
+                                                    @else
+                                                        <p class="text-xs font-bold text-slate-400 mt-1 italic">Slot Kosong</p>
+                                                        @if(!$canFill)
+                                                            <span class="inline-block text-[8px] text-slate-300 uppercase tracking-tighter mt-1">Menunggu Aktivasi Lahan</span>
+                                                        @endif
+                                                    @endif
+                                                </div>
+                                                
+                                                @if(!$detail && $canFill)
+                                                    <a href="{{ route('pembeli.reservasi.isi_slot_form', ['reservasi_id' => $res->id, 'nomor_slot' => $slot]) }}"
+                                                       class="px-3 py-1.5 bg-[#800000] text-white rounded-lg text-[10px] font-bold hover:bg-[#800000]/90 transition-colors flex items-center gap-1 shadow-sm">
+                                                       <span class="material-icons text-xs">edit</span> Isi Data
+                                                    </a>
+                                                @elseif($detail)
+                                                    <div class="flex items-center gap-2">
+                                                        @if($detail->status === 'Ditolak')
+                                                            <a href="{{ route('pembeli.reservasi.isi_slot_form', ['reservasi_id' => $res->id, 'nomor_slot' => $slot]) }}"
+                                                               class="px-2 py-1 bg-[#800000] text-white rounded-lg text-[9px] font-bold hover:bg-[#800000]/90 transition-colors flex items-center gap-0.5 shadow-sm">
+                                                               <span class="material-icons text-[10px]">edit</span> Edit
+                                                            </a>
+                                                        @elseif($detail->status === 'Menunggu Validasi')
+                                                            <span class="material-icons text-amber-500 text-sm">hourglass_empty</span>
+                                                        @else
+                                                            <span class="material-icons text-emerald-500 text-sm">check_circle</span>
+                                                        @endif
+                                                    </div>
+                                                @else
+                                                    <span class="material-icons text-slate-200 text-sm">lock</span>
+                                                @endif
+                                            </div>
+                                        @endfor
+                                    </div>
+                                </div>
+                            @endif
 
                             <div class="flex flex-wrap gap-12 mt-6">
                                 @if($res->marketing_oleh)
@@ -126,7 +263,7 @@
 
                         <div class="grid grid-cols-2 gap-6 pt-6 border-t border-slate-100">
                             <div>
-                                <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Nilai Investasi</p>
+                                <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Harga Lahan</p>
                                 <p class="text-lg font-bold text-slate-900">
                                     Rp {{ number_format($res->lahan->harga, 0, ',', '.') }}
                                 </p>

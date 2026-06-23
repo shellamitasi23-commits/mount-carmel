@@ -18,7 +18,18 @@ class RegisterController extends Controller
         // 1. Validasi Input sesuai kebutuhan proposal (nama, email, password, telp, alamat)
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+            'email' => [
+                'required',
+                'string',
+                'email',
+                'max:255',
+                'unique:users',
+                function ($attribute, $value, $fail) {
+                    if (str_ends_with(strtolower($value), '@mountcarmel.id')) {
+                        $fail('Pendaftaran dengan domain email @mountcarmel.id tidak diperbolehkan untuk pembeli.');
+                    }
+                },
+            ],
             'password' => 'required|min:6|confirmed',
             'no_telepon' => 'nullable|string|max:20',
             'alamat' => 'nullable|string',

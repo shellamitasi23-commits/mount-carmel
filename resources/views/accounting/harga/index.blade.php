@@ -125,4 +125,48 @@
     .pagination-premium .active span { background: #0f172a; color: #ffffff; box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1); }
 </style>
 
+@foreach($lahans as $lahan)
+<div id="modal-edit-{{ $lahan->id }}" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-sm flex items-center justify-center transition-opacity text-left">
+    <div class="bg-white w-full max-w-md rounded-2xl shadow-2xl overflow-y-auto max-h-[90vh] m-4 border border-slate-100">
+        <div class="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-slate-50 sticky top-0">
+            <h3 class="text-lg font-bold text-slate-800">Ubah Harga Lahan</h3>
+            <button type="button" onclick="closeModal('modal-edit-{{ $lahan->id }}')" class="text-slate-400 hover:text-red-500 transition-colors">
+                <span class="material-icons-outlined">close</span>
+            </button>
+        </div>
+        <form action="{{ route('accounting.harga.update', $lahan->id) }}" method="POST">
+            @csrf
+            @method('PUT')
+            <div class="p-6 space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Nomor Lahan</label>
+                    <input type="text" value="{{ $lahan->nomor_lahan }}" disabled class="w-full bg-slate-100 border border-slate-200 rounded-xl px-4 py-2 text-sm outline-none text-slate-500 font-bold">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Cluster & Tipe</label>
+                    <input type="text" value="{{ $lahan->cluster?->nama_cluster ?? 'N/A' }} ({{ $lahan->tipe_lahan }})" disabled class="w-full bg-slate-100 border border-slate-200 rounded-xl px-4 py-2 text-sm outline-none text-slate-500 font-bold">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Harga Baru (Rp) <span class="text-rose-500">*</span></label>
+                    <input type="number" name="harga" value="{{ (int)$lahan->harga }}" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2 text-sm focus:ring-2 focus:ring-slate-900/5 outline-none font-bold">
+                </div>
+            </div>
+            <div class="px-6 py-4 border-t border-slate-100 bg-slate-50 flex justify-end gap-3 sticky bottom-0">
+                <button type="button" onclick="closeModal('modal-edit-{{ $lahan->id }}')" class="px-4 py-2 bg-slate-100 text-slate-650 hover:bg-slate-200 rounded-xl text-xs font-bold transition-all">Batal</button>
+                <button type="submit" class="px-4 py-2 bg-[#800000] text-white hover:bg-[#800000]/90 rounded-xl text-xs font-bold shadow-md transition-all">Simpan Harga</button>
+            </div>
+        </form>
+    </div>
+</div>
+@endforeach
+
+<script>
+    function openModal(id) {
+        document.getElementById(id)?.classList.remove('hidden');
+    }
+    function closeModal(id) {
+        document.getElementById(id)?.classList.add('hidden');
+    }
+</script>
+
 @endsection

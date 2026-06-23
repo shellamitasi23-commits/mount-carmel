@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class RoleMiddleware
 {
-    public function handle(Request $request, Closure $next, $role): Response
+    public function handle(Request $request, Closure $next, ...$roles): Response
     {
         // Pastikan user sudah login
         if (!Auth::check()) {
@@ -31,8 +31,8 @@ class RoleMiddleware
             return redirect('login');
         }
 
-        // Cek apakah role user di database sesuai dengan role di Route
-        if (Auth::user()->role !== $role) {
+        // Cek apakah role user di database sesuai dengan salah satu role di Route
+        if (!in_array(Auth::user()->role, $roles)) {
             // Jika salah masuk kamar, tendang ke dashboard masing-masing
             if (Auth::user()->role === 'marketing') {
                 return redirect()->route('marketing.dashboard');

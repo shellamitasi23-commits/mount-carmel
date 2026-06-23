@@ -140,14 +140,10 @@
                                 <span class="material-icons text-[20px] {{ request()->routeIs('pembeli.reservasi.*') ? 'text-primary' : 'text-gray-400' }}">event_note</span>
                                 Reservasi
                             </div>
-                            <span class="material-icons text-[20px] transition-transform duration-300" :class="sub ? 'rotate-180' : ''">expand_more</span>
                         </button>
                         <div x-show="sub" x-transition class="flex flex-col space-y-1 pl-12 pr-4 pt-1 pb-2">
                             <a href="{{ route('pembeli.reservasi.index') }}" class="block py-2 text-sm {{ request()->routeIs('pembeli.reservasi.index') ? 'text-primary font-bold' : 'text-gray-500 hover:text-gray-800' }}">
                                 Riwayat Reservasi
-                            </a>
-                            <a href="{{ route('cluster.index') }}" class="block py-2 text-sm text-gray-500 hover:text-gray-800">
-                                Pesan Baru
                             </a>
                         </div>
                     </div>

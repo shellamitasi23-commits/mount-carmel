@@ -126,9 +126,49 @@
                                 <p class="text-xs font-bold text-slate-400 uppercase mt-1">{{ $r->lahan->cluster->nama_cluster ?? '-' }}</p>
                             </td>
                             <td class="px-10 py-8">
-                                <p class="text-sm font-bold text-slate-600">
-                                    {{ $r->nama_jenazah ? 'ALM. '.strtoupper($r->nama_jenazah) : '—' }}
-                                </p>
+                                <div class="space-y-2.5 py-1">
+                                    @php
+                                        $kapasitas = $r->lahan->kapasitas;
+                                        $statusBayar = $r->status_pembayaran;
+                                        $statusRes = $r->status_reservasi;
+                                        $isApproved = $statusRes === 'Disetujui' || $statusRes === 'Selesai';
+                                        $isPaid = ($statusBayar === 'Lunas' || $statusBayar === 'DP Lunas' || str_contains($statusBayar, 'Lunas'));
+                                        $canFill = $isApproved && $isPaid;
+                                    @endphp
+                                    @for($slot = 1; $slot <= $kapasitas; $slot++)
+                                        @php
+                                            $detail = $r->detailJenazahs->where('nomor_slot', $slot)->first();
+                                        @endphp
+                                        <div class="flex flex-wrap items-center gap-2 text-xs">
+                                            @if($kapasitas > 1)
+                                                <span class="px-1.5 py-0.5 bg-slate-100 text-slate-400 rounded text-[8px] font-bold uppercase tracking-wider">Slot #{{ $slot }}</span>
+                                            @endif
+                                            @if($detail)
+                                                <span class="font-bold text-slate-800 uppercase">Alm. {{ $detail->nama_jenazah }}</span>
+                                                @if($detail->status === 'Menunggu Validasi')
+                                                    <span class="px-1.5 py-0.5 bg-amber-50 text-amber-700 border border-amber-200 rounded text-[8px] font-bold uppercase">Pending</span>
+                                                @elseif($detail->status === 'Disetujui')
+                                                    <span class="px-1.5 py-0.5 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded text-[8px] font-bold uppercase">Disetujui</span>
+                                                @elseif($detail->status === 'Ditolak')
+                                                    <span class="px-1.5 py-0.5 bg-red-50 text-red-700 border border-red-200 rounded text-[8px] font-bold uppercase">Ditolak</span>
+                                                    <a href="{{ route('pembeli.reservasi.isi_slot_form', ['reservasi_id' => $r->id, 'nomor_slot' => $slot]) }}"
+                                                       class="text-[#800000] hover:text-[#800000]/80 font-bold underline transition-colors text-[10px] ml-1">
+                                                       Edit
+                                                    </a>
+                                                @endif
+                                            @else
+                                                @if($canFill)
+                                                    <a href="{{ route('pembeli.reservasi.isi_slot_form', ['reservasi_id' => $r->id, 'nomor_slot' => $slot]) }}"
+                                                       class="text-[#800000] hover:text-[#800000]/80 font-bold underline transition-colors text-[11px]">
+                                                       Isi Data Diri
+                                                    </a>
+                                                @else
+                                                    <span class="text-slate-400 italic text-[11px]">Belum terisi</span>
+                                                @endif
+                                            @endif
+                                        </div>
+                                    @endfor
+                                </div>
                             </td>
                             <td class="px-10 py-8">
                                 <span class="text-[10px] font-black uppercase tracking-widest {{ $r->status_reservasi === 'Ditolak' ? 'text-rose-600' : ($r->status_reservasi === 'Disetujui' ? 'text-blue-600' : 'text-slate-900') }}">
@@ -157,16 +197,16 @@
             @else
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 @foreach($sertifikats as $s)
-                <div class="bg-white p-12 rounded-[3rem] border border-slate-50 shadow-2xl shadow-slate-200/30 hover:-translate-y-1 transition-all duration-500">
-                    <p class="text-[10px] font-black text-emerald-600 uppercase tracking-[0.3em] mb-6">Sertifikat Hak Guna</p>
-                    <h3 class="text-4xl font-black text-slate-900 tracking-tighter mb-2">LAHAN #{{ $s->lahan->nomor_lahan }}</h3>
-                    <p class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-8">{{ $s->lahan->cluster->nama_cluster ?? '-' }} &middot; {{ $s->lahan->tipe_lahan }}</p>
+                <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-all duration-300">
+                    <p class="text-[9px] font-black text-emerald-600 uppercase tracking-widest mb-3">Sertifikat Hak Guna</p>
+                    <h3 class="text-xl font-bold text-slate-900 tracking-tight mb-1">Lahan #{{ $s->lahan->nomor_lahan }}</h3>
+                    <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-6">{{ $s->lahan->cluster->nama_cluster ?? '-' }} &middot; {{ $s->lahan->tipe_lahan }}</p>
                     
-                    <div class="flex flex-col gap-3">
+                    <div class="grid grid-cols-2 gap-2">
                         <a href="{{ asset('storage/sertifikat/' . $s->file_sertifikat) }}" target="_blank"
-                           class="w-full py-5 bg-[#800000] text-white rounded-2xl font-black text-[11px] uppercase tracking-[0.2em] text-center hover:bg-[#800000]/90 transition-all">LIHAT DOKUMEN</a>
+                           class="w-full py-3 bg-[#800000] text-white rounded-xl font-bold text-[10px] uppercase tracking-wider text-center hover:bg-[#800000]/90 transition-all">LIHAT DOKUMEN</a>
                         <a href="{{ asset('storage/sertifikat/' . $s->file_sertifikat) }}" download
-                           class="w-full py-5 bg-slate-100 text-slate-600 rounded-2xl font-black text-[11px] uppercase tracking-[0.2em] text-center hover:bg-slate-200 transition-all">UNDUH BERKAS</a>
+                           class="w-full py-3 bg-slate-100 text-slate-600 rounded-xl font-bold text-[10px] uppercase tracking-wider text-center hover:bg-slate-200 transition-all">UNDUH BERKAS</a>
                     </div>
                 </div>
                 @endforeach
@@ -183,18 +223,18 @@
                 <h3 class="text-[11px] font-black text-amber-600 uppercase tracking-[0.3em] mb-10">Menunggu Pembayaran</h3>
                 <div class="space-y-6">
                     @foreach($reservasiSiapBayar as $res)
-                    <div class="bg-amber-50/50 rounded-[2.5rem] p-10 flex flex-col md:flex-row md:items-center justify-between gap-8 border border-amber-100/50">
+                    <div class="bg-amber-50/50 rounded-2xl p-6 flex flex-col md:flex-row md:items-center justify-between gap-6 border border-amber-100/50 shadow-sm hover:shadow-md transition-shadow duration-300">
                         <div>
-                            <p class="text-3xl font-black text-slate-900 tracking-tighter">Lahan #{{ $res->lahan->nomor_lahan }}</p>
-                            <p class="text-[11px] font-bold text-slate-400 uppercase tracking-widest mt-2">{{ $res->lahan->cluster->nama_cluster }} &middot; {{ $res->lahan->tipe_lahan }}</p>
+                            <p class="text-xl font-bold text-slate-900 tracking-tight">Lahan #{{ $res->lahan->nomor_lahan }}</p>
+                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mt-1">{{ $res->lahan->cluster->nama_cluster }} &middot; {{ $res->lahan->tipe_lahan }}</p>
                         </div>
-                        <div class="flex flex-col md:items-end gap-6">
-                            <div class="text-right">
-                                <p class="text-[11px] font-black text-slate-400 uppercase tracking-widest mb-1">{{ $res->tipe_tagihan ?? 'Harus Dibayar' }}</p>
-                                <p class="text-3xl font-black text-[#800000] tracking-tight">Rp {{ number_format($res->nominal_tagihan ?? $res->lahan->harga, 0, ',', '.') }}</p>
+                        <div class="flex flex-col md:flex-row md:items-center gap-6">
+                            <div class="md:text-right">
+                                <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-0.5">{{ $res->tipe_tagihan ?? 'Harus Dibayar' }}</p>
+                                <p class="text-xl font-bold text-[#800000] tracking-tight">Rp {{ number_format($res->nominal_tagihan ?? $res->lahan->harga, 0, ',', '.') }}</p>
                             </div>
                             <a href="{{ route('pembeli.pembayaran.create', ['reservasi_id' => $res->id]) }}"
-                               class="bg-amber-500 text-white px-12 py-5 rounded-2xl font-black text-[11px] uppercase tracking-[0.2em] shadow-2xl shadow-amber-200 hover:bg-amber-600 transition-all active:scale-95">BAYAR SEKARANG</a>
+                               class="bg-amber-500 text-white px-6 py-3 rounded-xl font-bold text-[10px] uppercase tracking-wider shadow-md hover:bg-amber-600 transition-all active:scale-95 text-center whitespace-nowrap">BAYAR SEKARANG</a>
                         </div>
                     </div>
                     @endforeach
@@ -210,12 +250,12 @@
                 @else
                 <div class="space-y-6">
                     @foreach($pembayarans as $bayar)
-                    <div class="p-10 border border-slate-50 rounded-[2.5rem] bg-slate-50/30 hover:bg-white hover:shadow-2xl hover:shadow-slate-200/50 transition-all duration-500">
-                        <div class="flex flex-col md:flex-row md:items-center justify-between gap-8">
+                    <div class="p-6 border border-slate-50 rounded-2xl bg-slate-50/30 hover:bg-white hover:shadow-md transition-all duration-350">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
                             <div>
-                                <div class="flex items-center gap-4 mb-4">
-                                    <p class="text-lg font-black text-slate-900 tracking-tight">{{ $bayar->no_invoice }}</p>
-                                    <span class="px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-widest
+                                <div class="flex items-center gap-3 mb-2">
+                                    <p class="text-base font-bold text-slate-900 tracking-tight">{{ $bayar->no_invoice }}</p>
+                                    <span class="px-3 py-1 rounded-full text-[9px] font-bold uppercase tracking-wider
                                         @if($bayar->status_pembayaran === 'Lunas')
                                             @if($bayar->reservasi?->jenis_pembayaran === 'cicilan' && ($bayar->cicilan_ke === 0 || $bayar->cicilan_ke < $bayar->total_cicilan))
                                                 bg-blue-100 text-blue-700
@@ -230,7 +270,7 @@
                                         {{ $bayar->status_label }}
                                     </span>
                                 </div>
-                                <p class="text-[11px] font-bold text-slate-400 uppercase tracking-widest">
+                                <p class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
                                     Lahan #{{ $bayar->reservasi->lahan->nomor_lahan }} &middot;
                                     {{ $bayar->reservasi->lahan->cluster->nama_cluster }} &middot;
                                     @if($bayar->reservasi?->jenis_pembayaran === 'cicilan')
@@ -243,18 +283,18 @@
                                         Pembayaran Penuh
                                     @endif
                                 </p>
-                                <p class="text-[10px] font-bold text-slate-300 uppercase tracking-widest mt-2">{{ $bayar->created_at->translatedFormat('d M Y, H:i') }}</p>
+                                <p class="text-[9px] font-bold text-slate-300 uppercase tracking-widest mt-1.5">{{ $bayar->created_at->translatedFormat('d M Y, H:i') }}</p>
                             </div>
-                            <div class="flex flex-col md:items-end gap-6">
-                                <p class="text-3xl font-black text-slate-900 tracking-tight">Rp {{ number_format($bayar->jumlah_bayar, 0, ',', '.') }}</p>
-                                <div class="flex gap-3">
+                            <div class="flex flex-row items-center gap-6">
+                                <p class="text-xl font-bold text-slate-900 tracking-tight">Rp {{ number_format($bayar->jumlah_bayar, 0, ',', '.') }}</p>
+                                <div class="flex gap-2">
                                     @if($bayar->status_pembayaran === 'Lunas')
                                     <a href="{{ route('pembeli.pembayaran.invoice', $bayar->id) }}"
-                                       class="px-8 py-4 bg-[#800000] text-white rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-[#800000]/90 transition-all">INVOICE</a>
+                                       class="px-4 py-2 bg-[#800000] text-white rounded-lg font-bold text-[9px] uppercase tracking-wider hover:bg-[#800000]/90 transition-all text-center">INVOICE</a>
                                     @endif
                                     @if($bayar->status_pembayaran === 'Ditolak')
                                     <a href="{{ route('pembeli.pembayaran.create', ['reservasi_id' => $bayar->reservasi_id]) }}"
-                                       class="px-8 py-4 bg-rose-600 text-white rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-rose-700 transition-all">KIRIM ULANG</a>
+                                       class="px-4 py-2 bg-rose-600 text-white rounded-lg font-bold text-[9px] uppercase tracking-wider hover:bg-rose-700 transition-all text-center">KIRIM ULANG</a>
                                     @endif
                                 </div>
                             </div>

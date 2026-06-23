@@ -56,7 +56,7 @@ class TransaksiController extends Controller
             'tanggal_dimakamkan' => 'nullable|date',
         ]);
 
-        Reservasi::create([
+        $reservasi = Reservasi::create([
             'user_id' => $request->user_id,
             'lahan_id' => $request->lahan_id,
             'nama_jenazah' => $request->nama_jenazah,
@@ -67,7 +67,7 @@ class TransaksiController extends Controller
             'marketing_oleh' => auth()->user()->name,
         ]);
 
-        Lahan::where('id', $request->lahan_id)->update(['status' => 'Dipesan']);
+        Lahan::where('id', $request->lahan_id)->update(['status' => 'Reservasi (Lunas)']);
 
         return redirect()->back()->with('success', 'Reservasi berhasil ditambahkan!');
     }
@@ -83,7 +83,7 @@ class TransaksiController extends Controller
         }
 
         if ($request->status === 'Selesai') {
-            $statusLahan = $reservasi->nama_jenazah ? 'Dipesan' : 'Terjual';
+            $statusLahan = $reservasi->nama_jenazah ? 'Digunakan' : 'Terjual';
             Lahan::where('id', $reservasi->lahan_id)->update(['status' => $statusLahan]);
         }
 

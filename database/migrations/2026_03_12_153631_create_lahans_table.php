@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('ukuran');
             $table->integer('kapasitas');
             $table->decimal('harga', 15, 2);
-            $table->enum('status', ['Tersedia', 'Dipesan', 'Terjual'])->default('Tersedia');
+            $table->enum('status', ['Tersedia', 'Reservasi (Lunas)', 'Reservasi Cicilan dengan DP', 'Terjual', 'Digunakan'])->default('Tersedia');
             $table->timestamps();
         });
     }

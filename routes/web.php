@@ -138,6 +138,11 @@ Route::middleware('auth')->group(function () {
 
         // Laporan
         Route::get('/laporan', [\App\Http\Controllers\Marketing\LaporanController::class, 'index'])->name('laporan.index');
+        Route::get('/laporan/reservasi', [\App\Http\Controllers\Marketing\LaporanController::class, 'reservasi'])->name('laporan.reservasi');
+        Route::get('/laporan/jenazah', [\App\Http\Controllers\Marketing\LaporanController::class, 'jenazah'])->name('laporan.jenazah');
+        Route::get('/laporan/lahan', [\App\Http\Controllers\Marketing\LaporanController::class, 'lahan'])->name('laporan.lahan');
+        Route::get('/laporan/pembeli', [\App\Http\Controllers\Marketing\LaporanController::class, 'pembeli'])->name('laporan.pembeli');
+        Route::get('/laporan/cluster', [\App\Http\Controllers\Marketing\LaporanController::class, 'cluster'])->name('laporan.cluster');
         Route::get('/laporan/pdf', [\App\Http\Controllers\Marketing\LaporanController::class, 'exportPdf'])->name('laporan.pdf');
 
         // Manajemen sertifikat
@@ -147,6 +152,8 @@ Route::middleware('auth')->group(function () {
 
         // Database Jenazah
         Route::get('/jenazah', [\App\Http\Controllers\Marketing\JenazahController::class, 'index'])->name('jenazah.index');
+        Route::post('/jenazah/{id}/setujui', [\App\Http\Controllers\Marketing\JenazahController::class, 'setujui'])->name('jenazah.setujui');
+        Route::post('/jenazah/{id}/tolak', [\App\Http\Controllers\Marketing\JenazahController::class, 'tolak'])->name('jenazah.tolak');
     });
 
     // ──────────────────────────────────────────────────────────────────────
@@ -170,6 +177,11 @@ Route::middleware('auth')->group(function () {
 
         // Laporan
         Route::get('/laporan', [\App\Http\Controllers\Manajer\LaporanController::class, 'index'])->name('laporan.index');
+        Route::get('/laporan/reservasi', [\App\Http\Controllers\Manajer\LaporanController::class, 'reservasi'])->name('laporan.reservasi');
+        Route::get('/laporan/jenazah', [\App\Http\Controllers\Manajer\LaporanController::class, 'jenazah'])->name('laporan.jenazah');
+        Route::get('/laporan/lahan', [\App\Http\Controllers\Manajer\LaporanController::class, 'lahan'])->name('laporan.lahan');
+        Route::get('/laporan/pembeli', [\App\Http\Controllers\Manajer\LaporanController::class, 'pembeli'])->name('laporan.pembeli');
+        Route::get('/laporan/cluster', [\App\Http\Controllers\Manajer\LaporanController::class, 'cluster'])->name('laporan.cluster');
         Route::get('/laporan/cetak', [\App\Http\Controllers\Manajer\LaporanController::class, 'cetak'])->name('laporan.cetak');
 
         // Database Jenazah (View Only)
@@ -204,7 +216,7 @@ Route::middleware('auth')->group(function () {
     Route::middleware('role:koordinator_lapangan')->prefix('koordinator-lapangan')->name('koordinator_lapangan.')->group(function () {
         // Dashboard
         Route::get('/', [\App\Http\Controllers\KoordinatorLapangan\DashboardController::class, 'index'])->name('dashboard');
-
+        
         // Kelola Cluster
         Route::get('/cluster', [\App\Http\Controllers\KoordinatorLapangan\ClusterController::class, 'index'])->name('cluster.index');
         Route::post('/cluster', [\App\Http\Controllers\KoordinatorLapangan\ClusterController::class, 'store'])->name('cluster.store');
@@ -232,6 +244,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/reservasi/create', [PembeliReservasi::class, 'create'])->name('reservasi.create'); // Form
         Route::post('/reservasi', [PembeliReservasi::class, 'store'])->name('reservasi.store'); // Simpan
         Route::get('/reservasi/{id}/konfirmasi', [PembeliReservasi::class, 'konfirmasi'])->name('reservasi.konfirmasi'); // Konfirmasi
+        Route::get('/reservasi/{reservasi_id}/slot/{nomor_slot}/isi', [PembeliReservasi::class, 'isiSlotForm'])->name('reservasi.isi_slot_form');
+        Route::post('/reservasi/{reservasi_id}/slot/{nomor_slot}/isi', [PembeliReservasi::class, 'simpanSlot'])->name('reservasi.simpan_slot');
 
         // Manajemen pembayaran
         Route::get('/pembayaran', [PembeliPembayaran::class, 'index'])->name('pembayaran.index'); // Riwayat
@@ -246,7 +260,7 @@ Route::middleware('auth')->group(function () {
     // ──────────────────────────────────────────────────────────────────────
     // RUTE PROFIL ADMIN - Untuk semua staf (Marketing, Manajer, dsb.)
     // ──────────────────────────────────────────────────────────────────────
-    Route::middleware('auth')->prefix('admin/profil')->name('admin.profil.')->group(function () {
+    Route::middleware('role:marketing,manajer,accounting,koordinator_lapangan')->prefix('admin/profil')->name('admin.profil.')->group(function () {
         Route::get('/', [\App\Http\Controllers\Admin\ProfilController::class, 'index'])->name('index');
         Route::patch('/update', [\App\Http\Controllers\Admin\ProfilController::class, 'update'])->name('update');
         Route::put('/password', [\App\Http\Controllers\Admin\ProfilController::class, 'updatePassword'])->name('password');
@@ -255,7 +269,7 @@ Route::middleware('auth')->group(function () {
     // ──────────────────────────────────────────────────────────────────────
     // RUTE PROFIL - Untuk pembeli/pelanggan umum
     // ──────────────────────────────────────────────────────────────────────
-    Route::prefix('profil')->name('profil.')->group(function () {
+    Route::middleware('role:pembeli')->prefix('profil')->name('profil.')->group(function () {
         Route::get('/', [PembeliProfil::class, 'index'])->name('index');
         Route::patch('/update', [PembeliProfil::class, 'update'])->name('update');
         Route::put('/password', [PembeliProfil::class, 'updatePassword'])->name('password');

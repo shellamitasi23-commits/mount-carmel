@@ -44,7 +44,7 @@ class ClusterLahanSeeder extends Seeder
                     'ukuran' => $t['ukuran'],
                     'kapasitas' => $t['kapasitas'],
                     'harga' => $t['harga'],
-                    'status' => rand(1, 100) <= 20 ? (rand(1, 100) <= 70 ? 'Terjual' : 'Dipesan') : 'Tersedia',
+                    'status' => 'Tersedia',
                 ]);
             }
         }
@@ -85,7 +85,7 @@ class ClusterLahanSeeder extends Seeder
                     'ukuran' => $t['ukuran'],
                     'kapasitas' => $t['kapasitas'],
                     'harga' => $t['harga'],
-                    'status' => rand(1, 100) <= 25 ? (rand(1, 100) <= 80 ? 'Terjual' : 'Dipesan') : 'Tersedia',
+                    'status' => 'Tersedia',
                 ]);
             }
         }

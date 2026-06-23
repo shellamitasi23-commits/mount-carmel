@@ -1,6 +1,6 @@
 <div id="editModal{{ $cluster->id }}" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-sm flex items-center justify-center transition-opacity">
     
-    <div class="bg-white w-full max-w-lg rounded-2xl shadow-2xl transform scale-100 transition-transform overflow-hidden m-4">
+    <div class="bg-white w-full max-w-lg rounded-2xl shadow-2xl transform scale-100 transition-transform overflow-y-auto max-h-[90vh] m-4">
         
         <div class="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-slate-50">
             <h3 class="text-lg font-bold text-slate-800">Edit Data Cluster</h3>

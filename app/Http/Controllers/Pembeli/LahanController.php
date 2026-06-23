@@ -18,7 +18,7 @@ class LahanController extends Controller
         // Wajib ada cluster_id dari cluster/index
         $cluster = Cluster::findOrFail($request->cluster_id ?? Cluster::first()->id);
 
-        // Kelompokkan lahan tersedia berdasarkan tipe
+        // Kelompokkan lahan tersedia berdasarkan tipe, diurutkan dari harga termurah
         $tipeLahans = Lahan::where('cluster_id', $cluster->id)
             ->where('status', 'Tersedia')
             ->get()
@@ -33,7 +33,9 @@ class LahanController extends Controller
                     'harga_max' => $lahans->max('harga'),
                     'tersedia' => $lahans->count(),
                 ];
-            })->values();
+            })
+            ->sortBy('harga_min')
+            ->values();
 
         // Semua cluster untuk dropdown/info
         $clusters = Cluster::all();

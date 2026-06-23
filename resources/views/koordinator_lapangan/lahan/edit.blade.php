@@ -68,9 +68,10 @@
                     <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Status <span class="text-red-500">*</span></label>
                     <select name="status" required class="w-full px-5 py-3 bg-slate-50 border border-slate-100 rounded-xl focus:ring-4 focus:ring-slate-900/5 outline-none text-sm font-bold appearance-none transition-all">
                         <option value="Tersedia" {{ $lahan->status == 'Tersedia' ? 'selected' : '' }}>Tersedia</option>
-                        <option value="Dipesan" {{ $lahan->status == 'Dipesan' ? 'selected' : '' }}>Dipesan</option>
+                        <option value="Reservasi (Lunas)" {{ $lahan->status == 'Reservasi (Lunas)' ? 'selected' : '' }}>Reservasi (Lunas)</option>
+                        <option value="Reservasi Cicilan dengan DP" {{ $lahan->status == 'Reservasi Cicilan dengan DP' ? 'selected' : '' }}>Reservasi Cicilan dengan DP</option>
                         <option value="Terjual" {{ $lahan->status == 'Terjual' ? 'selected' : '' }}>Terjual</option>
-                        <option value="Terpakai" {{ $lahan->status == 'Terpakai' ? 'selected' : '' }}>Terpakai</option>
+                        <option value="Digunakan" {{ $lahan->status == 'Digunakan' ? 'selected' : '' }}>Digunakan</option>
                     </select>
                 </div>
             </div>

@@ -100,37 +100,46 @@
                     <td class="px-4 py-2.5">
                         <div class="flex justify-center items-center gap-3">
                             @if($p->status_pembayaran === 'Menunggu Konfirmasi' || $p->status_pembayaran === 'Pending' || $p->status_pembayaran === 'menunggu konfirmasi')
-                            <form id="form-approve-{{ $p->id }}" action="{{ route('accounting.pembayaran.konfirmasi', $p->id) }}" method="POST">
-                                @csrf @method('PUT')
-                                <input type="hidden" name="status_pembayaran" value="Lunas">
-                                <button type="button"
-                                    @click="$dispatch('confirm-modal', { 
-                                        title: 'Sahkan Pembayaran', 
-                                        message: 'Pastikan dana telah masuk ke rekening sebelum melakukan pengesahan ini.', 
-                                        confirmText: 'Sahkan Sekarang',
-                                        type: 'success',
-                                        action: () => document.getElementById('form-approve-{{ $p->id }}').submit() 
-                                    })"
-                                    class="bg-[#800000] text-white px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider hover:bg-[#800000]/90 transition-all shadow-sm">
-                                    Setujui
-                                </button>
-                            </form>
+                                @if($p->reservasi && $p->reservasi->status_reservasi === 'Menunggu Validasi')
+                                    <div class="text-center">
+                                        <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[10px] font-bold text-amber-600 bg-amber-50 border border-amber-200 uppercase tracking-wider">
+                                            <span class="material-icons-outlined text-xs">hourglass_empty</span>
+                                            Validasi Marketing
+                                        </span>
+                                    </div>
+                                @else
+                                    <form id="form-approve-{{ $p->id }}" action="{{ route('accounting.pembayaran.konfirmasi', $p->id) }}" method="POST">
+                                        @csrf @method('PUT')
+                                        <input type="hidden" name="status_pembayaran" value="Lunas">
+                                        <button type="button"
+                                            @click="$dispatch('confirm-modal', { 
+                                                title: 'Sahkan Pembayaran', 
+                                                message: 'Pastikan dana telah masuk ke rekening sebelum melakukan pengesahan ini.', 
+                                                confirmText: 'Sahkan Sekarang',
+                                                type: 'success',
+                                                action: () => document.getElementById('form-approve-{{ $p->id }}').submit() 
+                                            })"
+                                            class="bg-[#800000] text-white px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider hover:bg-[#800000]/90 transition-all shadow-sm">
+                                            Setujui
+                                        </button>
+                                    </form>
 
-                            <form id="form-reject-{{ $p->id }}" action="{{ route('accounting.pembayaran.konfirmasi', $p->id) }}" method="POST">
-                                @csrf @method('PUT')
-                                <input type="hidden" name="status_pembayaran" value="Ditolak">
-                                <button type="button"
-                                    @click="$dispatch('confirm-modal', { 
-                                        title: 'Tolak Transaksi', 
-                                        message: 'Apakah bukti transfer tidak valid atau dana belum diterima?', 
-                                        confirmText: 'Ya, Tolak',
-                                        type: 'danger',
-                                        action: () => document.getElementById('form-reject-{{ $p->id }}').submit() 
-                                    })"
-                                    class="bg-white border border-rose-200 text-rose-600 px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider hover:bg-rose-50 transition-all">
-                                    Tolak
-                                </button>
-                            </form>
+                                    <form id="form-reject-{{ $p->id }}" action="{{ route('accounting.pembayaran.konfirmasi', $p->id) }}" method="POST">
+                                        @csrf @method('PUT')
+                                        <input type="hidden" name="status_pembayaran" value="Ditolak">
+                                        <button type="button"
+                                            @click="$dispatch('confirm-modal', { 
+                                                title: 'Tolak Transaksi', 
+                                                message: 'Apakah bukti transfer tidak valid atau dana belum diterima?', 
+                                                confirmText: 'Ya, Tolak',
+                                                type: 'danger',
+                                                action: () => document.getElementById('form-reject-{{ $p->id }}').submit() 
+                                            })"
+                                            class="bg-white border border-rose-200 text-rose-600 px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider hover:bg-rose-50 transition-all">
+                                            Tolak
+                                        </button>
+                                    </form>
+                                @endif
                             @elseif($p->status_pembayaran === 'Lunas' || $p->status_pembayaran === 'Dikonfirmasi')
                             <div class="flex flex-col items-center">
                                 <span class="text-[10px] font-bold text-emerald-600 uppercase tracking-widest mb-1.5">Terverifikasi</span>

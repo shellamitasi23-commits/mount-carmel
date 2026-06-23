@@ -37,16 +37,16 @@
 <div x-data="{ activeCluster: 'semua' }">
 
     {{-- Tab Nav --}}
-    <div class="flex items-center gap-1.5 mb-6 p-1.5 bg-white border border-slate-100 rounded-xl w-full shadow-sm">
+    <div class="flex items-center gap-1.5 mb-6 p-1.5 bg-white border border-slate-100 rounded-xl w-full shadow-sm overflow-x-auto whitespace-nowrap">
         <button @click="activeCluster='semua'"
                 :class="activeCluster==='semua'?'bg-[#800000] text-white shadow-sm':'text-slate-500 hover:text-slate-800'"
-                class="flex-1 text-center px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all">
+                class="flex-1 shrink-0 text-center px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all">
             Semua ({{ $lahans->total() }})
         </button>
         @foreach($clusters as $cl)
         <button @click="activeCluster='{{ $cl->id }}'"
                 :class="activeCluster==='{{ $cl->id }}'?'bg-[#800000] text-white shadow-sm':'text-slate-500 hover:text-slate-800'"
-                class="flex-1 text-center px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all flex items-center justify-center gap-1.5">
+                class="flex-1 shrink-0 text-center px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all flex items-center justify-center gap-1.5">
             <span class="material-icons-outlined text-[14px]">{{ $cl->kategori==='Muslim'?'mosque':'church' }}</span>
             {{ $cl->nama_cluster }}
             <span class="text-[10px] opacity-70">({{ $cl->lahans()->count() }})</span>
@@ -99,25 +99,25 @@
                             @endphp
                             @if($lahan->status == 'Tersedia')
                                 <span class="px-3 py-1 bg-slate-100 text-slate-700 rounded-md text-[10px] font-black uppercase tracking-tighter">Tersedia</span>
-                            @elseif($lahan->status == 'Dipesan')
+                            @elseif(str_contains($lahan->status, 'Reservasi'))
                                 @if($hasJenazah)
-                                    <span class="px-3 py-1 bg-amber-50 text-amber-600 rounded-md text-[10px] font-black uppercase tracking-tighter" title="Alm. {{ $activeRes->nama_jenazah }}">Dipesan (Alm. {{ $activeRes->nama_jenazah }})</span>
+                                    <span class="px-3 py-1 bg-amber-50 text-amber-600 rounded-md text-[10px] font-black uppercase tracking-tighter" title="Alm. {{ $activeRes->nama_jenazah }}">{{ $lahan->status }} (Alm. {{ $activeRes->nama_jenazah }})</span>
                                 @else
-                                    <span class="px-3 py-1 bg-amber-50 text-amber-600 rounded-md text-[10px] font-black uppercase tracking-tighter">Dipesan</span>
+                                    <span class="px-3 py-1 bg-amber-50 text-amber-600 rounded-md text-[10px] font-black uppercase tracking-tighter">{{ $lahan->status }}</span>
                                 @endif
                             @elseif($lahan->status == 'Terjual')
                                 <span class="px-3 py-1 bg-slate-200 text-slate-600 rounded-md text-[10px] font-black uppercase tracking-tighter">Terjual</span>
                             @else
                                 @if($activeRes && $activeRes->nama_jenazah)
-                                    <span class="px-3 py-1 bg-[#800000] text-white rounded-md text-[10px] font-black uppercase tracking-tighter" title="Alm. {{ $activeRes->nama_jenazah }}">Terpakai (Alm. {{ $activeRes->nama_jenazah }})</span>
+                                    <span class="px-3 py-1 bg-[#800000] text-white rounded-md text-[10px] font-black uppercase tracking-tighter" title="Alm. {{ $activeRes->nama_jenazah }}">Digunakan (Alm. {{ $activeRes->nama_jenazah }})</span>
                                 @else
-                                    <span class="px-3 py-1 bg-[#800000] text-white rounded-md text-[10px] font-black uppercase tracking-tighter">Terpakai</span>
+                                    <span class="px-3 py-1 bg-[#800000] text-white rounded-md text-[10px] font-black uppercase tracking-tighter">Digunakan</span>
                                 @endif
                             @endif
                         </td>
                         <td class="px-4 py-2.5 text-center">
                             <div class="flex justify-center gap-2 items-center">
-                                @if($lahan->status == 'Dipesan' && $hasJenazah)
+                                @if(str_contains($lahan->status, 'Reservasi') && $hasJenazah)
                                 <form action="{{ route('koordinator_lapangan.lahan.update', $lahan->id) }}" method="POST" class="inline">
                                     @csrf
                                     @method('PUT')
@@ -128,7 +128,7 @@
                                     <input type="hidden" name="ukuran" value="{{ $lahan->ukuran }}">
                                     <input type="hidden" name="kapasitas" value="{{ $lahan->kapasitas }}">
                                     <input type="hidden" name="harga" value="{{ (int)$lahan->harga }}">
-                                    <input type="hidden" name="status" value="Terpakai">
+                                    <input type="hidden" name="status" value="Digunakan">
                                     <button type="submit" class="bg-emerald-600 hover:bg-emerald-700 text-white px-2 py-1 rounded text-[9px] font-black uppercase tracking-widest shadow-sm transition-all flex items-center gap-1" title="Acc Pakai Lahan">
                                         <span class="material-icons-outlined text-[11px]">check_circle</span> Acc Pakai
                                     </button>

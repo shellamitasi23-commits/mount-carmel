@@ -65,9 +65,10 @@
                     <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Status <span class="text-red-500">*</span></label>
                     <select name="status" required class="w-full px-5 py-3 bg-slate-50 border border-slate-100 rounded-xl focus:ring-4 focus:ring-slate-900/5 outline-none text-sm font-bold appearance-none transition-all">
                         <option value="Tersedia">Tersedia</option>
-                        <option value="Dipesan">Dipesan</option>
+                        <option value="Reservasi (Lunas)">Reservasi (Lunas)</option>
+                        <option value="Reservasi Cicilan dengan DP">Reservasi Cicilan dengan DP</option>
                         <option value="Terjual">Terjual</option>
-                        <option value="Terpakai">Terpakai</option>
+                        <option value="Digunakan">Digunakan</option>
                     </select>
                 </div>
             </div>

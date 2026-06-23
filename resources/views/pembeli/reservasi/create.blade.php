@@ -59,7 +59,7 @@
                     Lengkapi Data Reservasi
                 </h1>
                 <p class="text-gray-400 dark:text-gray-500 text-xs">
-                    Kavling Terpilih: <strong class="text-[#800000]">#{{ $lahan->nomor_lahan }}</strong> ({{ $lahan->tipe_lahan }} &middot; {{ $lahan->cluster->nama_cluster }})
+                    Nomor Lahan Terpilih: <strong class="text-[#800000]">#{{ $lahan->nomor_lahan }}</strong> ({{ $lahan->tipe_lahan }} &middot; {{ $lahan->cluster->nama_cluster }})
                 </p>
             </header>
 
@@ -146,32 +146,14 @@
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        {{-- Kontak Kerabat --}}
-                        <div class="group">
-                            <label class="block text-xs font-semibold text-gray-500 dark:text-gray-400 group-focus-within:text-[#800000] transition-colors mb-2">
-                                Kontak Kerabat <span class="text-gray-400 font-normal text-[11px]">(opsional)</span>
-                            </label>
-                            <input type="text" name="kontak_kerabat" value="{{ old('kontak_kerabat') }}"
-                                placeholder="No. WhatsApp / HP"
-                                class="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl text-sm font-medium text-gray-900 dark:text-white focus:border-[#800000] focus:ring-0 transition-all placeholder:text-gray-300 dark:placeholder:text-gray-700">
-                        </div>
-
-                        {{-- Staf Marketing yang Membantu --}}
-                        <div class="group">
-                            <label class="block text-xs font-semibold text-gray-500 dark:text-gray-400 group-focus-within:text-[#800000] transition-colors mb-2">
-                                Staf Marketing yang Membantu <span class="text-gray-400 font-normal text-[11px]">(opsional)</span>
-                            </label>
-                            <select name="marketing_oleh"
-                                class="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl text-sm font-medium text-gray-900 dark:text-white focus:border-[#800000] focus:ring-0 transition-all">
-                                <option value="">-- Pilih Staf Marketing --</option>
-                                @foreach($marketingStaff as $marketing)
-                                    <option value="{{ $marketing->name }}" {{ old('marketing_oleh') == $marketing->name ? 'selected' : '' }}>
-                                        {{ $marketing->name }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
+                    {{-- Kontak Kerabat --}}
+                    <div class="group">
+                        <label class="block text-xs font-semibold text-gray-500 dark:text-gray-400 group-focus-within:text-[#800000] transition-colors mb-2">
+                            Kontak Kerabat <span class="text-gray-400 font-normal text-[11px]">(opsional)</span>
+                        </label>
+                        <input type="text" name="kontak_kerabat" value="{{ old('kontak_kerabat') }}"
+                            placeholder="No. WhatsApp / HP"
+                            class="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl text-sm font-medium text-gray-900 dark:text-white focus:border-[#800000] focus:ring-0 transition-all placeholder:text-gray-300 dark:placeholder:text-gray-700">
                     </div>
 
                     {{-- Alamat --}}

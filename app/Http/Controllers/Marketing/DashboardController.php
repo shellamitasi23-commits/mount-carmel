@@ -116,21 +116,21 @@ class DashboardController extends Controller
         $muslimStats = [
             'total'     => Lahan::whereHas('cluster', fn($q) => $q->where('kategori', 'Muslim'))->count(),
             'terjual'   => Lahan::whereHas('cluster', fn($q) => $q->where('kategori', 'Muslim'))->where('status', 'Terjual')->count(),
-            'used'      => Lahan::whereHas('cluster', fn($q) => $q->where('kategori', 'Muslim'))->where('status', 'Terpakai')->count(),
+            'used'      => Lahan::whereHas('cluster', fn($q) => $q->where('kategori', 'Muslim'))->where('status', 'Digunakan')->count(),
             'available' => Lahan::whereHas('cluster', fn($q) => $q->where('kategori', 'Muslim'))->where('status', 'Tersedia')->count(),
-            'booked'    => Lahan::whereHas('cluster', fn($q) => $q->where('kategori', 'Muslim'))->where('status', 'Dipesan')->count(),
+            'booked'    => Lahan::whereHas('cluster', fn($q) => $q->where('kategori', 'Muslim'))->whereIn('status', ['Reservasi (Lunas)', 'Reservasi Cicilan dengan DP'])->count(),
         ];
 
         $nonMuslimStats = [
             'total'     => Lahan::whereHas('cluster', fn($q) => $q->where('kategori', 'Non-Muslim'))->count(),
             'terjual'   => Lahan::whereHas('cluster', fn($q) => $q->where('kategori', 'Non-Muslim'))->where('status', 'Terjual')->count(),
-            'used'      => Lahan::whereHas('cluster', fn($q) => $q->where('kategori', 'Non-Muslim'))->where('status', 'Terpakai')->count(),
+            'used'      => Lahan::whereHas('cluster', fn($q) => $q->where('kategori', 'Non-Muslim'))->where('status', 'Digunakan')->count(),
             'available' => Lahan::whereHas('cluster', fn($q) => $q->where('kategori', 'Non-Muslim'))->where('status', 'Tersedia')->count(),
-            'booked'    => Lahan::whereHas('cluster', fn($q) => $q->where('kategori', 'Non-Muslim'))->where('status', 'Dipesan')->count(),
+            'booked'    => Lahan::whereHas('cluster', fn($q) => $q->where('kategori', 'Non-Muslim'))->whereIn('status', ['Reservasi (Lunas)', 'Reservasi Cicilan dengan DP'])->count(),
         ];
 
         $totalLahan = Lahan::count();
-        $occupiedLahan = Lahan::whereIn('status', ['Terjual', 'Terpakai'])->count();
+        $occupiedLahan = Lahan::whereIn('status', ['Terjual', 'Digunakan'])->count();
         $availableLahan = Lahan::where('status', 'Tersedia')->count();
 
         return view('marketing.dashboard', compact(

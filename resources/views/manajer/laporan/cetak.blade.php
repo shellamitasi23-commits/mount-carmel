@@ -31,7 +31,7 @@
     <div class="judul-laporan">
         <h2>
             @if($type === 'lahan')
-                Laporan Data Lahan Terjual / Terpakai
+                Laporan Data Lahan Terjual / Digunakan
             @elseif($type === 'pembeli')
                 Laporan Data Pembeli
             @elseif($type === 'cluster')
@@ -138,10 +138,10 @@
                 @forelse($jenazahs as $index => $j)
                     <tr>
                         <td>{{ $index + 1 }}</td>
-                        <td>{{ $j->nama_jenazah }}</td>
-                        <td>{{ $j->lahan->nomor_lahan }}</td>
-                        <td>{{ $j->lahan->cluster->nama_cluster }}</td>
-                        <td>{{ $j->user->name }}</td>
+                        <td>{{ $j->nama_jenazah }} (Slot {{ $j->nomor_slot }})</td>
+                        <td>{{ $j->reservasi->lahan->nomor_lahan }}</td>
+                        <td>{{ $j->reservasi->lahan->cluster->nama_cluster }}</td>
+                        <td>{{ $j->reservasi->user->name }}</td>
                         <td class="text-right">{{ $j->tanggal_dimakamkan ? \Carbon\Carbon::parse($j->tanggal_dimakamkan)->format('d/m/Y') : '-' }}</td>
                     </tr>
                 @empty
@@ -157,7 +157,7 @@
                         <td>{{ $rs->created_at->format('d/m/Y') }}</td>
                         <td>{{ $rs->user->name }}</td>
                         <td>{{ $rs->lahan->cluster->nama_cluster }} - {{ $rs->lahan->nomor_lahan }}</td>
-                        <td>Alm. {{ $rs->nama_jenazah }}</td>
+                        <td>Alm. {{ $rs->nama_semua_jenazah }}</td>
                         <td class="text-right">{{ number_format($rs->lahan->harga, 0, ',', '.') }}</td>
                     </tr>
                 @empty

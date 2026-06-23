@@ -33,6 +33,11 @@ class GoogleController extends Controller
                 Auth::login($finduser);
                 return redirect()->intended('/');
             }else{
+                // Jika domain email @mountcarmel.id, tolak pendaftaran sebagai pembeli
+                if (str_ends_with(strtolower($user->email), '@mountcarmel.id')) {
+                    return redirect('login')->withErrors(['email' => 'Pendaftaran dengan domain email @mountcarmel.id tidak diperbolehkan untuk pembeli.']);
+                }
+
                 // Jika user belum ada, buat user baru
                 $newUser = User::create([
                     'name' => $user->name,

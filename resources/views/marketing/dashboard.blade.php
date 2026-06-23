@@ -53,7 +53,7 @@
                 <p class="text-base font-black text-slate-900 leading-none">{{ number_format($muslimStats['booked']) }}</p>
             </div>
             <div class="bg-slate-50 p-2.5 rounded-lg">
-                <p class="text-[8px] font-bold text-slate-400 uppercase mb-1">Terpakai</p>
+                <p class="text-[8px] font-bold text-slate-400 uppercase mb-1">Digunakan</p>
                 <p class="text-base font-black text-slate-900 leading-none">{{ number_format($muslimStats['used']) }}</p>
             </div>
             <div class="bg-teal-50 p-2.5 rounded-lg border border-teal-100">
@@ -81,7 +81,7 @@
                 <p class="text-base font-black text-slate-900 leading-none">{{ number_format($nonMuslimStats['booked']) }}</p>
             </div>
             <div class="bg-slate-50 p-2.5 rounded-lg">
-                <p class="text-[8px] font-bold text-slate-400 uppercase mb-1">Terpakai</p>
+                <p class="text-[8px] font-bold text-slate-400 uppercase mb-1">Digunakan</p>
                 <p class="text-base font-black text-slate-900 leading-none">{{ number_format($nonMuslimStats['used']) }}</p>
             </div>
             <div class="bg-indigo-50 p-2.5 rounded-lg border border-indigo-100">

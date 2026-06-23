@@ -1,4 +1,4 @@
-﻿@extends('layouts.master')
+@extends('layouts.master')
 
 @section('title', 'Beranda - Mount Carmel Cluster')
 
@@ -108,18 +108,18 @@ $reservedLahans = $reservedLahans ?? [];
                 </p>
             </div>
             <div class="flex gap-3 md:gap-6">
-                <img data-aos="fade-up" data-aos-delay="100" alt="Jalur penuh ketenangan" class="w-1/2 h-44 md:h-64 object-cover rounded-2xl shadow-md" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCSeV8r5vTKVZson8x8U7XKosDU4OBIVwZCPNZOGiv7g8lL5mQYOegvqR47c2dPLgGFWhnrnslq9ErpprziLGhdeyqqystblfmKjcXSYUs3Ex5arOXBjjL80xf80mRmXZS6gCg9ShL7wBZ09_YS6GYhWfYN8ngIMMJKxo-PMrFVAhpyGaPNnDwhj0B12HdNVsq6MbUvK0TVpR3IYfH2whIB76pNLxyD6Zc2Asd_nuvAYJufsHTjqWMGi_EKBGJGKb7I688tdFK_1Qw" />
-                <img data-aos="fade-up" data-aos-delay="200" alt="Alam tenang" class="w-1/2 h-44 md:h-64 object-cover rounded-2xl shadow-md" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC84fEtfZb8hWa8DG2uJJfLUZGCaLm5oOnQI0MHj2S6K5kwbfoCHJseJ0nNLKVR_yh8U1W9MSn7c9b1uZeAWC3mjLXJHYtd4R7_oQcvB0nZeBHp2-33dtHJPAdie6SAHmyx2wWFg6PDA7K7Cio3YuEF2GfixpWADifW8iIZGvnYnuDU0DHY_nNJVwJZPUEJjX_OAFnbE7VCZuUlC-ufcD-_1rp5Olu60H67Ih9XH2AZSPPvqiVWhtGOGGCjSDWO_tBe89VFeTumpjk" />
+                <img data-aos="fade-up" data-aos-delay="100" alt="Jalur penuh ketenangan" class="w-1/2 h-44 md:h-64 object-cover rounded-2xl shadow-md" src="storage/assets/cluster-hero.jpg" />
+                <img data-aos="fade-up" data-aos-delay="200" alt="Alam tenang" class="w-1/2 h-44 md:h-64 object-cover rounded-2xl shadow-md" src="storage/assets/tipe/non-muslim.png" />
             </div>
         </div>
         <div class="md:w-1/2 flex flex-col items-start md:items-end gap-6 md:gap-0">
-            <a data-aos="fade-left" class="btn-ripple btn-press px-6 md:px-8 py-3 md:py-4 bg-[#800000] text-white font-semibold rounded-full hover:bg-[#800000]/90 transition-colors md:mb-16 shadow-md inline-block" href="#">
+            <button type="button" data-aos="fade-left" onclick="openTipeModal()" class="btn-ripple btn-press px-6 md:px-8 py-3 md:py-4 bg-[#800000] text-white font-semibold rounded-full hover:bg-[#800000]/90 transition-colors md:mb-16 shadow-md inline-block">
                 Pelajari Lebih Lanjut
-            </a>
+            </button>
             <p data-aos="fade-left" data-aos-delay="100" class="text-gray-600 leading-relaxed max-w-md md:text-right md:mb-12">
                 Lanskap dibentuk dengan metode berdampak rendah yang memeluk kontur alami tanah.
             </p>
-            <img data-aos="zoom-in-up" data-aos-delay="200" alt="Taman damai" class="w-full h-56 md:h-80 object-cover rounded-2xl shadow-lg" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA2MjBzlOb1Xtp-slKDXU-ymQdqBY3DBvmaPs-yG7PM8xWCw3Cs_jfc_lXkDC8sM5fk5Z4KR03A9B3UsbY5gqp5KpPKJukm9TjaZfFpAilL9XT-qVOY9uC9FFyyRLWPmEguiKFajZUbGA3kwYyih3DAgCkgKpW3Hqjl0nHQrzo80r878DfsvpYBLB5Yw4qAnJ30FpDYd-78LnX8zVPRO5B3PFWosU_d6g5-WrjDnlNmIDoTPdVYecEUFhZmQYXXCCZapMRsxt8baCo" />
+            <img data-aos="zoom-in-up" data-aos-delay="200" alt="Taman damai" class="w-full h-56 md:h-80 object-cover rounded-2xl shadow-lg" src="storage/assets/tipe/barokah.png" />
         </div>
     </div>
     <hr class="mt-16 md:mt-32 border-gray-200 max-w-7xl mx-auto" />
@@ -152,7 +152,7 @@ $reservedLahans = $reservedLahans ?? [];
                 </div>
                 <div class="flex items-center gap-2">
                     <div class="w-4 h-4 rounded bg-[#FCD34D] shadow-sm border border-amber-600/10"></div>
-                    <span class="text-xs font-semibold text-slate-500">Dipesan</span>
+                    <span class="text-xs font-semibold text-slate-500">Reservasi</span>
                 </div>
                 <div class="flex items-center gap-2">
                     <div class="w-4 h-4 rounded bg-[#CBD5E1] shadow-sm border border-slate-600/10"></div>
@@ -194,7 +194,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function addPlot(l, y, x, sizeW, sizeH) {
-        const color = l.status === 'Tersedia' ? '#6EE7B7' : (l.status === 'Dipesan' ? '#FCD34D' : '#CBD5E1');
+        const color = l.status === 'Tersedia' ? '#6EE7B7' : (l.status.includes('Reservasi') ? '#FCD34D' : '#CBD5E1');
         const rect = L.rectangle([[y, x], [y + sizeH, x + sizeW]], {
             color: 'white',
             weight: 0.5,
@@ -462,5 +462,174 @@ document.addEventListener('DOMContentLoaded', function() {
 
 {{-- External Home Scripts --}}
 <script src="{{ asset('js/home.js') }}"></script>
+
+{{-- Modal Pop-up Tipe Lahan --}}
+<div id="tipeLahanModal" class="fixed inset-0 z-[9999] hidden flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm" onclick="if(event.target === this) closeTipeModal()">
+    <div class="bg-white dark:bg-slate-950 w-full max-w-4xl rounded-[2rem] shadow-2xl overflow-hidden transform transition-all duration-300 flex flex-col max-h-[90vh]">
+        
+        {{-- Header --}}
+        <div class="px-8 py-5 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center bg-slate-50 dark:bg-slate-900">
+            <div>
+                <h3 class="text-xl font-bold text-slate-800 dark:text-white">Daftar Tipe Lahan</h3>
+                <p class="text-xs text-slate-400 dark:text-slate-550 mt-1">Spesifikasi dimensi dan kapasitas unit yang tersedia</p>
+            </div>
+            <button type="button" onclick="closeTipeModal()" class="text-slate-400 hover:text-red-500 transition-colors flex items-center justify-center">
+                <span class="material-icons text-2xl">close</span>
+            </button>
+        </div>
+
+        {{-- Content --}}
+        <div class="p-8 overflow-y-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+            
+            {{-- Muslim Section --}}
+            <div class="space-y-6">
+                <div class="flex items-center gap-2 pb-2 border-b border-emerald-100 dark:border-emerald-950">
+                    <h4 class="text-lg font-bold text-slate-800 dark:text-white">Kawasan Muslim</h4>
+                </div>
+                
+                <div class="space-y-4">
+                    {{-- Barokah --}}
+                    <div class="flex gap-4 p-4 bg-emerald-50/50 dark:bg-emerald-950/20 border border-emerald-100/50 dark:border-emerald-950/50 rounded-2xl">
+                        <img src="{{ asset('storage/assets/tipe/barokah.png') }}" class="w-24 h-20 object-cover rounded-xl shrink-0" alt="Tipe Barokah" />
+                        <div class="flex-grow">
+                            <div class="flex justify-between items-start mb-1">
+                                <span class="font-bold text-sm text-slate-800 dark:text-slate-200">Tipe Barokah</span>
+                                <span class="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-900 text-emerald-800 dark:text-emerald-200 text-[10px] font-bold rounded-md">1 Slot</span>
+                            </div>
+                            <p class="text-xs text-slate-500 dark:text-slate-400 mb-1">Ukuran: 1.5 x 2.5 m</p>
+                            <p class="text-xs text-slate-650 dark:text-slate-400">Lahan pemakaman tunggal (single).</p>
+                        </div>
+                    </div>
+
+                    {{-- Fitrah --}}
+                    <div class="flex gap-4 p-4 bg-emerald-50/50 dark:bg-emerald-950/20 border border-emerald-100/50 dark:border-emerald-950/50 rounded-2xl">
+                        <img src="{{ asset('storage/assets/tipe/Fitrah.png') }}" class="w-24 h-20 object-cover rounded-xl shrink-0" alt="Tipe Fitrah" />
+                        <div class="flex-grow">
+                            <div class="flex justify-between items-start mb-1">
+                                <span class="font-bold text-sm text-slate-800 dark:text-slate-200">Tipe Fitrah</span>
+                                <span class="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-900 text-emerald-800 dark:text-emerald-200 text-[10px] font-bold rounded-md">2 Slot</span>
+                            </div>
+                            <p class="text-xs text-slate-500 dark:text-slate-400 mb-1">Ukuran: 4 x 3 m</p>
+                            <p class="text-xs text-slate-650 dark:text-slate-400">Lahan pemakaman ganda (double) berdampingan.</p>
+                        </div>
+                    </div>
+
+                    {{-- Shakinah --}}
+                    <div class="flex gap-4 p-4 bg-emerald-50/50 dark:bg-emerald-950/20 border border-emerald-100/50 dark:border-emerald-950/50 rounded-2xl">
+                        <img src="{{ asset('storage/assets/tipe/shakinah.png') }}" class="w-24 h-20 object-cover rounded-xl shrink-0" alt="Tipe Shakinah" />
+                        <div class="flex-grow">
+                            <div class="flex justify-between items-start mb-1">
+                                <span class="font-bold text-sm text-slate-800 dark:text-slate-200">Tipe Shakinah</span>
+                                <span class="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-900 text-emerald-800 dark:text-emerald-200 text-[10px] font-bold rounded-md">6 Slot</span>
+                            </div>
+                            <p class="text-xs text-slate-500 dark:text-slate-400 mb-1">Ukuran: 7 x 8 m</p>
+                            <p class="text-xs text-slate-650 dark:text-slate-400">Lahan pemakaman keluarga dengan pembatas khusus.</p>
+                        </div>
+                    </div>
+
+                    {{-- Khalifah --}}
+                    <div class="flex gap-4 p-4 bg-emerald-50/50 dark:bg-emerald-950/20 border border-emerald-100/50 dark:border-emerald-950/50 rounded-2xl">
+                        <img src="{{ asset('storage/assets/tipe/khalifah.png') }}" class="w-24 h-20 object-cover rounded-xl shrink-0" alt="Tipe Khalifah" />
+                        <div class="flex-grow">
+                            <div class="flex justify-between items-start mb-1">
+                                <span class="font-bold text-sm text-slate-800 dark:text-slate-200">Tipe Khalifah</span>
+                                <span class="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-900 text-emerald-800 dark:text-emerald-200 text-[10px] font-bold rounded-md">12 Slot</span>
+                            </div>
+                            <p class="text-xs text-slate-500 dark:text-slate-400 mb-1">Ukuran: 7 x 15 m</p>
+                            <p class="text-xs text-slate-650 dark:text-slate-400">Lahan pemakaman keluarga besar semi-private.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Non-Muslim Section --}}
+            <div class="space-y-6">
+                <div class="flex items-center gap-2 pb-2 border-b border-blue-100 dark:border-blue-950">
+                    <h4 class="text-lg font-bold text-slate-800 dark:text-white">Kawasan Non-Muslim / Umum</h4>
+                </div>
+
+                <div class="space-y-4">
+                    {{-- Single --}}
+                    <div class="flex gap-4 p-4 bg-blue-50/50 dark:bg-blue-950/20 border border-blue-100/50 dark:border-blue-950/50 rounded-2xl">
+                        <img src="{{ asset('storage/assets/tipe/single.jpeg') }}" class="w-24 h-20 object-cover rounded-xl shrink-0" alt="Tipe Single" />
+                        <div class="flex-grow">
+                            <div class="flex justify-between items-start mb-1">
+                                <span class="font-bold text-sm text-slate-800 dark:text-slate-200">Tipe Single</span>
+                                <span class="px-2 py-0.5 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-[10px] font-bold rounded-md">1 Slot</span>
+                            </div>
+                            <p class="text-xs text-slate-500 dark:text-slate-400 mb-1">Ukuran: 1.5 x 4 m</p>
+                            <p class="text-xs text-slate-650 dark:text-slate-400">Lahan pemakaman tunggal (single).</p>
+                        </div>
+                    </div>
+
+                    {{-- Double --}}
+                    <div class="flex gap-4 p-4 bg-blue-50/50 dark:bg-blue-950/20 border border-blue-100/50 dark:border-blue-950/50 rounded-2xl">
+                        <img src="{{ asset('storage/assets/tipe/double(2).png') }}" class="w-24 h-20 object-cover object-top rounded-xl shrink-0" alt="Tipe Double" />
+                        <div class="flex-grow">
+                            <div class="flex justify-between items-start mb-1">
+                                <span class="font-bold text-sm text-slate-800 dark:text-slate-200">Tipe Double & Deluxe</span>
+                                <span class="px-2 py-0.5 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-[10px] font-bold rounded-md">2 Slot</span>
+                            </div>
+                            <p class="text-xs text-slate-500 dark:text-slate-400 mb-1">Ukuran: 3 x 4 m s.d 4 x 4.5 m</p>
+                            <p class="text-xs text-slate-650 dark:text-slate-400">Lahan pemakaman ganda (double) berdampingan.</p>
+                        </div>
+                    </div>
+
+                    {{-- Family --}}
+                    <div class="flex gap-4 p-4 bg-blue-50/50 dark:bg-blue-950/20 border border-blue-100/50 dark:border-blue-950/50 rounded-2xl">
+                        <img src="{{ asset('storage/assets/tipe/super-family.png') }}" class="w-24 h-20 object-cover rounded-xl shrink-0" alt="Tipe Family" />
+                        <div class="flex-grow">
+                            <div class="flex justify-between items-start mb-1">
+                                <span class="font-bold text-sm text-slate-800 dark:text-slate-200">Tipe Family & Super Family</span>
+                                <span class="px-2 py-0.5 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-[10px] font-bold rounded-md">4 - 6 Slot</span>
+                            </div>
+                            <p class="text-xs text-slate-500 dark:text-slate-400 mb-1">Ukuran: 8 x 5 m s.d 8 x 10 m</p>
+                            <p class="text-xs text-slate-650 dark:text-slate-400">Lahan pemakaman keluarga semi-private.</p>
+                        </div>
+                    </div>
+
+                    {{-- Royal & VIP --}}
+                    <div class="flex gap-4 p-4 bg-blue-50/50 dark:bg-blue-950/20 border border-blue-100/50 dark:border-blue-950/50 rounded-2xl">
+                        <img src="{{ asset('storage/assets/tipe/royal-family.png') }}" class="w-24 h-20 object-cover rounded-xl shrink-0" alt="Tipe Royal Family & VIP" />
+                        <div class="flex-grow">
+                            <div class="flex justify-between items-start mb-1">
+                                <span class="font-bold text-sm text-slate-800 dark:text-slate-200">Tipe Royal Family & VIP</span>
+                                <span class="px-2 py-0.5 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-[10px] font-bold rounded-md">10 - 18 Slot</span>
+                            </div>
+                            <p class="text-xs text-slate-500 dark:text-slate-400 mb-1">Ukuran: 16 x 20 m s.d 26 x 36 m</p>
+                            <p class="text-xs text-slate-650 dark:text-slate-400">Lahan pemakaman keluarga besar tipe private.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        {{-- Footer --}}
+        <div class="px-8 py-5 border-t border-slate-100 dark:border-slate-850 bg-slate-50 dark:bg-slate-900/50 flex justify-end gap-3">
+            <button type="button" onclick="closeTipeModal()" class="px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-all">
+                Tutup
+            </button>
+            <a href="/cluster" class="px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-white bg-[#800000] hover:bg-[#800000]/90 rounded-xl transition-all shadow-md">
+                Buka Halaman Cluster
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openTipeModal() {
+        const modal = document.getElementById('tipeLahanModal');
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        document.body.classList.add('overflow-hidden');
+    }
+    function closeTipeModal() {
+        const modal = document.getElementById('tipeLahanModal');
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+        document.body.classList.remove('overflow-hidden');
+    }
+</script>
 
 @endsection

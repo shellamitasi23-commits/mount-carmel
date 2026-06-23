@@ -17,7 +17,7 @@
 </div>
 @endif
 
-<div class="flex justify-between items-start mb-6">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
     <div>
         <h1 class="text-2xl font-bold text-slate-800">Penerbitan Sertifikat</h1>
         <p class="text-sm text-slate-500 mt-1">Upload sertifikat hak guna lahan untuk pembeli yang sudah melunasi pembayaran.</p>

@@ -16,75 +16,82 @@ class LaporanController extends Controller
 {
     public function index(Request $request)
     {
-        $type = $request->get('type', 'reservasi');
+        return redirect()->route('marketing.laporan.reservasi', $request->query());
+    }
 
-        $data = [
-            'type' => $type,
-        ];
-
-        switch ($type) {
-            case 'lahan':
-                $lahanQuery = Lahan::with('cluster')->whereIn('status', ['Terjual', 'Terpakai']);
-                if ($request->filled('search')) {
-                    $search = $request->search;
-                    $lahanQuery->where(function ($q) use ($search) {
-                        $q->where('nomor_lahan', 'like', "%{$search}%")
-                            ->orWhere('tipe_lahan', 'like', "%{$search}%")
-                            ->orWhereHas('cluster', function ($cq) use ($search) {
-                                $cq->where('nama_cluster', 'like', "%{$search}%");
-                            });
-                    });
-                }
-                $data['lahans'] = $lahanQuery->get();
-                break;
-
-            case 'pembeli':
-                $pembeliQuery = User::where('role', 'pembeli')->withCount('reservasis');
-                if ($request->filled('search')) {
-                    $search = $request->search;
-                    $pembeliQuery->where(function ($q) use ($search) {
-                        $q->where('name', 'like', "%{$search}%")
-                            ->orWhere('email', 'like', "%{$search}%");
-                    });
-                }
-                $data['pembelis'] = $pembeliQuery->get();
-                break;
-
-            case 'cluster':
-                $clusterQuery = Cluster::withCount('lahans');
-                if ($request->filled('search')) {
-                    $clusterQuery->where('nama_cluster', 'like', "%{$request->search}%");
-                }
-                $data['clusters'] = $clusterQuery->get();
-                break;
-
-            case 'jenazah':
-                $jenazahQuery = Reservasi::with(['user', 'lahan.cluster'])->whereNotNull('nama_jenazah');
-                if ($request->filled('search')) {
-                    $search = $request->search;
-                    $jenazahQuery->where(function ($q) use ($search) {
-                        $q->where('nama_jenazah', 'like', "%{$search}%")
-                            ->orWhereHas('lahan', function ($lq) use ($search) {
-                                $lq->where('nomor_lahan', 'like', "%{$search}%");
-                            });
-                    });
-                }
-                $data['jenazahs'] = $jenazahQuery->get();
-                break;
-
-            default:
-                $query = Reservasi::with(['user', 'lahan.cluster']);
-                if ($request->filled('start_date') && $request->filled('end_date')) {
-                    $query->whereBetween('created_at', [$request->start_date, $request->end_date]);
-                }
-                if ($request->filled('status')) {
-                    $query->where('status_reservasi', $request->status);
-                }
-                $data['reservasis'] = $query->latest()->get();
-                break;
+    public function reservasi(Request $request)
+    {
+        $query = Reservasi::with(['user', 'lahan.cluster']);
+        if ($request->filled('start_date') && $request->filled('end_date')) {
+            $query->whereBetween('created_at', [$request->start_date, $request->end_date]);
         }
+        if ($request->filled('status')) {
+            $query->where('status_reservasi', $request->status);
+        }
+        $reservasis = $query->latest()->paginate(50);
 
-        return view('marketing.laporan.index', $data);
+        return view('marketing.laporan.reservasi', compact('reservasis'));
+    }
+
+    public function jenazah(Request $request)
+    {
+        $jenazahQuery = \App\Models\DetailJenazah::with(['reservasi.user', 'reservasi.lahan.cluster']);
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $jenazahQuery->where(function ($q) use ($search) {
+                $q->where('nama_jenazah', 'like', "%{$search}%")
+                    ->orWhereHas('reservasi.lahan', function ($lq) use ($search) {
+                        $lq->where('nomor_lahan', 'like', "%{$search}%");
+                    });
+            });
+        }
+        $jenazahs = $jenazahQuery->latest()->paginate(50);
+
+        return view('marketing.laporan.jenazah', compact('jenazahs'));
+    }
+
+    public function lahan(Request $request)
+    {
+        $lahanQuery = Lahan::with('cluster')->whereIn('status', ['Terjual', 'Digunakan']);
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $lahanQuery->where(function ($q) use ($search) {
+                $q->where('nomor_lahan', 'like', "%{$search}%")
+                    ->orWhere('tipe_lahan', 'like', "%{$search}%")
+                    ->orWhereHas('cluster', function ($cq) use ($search) {
+                        $cq->where('nama_cluster', 'like', "%{$search}%");
+                    });
+            });
+        }
+        $lahans = $lahanQuery->latest()->paginate(50);
+
+        return view('marketing.laporan.lahan', compact('lahans'));
+    }
+
+    public function pembeli(Request $request)
+    {
+        $pembeliQuery = User::where('role', 'pembeli')->withCount('reservasis');
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $pembeliQuery->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%");
+            });
+        }
+        $pembelis = $pembeliQuery->latest()->paginate(50);
+
+        return view('marketing.laporan.pembeli', compact('pembelis'));
+    }
+
+    public function cluster(Request $request)
+    {
+        $clusterQuery = Cluster::withCount('lahans');
+        if ($request->filled('search')) {
+            $clusterQuery->where('nama_cluster', 'like', "%{$request->search}%");
+        }
+        $clusters = $clusterQuery->latest()->paginate(50);
+
+        return view('marketing.laporan.cluster', compact('clusters'));
     }
 
     public function exportPdf(Request $request)
@@ -97,7 +104,7 @@ class LaporanController extends Controller
 
         switch ($type) {
             case 'lahan':
-                $lahanQuery = Lahan::with('cluster')->whereIn('status', ['Terjual', 'Terpakai']);
+                $lahanQuery = Lahan::with('cluster')->whereIn('status', ['Terjual', 'Digunakan']);
                 if ($request->filled('search')) {
                     $search = $request->search;
                     $lahanQuery->where(function ($q) use ($search) {
@@ -132,12 +139,12 @@ class LaporanController extends Controller
                 break;
 
             case 'jenazah':
-                $jenazahQuery = Reservasi::with(['user', 'lahan.cluster'])->whereNotNull('nama_jenazah');
+                $jenazahQuery = \App\Models\DetailJenazah::with(['reservasi.user', 'reservasi.lahan.cluster']);
                 if ($request->filled('search')) {
                     $search = $request->search;
                     $jenazahQuery->where(function ($q) use ($search) {
                         $q->where('nama_jenazah', 'like', "%{$search}%")
-                            ->orWhereHas('lahan', function ($lq) use ($search) {
+                            ->orWhereHas('reservasi.lahan', function ($lq) use ($search) {
                                 $lq->where('nomor_lahan', 'like', "%{$search}%");
                             });
                     });

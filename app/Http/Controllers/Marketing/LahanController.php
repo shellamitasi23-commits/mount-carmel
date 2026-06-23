@@ -81,7 +81,7 @@ class LahanController extends Controller
             'ukuran' => 'required|string',
             'kapasitas' => 'required|integer|min:1',
             'harga' => 'required|numeric|min:0',
-            'status' => 'required|in:Tersedia,Dipesan,Terjual,Terpakai',
+            'status' => 'required|in:Tersedia,Reservasi (Lunas),Reservasi Cicilan dengan DP,Terjual,Digunakan',
         ]);
 
         Lahan::create($validated);
@@ -100,7 +100,7 @@ class LahanController extends Controller
             'ukuran' => 'required|string',
             'kapasitas' => 'required|integer|min:1',
             'harga' => 'required|numeric|min:0',
-            'status' => 'required|in:Tersedia,Dipesan,Terjual,Terpakai',
+            'status' => 'required|in:Tersedia,Reservasi (Lunas),Reservasi Cicilan dengan DP,Terjual,Digunakan',
         ]);
 
         $lahan = Lahan::findOrFail($id);

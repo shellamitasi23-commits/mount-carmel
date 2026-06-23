@@ -23,10 +23,9 @@
     @php
         $isMuslim    = $cluster->kategori === 'Muslim';
         $totalKav    = $cluster->lahans_count;
-        $tersedia    = $cluster->lahans()->where('status','Tersedia')->count();
-        $dipesan     = $cluster->lahans()->where('status','Dipesan')->count();
+        $tersedia    = $cluster->lahans()->where('status','Tersedia')->count();        $dipesan     = $cluster->lahans()->whereIn('status', ['Reservasi (Lunas)', 'Reservasi Cicilan dengan DP'])->count();
         $terjual     = $cluster->lahans()->where('status','Terjual')->count();
-        $terpakai    = $cluster->lahans()->where('status','Terpakai')->count();
+        $terpakai    = $cluster->lahans()->where('status','Digunakan')->count();
         $tipeList    = $cluster->lahans()->pluck('tipe_lahan')->unique()->sort()->values();
     @endphp
     <div class="bg-white border border-slate-100 rounded-xl shadow-sm hover:shadow-xl hover:shadow-slate-200/50 transition-all duration-500 overflow-hidden group">
@@ -46,28 +45,28 @@
                 
     
             </div>
-
+ 
             <p class="text-[11px] font-medium text-slate-400 leading-relaxed mb-4 uppercase tracking-wide">
                 {{ $cluster->deskripsi ?? 'No sector description available.' }}
             </p>
-
+ 
             {{-- Stat Matrix --}}
             <div class="grid grid-cols-4 gap-2 mb-6">
                 <div class="bg-slate-50/50 p-2.5 rounded-xl text-center" title="Ready / Tersedia">
                     <p class="text-lg font-black text-slate-900 tracking-tighter">{{ $tersedia }}</p>
                     <p class="text-[8px] font-black text-slate-300 uppercase tracking-widest mt-0.5">Tersedia</p>
                 </div>
-                <div class="bg-indigo-50/30 p-2.5 rounded-xl text-center" title="Booked / Dipesan">
+                <div class="bg-indigo-50/30 p-2.5 rounded-xl text-center" title="Booked / Reservasi">
                     <p class="text-lg font-black text-indigo-600 tracking-tighter">{{ $dipesan }}</p>
-                    <p class="text-[8px] font-black text-indigo-300 uppercase tracking-widest mt-0.5">Dipesan</p>
+                    <p class="text-[8px] font-black text-indigo-300 uppercase tracking-widest mt-0.5">Reservasi</p>
                 </div>
                 <div class="bg-amber-50 p-2.5 rounded-xl text-center" title="Sold / Terjual (Pre-need)">
                     <p class="text-lg font-black text-amber-600 tracking-tighter">{{ $terjual }}</p>
                     <p class="text-[8px] font-black text-amber-400 uppercase tracking-widest mt-0.5">Terjual</p>
                 </div>
-                <div class="bg-[#800000] p-2.5 rounded-xl text-center" title="Used / Terpakai (Occupied)">
+                <div class="bg-[#800000] p-2.5 rounded-xl text-center" title="Used / Digunakan">
                     <p class="text-lg font-black text-white tracking-tighter">{{ $terpakai }}</p>
-                    <p class="text-[8px] font-black text-white/70 uppercase tracking-widest mt-0.5">Terpakai</p>
+                    <p class="text-[8px] font-black text-white/70 uppercase tracking-widest mt-0.5">Digunakan</p>
                 </div>
             </div>
 

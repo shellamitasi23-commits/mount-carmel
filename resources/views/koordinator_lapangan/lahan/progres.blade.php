@@ -1,5 +1,5 @@
 <div id="progresModal{{ $lahan->id }}" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center z-50 p-6">
-    <div class="bg-white rounded-xl w-full max-w-lg shadow-2xl overflow-hidden">
+    <div class="bg-white rounded-xl w-full max-w-lg shadow-2xl overflow-y-auto max-h-[90vh]">
         <div class="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
             <div>
                 <h3 class="text-lg font-black text-slate-800 tracking-tight">Update Progres Bangunan</h3>

@@ -16,7 +16,7 @@
     </div>
     {{-- Cluster Grid --}}
     <div class="px-8 xl:px-24 py-12" x-data="{ filter: 'semua' }">
-        <div class="max-w-7xl mx-auto">
+        <div class="max-w-7xl mx-auto"> 
 
             @if($clusters->isEmpty())
             <div class="text-center py-32">
@@ -24,7 +24,7 @@
                 <p class="text-sm text-gray-400 tracking-wide uppercase">Silakan hubungi administrator untuk informasi lebih lanjut.</p>
             </div>
             @else
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10 justify-center">
+            <div class="flex flex-col gap-8 max-w-4xl mx-auto">
 
                 @foreach($clusters as $i => $cluster)
                 @php
@@ -33,15 +33,13 @@
                     $isMuslim       = $cluster->kategori === 'Muslim';
                     $tipeLahan      = $lahans->pluck('tipe_lahan')->unique()->values();
                     
-                    // Hanya ambil harga terendah dari unit yang tersedia dan harga > 0
                     $hargaMin       = $lahans->where('status', 'Tersedia')->where('harga', '>', 0)->min('harga');
                     
-                    // Format harga untuk tampilan (misal: 25jt)
                     $hargaDisplay   = $hargaMin ? number_format($hargaMin / 1000000, 0, ',', '.') . 'jt' : '—';
 
                     $img = $isMuslim
-                        ? 'https://lh3.googleusercontent.com/aida-public/AB6AXuA6rqI9PeXcrrGEttejmy2Cel3avh8VDbuuLZ9znSeQ0Gw8_f3nDIPA5daXuk1lNSAm-tWxpJ6GMjkfk9Tp4ugchXR-TAxa51kf5RD--deEWZYCqfHqwdgP2haxZx3xe7cTs56uTS0TFSEdFgax5uGIbYCrGwAW6cxENUzjoD6JXr0AiwuyMq0RGnXuNAwZgLJIJ_7ohB4P4zHoRvO2BfqUnDNpU9LpoqSZub_tqXvtwDa3MXakwPvYeN3NT97N3pe77_3ygdwuIsc'
-                        : 'https://lh3.googleusercontent.com/aida-public/AB6AXuCSeV8r5vTKVZson8x8U7XKosDU4OBIVwZCPNZOGiv7g8lL5mQYOegvqR47c2dPLgGFWhnrnslq9ErpprziLGhdeyqqystblfmKjcXSYUs3Ex5arOXBjjL80xf80mRmXZS6gCg9ShL7wBZ09_YS6GYhWfYN8ngIMMJKxo-PMrFVAhpyGaPNnDwhj0B12HdNVsq6MbUvK0TVpR3IYfH2whIB76pNLxyD6Zc2Asd_nuvAYJufsHTjqWMGi_EKBGJGKb7I688tdFK_1Qw';
+                        ? asset('storage/assets/tipe/barokah.png')
+                        : asset('storage/assets/tipe/non-muslim.png');
                 @endphp
 
                 <div data-aos="fade-up" data-aos-delay="{{ ($i % 3) * 100 }}"
@@ -49,10 +47,10 @@
                      x-transition:enter="transition ease-out duration-500"
                      x-transition:enter-start="opacity-0 translate-y-8"
                      x-transition:enter-end="opacity-100 translate-y-0"
-                     class="group flex flex-col w-full max-w-md mx-auto bg-white dark:bg-gray-900/50 border border-gray-100 dark:border-gray-800 rounded-3xl p-5 shadow-[0_10px_30px_rgba(0,0,0,0.02)] hover:shadow-[0_20px_40px_rgba(128,0,0,0.06)] dark:hover:shadow-[0_20px_40px_rgba(0,0,0,0.25)] transition-all duration-500 hover:-translate-y-2">
+                     class="group flex flex-col md:flex-row w-full bg-white dark:bg-gray-900/50 border border-gray-100 dark:border-gray-800 rounded-[2rem] p-5 gap-6 md:gap-8 shadow-[0_10px_30px_rgba(0,0,0,0.02)] hover:shadow-[0_20px_40px_rgba(128,0,0,0.06)] dark:hover:shadow-[0_20px_40px_rgba(0,0,0,0.25)] transition-all duration-500 hover:-translate-y-1">
 
                     {{-- Image Container --}}
-                    <div class="relative aspect-[4/3] overflow-hidden bg-gray-100 dark:bg-gray-800 rounded-2xl mb-6">
+                    <div class="relative w-full md:w-[40%] shrink-0 aspect-[4/3] md:aspect-auto md:h-64 overflow-hidden bg-gray-100 dark:bg-gray-800 rounded-2xl">
                         <img src="{{ $img }}" alt="{{ $cluster->nama_cluster }}"
                              class="w-full h-full object-cover transition-transform duration-[1.5s] ease-out group-hover:scale-105" />
                         
@@ -76,41 +74,46 @@
                     </div>
 
                     {{-- Content --}}
-                    <div class="flex flex-col flex-grow px-2">
-                        <div class="flex justify-between items-start mb-4 gap-4">
-                            <h3 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white group-hover:text-[#800000] dark:group-hover:text-red-400 transition-colors duration-300">
-                                {{ $cluster->nama_cluster }}
-                            </h3>
-                            @if($hargaMin)
-                            <div class="text-right shrink-0">
-                                <span class="block text-[9px] font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500">Mulai</span>
-                                <span class="text-[#800000] dark:text-red-400 font-extrabold text-base">
-                                    Rp {{ number_format($hargaMin/1000000, 0, ',', '.') }}<span class="text-xs font-semibold">jt</span>
+                    <div class="flex flex-col flex-grow justify-between py-1 px-1">
+                        <div>
+                            <div class="flex flex-col sm:flex-row justify-between items-start mb-4 gap-4">
+                                <div>
+                                    <h3 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white group-hover:text-[#800000] dark:group-hover:text-red-400 transition-colors duration-300">
+                                        {{ $cluster->nama_cluster }}
+                                    </h3>
+                                    <span class="text-xs text-gray-400 dark:text-gray-500 mt-1 block">Mount Carmel Memorial Park</span>
+                                </div>
+                                @if($hargaMin)
+                                <div class="text-left sm:text-right shrink-0">
+                                    <span class="block text-[9px] font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500">Mulai</span>
+                                    <span class="text-[#800000] dark:text-red-400 font-extrabold text-2xl tracking-tight">
+                                        Rp {{ number_format($hargaMin/1000000, 0, ',', '.') }}<span class="text-xs font-semibold">jt</span>
+                                    </span>
+                                </div>
+                                @endif
+                            </div>
+
+                            <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed font-light mb-6 line-clamp-3">
+                                {{ $cluster->deskripsi ?? 'Kawasan pemakaman eksklusif dengan lingkungan asri dan fasilitas lengkap untuk kedamaian keluarga.' }}
+                            </p>
+
+                            {{-- Tipe Lahan Tags --}}
+                            @if($tipeLahan->isNotEmpty())
+                            <div class="flex flex-wrap gap-2 mb-6">
+                                @foreach($tipeLahan->take(5) as $tipe)
+                                <span class="px-3 py-1.5 text-[9px] font-bold uppercase tracking-wider bg-gray-50 dark:bg-gray-800 text-gray-500 dark:text-gray-400 border border-gray-100 dark:border-gray-800 rounded-xl transition-colors hover:bg-gray-100 dark:hover:bg-gray-700/80">
+                                    {{ $tipe }}
                                 </span>
+                                @endforeach
+                                @if($tipeLahan->count() > 5)
+                                <span class="px-3 py-1.5 text-[9px] font-bold text-gray-400 dark:text-gray-500 bg-gray-50/50 dark:bg-gray-800/50 rounded-xl border border-gray-100/50 dark:border-gray-800/50 italic">+{{ $tipeLahan->count() - 5 }} Tipe Lain</span>
+                                @endif
                             </div>
                             @endif
                         </div>
 
-                        <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed font-light mb-6 line-clamp-2">
-                            {{ $cluster->deskripsi ?? 'Kawasan pemakaman eksklusif dengan lingkungan asri dan fasilitas lengkap untuk kedamaian keluarga.' }}
-                        </p>
-
-                        {{-- Tipe Lahan Tags --}}
-                        @if($tipeLahan->isNotEmpty())
-                        <div class="flex flex-wrap gap-2 mb-6">
-                            @foreach($tipeLahan->take(3) as $tipe)
-                            <span class="px-2.5 py-1 text-[9px] font-bold uppercase tracking-wider bg-gray-50 dark:bg-gray-800 text-gray-500 dark:text-gray-400 border border-gray-100 dark:border-gray-800 rounded-lg">
-                                {{ $tipe }}
-                            </span>
-                            @endforeach
-                            @if($tipeLahan->count() > 3)
-                            <span class="px-2.5 py-1 text-[9px] font-bold text-gray-400 dark:text-gray-500 bg-gray-50/50 dark:bg-gray-800/50 rounded-lg border border-gray-100/50 dark:border-gray-800/50 italic">+{{ $tipeLahan->count() - 3 }}</span>
-                            @endif
-                        </div>
-                        @endif
-
                         {{-- CTA --}}
-                        <div class="mt-auto pt-5 border-t border-gray-50 dark:border-gray-900 flex justify-between items-center">
+                        <div class="pt-5 border-t border-gray-100 dark:border-gray-900 flex justify-between items-center">
                             @auth
                             <a href="{{ route('pembeli.lahan.index', ['cluster_id' => $cluster->id]) }}"
                                class="group/btn inline-flex items-center gap-1.5 text-xs font-black uppercase tracking-[0.2em] text-[#800000] dark:text-red-400 transition-all duration-300">

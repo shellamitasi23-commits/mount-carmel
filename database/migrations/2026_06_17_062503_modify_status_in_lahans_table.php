@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('lahans', function (Blueprint $table) {
-            $table->enum('status', ['Tersedia', 'Dipesan', 'Terjual', 'Terpakai'])->default('Tersedia')->change();
+            $table->enum('status', ['Tersedia', 'Reservasi (Lunas)', 'Reservasi Cicilan dengan DP', 'Terjual', 'Digunakan'])->default('Tersedia')->change();
         });
     }
 
@@ -22,7 +22,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('lahans', function (Blueprint $table) {
-            $table->enum('status', ['Tersedia', 'Dipesan', 'Terjual'])->default('Tersedia')->change();
+            $table->enum('status', ['Tersedia', 'Reservasi (Lunas)', 'Reservasi Cicilan dengan DP', 'Terjual', 'Digunakan'])->default('Tersedia')->change();
         });
     }
 };

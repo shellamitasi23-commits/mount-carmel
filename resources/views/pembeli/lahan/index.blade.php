@@ -36,7 +36,7 @@ Lahan — {{ $cluster->nama_cluster }}
         </div>
 
         {{-- Navigation Switcher --}}
-        <div class="flex flex-wrap gap-2.5 mb-12">
+        <div class="flex flex-wrap justify-center gap-2.5 mb-12">
             @foreach($clusters as $cl)
                 <a href="{{ route('pembeli.lahan.index', ['cluster_id' => $cl->id]) }}"
                    class="px-5 py-2.5 rounded-xl text-xs font-semibold transition-all duration-300
@@ -65,12 +65,46 @@ Lahan — {{ $cluster->nama_cluster }}
                 {{-- Premium Image --}}
                 <div class="relative aspect-[4/3] overflow-hidden bg-slate-50 dark:bg-gray-800 rounded-2xl mb-6 shadow-sm">
                     @php
-                        $placeholderImg = $cluster->kategori === 'Muslim' 
-                            ? 'https://images.unsplash.com/photo-1590076215667-873d32788e0b?q=80&w=1000&auto=format&fit=crop'
-                            : 'https://images.unsplash.com/photo-1542662565-7e4b66bae529?q=80&w=1000&auto=format&fit=crop';
+                        $tipeLower = strtolower($tipe['tipe_lahan']);
+                        $imgPosition = 'object-center';
+                        
+                        if (str_contains($tipeLower, 'barokah')) {
+                            $placeholderImg = asset('storage/assets/tipe/barokah.png');
+                        } elseif (str_contains($tipeLower, 'fitrah')) {
+                            $placeholderImg = asset('storage/assets/tipe/Fitrah.png');
+                        } elseif (str_contains($tipeLower, 'shakinah')) {
+                            $placeholderImg = asset('storage/assets/tipe/shakinah.png');
+                        } elseif (str_contains($tipeLower, 'khalifah')) {
+                            $placeholderImg = asset('storage/assets/tipe/khalifah.png');
+                        } elseif (str_contains($tipeLower, 'single')) {
+                            $placeholderImg = asset('storage/assets/tipe/single.jpeg');
+                        } elseif (str_contains($tipeLower, 'double deluxe') || str_contains($tipeLower, 'd. deluxe')) {
+                            $placeholderImg = asset('storage/assets/tipe/double-deluxe.jpeg');
+                        } elseif (str_contains($tipeLower, 'double special') || str_contains($tipeLower, 'd. special') || str_contains($tipeLower, 'db-special')) {
+                            $placeholderImg = asset('storage/assets/tipe/db-special.jpeg');
+                        } elseif (str_contains($tipeLower, 'deluxe')) {
+                            $placeholderImg = asset('storage/assets/tipe/deluxe.png');
+                        } elseif (str_contains($tipeLower, 'double')) {
+                            $placeholderImg = asset('storage/assets/tipe/double(2).png');
+                            $imgPosition = 'object-top';
+                        } elseif (str_contains($tipeLower, 'super family') || str_contains($tipeLower, 'super-family') || str_contains($tipeLower, 's. family')) {
+                            $placeholderImg = asset('storage/assets/tipe/super-family.png');
+                        } elseif (str_contains($tipeLower, 'royal family') || str_contains($tipeLower, 'royal-family') || str_contains($tipeLower, 'royal')) {
+                            $placeholderImg = asset('storage/assets/tipe/royal-family.png');
+                        } elseif (str_contains($tipeLower, 'vip ')) {
+                            $placeholderImg = asset('storage/assets/tipe/vip.png');
+                        } elseif (str_contains($tipeLower, 'vip special')) {
+                            $placeholderImg = asset('storage/assets/tipe/vip.png');
+                        } elseif (str_contains($tipeLower, 'family')) {
+                            $placeholderImg = asset('storage/assets/tipe/family.png');
+                        } else {
+                            $placeholderImg = $cluster->kategori === 'Muslim' 
+                                ? asset('storage/assets/tipe/barokah.png')
+                                : asset('storage/assets/tipe/non-muslim.png');
+                        }
                     @endphp
                     <img src="{{ $placeholderImg }}" alt="{{ $tipe['tipe_lahan'] }}"
-                         class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" />
+                         class="w-full h-full object-cover {{ $imgPosition }} transition-transform duration-1000 group-hover:scale-105" />
                     <div class="absolute inset-0 bg-slate-900/10 group-hover:bg-transparent transition-colors duration-700"></div>
                     
                     {{-- Badges on top of image --}}
@@ -99,7 +133,7 @@ Lahan — {{ $cluster->nama_cluster }}
                         </div>
 
                         <div class="pt-4">
-                            <span class="text-[9px] font-bold uppercase tracking-widest text-slate-400 dark:text-gray-500 block mb-1">Nilai Investasi</span>
+                            <span class="text-[9px] font-bold uppercase tracking-widest text-slate-400 dark:text-gray-500 block mb-1">Harga Lahan</span>
                             <span class="text-2xl font-black text-[#800000] dark:text-red-400 tracking-tight leading-none">
                                 Rp {{ number_format($tipe['harga_min'],0,',','.') }}
                             </span>

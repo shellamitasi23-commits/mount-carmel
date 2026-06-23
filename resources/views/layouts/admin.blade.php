@@ -65,6 +65,7 @@
         @include('partials.admin_sidebar')
  
         <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
+            @include('partials.admin_topbar')
             
             <main class="flex-1 overflow-x-hidden overflow-y-auto p-4 md:p-6 lg:p-8">
                 @yield('content')
