@@ -280,37 +280,83 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 </style>
 
+<section class="py-16 md:py-24 px-4 md:px-8 xl:px-24 bg-white border-t border-slate-100/60">
+    <div class="max-w-7xl mx-auto">
         <div id="fasilitas">
-            <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 md:mb-14 gap-6">
-                <div>
-                    <span data-aos="fade-up" class="text-emerald-600 font-bold tracking-[0.2em] uppercase text-xs mb-3 block">Keunggulan</span>
-                    <h2 data-aos="fade-up" data-aos-delay="100" class="text-3xl md:text-5xl font-black text-slate-900 mt-2 leading-tight max-w-md font-poppins">Standar Perawatan</h2>
-                </div>
-                <p data-aos="fade-up" data-aos-delay="200" class="text-slate-500 max-w-sm text-sm md:text-base leading-relaxed md:text-right font-inter">
+            <div class="flex flex-col items-center text-center max-w-2xl mx-auto mb-12 md:mb-16 gap-4">
+                <span data-aos="fade-up" class="text-emerald-600 font-bold tracking-[0.2em] uppercase text-xs block">Keunggulan</span>
+                <h2 data-aos="fade-up" data-aos-delay="100" class="text-3xl md:text-5xl font-black text-slate-900 leading-tight font-poppins">
+                    Standar Perawatan
+                </h2>
+                <p data-aos="fade-up" data-aos-delay="200" class="text-slate-500 text-sm md:text-base leading-relaxed font-inter">
                     Setiap jengkal tanah dirawat sepenuh hati. Memberikan kedamaian abadi bagi mereka dan ketenangan bagi keluarga yang ditinggalkan.
                 </p>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 md:gap-6 lg:gap-8">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
                 @php
                 $features = [
-                    ['icon' => 'security',        'title' => 'Keamanan 24 Jam',    'desc' => 'Pemantauan CCTV terintegrasi dan patroli rutin petugas keamanan.'],
-                    ['icon' => 'mosque',          'title' => 'Fasilitas Ibadah',   'desc' => 'Tersedia Mushola internal dan area khusus peziarah yang nyaman.'],
-                    ['icon' => 'nature',          'title' => 'Perawatan Lanskap',  'desc' => 'Tim hortikultura menjaga keasrian rumput dan pohon setiap harinya.'],
-                    ['icon' => 'gavel',           'title' => 'Legalitas Aman',     'desc' => 'Dokumen kepemilikan transparan, legal, dan dapat diwariskan.'],
-                    ['icon' => 'local_parking',   'title' => 'Akses & Parkir',     'desc' => 'Jalan utama lebar dengan area parkir khusus keluarga besar.'],
-                    ['icon' => 'support_agent',   'title' => 'Layanan Konsultan',  'desc' => 'Pendampingan penuh dari proses pemilihan lahan hingga pemakaman.'],
+                    [
+                        'icon' => 'security',
+                        'title' => 'Keamanan 24 Jam',
+                        'desc' => 'Pemantauan CCTV terintegrasi dan patroli rutin petugas keamanan di seluruh kawasan.',
+                        'img' => asset('storage/assets/keamanan.png')
+                    ],
+                    [
+                        'icon' => 'mosque',
+                        'title' => 'Fasilitas Ibadah',
+                        'desc' => 'Tersedia Mushola internal yang tenang dan area khusus peziarah yang teduh.',
+                        'img' => asset('storage/assets/ibadah.png')
+                    ],
+                    [
+                        'icon' => 'nature',
+                        'title' => 'Perawatan Lanskap',
+                        'desc' => 'Tim hortikultura profesional menjaga kerapian rumput dan keasrian pohon setiap hari.',
+                        'img' => asset('storage/assets/lanskap.png')
+                    ],
+                    [
+                        'icon' => 'gavel',
+                        'title' => 'Legalitas Aman',
+                        'desc' => 'Dokumen kepemilikan transparan, legal, terjamin, dan dapat diwariskan secara sah.',
+                        'img' => asset('storage/assets/legalitas.png')
+                    ],
+                    [
+                        'icon' => 'local_parking',
+                        'title' => 'Akses & Parkir',
+                        'desc' => 'Jalan utama beraspal lebar dengan area parkir khusus untuk rombongan keluarga besar.',
+                        'img' => asset('storage/assets/akses.png')
+                    ],
+                    [
+                        'icon' => 'support_agent',
+                        'title' => 'Layanan Konsultan',
+                        'desc' => 'Pendampingan tulus dari konsultan keluarga mulai dari pemilihan lahan hingga prosesi pemakaman.',
+                        'img' => asset('storage/assets/konsultan.png')
+                    ],
                 ];
                 @endphp
 
                 @foreach($features as $i => $f)
                 <div data-aos="fade-up" data-aos-delay="{{ ($i % 3) * 100 }}"
-                     class="group p-6 md:p-8 rounded-2xl md:rounded-3xl border border-slate-100 hover:border-emerald-200 hover:shadow-xl transition-all duration-500 hover:-translate-y-1 bg-white relative overflow-hidden flex flex-col">
-                    <div class="w-14 h-14 rounded-2xl bg-slate-50 flex items-center justify-center mb-6 group-hover:bg-emerald-50 transition-colors duration-300">
-                        <span class="material-icons text-slate-400 group-hover:text-emerald-600 transition-colors text-2xl">{{ $f['icon'] }}</span>
+                     class="group bg-white rounded-3xl border border-slate-100/80 overflow-hidden shadow-sm hover:shadow-2xl hover:border-slate-200/80 transition-all duration-500 flex flex-col hover:-translate-y-1">
+                    
+                    {{-- Photo with scale zoom effect --}}
+                    <div class="relative w-full h-48 overflow-hidden shrink-0">
+                        <img src="{{ $f['img'] }}" alt="{{ $f['title'] }}" class="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-105">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent"></div>
+                        
+                        {{-- Floating Icon with color transition --}}
+                        <div class="absolute bottom-4 left-4 w-12 h-12 bg-white/90 backdrop-blur-sm rounded-2xl flex items-center justify-center shadow-md group-hover:bg-[#800000] group-hover:text-white transition-all duration-300">
+                            <span class="material-icons text-slate-700 group-hover:text-white transition-colors text-xl">{{ $f['icon'] }}</span>
+                        </div>
                     </div>
-                    <h3 class="font-poppins font-black text-slate-900 text-lg mb-2">{{ $f['title'] }}</h3>
-                    <p class="text-sm text-slate-500 leading-relaxed font-inter">{{ $f['desc'] }}</p>
+
+                    {{-- Content --}}
+                    <div class="p-6 md:p-8 flex-grow flex flex-col justify-between">
+                        <div class="space-y-3">
+                            <h3 class="font-poppins font-bold text-slate-800 text-base md:text-lg group-hover:text-[#800000] transition-colors duration-300">{{ $f['title'] }}</h3>
+                            <p class="text-xs md:text-sm text-slate-500 leading-relaxed font-inter">{{ $f['desc'] }}</p>
+                        </div>
+                    </div>
                 </div>
                 @endforeach
             </div>
@@ -432,9 +478,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 @php
                 $steps = [
                     ['no' => '01', 'icon' => 'search',       'title' => 'Pilih Cluster',      'desc' => 'Jelajahi pilihan cluster Muslim atau Non-Muslim dan temukan yang sesuai.'],
-                    ['no' => '02', 'icon' => 'edit_note',    'title' => 'Isi Formulir',       'desc' => 'Lengkapi data reservasi dan upload dokumen yang diperlukan secara online.'],
-                    ['no' => '03', 'icon' => 'payments',     'title' => 'Lakukan Pembayaran', 'desc' => 'Pilih metode pembayaran yang nyaman dan kirim bukti transfer.'],
-                    ['no' => '04', 'icon' => 'verified',     'title' => 'Konfirmasi Resmi',   'desc' => 'Dapatkan sertifikat dan Nomor Lahan resmi atas nama keluarga Anda.'],
+                    ['no' => '02', 'icon' => 'edit_note',    'title' => 'Pilih Tipe Pemakaman',       'desc' => 'Memilih makam yang sesuai dengan kebutuhan anda.'],
+                    ['no' => '03', 'icon' => 'edit_note',    'title' => 'Pilih Nomor Kavling',       'desc' => 'Memilih nomor kavling yang sesuai dengan kebutuhan anda.'],
+                    ['no' => '04', 'icon' => 'edit_note',    'title' => 'Lengkapi Data Reservasi',       'desc' => 'Melengkapi data reservasi dan upload dokumen yang diperlukan secara online.'],
+                    ['no' => '05', 'icon' => 'payments',     'title' => 'Lakukan Pembayaran', 'desc' => 'Pilih metode pembayaran yang nyaman dan kirim bukti transfer.'],
+                    ['no' => '06', 'icon' => 'verified',     'title' => 'Konfirmasi Resmi',   'desc' => 'Dapatkan sertifikat dan Nomor Lahan resmi atas nama keluarga Anda.'],
                 ];
                 @endphp
                 @foreach($steps as $i => $step)
@@ -449,14 +497,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 @endforeach
             </div>
         </div>
-
-        <div data-aos="fade-up" class="text-center mt-10 md:mt-14">
-            <a href="{{ url('/register') }}"
-               class="btn-press btn-ripple inline-flex items-center gap-2 px-6 md:px-8 py-3 md:py-4 bg-[#800000] text-white font-bold rounded-full hover:bg-[#800000]/90 transition-colors shadow-lg">
-                Mulai Sekarang <span class="material-icons text-sm">arrow_forward</span>
-            </a>
-        </div>
-    </div>
 </section>
 
 
@@ -465,10 +505,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
 {{-- Modal Pop-up Tipe Lahan --}}
 <div id="tipeLahanModal" class="fixed inset-0 z-[9999] hidden flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm" onclick="if(event.target === this) closeTipeModal()">
-    <div class="bg-white dark:bg-slate-950 w-full max-w-4xl rounded-[2rem] shadow-2xl overflow-hidden transform transition-all duration-300 flex flex-col max-h-[90vh]">
+    <div class="bg-white dark:bg-slate-950 w-full max-w-5xl rounded-[2rem] shadow-2xl overflow-hidden transform transition-all duration-300 flex flex-col max-h-[85vh] md:max-h-[80vh]">
         
         {{-- Header --}}
-        <div class="px-8 py-5 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center bg-slate-50 dark:bg-slate-900">
+        <div class="px-8 py-5 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center bg-slate-50 dark:bg-slate-900 shrink-0">
             <div>
                 <h3 class="text-xl font-bold text-slate-800 dark:text-white">Daftar Tipe Lahan</h3>
                 <p class="text-xs text-slate-400 dark:text-slate-550 mt-1">Spesifikasi dimensi dan kapasitas unit yang tersedia</p>
@@ -478,126 +518,75 @@ document.addEventListener('DOMContentLoaded', function() {
             </button>
         </div>
 
-        {{-- Content --}}
-        <div class="p-8 overflow-y-auto grid grid-cols-1 md:grid-cols-2 gap-8">
-            
-            {{-- Muslim Section --}}
-            <div class="space-y-6">
-                <div class="flex items-center gap-2 pb-2 border-b border-emerald-100 dark:border-emerald-950">
-                    <h4 class="text-lg font-bold text-slate-800 dark:text-white">Kawasan Muslim</h4>
-                </div>
+        {{-- Content: Split Pane Layout --}}
+        <div class="flex flex-col md:flex-row flex-grow overflow-hidden">
+            <div class="w-full md:w-80 border-r border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 p-6 overflow-y-auto flex flex-col gap-6 shrink-0">
                 
-                <div class="space-y-4">
-                    {{-- Barokah --}}
-                    <div class="flex gap-4 p-4 bg-emerald-50/50 dark:bg-emerald-950/20 border border-emerald-100/50 dark:border-emerald-950/50 rounded-2xl">
-                        <img src="{{ asset('storage/assets/tipe/barokah.png') }}" class="w-24 h-20 object-cover rounded-xl shrink-0" alt="Tipe Barokah" />
-                        <div class="flex-grow">
-                            <div class="flex justify-between items-start mb-1">
-                                <span class="font-bold text-sm text-slate-800 dark:text-slate-200">Tipe Barokah</span>
-                                <span class="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-900 text-emerald-800 dark:text-emerald-200 text-[10px] font-bold rounded-md">1 Slot</span>
-                            </div>
-                            <p class="text-xs text-slate-500 dark:text-slate-400 mb-1">Ukuran: 1.5 x 2.5 m</p>
-                            <p class="text-xs text-slate-650 dark:text-slate-400">Lahan pemakaman tunggal (single).</p>
-                        </div>
-                    </div>
-
-                    {{-- Fitrah --}}
-                    <div class="flex gap-4 p-4 bg-emerald-50/50 dark:bg-emerald-950/20 border border-emerald-100/50 dark:border-emerald-950/50 rounded-2xl">
-                        <img src="{{ asset('storage/assets/tipe/Fitrah.png') }}" class="w-24 h-20 object-cover rounded-xl shrink-0" alt="Tipe Fitrah" />
-                        <div class="flex-grow">
-                            <div class="flex justify-between items-start mb-1">
-                                <span class="font-bold text-sm text-slate-800 dark:text-slate-200">Tipe Fitrah</span>
-                                <span class="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-900 text-emerald-800 dark:text-emerald-200 text-[10px] font-bold rounded-md">2 Slot</span>
-                            </div>
-                            <p class="text-xs text-slate-500 dark:text-slate-400 mb-1">Ukuran: 4 x 3 m</p>
-                            <p class="text-xs text-slate-650 dark:text-slate-400">Lahan pemakaman ganda (double) berdampingan.</p>
-                        </div>
-                    </div>
-
-                    {{-- Shakinah --}}
-                    <div class="flex gap-4 p-4 bg-emerald-50/50 dark:bg-emerald-950/20 border border-emerald-100/50 dark:border-emerald-950/50 rounded-2xl">
-                        <img src="{{ asset('storage/assets/tipe/shakinah.png') }}" class="w-24 h-20 object-cover rounded-xl shrink-0" alt="Tipe Shakinah" />
-                        <div class="flex-grow">
-                            <div class="flex justify-between items-start mb-1">
-                                <span class="font-bold text-sm text-slate-800 dark:text-slate-200">Tipe Shakinah</span>
-                                <span class="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-900 text-emerald-800 dark:text-emerald-200 text-[10px] font-bold rounded-md">6 Slot</span>
-                            </div>
-                            <p class="text-xs text-slate-500 dark:text-slate-400 mb-1">Ukuran: 7 x 8 m</p>
-                            <p class="text-xs text-slate-650 dark:text-slate-400">Lahan pemakaman keluarga dengan pembatas khusus.</p>
-                        </div>
-                    </div>
-
-                    {{-- Khalifah --}}
-                    <div class="flex gap-4 p-4 bg-emerald-50/50 dark:bg-emerald-950/20 border border-emerald-100/50 dark:border-emerald-950/50 rounded-2xl">
-                        <img src="{{ asset('storage/assets/tipe/khalifah.png') }}" class="w-24 h-20 object-cover rounded-xl shrink-0" alt="Tipe Khalifah" />
-                        <div class="flex-grow">
-                            <div class="flex justify-between items-start mb-1">
-                                <span class="font-bold text-sm text-slate-800 dark:text-slate-200">Tipe Khalifah</span>
-                                <span class="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-900 text-emerald-800 dark:text-emerald-200 text-[10px] font-bold rounded-md">12 Slot</span>
-                            </div>
-                            <p class="text-xs text-slate-500 dark:text-slate-400 mb-1">Ukuran: 7 x 15 m</p>
-                            <p class="text-xs text-slate-650 dark:text-slate-400">Lahan pemakaman keluarga besar semi-private.</p>
-                        </div>
+                {{-- Kawasan Muslim --}}
+                <div>
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-slate-455 dark:text-slate-500 mb-3">Kawasan Muslim</h4>
+                    <div class="flex flex-col gap-1.5">
+                        <button type="button" onclick="selectTipe('barokah')" id="btn-barokah" class="tipe-list-btn w-full text-left px-4 py-3 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-200/50 dark:hover:bg-slate-800 transition-all outline-none">
+                            Barokah (1 Slot)
+                        </button>
+                        <button type="button" onclick="selectTipe('fitrah')" id="btn-fitrah" class="tipe-list-btn w-full text-left px-4 py-3 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-200/50 dark:hover:bg-slate-800 transition-all outline-none">
+                            Fitrah (2 Slot)
+                        </button>
+                        <button type="button" onclick="selectTipe('shakinah')" id="btn-shakinah" class="tipe-list-btn w-full text-left px-4 py-3 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-200/50 dark:hover:bg-slate-800 transition-all outline-none">
+                            Shakinah (6 Slot)
+                        </button>
+                        <button type="button" onclick="selectTipe('khalifah')" id="btn-khalifah" class="tipe-list-btn w-full text-left px-4 py-3 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-200/50 dark:hover:bg-slate-800 transition-all outline-none">
+                            Khalifah (12 Slot)
+                        </button>
                     </div>
                 </div>
+
+                {{-- Kawasan Non-Muslim --}}
+                <div>
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-slate-455 dark:text-slate-500 mb-3">Kawasan Non-Muslim</h4>
+                    <div class="flex flex-col gap-1.5">
+                        <button type="button" onclick="selectTipe('single')" id="btn-single" class="tipe-list-btn w-full text-left px-4 py-3 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-200/50 dark:hover:bg-slate-800 transition-all outline-none">
+                            Single (1 Slot)
+                        </button>
+                        <button type="button" onclick="selectTipe('double')" id="btn-double" class="tipe-list-btn w-full text-left px-4 py-3 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-200/50 dark:hover:bg-slate-800 transition-all outline-none">
+                            Double & Deluxe
+                        </button>
+                        <button type="button" onclick="selectTipe('family')" id="btn-family" class="tipe-list-btn w-full text-left px-4 py-3 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-200/50 dark:hover:bg-slate-800 transition-all outline-none">
+                            Family & Super Family
+                        </button>
+                        <button type="button" onclick="selectTipe('royal')" id="btn-royal" class="tipe-list-btn w-full text-left px-4 py-3 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-200/50 dark:hover:bg-slate-800 transition-all outline-none">
+                            Royal Family & VIP
+                        </button>
+                    </div>
+                </div>
+
             </div>
 
-            {{-- Non-Muslim Section --}}
-            <div class="space-y-6">
-                <div class="flex items-center gap-2 pb-2 border-b border-blue-100 dark:border-blue-950">
-                    <h4 class="text-lg font-bold text-slate-800 dark:text-white">Kawasan Non-Muslim / Umum</h4>
+            {{-- Right Pane: Live Image Preview and Details --}}
+            <div class="flex-grow p-8 flex flex-col md:flex-row gap-8 overflow-y-auto">
+                {{-- Image Box --}}
+                <div class="w-full md:w-1/2 aspect-[4/3] md:aspect-auto md:h-full max-h-[300px] md:max-h-none rounded-2xl overflow-hidden bg-slate-50 border border-slate-100 dark:border-slate-800 shrink-0 shadow-sm">
+                    <img id="modal-tipe-img" src="{{ asset('storage/assets/tipe/barokah.png') }}" class="w-full h-full object-cover object-center" alt="Preview Tipe Lahan" />
                 </div>
 
-                <div class="space-y-4">
-                    {{-- Single --}}
-                    <div class="flex gap-4 p-4 bg-blue-50/50 dark:bg-blue-950/20 border border-blue-100/50 dark:border-blue-950/50 rounded-2xl">
-                        <img src="{{ asset('storage/assets/tipe/single.jpeg') }}" class="w-24 h-20 object-cover rounded-xl shrink-0" alt="Tipe Single" />
-                        <div class="flex-grow">
-                            <div class="flex justify-between items-start mb-1">
-                                <span class="font-bold text-sm text-slate-800 dark:text-slate-200">Tipe Single</span>
-                                <span class="px-2 py-0.5 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-[10px] font-bold rounded-md">1 Slot</span>
+                {{-- Detail Box --}}
+                <div class="flex flex-col justify-between flex-grow">
+                    <div>
+                        <h4 id="modal-tipe-title" class="text-2xl font-bold text-slate-900 dark:text-white mb-6">Tipe Barokah</h4>
+                        
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center py-2.5 border-b border-slate-100 dark:border-slate-800">
+                                <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Ukuran Dimensi</span>
+                                <span id="modal-tipe-size" class="text-sm font-bold text-slate-800 dark:text-slate-200">1.5 x 2.5 m</span>
                             </div>
-                            <p class="text-xs text-slate-500 dark:text-slate-400 mb-1">Ukuran: 1.5 x 4 m</p>
-                            <p class="text-xs text-slate-650 dark:text-slate-400">Lahan pemakaman tunggal (single).</p>
-                        </div>
-                    </div>
-
-                    {{-- Double --}}
-                    <div class="flex gap-4 p-4 bg-blue-50/50 dark:bg-blue-950/20 border border-blue-100/50 dark:border-blue-950/50 rounded-2xl">
-                        <img src="{{ asset('storage/assets/tipe/double(2).png') }}" class="w-24 h-20 object-cover object-top rounded-xl shrink-0" alt="Tipe Double" />
-                        <div class="flex-grow">
-                            <div class="flex justify-between items-start mb-1">
-                                <span class="font-bold text-sm text-slate-800 dark:text-slate-200">Tipe Double & Deluxe</span>
-                                <span class="px-2 py-0.5 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-[10px] font-bold rounded-md">2 Slot</span>
+                            <div class="flex justify-between items-center py-2.5 border-b border-slate-100 dark:border-slate-800">
+                                <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Kapasitas Slot</span>
+                                <span id="modal-tipe-slots" class="text-sm font-bold text-slate-800 dark:text-slate-200">1 Slot</span>
                             </div>
-                            <p class="text-xs text-slate-500 dark:text-slate-400 mb-1">Ukuran: 3 x 4 m s.d 4 x 4.5 m</p>
-                            <p class="text-xs text-slate-650 dark:text-slate-400">Lahan pemakaman ganda (double) berdampingan.</p>
-                        </div>
-                    </div>
-
-                    {{-- Family --}}
-                    <div class="flex gap-4 p-4 bg-blue-50/50 dark:bg-blue-950/20 border border-blue-100/50 dark:border-blue-950/50 rounded-2xl">
-                        <img src="{{ asset('storage/assets/tipe/super-family.png') }}" class="w-24 h-20 object-cover rounded-xl shrink-0" alt="Tipe Family" />
-                        <div class="flex-grow">
-                            <div class="flex justify-between items-start mb-1">
-                                <span class="font-bold text-sm text-slate-800 dark:text-slate-200">Tipe Family & Super Family</span>
-                                <span class="px-2 py-0.5 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-[10px] font-bold rounded-md">4 - 6 Slot</span>
+                            <div class="py-2.5">
+                                <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider block mb-1.5">Keterangan</span>
+                                <p id="modal-tipe-desc" class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">Lahan pemakaman tunggal (single).</p>
                             </div>
-                            <p class="text-xs text-slate-500 dark:text-slate-400 mb-1">Ukuran: 8 x 5 m s.d 8 x 10 m</p>
-                            <p class="text-xs text-slate-650 dark:text-slate-400">Lahan pemakaman keluarga semi-private.</p>
-                        </div>
-                    </div>
-
-                    {{-- Royal & VIP --}}
-                    <div class="flex gap-4 p-4 bg-blue-50/50 dark:bg-blue-950/20 border border-blue-100/50 dark:border-blue-950/50 rounded-2xl">
-                        <img src="{{ asset('storage/assets/tipe/royal-family.png') }}" class="w-24 h-20 object-cover rounded-xl shrink-0" alt="Tipe Royal Family & VIP" />
-                        <div class="flex-grow">
-                            <div class="flex justify-between items-start mb-1">
-                                <span class="font-bold text-sm text-slate-800 dark:text-slate-200">Tipe Royal Family & VIP</span>
-                                <span class="px-2 py-0.5 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-[10px] font-bold rounded-md">10 - 18 Slot</span>
-                            </div>
-                            <p class="text-xs text-slate-500 dark:text-slate-400 mb-1">Ukuran: 16 x 20 m s.d 26 x 36 m</p>
-                            <p class="text-xs text-slate-650 dark:text-slate-400">Lahan pemakaman keluarga besar tipe private.</p>
                         </div>
                     </div>
                 </div>
@@ -606,7 +595,7 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
 
         {{-- Footer --}}
-        <div class="px-8 py-5 border-t border-slate-100 dark:border-slate-850 bg-slate-50 dark:bg-slate-900/50 flex justify-end gap-3">
+        <div class="px-8 py-5 border-t border-slate-100 dark:border-slate-850 bg-slate-50 dark:bg-slate-900/50 flex justify-end gap-3 shrink-0">
             <button type="button" onclick="closeTipeModal()" class="px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-all">
                 Tutup
             </button>
@@ -618,12 +607,106 @@ document.addEventListener('DOMContentLoaded', function() {
 </div>
 
 <script>
+    const tipeData = {
+        'barokah': {
+            name: 'Tipe Barokah',
+            size: '1.5 x 2.5 m',
+            slots: '1 Slot',
+            desc: 'Lahan pemakaman tunggal (single).',
+            img: "{{ asset('storage/assets/tipe/barokah.png') }}"
+        },
+        'fitrah': {
+            name: 'Tipe Fitrah',
+            size: '4 x 3 m',
+            slots: '2 Slot',
+            desc: 'Lahan pemakaman ganda (double) berdampingan.',
+            img: "{{ asset('storage/assets/tipe/Fitrah.png') }}"
+        },
+        'shakinah': {
+            name: 'Tipe Shakinah',
+            size: '7 x 8 m',
+            slots: '6 Slot',
+            desc: 'Lahan pemakaman keluarga dengan pembatas khusus.',
+            img: "{{ asset('storage/assets/tipe/shakinah.png') }}"
+        },
+        'khalifah': {
+            name: 'Tipe Khalifah',
+            size: '7 x 15 m',
+            slots: '12 Slot',
+            desc: 'Lahan pemakaman keluarga besar semi-private.',
+            img: "{{ asset('storage/assets/tipe/khalifah.png') }}"
+        },
+        'single': {
+            name: 'Tipe Single',
+            size: '1.5 x 4 m',
+            slots: '1 Slot',
+            desc: 'Lahan pemakaman tunggal (single).',
+            img: "{{ asset('storage/assets/tipe/single.jpeg') }}"
+        },
+        'double': {
+            name: 'Tipe Double & Deluxe',
+            size: '3 x 4 m s.d 4 x 4.5 m',
+            slots: '2 Slot',
+            desc: 'Lahan pemakaman ganda (double) berdampingan.',
+            img: "{{ asset('storage/assets/tipe/double(2).png') }}"
+        },
+        'family': {
+            name: 'Tipe Family & Super Family',
+            size: '8 x 5 m s.d 8 x 10 m',
+            slots: '4 - 6 Slot',
+            desc: 'Lahan pemakaman keluarga semi-private.',
+            img: "{{ asset('storage/assets/tipe/super-family.png') }}"
+        },
+        'royal': {
+            name: 'Tipe Royal Family & VIP',
+            size: '16 x 20 m s.d 26 x 36 m',
+            slots: '10 - 18 Slot',
+            desc: 'Lahan pemakaman keluarga besar tipe private.',
+            img: "{{ asset('storage/assets/tipe/royal-family.png') }}"
+        }
+    };
+
+    function selectTipe(key) {
+        const data = tipeData[key];
+        if (!data) return;
+
+        // Update content
+        document.getElementById('modal-tipe-img').src = data.img;
+        
+        // Custom object positioning for double
+        if (key === 'double') {
+            document.getElementById('modal-tipe-img').className = 'w-full h-full object-cover object-top';
+        } else {
+            document.getElementById('modal-tipe-img').className = 'w-full h-full object-cover object-center';
+        }
+
+        document.getElementById('modal-tipe-title').textContent = data.name;
+        document.getElementById('modal-tipe-size').textContent = data.size;
+        document.getElementById('modal-tipe-slots').textContent = data.slots;
+        document.getElementById('modal-tipe-desc').textContent = data.desc;
+
+        // Reset all buttons to inactive style
+        document.querySelectorAll('.tipe-list-btn').forEach(btn => {
+            btn.classList.remove('bg-[#800000]', 'text-white', 'shadow-sm');
+            btn.classList.add('text-slate-700', 'dark:text-slate-200');
+        });
+
+        // Set active style for selected button
+        const activeBtn = document.getElementById('btn-' + key);
+        if (activeBtn) {
+            activeBtn.classList.remove('text-slate-700', 'dark:text-slate-200');
+            activeBtn.classList.add('bg-[#800000]', 'text-white', 'shadow-sm');
+        }
+    }
+
     function openTipeModal() {
         const modal = document.getElementById('tipeLahanModal');
         modal.classList.remove('hidden');
         modal.classList.add('flex');
         document.body.classList.add('overflow-hidden');
+        selectTipe('barokah');
     }
+
     function closeTipeModal() {
         const modal = document.getElementById('tipeLahanModal');
         modal.classList.add('hidden');
