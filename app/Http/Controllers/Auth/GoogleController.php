@@ -26,8 +26,15 @@ class GoogleController extends Controller
        
             if($finduser){
                 // Jika user sudah ada, update google_id jika belum ada
+                $updateData = [];
                 if(!$finduser->google_id) {
-                    $finduser->update(['google_id' => $user->id]);
+                    $updateData['google_id'] = $user->id;
+                }
+                if(is_null($finduser->email_verified_at)) {
+                    $updateData['email_verified_at'] = now();
+                }
+                if(!empty($updateData)) {
+                    $finduser->update($updateData);
                 }
                 
                 Auth::login($finduser);
@@ -44,7 +51,8 @@ class GoogleController extends Controller
                     'email' => $user->email,
                     'google_id'=> $user->id,
                     'role' => 'pembeli',
-                    'password' => null // Password dikosongkan karena login via google
+                    'password' => null, // Password dikosongkan karena login via google
+                    'email_verified_at' => now(),
                 ]);
       
                 Auth::login($newUser);

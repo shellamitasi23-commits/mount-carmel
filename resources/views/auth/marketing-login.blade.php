@@ -4,10 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portal {{ $role }} - Mount Carmel</title>
-    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     
     <script src="https://cdn.tailwindcss.com"></script>
@@ -15,7 +14,7 @@
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: { sans: ['"Plus Jakarta Sans"', 'sans-serif'] },
+                    fontFamily: { sans: ['"Roboto"', 'sans-serif'] },
                     animation: {
                         'fade-in-up': 'fadeInUp 0.5s ease-out forwards',
                     },
@@ -29,6 +28,22 @@
             }
         }
     </script>
+    <style>
+        /* Overrides excessive bold/black weights for cleaner look */
+        .font-black, .font-extrabold {
+            font-weight: 600 !important;
+        }
+        .font-bold {
+            font-weight: 500 !important;
+        }
+        .font-semibold {
+            font-weight: 500 !important;
+        }
+        /* Disable automatic capitalization of elements using Tailwind's uppercase */
+        .uppercase {
+            text-transform: none !important;
+        }
+    </style>
     <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
 </head>
 <body class="bg-slate-50 min-h-screen flex items-center justify-center p-6 relative overflow-hidden">

@@ -90,8 +90,7 @@ class AdminUserSeeder extends Seeder
                 'no_telepon' => '081234560005'
             ]
         );
-
-        // Seed requested testing users
+        
         foreach (['sapira' => 'sapira@email.com', 'rizky' => 'rizky@email.com', 'ali' => 'ali@email.com'] as $name => $email) {
             User::updateOrCreate(
                 ['email' => $email],

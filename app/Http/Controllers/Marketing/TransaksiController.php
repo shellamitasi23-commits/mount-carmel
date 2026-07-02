@@ -40,7 +40,13 @@ class TransaksiController extends Controller
             $query->where('status_reservasi', $request->status);
         }
 
-        $reservasis = $query->latest()->paginate(15);
+        $sort = $request->input('sort', 'desc');
+        if (!in_array($sort, ['asc', 'desc'])) {
+            $sort = 'desc';
+        }
+        $query->orderBy('created_at', $sort);
+
+        $reservasis = $query->paginate(15)->appends($request->all());
         $pembelis = User::where('role', 'pembeli')->get();
         $lahans = Lahan::where('status', 'Tersedia')->get();
 
@@ -117,7 +123,13 @@ class TransaksiController extends Controller
             });
         }
 
-        $pembayarans = $query->latest()->paginate(15);
+        $sort = $request->input('sort', 'desc');
+        if (!in_array($sort, ['asc', 'desc'])) {
+            $sort = 'desc';
+        }
+        $query->orderBy('created_at', $sort);
+
+        $pembayarans = $query->paginate(15)->appends($request->all());
 
         return view('marketing.transaksi.pembayaran', compact('pembayarans'));
     }

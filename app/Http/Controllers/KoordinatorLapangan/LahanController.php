@@ -12,7 +12,7 @@ class LahanController extends Controller
     public function index(Request $request)
     {
         $query = Lahan::with(['cluster', 'reservasis' => function ($q) {
-            $q->where('status_reservasi', '!=', 'Ditolak')->latest();
+            $q->where('status_reservasi', '!=', 'Ditolak')->with('detailJenazahs')->latest();
         }]);
 
         if ($request->filled('search')) {
@@ -98,6 +98,27 @@ class LahanController extends Controller
         ]);
 
         $lahan = Lahan::findOrFail($id);
+
+        // 1. Validasi status "Tersedia"
+        if ($request->status === 'Tersedia') {
+            $hasActiveReservasi = $lahan->reservasis()->where('status_reservasi', '!=', 'Ditolak')->exists();
+            if ($hasActiveReservasi) {
+                return back()->withErrors(['status' => 'Status Lahan tidak dapat diubah menjadi Tersedia karena memiliki reservasi aktif dari pembeli.']);
+            }
+        }
+
+        // 2. Validasi status "Digunakan"
+        if ($request->status === 'Digunakan') {
+            $activeRes = $lahan->reservasis()->where('status_reservasi', '!=', 'Ditolak')->first();
+            $hasJenazah = $activeRes && (
+                !empty($activeRes->nama_jenazah) || 
+                ($activeRes->detailJenazahs && $activeRes->detailJenazahs->where('status', '!=', 'Ditolak')->isNotEmpty())
+            );
+            if (!$hasJenazah) {
+                return back()->withErrors(['status' => 'Status Lahan tidak dapat diubah menjadi Digunakan karena pembeli belum menginput data jenazah.']);
+            }
+        }
+
         $lahan->update($validated);
 
         return redirect()->route('koordinator_lapangan.lahan.index')
@@ -107,6 +128,11 @@ class LahanController extends Controller
     public function destroy($id)
     {
         $lahan = Lahan::findOrFail($id);
+
+        if ($lahan->reservasis()->exists()) {
+            return back()->withErrors(['error' => 'Lahan tidak dapat dihapus karena memiliki riwayat reservasi pembeli terikat.']);
+        }
+
         $nomor = $lahan->nomor_lahan;
         $lahan->delete();
 

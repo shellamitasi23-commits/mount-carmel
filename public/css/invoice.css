@@ -354,3 +354,181 @@ body {
     size: A4 portrait;
   }
 }
+
+/* ── RESPONSIVE MOBILE STYLES (max-width: 768px) ── */
+@media (max-width: 768px) {
+  body {
+    padding: 12px 6px;
+  }
+
+  .print-btn-container {
+    justify-content: center;
+    margin-bottom: 12px;
+    gap: 8px;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .btn {
+    flex: 1;
+    min-width: 110px;
+    padding: 8px 12px;
+    font-size: 11px;
+    justify-content: center;
+  }
+
+  .invoice-box {
+    padding: 20px 16px;
+    min-height: auto;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+    border-radius: 12px;
+  }
+
+  .header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding-bottom: 12px;
+    margin-bottom: 16px;
+    border-bottom: 1.5px solid #111827;
+  }
+
+  .brand {
+    font-size: 16px;
+    text-align: left;
+  }
+
+  .brand-sub {
+    font-size: 7px;
+    margin-top: 2px;
+  }
+
+  .invoice-details {
+    text-align: right;
+    width: auto;
+  }
+
+  .invoice-title {
+    font-size: 13px;
+  }
+
+  .invoice-no {
+    font-size: 9px;
+    margin-top: 2px;
+  }
+
+  .badge {
+    padding: 3px 8px;
+    font-size: 8px;
+    margin-top: 4px;
+  }
+
+  .info-section {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .info-col {
+    width: 48%;
+  }
+
+  .info-title {
+    font-size: 8px;
+    margin-bottom: 4px;
+  }
+
+  .info-text {
+    font-size: 10px;
+    line-height: 1.4;
+  }
+
+  .info-text strong {
+    font-size: 11px;
+    margin-bottom: 2px;
+  }
+
+  .table {
+    margin-bottom: 16px;
+  }
+
+  .table th {
+    padding: 8px 10px;
+    font-size: 8px;
+  }
+
+  .table td {
+    padding: 12px 10px;
+    font-size: 10px;
+  }
+
+  .item-title {
+    font-size: 10px;
+    margin-bottom: 2px;
+  }
+
+  .item-desc {
+    font-size: 9px;
+  }
+
+  .tag-need {
+    font-size: 8px;
+    padding: 2px 6px;
+    margin-top: 4px;
+  }
+
+  .footer-split {
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 10px;
+    padding-top: 0;
+  }
+
+  .footer-left, 
+  .footer-right {
+    width: 100%;
+  }
+
+  .bank-box {
+    padding: 10px 12px;
+    margin-bottom: 10px;
+  }
+
+  .bank-title {
+    font-size: 8px;
+    margin-bottom: 4px;
+  }
+
+  .bank-name {
+    font-size: 11px;
+  }
+
+  .bank-acc {
+    font-size: 12px;
+  }
+
+  .bank-owner {
+    font-size: 9px;
+  }
+
+  .notes {
+    font-size: 9px;
+  }
+
+  .total-row {
+    padding: 5px 0;
+    font-size: 10px;
+  }
+
+  .total-row.grand-total {
+    border-top: 1.5px solid #111827;
+    margin-top: 6px;
+    padding-top: 8px;
+    font-size: 13px;
+  }
+}
+

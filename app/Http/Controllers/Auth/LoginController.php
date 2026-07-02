@@ -36,7 +36,7 @@ class LoginController extends Controller
                 return redirect()->route('koordinator_lapangan.dashboard');
             }
 
-            return redirect('/');
+            return redirect()->intended('/');
         }
 
         return back()->withErrors([

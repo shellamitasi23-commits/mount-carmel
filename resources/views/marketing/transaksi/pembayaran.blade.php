@@ -17,20 +17,36 @@
     </div>
 </div>
 
-{{-- Search Bar --}}
-<form method="GET" action="{{ route('marketing.pembayaran.index') }}" class="relative mb-6 group">
-    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-        <span class="material-icons-outlined text-slate-400 group-focus-within:text-slate-900 transition-colors">search</span>
-    </div>
-    <input type="text" name="search" value="{{ request('search') }}" placeholder="Nama pembeli, unit lahan, atau nomor invoice..."
-           class="w-full pl-11 pr-10 py-2 bg-white border border-slate-100 rounded-xl text-sm font-medium shadow-sm focus:ring-4 focus:ring-slate-900/5 focus:border-slate-900 outline-none transition-all placeholder:text-slate-300">
-    
-    @if(request('search'))
-    <a href="{{ route('marketing.pembayaran.index') }}" class="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400 hover:text-slate-600 transition-colors">
-        <span class="material-icons-outlined text-xl">close</span>
-    </a>
-    @endif
-</form>
+{{-- Filtering System --}}
+<div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100 mb-6">
+    <form method="GET" action="{{ route('marketing.pembayaran.index') }}" class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
+        <div class="md:col-span-2">
+            <label class="block text-xs font-black text-slate-400 uppercase tracking-widest mb-1.5">Cari Transaksi</label>
+            <div class="relative">
+                <span class="absolute left-4 top-1/2 -translate-y-1/2 material-icons-outlined text-slate-400 text-sm">search</span>
+                <input type="text" name="search" value="{{ request('search') }}" placeholder="Nama pembeli, unit lahan, atau nomor invoice..."
+                       class="w-full pl-11 pr-4 py-2 bg-white border border-slate-100 rounded-xl text-sm font-medium shadow-sm focus:ring-4 focus:ring-slate-900/5 focus:border-slate-900 outline-none transition-all placeholder:text-slate-300">
+            </div>
+        </div>
+        <div>
+            <label class="block text-xs font-black text-slate-400 uppercase tracking-widest mb-1.5">Urutan Tanggal</label>
+            <div class="relative">
+                <select name="sort" onchange="this.form.submit()" class="w-full px-4 py-2 bg-white border border-slate-100 rounded-xl text-sm font-medium shadow-sm focus:ring-4 focus:ring-slate-900/5 focus:border-slate-900 outline-none transition-all appearance-none cursor-pointer">
+                    <option value="desc" {{ request('sort', 'desc') === 'desc' ? 'selected' : '' }}>Terbaru (Desc)</option>
+                    <option value="asc" {{ request('sort') === 'asc' ? 'selected' : '' }}>Terlama (Asc)</option>
+                </select>
+                <span class="material-icons-outlined absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-sm">swap_vert</span>
+            </div>
+        </div>
+        <div class="flex">
+            @if(request('search') || request('sort'))
+            <a href="{{ route('marketing.pembayaran.index') }}" class="w-full px-5 py-2 bg-slate-100 text-slate-500 rounded-xl font-bold text-xs uppercase tracking-widest hover:bg-slate-200 transition-all text-center flex items-center justify-center">
+                Reset
+            </a>
+            @endif
+        </div>
+    </form>
+</div>
 
 <div class="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
     <div class="overflow-x-auto">

@@ -6,68 +6,50 @@
 <div class="max-w-6xl mx-auto px-4 md:px-6">
 
     {{-- Header --}}
-    <div class="text-center mb-16" data-aos="fade-up">
-        <p class="text-xs font-bold tracking-[0.2em] text-amber-600 uppercase mb-3 block">Hubungi Kami</p>
-        <h1 class="text-4xl md:text-5xl font-black text-gray-900 font-poppins mb-4">Kami Siap Membantu Anda</h1>
-        <p class="text-gray-500 text-sm md:text-base max-w-xl mx-auto leading-relaxed">
+    <div class="text-center mb-12" data-aos="fade-up">
+        <p class="text-xs font-semibold tracking-wider text-[#800000] uppercase mb-2 block">Hubungi Kami</p>
+        <h1 class="text-2xl md:text-3xl font-bold text-gray-900 mb-3">Kami Siap Membantu Anda</h1>
+        <p class="text-gray-500 text-xs md:text-sm max-w-lg mx-auto leading-relaxed">
             Jangan ragu untuk menghubungi tim kami. Layanan tersedia 24 jam untuk membantu kebutuhan pemakaman keluarga Anda.
         </p>
     </div>
 
     {{-- Kartu Info Kontak --}}
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-
-        {{-- Telepon & WhatsApp --}}
-        <div class="group bg-white rounded-3xl border border-slate-100/80 shadow-sm p-8 flex flex-col items-center text-center hover:shadow-xl hover:border-slate-200/50 hover:-translate-y-1 transition-all duration-300"
-             data-aos="fade-up" data-aos-delay="0">
-            <div class="w-16 h-16 bg-green-50 rounded-2xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300">
-                <span class="material-icons text-green-600 text-2xl">phone</span>
-            </div>
-            <h3 class="font-poppins font-bold text-gray-900 text-lg mb-2">Telepon & WhatsApp</h3>
-            <p class="text-gray-400 text-xs mb-4">Tersedia 24 jam, 7 hari</p>
-            <a href="tel:+6285134910195"
-               class="font-poppins font-bold text-gray-900 hover:text-green-650 transition-colors text-base block mb-1">
-                0851 3491 0195
-            </a>
-            <a href="https://wa.me/6285134910195" target="_blank"
-               class="inline-flex items-center gap-1.5 mt-3 px-5 py-2.5 bg-green-50 text-green-700 rounded-xl text-xs font-bold hover:bg-green-100 transition-colors shadow-sm">
-                <span class="material-icons text-sm">chat</span> Chat WhatsApp
-            </a>
-        </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto mb-12">
 
         {{-- Email --}}
-        <div class="group bg-white rounded-3xl border border-slate-100/80 shadow-sm p-8 flex flex-col items-center text-center hover:shadow-xl hover:border-slate-200/50 hover:-translate-y-1 transition-all duration-300"
+        <div class="group bg-white rounded-3xl border border-slate-100/80 shadow-sm p-6 flex flex-col items-center text-center hover:shadow-md hover:border-slate-200/50 hover:-translate-y-0.5 transition-all duration-300"
              data-aos="fade-up" data-aos-delay="100">
-            <div class="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300">
-                <span class="material-icons text-blue-600 text-2xl">email</span>
+            <div class="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center mb-4 group-hover:scale-105 transition-transform duration-300">
+                <span class="material-icons text-blue-600 text-xl">email</span>
             </div>
-            <h3 class="font-poppins font-bold text-gray-900 text-lg mb-2">Email</h3>
-            <p class="text-gray-400 text-xs mb-4">Respon dalam 1×24 jam kerja</p>
+            <h3 class="font-semibold text-gray-900 text-base mb-1">Email</h3>
+            <p class="text-gray-400 text-[10px] mb-3">Respon dalam 1×24 jam kerja</p>
             <a href="mailto:info@mountcarmel.id"
-               class="font-poppins font-bold text-gray-900 hover:text-blue-650 transition-colors text-sm block mb-1">
+               class="font-medium text-gray-700 hover:text-[#800000] transition-colors text-xs block mb-0.5">
                 info@mountcarmel.id
             </a>
             <a href="mailto:cs@mountcarmel.id"
-               class="font-poppins font-bold text-gray-900 hover:text-blue-650 transition-colors text-sm block">
+               class="font-medium text-gray-700 hover:text-[#800000] transition-colors text-xs block">
                 cs@mountcarmel.id
             </a>
         </div>
 
         {{-- Alamat --}}
-        <div class="group bg-white rounded-3xl border border-slate-100/80 shadow-sm p-8 flex flex-col items-center text-center hover:shadow-xl hover:border-slate-200/50 hover:-translate-y-1 transition-all duration-300"
+        <div class="group bg-white rounded-3xl border border-slate-100/80 shadow-sm p-6 flex flex-col items-center text-center hover:shadow-md hover:border-slate-200/50 hover:-translate-y-0.5 transition-all duration-300"
              data-aos="fade-up" data-aos-delay="200">
-            <div class="w-16 h-16 bg-red-50 rounded-2xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300">
-                <span class="material-icons text-red-500 text-2xl">location_on</span>
+            <div class="w-12 h-12 bg-red-50 rounded-xl flex items-center justify-center mb-4 group-hover:scale-105 transition-transform duration-300">
+                <span class="material-icons text-red-500 text-xl">location_on</span>
             </div>
-            <h3 class="font-poppins font-bold text-gray-900 text-lg mb-2">Lokasi</h3>
-            <p class="text-gray-400 text-xs mb-4">Senin–Minggu, 08.00–17.00 WIB</p>
-            <p class="text-sm text-gray-700 font-medium leading-relaxed mb-4">
+            <h3 class="font-semibold text-gray-900 text-base mb-1">Lokasi</h3>
+            <p class="text-gray-400 text-[10px] mb-3">Senin–Minggu, 08.00–17.00 WIB</p>
+            <p class="text-xs text-gray-600 leading-relaxed mb-3">
                 Jl. Raya Cirebon – Bandung Km. 12<br>
                 Jawa Barat, Indonesia
             </p>
             <a href="https://maps.google.com/?q=Jl.+Raya+Cirebon+Bandung+Km.12+Jawa+Barat" target="_blank"
-               class="inline-flex items-center gap-1.5 px-5 py-2.5 bg-red-50 text-red-650 rounded-xl text-xs font-bold hover:bg-red-100 transition-colors shadow-sm">
-                <span class="material-icons text-sm">map</span> Buka Maps
+               class="inline-flex items-center gap-1 px-4 py-1.5 bg-red-50 text-red-600 rounded-lg text-[10px] font-semibold hover:bg-red-100 transition-colors shadow-sm">
+                <span class="material-icons text-xs">map</span> Buka Maps
             </a>
         </div>
 
@@ -106,7 +88,7 @@
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">
+                            <label class="block text-xs font-medium text-slate-500 mb-2">
                                 Nama Lengkap <span class="text-red-400">*</span>
                             </label>
                             <div class="relative">
@@ -117,7 +99,7 @@
                             </div>
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">
+                            <label class="block text-xs font-medium text-slate-500 mb-2">
                                 No. Telepon
                             </label>
                             <div class="relative">
@@ -130,7 +112,7 @@
                     </div>
 
                     <div>
-                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">
+                        <label class="block text-xs font-medium text-slate-500 mb-2">
                             Email <span class="text-red-400">*</span>
                         </label>
                         <div class="relative">
@@ -142,7 +124,7 @@
                     </div>
 
                     <div>
-                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">
+                        <label class="block text-xs font-medium text-slate-500 mb-2">
                             Subjek <span class="text-red-400">*</span>
                         </label>
                         <div class="relative">
@@ -164,7 +146,7 @@
                     </div>
 
                     <div>
-                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">
+                        <label class="block text-xs font-medium text-slate-500 mb-2">
                             Pesan <span class="text-red-400">*</span>
                         </label>
                         <div class="relative">
@@ -176,7 +158,7 @@
                     </div>
 
                     <button type="submit"
-                        class="btn-press btn-ripple w-full bg-[#800000] hover:bg-[#800000]/90 text-white py-4 rounded-xl font-bold text-sm transition-colors shadow-lg shadow-[#800000]/25 flex items-center justify-center gap-2">
+                        class="w-full bg-[#800000] hover:bg-[#800000]/90 text-white py-3 rounded-xl font-semibold text-sm transition-all flex items-center justify-center gap-2 shadow-sm hover:shadow">
                         <span class="material-icons text-sm">send</span>
                         Kirim Pesan
                     </button>
@@ -215,8 +197,8 @@
 
     {{-- Jam Operasional di Bawah --}}
     <div class="bg-white rounded-3xl border border-slate-100/80 shadow-sm p-8 md:p-10 mb-12" data-aos="fade-up">
-        <h3 class="font-poppins font-bold text-gray-900 text-lg md:text-xl mb-8 flex items-center justify-center gap-2">
-            <span class="material-icons text-amber-500 text-2xl">schedule</span>
+        <h3 class="font-semibold text-gray-800 text-base mb-8 flex items-center justify-center gap-2">
+            <span class="material-icons text-[#800000] text-xl">schedule</span>
             Jadwal & Jam Operasional
         </h3>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -227,11 +209,11 @@
                 ['hari' => 'Layanan Darurat', 'jam' => 'Layanan 24 Jam',      'status' => 'darurat', 'icon' => 'contact_support'],
             ] as $jadwal)
             <div class="p-5 rounded-2xl bg-slate-50 border border-slate-100/80 flex flex-col items-center text-center transition-all hover:bg-white hover:shadow-md duration-300">
-                <div class="w-10 h-10 rounded-xl {{ $jadwal['status'] === 'darurat' ? 'bg-[#800000] text-white animate-pulse' : 'bg-emerald-50 text-emerald-600' }} flex items-center justify-center mb-3">
+                <div class="w-10 h-10 rounded-xl {{ $jadwal['status'] === 'darurat' ? 'bg-[#800000]/10 text-[#800000]' : 'bg-emerald-50 text-emerald-600' }} flex items-center justify-center mb-3">
                     <span class="material-icons text-base">{{ $jadwal['icon'] }}</span>
                 </div>
-                <span class="text-xs text-gray-400 uppercase tracking-widest font-bold mb-1">{{ $jadwal['hari'] }}</span>
-                <span class="text-sm font-bold text-gray-900">{{ $jadwal['jam'] }}</span>
+                <span class="text-xs text-gray-400 font-medium mb-1">{{ $jadwal['hari'] }}</span>
+                <span class="text-sm font-semibold text-gray-800">{{ $jadwal['jam'] }}</span>
             </div>
             @endforeach
         </div>

@@ -19,7 +19,7 @@
         $tabs = [
             'reservasi' => 'Penjualan',
             'jenazah' => 'Data Jenazah',
-            'lahan' => 'Lahan Terjual',
+            'lahan' => 'Data Lahan',
             'pembeli' => 'Database Pembeli',
             'cluster' => 'Distribusi Cluster',
         ];

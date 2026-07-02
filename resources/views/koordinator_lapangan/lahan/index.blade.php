@@ -95,21 +95,46 @@
                         <td class="px-4 py-2.5">
                             @php
                                 $activeRes = $lahan->reservasis->first();
-                                $hasJenazah = $activeRes && !empty($activeRes->nama_jenazah);
+                                $hasJenazah = $activeRes && (
+                                    !empty($activeRes->nama_jenazah) || 
+                                    ($activeRes->detailJenazahs && $activeRes->detailJenazahs->where('status', '!=', 'Ditolak')->isNotEmpty())
+                                );
                             @endphp
                             @if($lahan->status == 'Tersedia')
                                 <span class="px-3 py-1 bg-slate-100 text-slate-700 rounded-md text-[10px] font-black uppercase tracking-tighter">Tersedia</span>
                             @elseif(str_contains($lahan->status, 'Reservasi'))
                                 @if($hasJenazah)
-                                    <span class="px-3 py-1 bg-amber-50 text-amber-600 rounded-md text-[10px] font-black uppercase tracking-tighter" title="Alm. {{ $activeRes->nama_jenazah }}">{{ $lahan->status }} (Alm. {{ $activeRes->nama_jenazah }})</span>
+                                    @php
+                                        $namaAlm = $activeRes->nama_jenazah;
+                                        if (empty($namaAlm) && $activeRes->detailJenazahs) {
+                                            $namaAlm = $activeRes->detailJenazahs->where('status', '!=', 'Ditolak')->pluck('nama_jenazah')->implode(', ');
+                                        }
+                                    @endphp
+                                    <span class="px-3 py-1 bg-amber-50 text-amber-600 rounded-md text-[10px] font-black uppercase tracking-tighter" title="Alm. {{ $namaAlm }}">{{ $lahan->status }} (Alm. {{ $namaAlm }})</span>
                                 @else
                                     <span class="px-3 py-1 bg-amber-50 text-amber-600 rounded-md text-[10px] font-black uppercase tracking-tighter">{{ $lahan->status }}</span>
                                 @endif
                             @elseif($lahan->status == 'Terjual')
-                                <span class="px-3 py-1 bg-slate-200 text-slate-600 rounded-md text-[10px] font-black uppercase tracking-tighter">Terjual</span>
+                                @if($hasJenazah)
+                                    @php
+                                        $namaAlm = $activeRes->nama_jenazah;
+                                        if (empty($namaAlm) && $activeRes->detailJenazahs) {
+                                            $namaAlm = $activeRes->detailJenazahs->where('status', '!=', 'Ditolak')->pluck('nama_jenazah')->implode(', ');
+                                        }
+                                    @endphp
+                                    <span class="px-3 py-1 bg-blue-50 text-blue-600 rounded-md text-[10px] font-black uppercase tracking-tighter" title="Alm. {{ $namaAlm }}">Terjual (Alm. {{ $namaAlm }})</span>
+                                @else
+                                    <span class="px-3 py-1 bg-slate-200 text-slate-600 rounded-md text-[10px] font-black uppercase tracking-tighter">Terjual</span>
+                                @endif
                             @else
-                                @if($activeRes && $activeRes->nama_jenazah)
-                                    <span class="px-3 py-1 bg-[#800000] text-white rounded-md text-[10px] font-black uppercase tracking-tighter" title="Alm. {{ $activeRes->nama_jenazah }}">Digunakan (Alm. {{ $activeRes->nama_jenazah }})</span>
+                                @if($activeRes && $hasJenazah)
+                                    @php
+                                        $namaAlm = $activeRes->nama_jenazah;
+                                        if (empty($namaAlm) && $activeRes->detailJenazahs) {
+                                            $namaAlm = $activeRes->detailJenazahs->where('status', '!=', 'Ditolak')->pluck('nama_jenazah')->implode(', ');
+                                        }
+                                    @endphp
+                                    <span class="px-3 py-1 bg-[#800000] text-white rounded-md text-[10px] font-black uppercase tracking-tighter" title="Alm. {{ $namaAlm }}">Digunakan (Alm. {{ $namaAlm }})</span>
                                 @else
                                     <span class="px-3 py-1 bg-[#800000] text-white rounded-md text-[10px] font-black uppercase tracking-tighter">Digunakan</span>
                                 @endif
@@ -117,22 +142,22 @@
                         </td>
                         <td class="px-4 py-2.5 text-center">
                             <div class="flex justify-center gap-2 items-center">
-                                @if(str_contains($lahan->status, 'Reservasi') && $hasJenazah)
-                                <form action="{{ route('koordinator_lapangan.lahan.update', $lahan->id) }}" method="POST" class="inline">
-                                    @csrf
-                                    @method('PUT')
-                                    <input type="hidden" name="cluster_id" value="{{ $lahan->cluster_id }}">
-                                    <input type="hidden" name="nomor_lahan" value="{{ $lahan->nomor_lahan }}">
-                                    <input type="hidden" name="tipe_lahan" value="{{ $lahan->tipe_lahan }}">
-                                    <input type="hidden" name="hadap" value="{{ $lahan->hadap }}">
-                                    <input type="hidden" name="ukuran" value="{{ $lahan->ukuran }}">
-                                    <input type="hidden" name="kapasitas" value="{{ $lahan->kapasitas }}">
-                                    <input type="hidden" name="harga" value="{{ (int)$lahan->harga }}">
-                                    <input type="hidden" name="status" value="Digunakan">
-                                    <button type="submit" class="bg-emerald-600 hover:bg-emerald-700 text-white px-2 py-1 rounded text-[9px] font-black uppercase tracking-widest shadow-sm transition-all flex items-center gap-1" title="Acc Pakai Lahan">
-                                        <span class="material-icons-outlined text-[11px]">check_circle</span> Acc Pakai
-                                    </button>
-                                </form>
+                                @if((str_contains($lahan->status, 'Reservasi') || $lahan->status === 'Terjual') && $hasJenazah)
+                                    <form action="{{ route('koordinator_lapangan.lahan.update', $lahan->id) }}" method="POST" class="inline">
+                                        @csrf
+                                        @method('PUT')
+                                        <input type="hidden" name="cluster_id" value="{{ $lahan->cluster_id }}">
+                                        <input type="hidden" name="nomor_lahan" value="{{ $lahan->nomor_lahan }}">
+                                        <input type="hidden" name="tipe_lahan" value="{{ $lahan->tipe_lahan }}">
+                                        <input type="hidden" name="hadap" value="{{ $lahan->hadap }}">
+                                        <input type="hidden" name="ukuran" value="{{ $lahan->ukuran }}">
+                                        <input type="hidden" name="kapasitas" value="{{ $lahan->kapasitas }}">
+                                        <input type="hidden" name="harga" value="{{ (int)$lahan->harga }}">
+                                        <input type="hidden" name="status" value="Digunakan">
+                                        <button type="submit" class="bg-emerald-600 hover:bg-emerald-700 text-white px-2 py-1 rounded text-[9px] font-black uppercase tracking-widest shadow-sm transition-all flex items-center gap-1" title="Acc Pakai Lahan">
+                                            <span class="material-icons-outlined text-[11px]">check_circle</span> Acc Pakai
+                                        </button>
+                                    </form>
                                 @endif
                                 <button onclick="openEditModal({{ $lahan->id }})"
                                         class="text-slate-400 hover:text-slate-900 bg-white border border-slate-100 p-2 rounded-lg shadow-sm transition-all">

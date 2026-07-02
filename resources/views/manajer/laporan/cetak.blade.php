@@ -31,7 +31,7 @@
     <div class="judul-laporan">
         <h2>
             @if($type === 'lahan')
-                Laporan Data Lahan Terjual / Digunakan
+                Laporan Data Lahan / Digunakan
             @elseif($type === 'pembeli')
                 Laporan Data Pembeli
             @elseif($type === 'cluster')

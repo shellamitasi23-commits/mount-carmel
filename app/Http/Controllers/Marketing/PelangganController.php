@@ -22,8 +22,13 @@ class PelangganController extends Controller
             });
         }
 
-        $pembelis = $query->latest()
-            ->paginate(50)
+        $sort = $request->input('sort', 'desc');
+        if (!in_array($sort, ['asc', 'desc'])) {
+            $sort = 'desc';
+        }
+        $query->orderBy('created_at', $sort);
+
+        $pembelis = $query->paginate(50)
             ->appends($request->all());
 
         return view('marketing.pelanggan.index', compact('pembelis'));

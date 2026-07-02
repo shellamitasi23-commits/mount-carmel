@@ -47,6 +47,12 @@ Route::get('/cluster/{id}', [PembeliCluster::class, 'show'])->name('cluster.show
 Route::get('/kontak', [\App\Http\Controllers\Pembeli\KontakController::class, 'index'])->name('kontak');
 Route::post('/kontak', [\App\Http\Controllers\Pembeli\KontakController::class, 'send'])->name('kontak.send');
 
+// RUTE LAHAN PUBLIK (Bisa diakses tanpa login untuk liat-liat)
+Route::prefix('pembeli')->name('pembeli.')->group(function () {
+    Route::get('/lahan', [PembeliLahan::class, 'index'])->name('lahan.index');
+    Route::get('/lahan/nomor', [PembeliLahan::class, 'nomorLahan'])->name('lahan.nomor');
+});
+
 use App\Http\Controllers\Auth\GoogleController;
 
 // ──────────────────────────────────────────────────────────────────────────
@@ -102,6 +108,13 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     // Logout untuk semua pengguna yang terautentikasi
     Route::post('/logout', [AdminLoginController::class, 'logout'])->name('logout');
+
+    // OTP Verification Routes
+    Route::prefix('otp')->name('otp.')->group(function () {
+        Route::get('/verify', [\App\Http\Controllers\Auth\OtpController::class, 'showVerifyForm'])->name('verify');
+        Route::post('/verify', [\App\Http\Controllers\Auth\OtpController::class, 'verify'])->name('verify.submit');
+        Route::post('/resend', [\App\Http\Controllers\Auth\OtpController::class, 'resend'])->name('resend');
+    });
 
     // ──────────────────────────────────────────────────────────────────────
     // RUTE MARKETING - Untuk marketing
@@ -234,11 +247,7 @@ Route::middleware('auth')->group(function () {
     // ──────────────────────────────────────────────────────────────────────
     // RUTE PEMBELI - Untuk pembeli/pelanggan
     // ──────────────────────────────────────────────────────────────────────
-    Route::middleware('role:pembeli')->prefix('pembeli')->name('pembeli.')->group(function () {
-        // Browsing dan pemilihan Lahan
-        Route::get('/lahan', [PembeliLahan::class, 'index'])->name('lahan.index');
-        Route::get('/lahan/nomor', [PembeliLahan::class, 'nomorLahan'])->name('lahan.nomor');
-
+    Route::middleware(['role:pembeli', 'otp.verified'])->prefix('pembeli')->name('pembeli.')->group(function () {
         // Manajemen reservasi
         Route::get('/reservasi', [PembeliReservasi::class, 'index'])->name('reservasi.index'); // Riwayat
         Route::get('/reservasi/create', [PembeliReservasi::class, 'create'])->name('reservasi.create'); // Form
@@ -269,7 +278,7 @@ Route::middleware('auth')->group(function () {
     // ──────────────────────────────────────────────────────────────────────
     // RUTE PROFIL - Untuk pembeli/pelanggan umum
     // ──────────────────────────────────────────────────────────────────────
-    Route::middleware('role:pembeli')->prefix('profil')->name('profil.')->group(function () {
+    Route::middleware(['role:pembeli', 'otp.verified'])->prefix('profil')->name('profil.')->group(function () {
         Route::get('/', [PembeliProfil::class, 'index'])->name('index');
         Route::patch('/update', [PembeliProfil::class, 'update'])->name('update');
         Route::put('/password', [PembeliProfil::class, 'updatePassword'])->name('password');

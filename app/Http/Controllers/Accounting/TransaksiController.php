@@ -36,7 +36,13 @@ class TransaksiController extends Controller
             $query->where('status_pembayaran', $request->status);
         }
 
-        $pembayarans = $query->latest()->paginate(15);
+        $sort = $request->input('sort', 'desc');
+        if (!in_array($sort, ['asc', 'desc'])) {
+            $sort = 'desc';
+        }
+        $query->orderBy('created_at', $sort);
+
+        $pembayarans = $query->paginate(15)->appends($request->all());
 
         return view('accounting.transaksi.pembayaran', compact('pembayarans'));
     }

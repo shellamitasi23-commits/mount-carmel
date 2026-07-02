@@ -162,9 +162,18 @@ class ProfilController extends Controller
 
     public function updateAvatar(Request $request)
     {
-        $request->validate(['avatar' => 'required|image|max:2048']);
-        
         $user = \App\Models\User::find(Auth::id());
+
+        if ($request->has('remove_avatar') && $request->remove_avatar == '1') {
+            if ($user->avatar) {
+                Storage::disk('public')->delete('avatars/' . $user->avatar);
+                $user->avatar = null;
+                $user->save();
+            }
+            return back()->with('success', 'Foto profil berhasil dihapus!');
+        }
+
+        $request->validate(['avatar' => 'required|image|max:2048']);
         
         if ($user->avatar) {
             Storage::disk('public')->delete('avatars/' . $user->avatar);

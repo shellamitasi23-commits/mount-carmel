@@ -3,11 +3,8 @@
 @section('title', 'Dashboard — Mount Carmel')
 
 @push('styles')
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200..800&display=swap" rel="stylesheet">
 <style>
-    body { font-family: 'Plus Jakarta Sans', sans-serif !important; }
+    body { font-family: 'Roboto', sans-serif !important; }
 </style>
 @endpush
 
@@ -15,9 +12,7 @@
 <div class="mb-6">
     <h1 class="text-xl font-extrabold text-slate-800 tracking-tight uppercase">Dashboard Utama</h1>
     <p class="text-xs text-slate-500 mt-1">Ringkasan operasional dan inventori lahan Mount Carmel secara real-time.</p>
-</div>
-
-{{-- Main Stats --}}
+</div>{{-- Main Stats --}}
 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
     <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100 border-l-4 border-l-[#800000]">
         <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Total Kapasitas Lahan</p>
@@ -28,11 +23,11 @@
         <h3 class="text-2xl font-black text-teal-600 tracking-tighter">{{ number_format($availableLahan) }} <span class="text-xs text-slate-300 uppercase">Ready</span></h3>
     </div>
     <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100 border-l-4 border-l-rose-500">
-        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Total Unit Terjual</p>
-        <h3 class="text-2xl font-black text-rose-600 tracking-tighter">{{ number_format($occupiedLahan) }} <span class="text-xs text-slate-300 uppercase">Sold</span></h3>
+        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Total Unit Terisi</p>
+        <h3 class="text-2xl font-black text-rose-600 tracking-tighter">{{ number_format($occupiedLahan) }} <span class="text-xs text-slate-300 uppercase">Occupied</span></h3>
     </div>
 </div>
-
+ 
 {{-- Detail Per Sektor --}}
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
     {{-- Sektor Muslim --}}
@@ -43,11 +38,7 @@
             </h4>
             <span class="text-[10px] font-bold text-slate-400 uppercase">{{ number_format($muslimStats['total']) }} Total Unit</span>
         </div>
-        <div class="p-4 grid grid-cols-4 gap-3 text-center">
-            <div class="bg-slate-50 p-2.5 rounded-lg">
-                <p class="text-[8px] font-bold text-slate-400 uppercase mb-1">Terjual</p>
-                <p class="text-base font-black text-slate-900 leading-none">{{ number_format($muslimStats['terjual']) }}</p>
-            </div>
+        <div class="p-4 grid grid-cols-3 gap-3 text-center">
             <div class="bg-slate-50 p-2.5 rounded-lg">
                 <p class="text-[8px] font-bold text-slate-400 uppercase mb-1">Reservasi</p>
                 <p class="text-base font-black text-slate-900 leading-none">{{ number_format($muslimStats['booked']) }}</p>
@@ -62,7 +53,7 @@
             </div>
         </div>
     </div>
-
+ 
     {{-- Sektor Non-Muslim --}}
     <div class="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden group">
         <div class="px-4 py-3 border-b border-slate-50 bg-slate-50/50 flex items-center justify-between">
@@ -71,11 +62,7 @@
             </h4>
             <span class="text-[10px] font-bold text-slate-400 uppercase">{{ number_format($nonMuslimStats['total']) }} Total Unit</span>
         </div>
-        <div class="p-4 grid grid-cols-4 gap-3 text-center">
-            <div class="bg-slate-50 p-2.5 rounded-lg">
-                <p class="text-[8px] font-bold text-slate-400 uppercase mb-1">Terjual</p>
-                <p class="text-base font-black text-slate-900 leading-none">{{ number_format($nonMuslimStats['terjual']) }}</p>
-            </div>
+        <div class="p-4 grid grid-cols-3 gap-3 text-center">
             <div class="bg-slate-50 p-2.5 rounded-lg">
                 <p class="text-[8px] font-bold text-slate-400 uppercase mb-1">Reservasi</p>
                 <p class="text-base font-black text-slate-900 leading-none">{{ number_format($nonMuslimStats['booked']) }}</p>
@@ -97,8 +84,12 @@
     <div class="lg:col-span-2 flex flex-col gap-6">
         {{-- Recent Sales Table --}}
         <div class="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
-            <div class="px-4 py-3 border-b border-slate-50">
+            <div class="px-4 py-3 border-b border-slate-50 flex items-center justify-between">
                 <h4 class="text-xs font-black text-slate-800 uppercase tracking-widest">Aktivitas Transaksi Terbaru</h4>
+                <a href="{{ route('manajer.reservasi.index') }}" class="text-[10px] font-bold text-[#800000] hover:underline uppercase tracking-wider flex items-center gap-1">
+                    Data Reservasi
+                    <span class="material-icons-outlined text-[14px]">arrow_forward</span>
+                </a>
             </div>
             <div class="overflow-x-auto">
                 <table class="w-full text-left text-sm">
@@ -115,7 +106,9 @@
                         @foreach($recentSales as $sale)
                         <tr class="hover:bg-slate-50 transition-colors">
                             <td class="px-4 py-2.5">
-                                <p class="font-bold text-slate-900 uppercase leading-none">{{ $sale['name'] }}</p>
+                                <a href="{{ route('manajer.reservasi.index') }}" class="font-bold text-slate-900 hover:text-[#800000] uppercase leading-none transition-colors block">
+                                    {{ $sale['name'] }}
+                                </a>
                                 <p class="text-[8px] text-slate-400 mt-1 uppercase">{{ $sale['email'] }}</p>
                             </td>
                             <td class="px-4 py-2.5 font-bold text-slate-500 uppercase">{{ $sale['type'] }}</td>
@@ -187,8 +180,8 @@
                 maintainAspectRatio: false,
                 plugins: { legend: { display: false } },
                 scales: {
-                    x: { grid: { display: false }, ticks: { font: { size: 9, family: 'Plus Jakarta Sans', weight: '600' }, color: '#94a3b8' } },
-                    y: { grid: { borderDash: [5, 5], color: '#f1f5f9' }, ticks: { font: { size: 9, family: 'Plus Jakarta Sans', weight: '600' }, color: '#94a3b8' } }
+                    x: { grid: { display: false }, ticks: { font: { size: 9, family: 'Roboto, sans-serif', weight: '600' }, color: '#94a3b8' } },
+                    y: { grid: { borderDash: [5, 5], color: '#f1f5f9' }, ticks: { font: { size: 9, family: 'Roboto, sans-serif', weight: '600' }, color: '#94a3b8' } }
                 }
             }
         });

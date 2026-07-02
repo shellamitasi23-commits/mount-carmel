@@ -52,7 +52,16 @@ class LaporanController extends Controller
 
     public function lahan(Request $request)
     {
-        $lahanQuery = Lahan::with('cluster')->whereIn('status', ['Terjual', 'Digunakan']);
+        $lahanQuery = Lahan::with('cluster')->whereIn('status', ['Reservasi (Lunas)', 'Reservasi Cicilan dengan DP', 'Terjual', 'Digunakan']);
+        
+        if ($request->filled('status')) {
+            if ($request->status === 'Reservasi (Lunas)') {
+                $lahanQuery->whereIn('status', ['Reservasi (Lunas)', 'Terjual']);
+            } else {
+                $lahanQuery->where('status', $request->status);
+            }
+        }
+
         if ($request->filled('search')) {
             $search = $request->search;
             $lahanQuery->where(function ($q) use ($search) {
@@ -104,7 +113,14 @@ class LaporanController extends Controller
 
         switch ($type) {
             case 'lahan':
-                $lahanQuery = Lahan::with('cluster')->whereIn('status', ['Terjual', 'Digunakan']);
+                $lahanQuery = Lahan::with('cluster')->whereIn('status', ['Reservasi (Lunas)', 'Reservasi Cicilan dengan DP', 'Terjual', 'Digunakan']);
+                if ($request->filled('status')) {
+                    if ($request->status === 'Reservasi (Lunas)') {
+                        $lahanQuery->whereIn('status', ['Reservasi (Lunas)', 'Terjual']);
+                    } else {
+                        $lahanQuery->where('status', $request->status);
+                    }
+                }
                 if ($request->filled('search')) {
                     $search = $request->search;
                     $lahanQuery->where(function ($q) use ($search) {

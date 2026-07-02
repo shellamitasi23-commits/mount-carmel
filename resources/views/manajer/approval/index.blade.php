@@ -18,7 +18,7 @@
 </div>
 
 <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100 mb-6">
-    <form method="GET" action="{{ route('manajer.approval.index') }}" class="grid grid-cols-1 md:grid-cols-2 gap-4 items-end">
+    <form method="GET" action="{{ route('manajer.approval.index') }}" class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
         <div>
             <label class="block text-xs font-black text-slate-400 uppercase tracking-widest mb-1.5">Cari Data</label>
             <div class="relative">
@@ -27,12 +27,22 @@
                        class="w-full pl-11 pr-4 py-2 bg-white border border-slate-100 rounded-xl text-sm font-medium shadow-sm focus:ring-4 focus:ring-slate-900/5 focus:border-slate-900 outline-none transition-all placeholder:text-slate-300">
             </div>
         </div>
+        <div>
+            <label class="block text-xs font-black text-slate-400 uppercase tracking-widest mb-1.5">Urutan Tanggal</label>
+            <div class="relative">
+                <select name="sort" onchange="this.form.submit()" class="w-full px-4 py-2 bg-white border border-slate-100 rounded-xl text-sm font-medium shadow-sm focus:ring-4 focus:ring-slate-900/5 focus:border-slate-900 outline-none transition-all appearance-none cursor-pointer">
+                    <option value="desc" {{ request('sort', 'desc') === 'desc' ? 'selected' : '' }}>Terbaru (Desc)</option>
+                    <option value="asc" {{ request('sort') === 'asc' ? 'selected' : '' }}>Terlama (Asc)</option>
+                </select>
+                <span class="material-icons-outlined absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-sm">swap_vert</span>
+            </div>
+        </div>
         <div class="flex gap-2">
-            <button type="submit" class="px-5 py-2 bg-[#800000] text-white rounded-xl font-bold text-xs uppercase tracking-widest hover:bg-[#800000]/90 transition-all">
+            <button type="submit" class="px-5 py-2 bg-[#800000] text-white rounded-xl font-bold text-xs uppercase tracking-widest hover:bg-[#800000]/90 transition-all flex-1 text-center justify-center">
                 Cari
             </button>
-            @if(request('search'))
-            <a href="{{ route('manajer.approval.index') }}" class="px-5 py-2 bg-slate-100 text-slate-500 rounded-xl font-bold text-xs uppercase tracking-widest hover:bg-slate-200 transition-all text-center flex items-center justify-center">
+            @if(request('search') || request('sort'))
+            <a href="{{ route('manajer.approval.index') }}" class="px-5 py-2 bg-slate-100 text-slate-500 rounded-xl font-bold text-xs uppercase tracking-widest hover:bg-slate-200 transition-all text-center flex items-center justify-center flex-1">
                 Reset
             </a>
             @endif

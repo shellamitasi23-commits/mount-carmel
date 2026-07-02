@@ -57,7 +57,7 @@
             <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Lahan Terisi</p>
             <h3 class="text-lg font-extrabold text-blue-600 mt-1">{{ $stats['terisi'] }} Unit</h3>
             <span class="inline-flex items-center gap-1 mt-1 text-[10px] font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full">
-                Terjual & Digunakan
+                Reservasi & Digunakan
             </span>
         </div>
         <div class="w-10 h-10 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">

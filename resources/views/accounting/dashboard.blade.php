@@ -3,11 +3,8 @@
 @section('title', 'Financial Dashboard — Mount Carmel')
 
 @push('styles')
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200..800&display=swap" rel="stylesheet">
 <style>
-    body { font-family: 'Plus Jakarta Sans', sans-serif !important; }
+    body { font-family: 'Roboto', sans-serif !important; }
 </style>
 @endpush
 

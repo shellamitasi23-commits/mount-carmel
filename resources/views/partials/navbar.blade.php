@@ -24,24 +24,19 @@
                             </a>
                         </li>
 
+                        <li>
+                            <a href="{{ route('pembeli.lahan.index') }}"
+                               class="block px-4 py-2 text-sm font-medium rounded-full transition-all {{ request()->routeIs('pembeli.lahan.*') ? 'bg-white text-primary shadow-sm' : 'text-gray-700 hover:text-primary hover:bg-white' }}">
+                                Lahan
+                            </a>
+                        </li>
+
                         @auth
-                        <li x-data="{ open: false }" class="relative">
-                            <button @click="open = !open" @click.away="open = false"
-                                    class="flex items-center gap-1 px-4 py-2 text-sm font-medium rounded-full transition-all {{ request()->routeIs('pembeli.reservasi.*') ? 'bg-white text-primary shadow-sm' : 'text-gray-700 hover:text-primary hover:bg-white' }}">
+                        <li>
+                            <a href="{{ route('pembeli.reservasi.index') }}"
+                               class="block px-4 py-2 text-sm font-medium rounded-full transition-all {{ request()->routeIs('pembeli.reservasi.*') ? 'bg-white text-primary shadow-sm' : 'text-gray-700 hover:text-primary hover:bg-white' }}">
                                 Reservasi
-                                <span class="material-icons text-xs" :class="open ? 'rotate-180' : ''" style="transition: transform .2s">expand_more</span>
-                            </button>
-                            <div x-show="open" x-transition style="display:none"
-                                 class="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-52 bg-white border border-gray-100 rounded-2xl shadow-xl py-2 z-50">
-                                <a href="{{ route('pembeli.reservasi.index') }}"
-                                   class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 {{ request()->routeIs('pembeli.reservasi.index') ? 'bg-primary/5 text-primary font-semibold' : '' }}">
-                                    <span class="material-icons text-primary" style="font-size:18px">list_alt</span> Riwayat Reservasi
-                                </a>
-                                <a href="{{ route('cluster.index') }}"
-                                   class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50">
-                                    <span class="material-icons text-primary" style="font-size:18px">add_circle</span> Pesan Baru
-                                </a>
-                            </div>
+                            </a>
                         </li>
                         @endauth
 
@@ -63,8 +58,12 @@
                         <div x-data="{ open: false }" class="relative">
                             <button @click="open = !open" @click.away="open = false"
                                     class="flex items-center gap-2 pl-3 pr-4 py-2 rounded-full hover:bg-gray-100 transition-colors">
-                                <div class="w-7 h-7 bg-primary/20 rounded-full flex items-center justify-center">
-                                    <span class="material-icons text-primary" style="font-size:16px">person</span>
+                                <div class="w-7 h-7 rounded-full overflow-hidden bg-[#800000] flex items-center justify-center text-white text-[10px] font-bold shrink-0">
+                                    @if(Auth::user()->avatar)
+                                        <img src="{{ asset('storage/avatars/' . Auth::user()->avatar) }}" class="w-full h-full object-cover">
+                                    @else
+                                        {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                                    @endif
                                 </div>
                                 <span class="text-sm font-semibold text-gray-700">{{ Auth::user()->name }}</span>
                                 <span class="material-icons text-gray-400" style="font-size:16px">expand_more</span>
@@ -74,9 +73,7 @@
                                 <a href="{{ route('profil.index') }}" class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50">
                                     <span class="material-icons" style="font-size:18px">manage_accounts</span> Profil
                                 </a>
-                                <a href="{{ route('profil.index', ['tab' => 'pembayaran']) }}" class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50">
-                                    <span class="material-icons text-amber-500" style="font-size:18px">payments</span> Pembayaran Saya
-                                </a>
+
                                 <hr class="my-1 border-gray-100" />
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf
@@ -133,24 +130,17 @@
                     Cluster
                 </a>
 
+                <a href="{{ route('pembeli.lahan.index') }}" class="flex items-center gap-3 px-4 py-3.5 rounded-xl text-[15px] font-medium transition-colors {{ request()->routeIs('pembeli.lahan.*') ? 'bg-primary/10 text-primary' : 'text-gray-600 hover:bg-gray-50' }}">
+                    <span class="material-icons text-[20px] {{ request()->routeIs('pembeli.lahan.*') ? 'text-primary' : 'text-gray-400' }}">landscape</span>
+                    Lahan
+                </a>
+
                 @auth
-                    <div x-data="{ sub: {{ request()->routeIs('pembeli.reservasi.*') ? 'true' : 'false' }} }">
-                        <button @click="sub = !sub" class="w-full flex items-center justify-between px-4 py-3.5 rounded-xl text-[15px] font-medium transition-colors {{ request()->routeIs('pembeli.reservasi.*') ? 'bg-primary/10 text-primary' : 'text-gray-600 hover:bg-gray-50' }}">
-                            <div class="flex items-center gap-3">
-                                <span class="material-icons text-[20px] {{ request()->routeIs('pembeli.reservasi.*') ? 'text-primary' : 'text-gray-400' }}">event_note</span>
-                                Reservasi
-                            </div>
-                        </button>
-                        <div x-show="sub" x-transition class="flex flex-col space-y-1 pl-12 pr-4 pt-1 pb-2">
-                            <a href="{{ route('pembeli.reservasi.index') }}" class="block py-2 text-sm {{ request()->routeIs('pembeli.reservasi.index') ? 'text-primary font-bold' : 'text-gray-500 hover:text-gray-800' }}">
-                                Riwayat Reservasi
-                            </a>
-                        </div>
-                    </div>
-                    <a href="{{ route('profil.index', ['tab' => 'pembayaran']) }}" class="flex items-center gap-3 px-4 py-3.5 rounded-xl text-[15px] font-medium transition-colors {{ request()->get('tab') === 'pembayaran' ? 'bg-primary/10 text-primary' : 'text-gray-600 hover:bg-gray-50' }}">
-                        <span class="material-icons text-[20px] {{ request()->get('tab') === 'pembayaran' ? 'text-primary' : 'text-gray-400' }}">payments</span>
-                        Pembayaran Saya
+                    <a href="{{ route('pembeli.reservasi.index') }}" class="flex items-center gap-3 px-4 py-3.5 rounded-xl text-[15px] font-medium transition-colors {{ request()->routeIs('pembeli.reservasi.*') ? 'bg-primary/10 text-primary' : 'text-gray-600 hover:bg-gray-50' }}">
+                        <span class="material-icons text-[20px] {{ request()->routeIs('pembeli.reservasi.*') ? 'text-primary' : 'text-gray-400' }}">event_note</span>
+                        Reservasi
                     </a>
+
                 @endauth
 
                 <a href="{{ route('kontak') }}" class="flex items-center gap-3 px-4 py-3.5 rounded-xl text-[15px] font-medium transition-colors {{ request()->routeIs('kontak') ? 'bg-primary/10 text-primary' : 'text-gray-600 hover:bg-gray-50' }}">
@@ -170,8 +160,12 @@
                 @auth
                     <div class="bg-white rounded-2xl p-4 border border-gray-100 shadow-sm">
                         <div class="flex items-center gap-3 mb-4">
-                            <div class="w-10 h-10 bg-primary/20 rounded-full flex items-center justify-center shrink-0">
-                                <span class="material-icons text-primary">person</span>
+                            <div class="w-10 h-10 rounded-xl overflow-hidden bg-[#800000] flex items-center justify-center text-white text-base font-bold shrink-0">
+                                @if(Auth::user()->avatar)
+                                    <img src="{{ asset('storage/avatars/' . Auth::user()->avatar) }}" class="w-full h-full object-cover">
+                                @else
+                                    {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                                @endif
                             </div>
                             <div class="overflow-hidden">
                                 <p class="text-[10px] text-gray-400 uppercase tracking-widest font-bold">Masuk sebagai</p>

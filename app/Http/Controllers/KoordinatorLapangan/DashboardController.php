@@ -17,7 +17,7 @@ class DashboardController extends Controller
             'total_cluster' => Cluster::count(),
             'total_lahan'   => Lahan::count(),
             'tersedia'      => Lahan::where('status', 'Tersedia')->count(),
-            'terisi'        => Lahan::whereIn('status', ['Terjual', 'Digunakan'])->count(),
+            'terisi'        => Lahan::whereIn('status', ['Reservasi (Lunas)', 'Reservasi Cicilan dengan DP', 'Terjual', 'Digunakan'])->count(),
         ];
 
         $latest_allocations = Reservasi::with(['user', 'lahan.cluster'])

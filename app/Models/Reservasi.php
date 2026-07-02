@@ -49,15 +49,19 @@ class Reservasi extends Model
 
             // Sync status approval to Slot 1 when status_reservasi becomes Disetujui or Selesai
             if ($reservasi->isDirty('status_reservasi') && in_array($reservasi->status_reservasi, ['Disetujui', 'Selesai'])) {
-                \App\Models\DetailJenazah::updateOrCreate(
-                    [
-                        'reservasi_id' => $reservasi->id,
-                        'nomor_slot' => 1,
-                    ],
-                    [
-                        'status' => 'Disetujui'
-                    ]
-                );
+                if (!empty($reservasi->nama_jenazah)) {
+                    \App\Models\DetailJenazah::updateOrCreate(
+                        [
+                            'reservasi_id' => $reservasi->id,
+                            'nomor_slot' => 1,
+                        ],
+                        [
+                            'nama_jenazah' => $reservasi->nama_jenazah,
+                            'tanggal_dimakamkan' => $reservasi->tanggal_dimakamkan,
+                            'status' => 'Disetujui'
+                        ]
+                    );
+                }
             }
         });
     }

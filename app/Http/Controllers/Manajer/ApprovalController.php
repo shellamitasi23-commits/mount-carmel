@@ -28,7 +28,13 @@ class ApprovalController extends Controller
             });
         }
 
-        $reservasis = $query->latest()->paginate(15);
+        $sort = $request->input('sort', 'desc');
+        if (!in_array($sort, ['asc', 'desc'])) {
+            $sort = 'desc';
+        }
+        $query->orderBy('created_at', $sort);
+
+        $reservasis = $query->paginate(15)->appends($request->all());
         return view('manajer.approval.index', compact('reservasis'));
     }
 

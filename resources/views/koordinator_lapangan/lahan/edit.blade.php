@@ -70,7 +70,6 @@
                         <option value="Tersedia" {{ $lahan->status == 'Tersedia' ? 'selected' : '' }}>Tersedia</option>
                         <option value="Reservasi (Lunas)" {{ $lahan->status == 'Reservasi (Lunas)' ? 'selected' : '' }}>Reservasi (Lunas)</option>
                         <option value="Reservasi Cicilan dengan DP" {{ $lahan->status == 'Reservasi Cicilan dengan DP' ? 'selected' : '' }}>Reservasi Cicilan dengan DP</option>
-                        <option value="Terjual" {{ $lahan->status == 'Terjual' ? 'selected' : '' }}>Terjual</option>
                         <option value="Digunakan" {{ $lahan->status == 'Digunakan' ? 'selected' : '' }}>Digunakan</option>
                     </select>
                 </div>

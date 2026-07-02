@@ -73,9 +73,9 @@
                 </p>
             </div>
 
-            <a href="{{ route($role . '.pembeli.index') }}" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-semibold transition-all {{ request()->routeIs('*.pembeli.*') ? 'bg-[#800000] text-white shadow-sm' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800' }}">
-                <span class="material-icons-outlined text-[18px]">group</span>
-                {{ $role === 'manajer' ? 'View Pembeli' : ($role === 'accounting' ? 'View Data Pembeli' : 'Data Pembeli') }}
+            <a href="{{ route($role . '.pembayaran.index') }}" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-semibold transition-all {{ request()->routeIs('*.pembayaran.*') ? 'bg-[#800000] text-white shadow-sm' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800' }}">
+                <span class="material-icons-outlined text-[18px]">payments</span>
+                {{ $role === 'accounting' ? 'Kelola Pembayaran' : ($role === 'marketing' ? 'Data Pembayaran' : 'View Pembayaran') }}
             </a>
 
             @if(in_array($role, ['marketing', 'manajer']))
@@ -92,9 +92,9 @@
                 </a>
             @endif
 
-            <a href="{{ route($role . '.pembayaran.index') }}" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-semibold transition-all {{ request()->routeIs('*.pembayaran.*') ? 'bg-[#800000] text-white shadow-sm' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800' }}">
-                <span class="material-icons-outlined text-[18px]">payments</span>
-                {{ $role === 'accounting' ? 'Kelola Pembayaran' : ($role === 'marketing' ? 'Data Pembayaran' : 'View Pembayaran') }}
+            <a href="{{ route($role . '.pembeli.index') }}" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-semibold transition-all {{ request()->routeIs('*.pembeli.*') ? 'bg-[#800000] text-white shadow-sm' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800' }}">
+                <span class="material-icons-outlined text-[18px]">group</span>
+                {{ $role === 'manajer' ? 'View Pembeli' : ($role === 'accounting' ? 'View Data Pembeli' : 'Data Pembeli') }}
             </a>
         @endif
         @if(in_array($role, ['marketing', 'manajer']))

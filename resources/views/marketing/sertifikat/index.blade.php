@@ -26,20 +26,47 @@
     {{-- Statistik kecil --}}
     <div class="flex gap-3">
         <div class="bg-white border border-slate-100 rounded-xl px-3 py-2 text-center shadow-sm">
-            <p class="text-xl font-bold text-slate-900">{{ $reservasis->whereNotNull('file_sertifikat')->count() }}</p>
+            <p class="text-xl font-bold text-slate-900">{{ $countSudah }}</p>
             <p class="text-[10px] text-slate-400 uppercase tracking-wider font-semibold">Sudah Terbit</p>
         </div>
         <div class="bg-white border border-slate-100 rounded-xl px-3 py-2 text-center shadow-sm">
-            <p class="text-xl font-bold text-amber-600">{{ $reservasis->whereNull('file_sertifikat')->count() }}</p>
+            <p class="text-xl font-bold text-amber-600">{{ $countBelum }}</p>
             <p class="text-[10px] text-slate-400 uppercase tracking-wider font-semibold">Belum Terbit</p>
         </div>
     </div>
 </div>
 
+{{-- Filtering --}}
+<div class="bg-white border border-slate-100 rounded-xl shadow-sm p-4 mb-6">
+    <form action="{{ route('marketing.sertifikat.index') }}" method="GET" class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
+        <div class="md:col-span-2">
+            <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5">Cari Pembeli / Lahan</label>
+            <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama, email pembeli, atau nomor lahan..." 
+                   class="w-full px-4 py-2 bg-slate-50 border border-slate-100 rounded-xl text-sm font-bold outline-none focus:ring-2 focus:ring-slate-900/5 focus:border-slate-900 transition-all">
+        </div>
+        <div>
+            <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5">Status Sertifikat</label>
+            <select name="status" onchange="this.form.submit()" class="w-full bg-slate-50 border border-slate-100 rounded-xl px-4 py-2 text-sm font-bold outline-none focus:ring-2 focus:ring-slate-900/5 focus:border-slate-900 transition-all cursor-pointer">
+                <option value="">Semua Status</option>
+                <option value="belum_terbit" {{ request('status') == 'belum_terbit' ? 'selected' : '' }}>Belum Terbit</option>
+                <option value="terbit" {{ request('status') == 'terbit' ? 'selected' : '' }}>Sudah Terbit</option>
+            </select>
+        </div>
+        <div class="flex gap-2">
+            @if(request('search') || request('status'))
+            <a href="{{ route('marketing.sertifikat.index') }}" 
+               class="w-full bg-slate-100 text-slate-500 px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-widest hover:bg-slate-200 transition-all text-center flex items-center justify-center font-bold">
+                Reset
+            </a>
+            @endif
+        </div>
+    </form>
+</div>
+
 @if($reservasis->isEmpty())
 <div class="py-10 text-center bg-white rounded-xl border border-slate-100 shadow-sm">
     <span class="material-icons-outlined text-5xl text-slate-200 block mb-3">workspace_premium</span>
-    <p class="font-medium text-slate-500">Belum ada pembayaran yang lunas.</p>
+    <p class="font-medium text-slate-500">Belum ada data reservasi atau sertifikat.</p>
     <p class="text-xs text-slate-400 mt-1">Sertifikat bisa diterbitkan setelah pembayaran dikonfirmasi Lunas.</p>
 </div>
 @else
@@ -189,6 +216,12 @@
     </div>
     @endforeach
 </div>
+
+@if(method_exists($reservasis, 'hasPages') && $reservasis->hasPages())
+<div class="mt-6 px-4 py-3 bg-white border border-slate-100 rounded-xl shadow-sm">
+    {{ $reservasis->appends(request()->query())->links() }}
+</div>
+@endif
 
 @endif
 

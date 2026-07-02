@@ -25,6 +25,10 @@ class JenazahController extends Controller
             });
         }
 
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
         $jenazahs = $query->latest('tanggal_dimakamkan')->paginate(50);
 
         return view('marketing.jenazah.index', compact('jenazahs'));

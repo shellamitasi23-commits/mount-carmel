@@ -115,16 +115,28 @@
 
                 {{-- Upload Proof --}}
                 <div class="group">
-                    <label class="block text-xs font-semibold text-gray-500 dark:text-gray-400 mb-2">
+                    <label class="block text-xs font-semibold text-gray-500 dark:text-gray-400 mb-3">
                         Unggah Bukti Transfer <span class="text-[#800000]">*</span>
                     </label>
-                    <div class="relative">
-                        <input type="file" name="bukti_pembayaran" id="bukti_pembayaran" class="hidden" accept=".jpg,.jpeg,.png,.pdf" required
-                               onchange="document.getElementById('file_name_display').textContent = this.files[0]?.name">
+                    <div x-data="{ fileName: '' }" class="relative">
+                        <input type="file" name="bukti_pembayaran" id="bukti_pembayaran" accept=".jpg,.jpeg,.png,.pdf" required
+                               @change="fileName = $event.target.files[0] ? $event.target.files[0].name : ''"
+                               class="sr-only">
                         <label for="bukti_pembayaran" 
-                               class="flex flex-col items-center justify-center p-8 border border-dashed border-gray-200 dark:border-gray-800 rounded-xl bg-gray-50 dark:bg-gray-950 hover:bg-white dark:hover:bg-gray-900 hover:border-[#800000] transition-all cursor-pointer text-center">
-                            <span class="text-xs font-semibold text-gray-900 dark:text-white mb-1" id="file_name_display">Pilih File Bukti Transfer</span>
-                            <span class="text-[10px] text-gray-400 font-medium">JPG, PNG, atau PDF (Maks. 4MB)</span>
+                               class="flex flex-col items-center justify-center border-2 border-dashed border-gray-200 dark:border-gray-800 rounded-2xl p-6 bg-gray-50/50 dark:bg-gray-900/30 hover:bg-gray-50 dark:hover:bg-gray-900 hover:border-[#800000]/40 dark:hover:border-[#800000]/40 transition-all duration-300 cursor-pointer text-center group/upload">
+                            <div class="w-10 h-10 rounded-full bg-[#800000]/5 dark:bg-[#800000]/10 flex items-center justify-center text-[#800000] mb-3 transition-transform duration-300 group-hover/upload:-translate-y-1">
+                                <i class="bi bi-cloud-arrow-up text-lg"></i>
+                            </div>
+                            <p class="text-xs font-bold text-gray-700 dark:text-gray-300 mb-1">
+                                <span x-text="fileName ? 'Ganti Bukti Transfer' : 'Pilih File Bukti Transfer'"></span>
+                            </p>
+                            <p class="text-[9px] font-semibold text-gray-400 uppercase tracking-wider mb-2">
+                                Format: JPG, PNG, atau PDF (Maks. 4MB)
+                            </p>
+                            <div x-show="fileName" x-transition class="inline-flex items-center gap-1.5 px-3 py-1 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-[10px] font-semibold text-slate-700 dark:text-slate-300 max-w-full">
+                                <i class="bi bi-paperclip"></i>
+                                <span x-text="fileName" class="truncate max-w-[200px]"></span>
+                            </div>
                         </label>
                     </div>
                 </div>

@@ -101,8 +101,8 @@
 
         {{-- Extras --}}
         <div class="form-extras">
-          <label class="remember-me">
-            <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}/>
+          <label class="remember-me" for="remember">
+            <input type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}/>
             Ingat saya
           </label>
           @if (Route::has('password.request'))

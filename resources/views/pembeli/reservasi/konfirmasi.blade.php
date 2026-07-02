@@ -6,14 +6,14 @@
     <div class="max-w-6xl mx-auto px-8">
 
         {{-- Minimalist Breadcrumb --}}
-        <nav class="flex items-center gap-4 text-xs font-semibold text-gray-400 mb-12" data-aos="fade-down">
+        <nav class="flex items-center gap-2 text-xs text-gray-400 mb-8" data-aos="fade-down">
             <a href="{{ route('home') }}" class="hover:text-[#800000] transition-colors">Beranda</a>
             <span class="text-gray-200 dark:text-gray-800">/</span>
-            <span class="text-gray-900 dark:text-white">Konfirmasi Reservasi</span>
+            <span class="text-slate-900 dark:text-white font-medium">Konfirmasi Reservasi</span>
         </nav>
 
         {{-- Minimalist Progress Bar --}}
-        <div class="flex items-center justify-between max-w-2xl mx-auto mb-20" data-aos="fade-down">
+        <div class="flex items-center justify-between max-w-2xl mx-auto mb-16" data-aos="fade-down">
             @foreach([
                 ['label'=>'Pilih Lahan','done'=>true,'active'=>false],
                 ['label'=>'Pilih Nomor','done'=>true,'active'=>false],
@@ -21,19 +21,19 @@
                 ['label'=>'Konfirmasi','done'=>false,'active'=>true],
                 ['label'=>'Pembayaran','done'=>false,'active'=>false],
             ] as $s)
-            <div class="flex flex-col items-center gap-3 relative">
-                <div class="w-6 h-6 rounded-full flex items-center justify-center text-xs font-semibold
+            <div class="flex flex-col items-center gap-2 relative">
+                <div class="w-7 h-7 rounded-full flex items-center justify-center text-xs font-semibold
                     {{ $s['active'] ? 'bg-[#800000] text-white ring-4 ring-[#800000]/10' :
-                       ($s['done'] ? 'bg-[#800000]/20 text-[#800000]' : 'bg-gray-100 text-gray-300 dark:bg-gray-900 dark:text-gray-700') }}">
+                       ($s['done'] ? 'bg-[#800000]/20 text-[#800000]' : 'bg-gray-100 text-gray-400 dark:bg-gray-900 dark:text-gray-600') }}">
                     {{ $loop->index + 1 }}
                 </div>
-                <span class="text-xs font-semibold whitespace-nowrap
-                    {{ $s['active'] ? 'text-[#800000]' : ($s['done'] ? 'text-[#800000]/80' : 'text-gray-300 dark:text-gray-700') }}">
+                <span class="text-[10px] font-medium tracking-wide whitespace-nowrap
+                    {{ $s['active'] ? 'text-[#800000] font-semibold' : ($s['done'] ? 'text-[#800000]/80' : 'text-gray-400 dark:text-gray-600') }}">
                     {{ $s['label'] }}
                 </span>
             </div>
             @if(!$loop->last)
-            <div class="flex-1 h-px bg-gray-100 dark:bg-gray-900 mx-4 mb-8"></div>
+            <div class="flex-1 h-px bg-gray-200 dark:bg-gray-800 mx-4 mb-6"></div>
             @endif
             @endforeach
         </div>

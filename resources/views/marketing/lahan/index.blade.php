@@ -15,12 +15,7 @@
         <h1 class="text-2xl font-bold text-slate-800">Data Lahan</h1>
         <p class="text-sm text-slate-500 mt-1">Kelola lahan per cluster. Madinah (Muslim) & Mount Carmel (Non-Muslim).</p>
     </div>
-    @if(auth()->user()->role == 'marketing')
-    <button onclick="openModal()"
-            class="bg-[#800000] hover:bg-[#800000]/80 text-white px-5 py-2.5 rounded-xl font-semibold flex items-center gap-2 shadow-md text-sm hover:-translate-y-0.5 transition-all">
-        <span class="material-icons-outlined text-sm">add</span> Tambah Lahan
-    </button>
-    @endif
+
 </div>
 
 {{-- Filtering System --}}
@@ -46,7 +41,6 @@
                     <option value="Tersedia" {{ request('status') == 'Tersedia' ? 'selected' : '' }}>Tersedia</option>
                     <option value="Reservasi (Lunas)" {{ request('status') == 'Reservasi (Lunas)' ? 'selected' : '' }}>Reservasi (Lunas)</option>
                     <option value="Reservasi Cicilan dengan DP" {{ request('status') == 'Reservasi Cicilan dengan DP' ? 'selected' : '' }}>Reservasi Cicilan dengan DP</option>
-                    <option value="Terjual" {{ request('status') == 'Terjual' ? 'selected' : '' }}>Terjual</option>
                     <option value="Digunakan" {{ request('status') == 'Digunakan' ? 'selected' : '' }}>Digunakan</option>
                 </select>
                 <span class="material-icons-outlined absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-sm">expand_more</span>
@@ -91,9 +85,7 @@
                         <th class="px-4 py-2.5">Ukuran & Kapasitas</th>
                         <th class="px-4 py-2.5">Harga</th>
                         <th class="px-4 py-2.5">Status</th>
-                        @if(auth()->user()->role == 'marketing')
-                        <th class="px-4 py-2.5 text-center">Aksi</th>
-                        @endif
+
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-50 text-slate-700">
@@ -128,37 +120,11 @@
                                 <span class="px-3 py-1 bg-[#800000] text-white rounded-md text-[11px] font-bold uppercase">Digunakan</span>
                             @endif
                         </td>
-                        @if(auth()->user()->role == 'marketing')
-                        <td class="px-4 py-2.5 text-center">
-                            <div class="flex justify-center gap-2">
-                                <button onclick="openEditModal({{ $lahan->id }})"
-                                         class="text-slate-400 hover:text-slate-700 bg-white border border-slate-200 p-2 rounded-lg shadow-sm">
-                                    <span class="material-icons-outlined text-lg">edit</span>
-                                </button>
-                                <form id="form-delete-{{ $lahan->id }}" action="{{ route('marketing.lahan.destroy', $lahan->id) }}" method="POST">
-                                    @csrf @method('DELETE')
-                                    <button type="button"
-                                            @click="$dispatch('confirm-modal', { 
-                                                title: 'Hapus Lahan', 
-                                                message: 'Apakah Anda yakin ingin menghapus <b>Lahan #{{ $lahan->nomor_lahan }}</b>? <br><br> Data yang sudah dihapus tidak dapat dikembalikan.', 
-                                                confirmText: 'Ya, Hapus Lahan',
-                                                type: 'danger',
-                                                action: () => document.getElementById('form-delete-{{ $lahan->id }}').submit() 
-                                            })"
-                                            class="text-slate-400 hover:text-red-600 bg-white border border-slate-200 hover:border-red-200 p-2 rounded-lg shadow-sm transition-all">
-                                        <span class="material-icons-outlined text-lg">delete</span>
-                                    </button>
-                                </form>
-                            </div>
-                        </td>
-                        @endif
+
                     </tr>
-                    @if(auth()->user()->role == 'marketing')
-                    @include('marketing.lahan.edit')
-                    @endif
                     @empty
                     <tr>
-                        <td colspan="{{ auth()->user()->role=='admin'?'6':'5' }}" class="px-4 py-8 text-center text-slate-400">
+                        <td colspan="6" class="px-4 py-8 text-center text-slate-400">
                             <span class="material-icons-outlined text-4xl text-slate-200 block mb-2">crop_square</span>
                             <p class="font-medium">Belum ada Data Lahan.</p>
                             <p class="text-xs mt-1">
@@ -179,55 +145,5 @@
 
 </div>{{-- end x-data --}}
 
-@if(auth()->user()->role == 'marketing')
-@include('marketing.lahan.create')
-@endif
 
-<script>
-    function openModal()        { document.getElementById('createModal').classList.remove('hidden'); }
-    function closeModal()       { document.getElementById('createModal').classList.add('hidden'); }
-    function openEditModal(id)  { document.getElementById('editModal'+id).classList.remove('hidden'); }
-    function closeEditModal(id) { document.getElementById('editModal'+id).classList.add('hidden'); }
-
-
-    // --- LOGIC CENTRAL UNTUK EDIT MODALS ---
-    const masterLahan = @json($master_lahan);
-    
-    document.querySelectorAll('[id^="edit_tipe_lahan_"]').forEach(select => {
-        const id = select.id.replace('edit_tipe_lahan_', '');
-        
-        select.addEventListener('change', function() {
-            const selected = this.value;
-            const hadapSelect = document.getElementById('edit_hadap_' + id);
-            const ukuranInput = document.getElementById('edit_ukuran_' + id);
-            const kapasitasInput = document.getElementById('edit_kapasitas_' + id);
-            const hargaInput = document.getElementById('edit_harga_' + id);
-            const nomorInput = document.getElementById('edit_nomor_lahan_' + id);
-            
-            if (selected && masterLahan[selected]) {
-                const data = masterLahan[selected];
-                ukuranInput.value = data.ukuran;
-                kapasitasInput.value = data.kapasitas;
-                hargaInput.value = data.harga;
-                
-                // Reset & Isi Hadap
-                hadapSelect.innerHTML = '';
-                data.hadap_options.forEach(opt => {
-                    const o = document.createElement('option');
-                    o.value = opt;
-                    o.textContent = opt;
-                    hadapSelect.appendChild(o);
-                });
-
-                // Auto-suggest nomor prefix
-                if (data.hadap_options.length === 1) {
-                    const prefix = data.hadap_options[0].charAt(0).toUpperCase();
-                    if (!nomorInput.value.startsWith(prefix + '-')) {
-                        nomorInput.value = prefix + '-';
-                    }
-                }
-            }
-        });
-    });
-</script>
 @endsection

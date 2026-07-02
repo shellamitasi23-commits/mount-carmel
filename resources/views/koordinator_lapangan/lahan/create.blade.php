@@ -67,7 +67,6 @@
                         <option value="Tersedia">Tersedia</option>
                         <option value="Reservasi (Lunas)">Reservasi (Lunas)</option>
                         <option value="Reservasi Cicilan dengan DP">Reservasi Cicilan dengan DP</option>
-                        <option value="Terjual">Terjual</option>
                         <option value="Digunakan">Digunakan</option>
                     </select>
                 </div>

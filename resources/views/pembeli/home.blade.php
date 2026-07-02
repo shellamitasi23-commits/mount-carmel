@@ -228,43 +228,91 @@ document.addEventListener('DOMContentLoaded', function() {
         rect.on('mouseout', function() { this.setStyle({ fillOpacity: 0.8, weight: 0.5 }); });
     }
 
-    // 4. Render representative plots (Muslim Cluster)
-    // Map data to sectors in the image
-    let idxM = 0;
+    // 4. Render plots (Muslim Cluster)
     const sectorsM = [
-        { y: 800, x: 200, rows: 5, cols: 8 },
-        { y: 500, x: 200, rows: 5, cols: 8 },
-        { y: 800, x: 700, rows: 5, cols: 8 }
+        { y: 800, x: 1200 },
+        { y: 500, x: 1200 },
+        { y: 200, x: 1200 }
     ];
 
-    sectorsM.forEach(s => {
-        for(let r=0; r<s.rows; r++) {
-            for(let c=0; c<s.cols; c++) {
-                if(lahanMuslim[idxM]) {
-                    addPlot(lahanMuslim[idxM], s.y + r*35, s.x + c*55, 50, 30);
-                    idxM++;
+    lahanMuslim.forEach(l => {
+        const match = l.nomor_lahan.match(/\d+$/);
+        if (match) {
+            const num = parseInt(match[0], 10);
+            if (num >= 1 && num <= 120) {
+                const globalIndex = num - 1;
+                const sectorIndex = Math.floor(globalIndex / 40);
+                const inSectorIndex = globalIndex % 40;
+                const r = Math.floor(inSectorIndex / 8);
+                const c = inSectorIndex % 8;
+                
+                const s = sectorsM[sectorIndex];
+                if (s) {
+                    addPlot(l, s.y + r*35, s.x + c*55, 50, 30);
                 }
             }
         }
     });
 
-    // 5. Render representative plots (Non-Muslim Cluster)
-    let idxNM = 0;
+    // 5. Render plots (Non-Muslim Cluster)
     const sectorsNM = [
-        { y: 800, x: 1200, rows: 5, cols: 8 },
-        { y: 500, x: 1200, rows: 5, cols: 8 },
-        { y: 200, x: 1200, rows: 5, cols: 8 }
+        { y: 800, x: 200 },
+        { y: 500, x: 200 },
+        { y: 800, x: 700 }
     ];
 
-    sectorsNM.forEach(s => {
-        for(let r=0; r<s.rows; r++) {
-            for(let c=0; c<s.cols; c++) {
-                if(lahanNonMuslim[idxNM]) {
-                    addPlot(lahanNonMuslim[idxNM], s.y + r*35, s.x + c*55, 50, 30);
-                    idxNM++;
+    lahanNonMuslim.forEach(l => {
+        const match = l.nomor_lahan.match(/\d+$/);
+        if (match) {
+            const num = parseInt(match[0], 10);
+            if (num >= 1 && num <= 120) {
+                const globalIndex = num - 1;
+                const sectorIndex = Math.floor(globalIndex / 40);
+                const inSectorIndex = globalIndex % 40;
+                const r = Math.floor(inSectorIndex / 8);
+                const c = inSectorIndex % 8;
+                
+                const s = sectorsNM[sectorIndex];
+                if (s) {
+                    addPlot(l, s.y + r*35, s.x + c*55, 50, 30);
                 }
             }
         }
+    });
+
+    // 6. Add Facility Markers (Gerbang Masuk, Pos Security, Kantor Marketing)
+    const facilities = [
+        {
+            y: 1150,
+            x: 950,
+            title: "Gerbang Masuk & Pos Security",
+            desc: "Akses masuk utama kawasan Mount Carmel dengan penjagaan keamanan 24 jam.",
+            icon: "shield-fill-check"
+        },
+        {
+            y: 1150,
+            x: 1080,
+            title: "Kantor Marketing & Layanan Pelanggan",
+            desc: "Pusat informasi, administrasi, dan layanan reservasi lahan.",
+            icon: "building-fill"
+        }
+    ];
+
+    facilities.forEach(f => {
+        const customIcon = L.divIcon({
+            className: 'custom-facility-icon',
+            html: `<div class="w-10 h-10 rounded-full bg-[#800000] text-white flex items-center justify-center shadow-lg border-2 border-white hover:scale-110 transition-transform cursor-pointer"><i class="bi bi-${f.icon} text-lg"></i></div>`,
+            iconSize: [40, 40],
+            iconAnchor: [20, 20]
+        });
+
+        const marker = L.marker([f.y, f.x], { icon: customIcon }).addTo(map);
+        marker.bindPopup(`
+            <div class="p-2 min-w-[200px]">
+                <h4 class="font-black text-slate-900 text-sm mb-1">${f.title}</h4>
+                <p class="text-[11px] text-slate-500 leading-relaxed">${f.desc}</p>
+            </div>
+        `, { className: 'custom-popup' });
     });
 });
 </script>
@@ -277,6 +325,10 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     .custom-popup .leaflet-popup-tip {
         display: none;
+    }
+    .leaflet-div-icon.custom-facility-icon {
+        background: transparent !important;
+        border: none !important;
     }
 </style>
 

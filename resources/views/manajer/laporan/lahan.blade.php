@@ -19,7 +19,7 @@
         $tabs = [
             'reservasi' => 'Penjualan',
             'jenazah' => 'Data Jenazah',
-            'lahan' => 'Lahan Terjual',
+            'lahan' => 'Data Lahan',
             'pembeli' => 'Database Pembeli',
             'cluster' => 'Distribusi Cluster',
         ];
@@ -36,20 +36,27 @@
 {{-- Filtering --}}
 <div class="bg-white border border-slate-100 rounded-xl shadow-sm p-4 mb-6">
     <form action="{{ route('manajer.laporan.lahan') }}" method="GET" class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
-        <div class="md:col-span-3">
+        <div class="md:col-span-2">
             <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5">Cari Data</label>
-            <input type="text" name="search" value="{{ request('search') }}" placeholder="Masukkan kata kunci..." 
+            <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nomor lahan, tipe, atau cluster..." 
                    class="w-full px-4 py-2 bg-slate-50 border border-slate-100 rounded-xl text-sm font-bold outline-none focus:ring-2 focus:ring-slate-900/5 focus:border-slate-900 transition-all">
         </div>
-
+        <div>
+            <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5">Status</label>
+            <select name="status" onchange="this.form.submit()" class="w-full bg-slate-50 border border-slate-100 rounded-xl px-4 py-2 text-sm font-bold outline-none focus:ring-2 focus:ring-slate-900/5 focus:border-slate-900 transition-all cursor-pointer">
+                <option value="">Semua Status</option>
+                <option value="Reservasi (Lunas)" {{ request('status') == 'Reservasi (Lunas)' ? 'selected' : '' }}>Reservasi (Lunas)</option>
+                <option value="Reservasi Cicilan dengan DP" {{ request('status') == 'Reservasi Cicilan dengan DP' ? 'selected' : '' }}>Reservasi Cicilan dengan DP</option>
+                <option value="Digunakan" {{ request('status') == 'Digunakan' ? 'selected' : '' }}>Digunakan</option>
+            </select>
+        </div>
         <div class="flex gap-2">
-            <button type="submit" class="flex-1 bg-[#800000] text-white px-5 py-2 rounded-xl text-xs font-bold uppercase tracking-widest hover:bg-[#800000]/90 transition-all">
-                Filter
-            </button>
+            @if(request('search') || request('status'))
             <a href="{{ route('manajer.laporan.lahan') }}" 
-               class="bg-slate-100 text-slate-500 px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-widest hover:bg-slate-200 transition-all text-center font-bold flex items-center justify-center">
+               class="w-full bg-slate-100 text-slate-500 px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-widest hover:bg-slate-200 transition-all text-center flex items-center justify-center font-bold">
                 Reset
             </a>
+            @endif
         </div>
     </form>
 </div>
@@ -76,15 +83,14 @@
                     <td class="px-4 py-2.5 font-bold text-slate-900 text-sm">Rp {{ number_format($k->harga, 0, ',', '.') }}</td>
                     <td class="px-4 py-2.5 text-center">
                         <span class="inline-block px-3 py-1 rounded-md text-[10px] font-black uppercase tracking-tighter 
-                            {{ $k->status == 'Digunakan' ? 'bg-rose-100 text-rose-700 border border-rose-200' : 
-                               ($k->status == 'Terjual' ? 'bg-emerald-100 text-emerald-700 border border-emerald-200' : 'bg-amber-50 text-amber-700') }}">
-                            {{ $k->status }}
+                            {{ $k->status == 'Digunakan' ? 'bg-rose-100 text-rose-700 border border-rose-200' : 'bg-amber-50 text-amber-700' }}">
+                            {{ $k->status == 'Terjual' ? 'Reservasi (Lunas)' : $k->status }}
                         </span>
                     </td>
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="5" class="px-4 py-8 text-center font-bold text-slate-300 uppercase text-xs">Belum Ada Lahan Terjual</td>
+                    <td colspan="5" class="px-4 py-8 text-center font-bold text-slate-300 uppercase text-xs">Belum Ada Data Lahan</td>
                 </tr>
                 @endforelse
             </tbody>

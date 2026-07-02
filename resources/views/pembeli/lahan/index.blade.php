@@ -11,7 +11,7 @@ Lahan — {{ $cluster->nama_cluster }}
         <nav class="flex items-center gap-2 text-xs text-gray-400 mb-8">
             <a href="{{ route('home') }}" class="hover:text-slate-900 transition-colors">Beranda</a>
             <span>/</span>
-            <a href="{{ route('cluster.index') }}" class="hover:text-slate-900 transition-colors">Cluster</a>
+            <a href="{{ route('pembeli.lahan.index') }}" class="hover:text-slate-900 transition-colors">Lahan</a>
             <span>/</span>
             <span class="text-slate-900 font-medium">{{ $cluster->nama_cluster }}</span>
         </nav>
@@ -91,9 +91,7 @@ Lahan — {{ $cluster->nama_cluster }}
                             $placeholderImg = asset('storage/assets/tipe/super-family.png');
                         } elseif (str_contains($tipeLower, 'royal family') || str_contains($tipeLower, 'royal-family') || str_contains($tipeLower, 'royal')) {
                             $placeholderImg = asset('storage/assets/tipe/royal-family.png');
-                        } elseif (str_contains($tipeLower, 'vip ')) {
-                            $placeholderImg = asset('storage/assets/tipe/vip.png');
-                        } elseif (str_contains($tipeLower, 'vip special')) {
+                        } elseif (str_contains($tipeLower, 'vip')) {
                             $placeholderImg = asset('storage/assets/tipe/vip.png');
                         } elseif (str_contains($tipeLower, 'family')) {
                             $placeholderImg = asset('storage/assets/tipe/family.png');
@@ -143,7 +141,7 @@ Lahan — {{ $cluster->nama_cluster }}
                     <div class="mt-auto pt-4 border-t border-slate-100 dark:border-gray-850">
                         <a href="{{ route('pembeli.lahan.nomor', ['cluster_id' => $cluster->id, 'tipe_lahan' => $tipe['tipe_lahan']]) }}"
                            class="w-full inline-flex justify-center items-center gap-2 bg-[#800000] text-white text-center py-4 rounded-xl text-xs font-black uppercase tracking-[0.2em] hover:bg-[#800000]/90 transition-all shadow-md hover:shadow-lg hover:shadow-[#800000]/10 duration-300 group/btn">
-                            <span>Pilih Nomor Kavling</span>
+                            <span>Pilih Nomor Lahan</span>
                             <svg class="w-4 h-4 transform group-hover/btn:translate-x-1 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
                             </svg>

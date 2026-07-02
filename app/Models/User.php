@@ -19,6 +19,9 @@ class User extends Authenticatable
         'no_telepon',
         'alamat',
         'avatar',
+        'otp_code',
+        'otp_expires_at',
+        'email_verified_at',
     ];
 
     protected $hidden = [
