@@ -49,6 +49,13 @@
                 {{ in_array($role, ['marketing', 'koordinator_lapangan']) ? 'Data Lahan' : 'View Lahan' }}
             </a>
 
+            @if($role === 'koordinator_lapangan')
+            <a href="{{ route('koordinator_lapangan.reservasi.index') }}" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-semibold transition-all {{ request()->routeIs('*.reservasi.*') ? 'bg-[#800000] text-white shadow-sm' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800' }}">
+                <span class="material-icons-outlined text-[18px]">book_online</span>
+                Reservasi Lahan
+            </a>
+            @endif
+
             @if(in_array($role, ['marketing', 'manajer']))
             <a href="{{ route('marketing.jenazah.index') }}" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-semibold transition-all {{ request()->routeIs('*.jenazah.*') ? 'bg-[#800000] text-white shadow-sm' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800' }}">
                 <span class="material-icons-outlined text-[18px]">person</span>
@@ -112,7 +119,7 @@
                 <p class="px-3 text-[9px] font-black tracking-widest text-slate-400 uppercase leading-none">Dokumen</p>
             </div>
 
-            <a href="{{ route('marketing.sertifikat.index') }}" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-semibold transition-all {{ request()->routeIs('*.sertifikat.*') ? 'bg-[#800000] text-white shadow-sm' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800' }}">
+            <a href="{{ route($role . '.sertifikat.index') }}" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-semibold transition-all {{ request()->routeIs('*.sertifikat.*') ? 'bg-[#800000] text-white shadow-sm' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800' }}">
                 <span class="material-icons-outlined text-[18px]">workspace_premium</span>
                 Sertifikat Lahan
             </a>

@@ -98,7 +98,7 @@
         
     </div>
  
-    {{-- Global Confirmation Modal --}}
+    
     <div x-show="confirmModal.show" class="fixed inset-0 z-[9999] flex items-center justify-center p-4" x-cloak>
         <div x-show="confirmModal.show" class="absolute inset-0 bg-slate-900/60 backdrop-blur-md" @click="confirmModal.show = false"></div>
         <div x-show="confirmModal.show" class="relative bg-white rounded-3xl w-full max-w-md overflow-hidden shadow-2xl p-8">
@@ -124,4 +124,4 @@
  
     <style>[x-cloak] { display: none !important; }</style>
 </body>
-</html>
+</html>

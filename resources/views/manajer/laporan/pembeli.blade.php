@@ -13,7 +13,7 @@
     </a>
 </div>
 
-{{-- Navigation Tabs --}}
+
 <div class="flex items-center gap-1.5 mb-6 p-1.5 bg-white border border-slate-100 rounded-xl w-full shadow-sm overflow-x-auto whitespace-nowrap">
     @php
         $tabs = [
@@ -33,7 +33,7 @@
     @endforeach
 </div>
 
-{{-- Filtering --}}
+
 <div class="bg-white border border-slate-100 rounded-xl shadow-sm p-4 mb-6">
     <form action="{{ route('manajer.laporan.pembeli') }}" method="GET" class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
         <div class="md:col-span-3">
@@ -54,7 +54,7 @@
     </form>
 </div>
 
-{{-- Data Table --}}
+
 <div class="bg-white border border-slate-100 rounded-xl shadow-sm overflow-hidden">
     <div class="overflow-x-auto">
         <table class="w-full text-left text-sm whitespace-nowrap">

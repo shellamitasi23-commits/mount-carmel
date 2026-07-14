@@ -17,7 +17,7 @@
     </div>
 </div>
 
-{{-- Filtering System --}}
+
 <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100 mb-6">
     <form method="GET" action="{{ route('accounting.pembayaran.index') }}" class="grid grid-cols-1 md:grid-cols-5 gap-4 items-end">
         <div class="md:col-span-2">
@@ -99,7 +99,7 @@
                     </td>
                     <td class="px-4 py-2.5 text-center">
                         @if($p->bukti_pembayaran)
-                        <a href="{{ asset('storage/' . $p->bukti_pembayaran) }}" target="_blank"
+                        <a href="{{ route('document.bukti-bayar', $p->id) }}" target="_blank"
                            class="inline-flex items-center gap-1.5 text-indigo-600 hover:text-indigo-800 font-bold text-[11px] uppercase tracking-wider">
                             <span class="material-icons-outlined text-sm">visibility</span> Lihat Bukti
                         </a>

@@ -121,7 +121,7 @@ class ReservasiController extends Controller
         }
 
         // Upload KTP
-        $ktpPath = $request->file('dokumen_ktp')->store('dokumen_reservasi', 'public');
+        $ktpPath = $request->file('dokumen_ktp')->store('dokumen_reservasi', 'local');
 
         // Simpan reservasi
         $reservasi = Reservasi::create([

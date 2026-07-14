@@ -5,7 +5,7 @@
 <div class="min-h-screen bg-[#F3F4F6] pt-28 pb-20">
 <div class="max-w-5xl mx-auto px-6">
 
-    {{-- Header --}}
+    
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-10" data-aos="fade-up">
         <div>
             <h1 class="text-3xl font-bold text-gray-900 mb-1">Reservasi Saya</h1>
@@ -30,7 +30,7 @@
     @endif
 
     @if($reservasis->isEmpty())
-    {{-- Kosong --}}
+    
     <div class="py-20 text-center bg-white rounded-2xl border border-gray-100 shadow-sm" data-aos="fade-up">
         <span class="material-icons text-5xl text-gray-200 block mb-3">inbox</span>
         <h3 class="text-lg font-bold text-gray-400 mb-1">Belum Ada Reservasi</h3>
@@ -52,7 +52,7 @@
         <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-md transition-all duration-300"
              data-aos="fade-up" data-aos-delay="{{ ($i % 5) * 60 }}">
 
-            {{-- Bar status --}}
+            
             <div class="h-1 w-full
                 {{ $statusReservasi === 'Selesai' ? 'bg-emerald-500' :
                    ($statusReservasi === 'Disetujui' ? 'bg-blue-500' :
@@ -61,14 +61,14 @@
 
             <div class="p-5 flex flex-col md:flex-row md:items-center gap-4">
 
-                {{-- Ikon --}}
+                
                 <div class="w-12 h-12 rounded-xl {{ $res->lahan->cluster->kategori === 'Muslim' ? 'bg-emerald-50' : 'bg-amber-50' }} flex items-center justify-center shrink-0">
                     <span class="material-icons {{ $res->lahan->cluster->kategori === 'Muslim' ? 'text-emerald-600' : 'text-amber-600' }}">
                         {{ $res->lahan->cluster->kategori === 'Muslim' ? 'mosque' : 'church' }}
                     </span>
                 </div>
 
-                {{-- Info --}}
+                
                 <div class="flex-grow">
                     <div class="flex flex-wrap items-center gap-2 mb-1">
                         <h3 class="font-bold text-gray-900">lahan #{{ $res->lahan->nomor_lahan }}</h3>
@@ -78,6 +78,21 @@
                                ($statusReservasi === 'Ditolak' ? 'bg-red-100 text-red-700' : 'bg-amber-100 text-amber-700')) }}">
                             {{ $statusReservasi }}
                         </span>
+                        @if($statusReservasi === 'Menunggu Validasi')
+                            @if($res->konfirmasi_lahan === 'Belum Dikonfirmasi')
+                                <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 text-amber-600 border border-amber-200">
+                                    Menunggu Cek Lapangan
+                                </span>
+                            @elseif($res->konfirmasi_lahan === 'Tersedia')
+                                <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-600 border border-emerald-200">
+                                    Lahan Terkonfirmasi Tersedia
+                                </span>
+                            @endif
+                        @elseif($statusReservasi === 'Ditolak' && $res->konfirmasi_lahan === 'Tidak Tersedia')
+                            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-50 text-rose-600 border border-rose-200">
+                                Lahan Tidak Tersedia di Lapangan
+                            </span>
+                        @endif
                     </div>
                     <p class="text-xs text-gray-400 mb-0.5">
                         {{ $res->lahan->cluster->nama_cluster }} &middot; {{ $res->lahan->tipe_lahan }}
@@ -93,7 +108,7 @@
                     </p>
                 </div>
 
-                {{-- Harga + Status Bayar + Aksi --}}
+                
                 <div class="flex flex-col md:items-end gap-2 shrink-0">
                     <p class="font-bold text-gray-900">Rp {{ number_format($res->lahan->harga, 0, ',', '.') }}</p>
 

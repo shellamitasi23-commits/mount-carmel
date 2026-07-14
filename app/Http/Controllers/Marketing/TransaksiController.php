@@ -62,6 +62,18 @@ class TransaksiController extends Controller
             'tanggal_dimakamkan' => 'nullable|date',
         ]);
 
+        // Cek apakah user adalah pembeli
+        $user = User::findOrFail($request->user_id);
+        if ($user->role !== 'pembeli') {
+            return redirect()->back()->withErrors(['user_id' => 'Pengguna terpilih bukan bertipe Pembeli.']);
+        }
+
+        // Cek ketersediaan lahan (mencegah race condition)
+        $lahan = Lahan::findOrFail($request->lahan_id);
+        if ($lahan->status !== 'Tersedia') {
+            return redirect()->back()->withErrors(['lahan_id' => 'Lahan #' . $lahan->nomor_lahan . ' sudah tidak tersedia.']);
+        }
+
         $reservasi = Reservasi::create([
             'user_id' => $request->user_id,
             'lahan_id' => $request->lahan_id,
@@ -73,7 +85,7 @@ class TransaksiController extends Controller
             'marketing_oleh' => auth()->user()->name,
         ]);
 
-        Lahan::where('id', $request->lahan_id)->update(['status' => 'Reservasi (Lunas)']);
+        $lahan->update(['status' => 'Reservasi (Lunas)']);
 
         return redirect()->back()->with('success', 'Reservasi berhasil ditambahkan!');
     }

@@ -8,13 +8,11 @@
 $reservedLahans = $reservedLahans ?? [];
 @endphp
 
-{{-- External Home Styles --}}
+
 <link rel="stylesheet" href="{{ asset('css/home.css') }}"/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Poppins:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet" />
 
-{{-- ═══════════════════════════════════════════════════════════════
-     HERO SECTION
-     ═══════════════════════════════════════════════════════════════ --}}
+
 
 <header class="relative overflow-hidden min-h-screen flex flex-col pt-28 md:pt-40 px-4 md:px-8 xl:px-24">
     <div data-aos="fade-in" data-aos-duration="1500" class="absolute top-0 right-0 w-1/2 h-full bg-primary/20 rounded-bl-[100px] md:rounded-bl-[200px] -z-10"></div>
@@ -36,7 +34,7 @@ $reservedLahans = $reservedLahans ?? [];
         Browser Anda tidak mendukung pemutaran video.
     </video>
             
-            {{-- Floating cards: hanya tampil di md ke atas --}}
+            
             <div data-aos="fade-right" data-aos-delay="500" class="hero-float-card absolute bottom-8 left-8 bg-white/90 backdrop-blur-md p-6 rounded-2xl shadow-lg max-w-sm transition-transform hover:-translate-y-2 cursor-pointer btn-press">
                 <img alt="Pratinjau cluster" class="w-full h-40 object-cover rounded-xl mb-4" src="/storage/assets/cluster-hero.jpg" />
                 <div class="flex justify-between items-center">
@@ -54,7 +52,7 @@ $reservedLahans = $reservedLahans ?? [];
             </div>
         </div>
 
-        {{-- CTA cards mobile only: tampil di bawah gambar di mobile --}}
+        
         <div class="flex gap-3 mt-4 md:hidden">
             <a href="{{ url('/cluster') }}" class="btn-press flex-1 flex items-center justify-between gap-2 bg-white border border-gray-200 rounded-2xl p-4 shadow-sm">
                 <span class="font-semibold text-gray-900 text-sm">Lihat Cluster</span>
@@ -68,9 +66,7 @@ $reservedLahans = $reservedLahans ?? [];
     </div>
 </header>
 
-{{-- ═══════════════════════════════════════════════════════════════
-     STATISTIK
-     ═══════════════════════════════════════════════════════════════ --}}
+
 <section class="py-0 px-4 md:px-8 xl:px-24 bg-white overflow-hidden">
     <div class="max-w-7xl mx-auto">
         <div class="grid grid-cols-2 md:grid-cols-4 divide-x divide-y md:divide-y-0 divide-gray-100">
@@ -95,9 +91,7 @@ $reservedLahans = $reservedLahans ?? [];
     </div>
 </section>
 
-{{-- ═══════════════════════════════════════════════════════════════
-     KEINDAHAN SECTION
-     ═══════════════════════════════════════════════════════════════ --}}
+
 <section class="py-16 md:py-24 px-4 md:px-8 xl:px-24 bg-white">
     <div class="max-w-7xl mx-auto flex flex-col md:flex-row gap-8 md:gap-16">
         <div class="md:w-1/2 flex flex-col justify-between gap-8">
@@ -125,9 +119,7 @@ $reservedLahans = $reservedLahans ?? [];
     <hr class="mt-16 md:mt-32 border-gray-200 max-w-7xl mx-auto" />
 </section>
 
-{{-- ═══════════════════════════════════════════════════════════════
-     MARQUEE
-     ══════════════════════════════════════�{{-- Leaflet.js for Interactive Map --}}
+
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
@@ -144,7 +136,7 @@ $reservedLahans = $reservedLahans ?? [];
                 </p>
             </div>
             
-            {{-- Legend --}}
+            
             <div data-aos="fade-up" data-aos-delay="300" class="flex flex-wrap gap-4 md:gap-8 mb-8">
                 <div class="flex items-center gap-2">
                     <div class="w-4 h-4 rounded bg-[#6EE7B7] shadow-sm border border-emerald-600/10"></div>
@@ -391,18 +383,18 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div data-aos="fade-up" data-aos-delay="{{ ($i % 3) * 100 }}"
                      class="group bg-white rounded-3xl border border-slate-100/80 overflow-hidden shadow-sm hover:shadow-2xl hover:border-slate-200/80 transition-all duration-500 flex flex-col hover:-translate-y-1">
                     
-                    {{-- Photo with scale zoom effect --}}
+                    
                     <div class="relative w-full h-48 overflow-hidden shrink-0">
                         <img src="{{ $f['img'] }}" alt="{{ $f['title'] }}" class="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-105">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent"></div>
                         
-                        {{-- Floating Icon with color transition --}}
+                        
                         <div class="absolute bottom-4 left-4 w-12 h-12 bg-white/90 backdrop-blur-sm rounded-2xl flex items-center justify-center shadow-md group-hover:bg-[#800000] group-hover:text-white transition-all duration-300">
                             <span class="material-icons text-slate-700 group-hover:text-white transition-colors text-xl">{{ $f['icon'] }}</span>
                         </div>
                     </div>
 
-                    {{-- Content --}}
+                    
                     <div class="p-6 md:p-8 flex-grow flex flex-col justify-between">
                         <div class="space-y-3">
                             <h3 class="font-poppins font-bold text-slate-800 text-base md:text-lg group-hover:text-[#800000] transition-colors duration-300">{{ $f['title'] }}</h3>
@@ -417,9 +409,7 @@ document.addEventListener('DOMContentLoaded', function() {
     </div>
 </section>
 
-{{-- ═══════════════════════════════════════════════════════════════
-     TESTIMONIAL 
-     ═══════════════════════════════════════════════════════════════ --}}
+
 <section class="py-16 md:py-24 px-4 md:px-8 xl:px-24 bg-[#FDFCFB] relative overflow-hidden font-inter">
     
     <div class="absolute top-0 right-0 w-full h-full bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-slate-100 via-transparent to-transparent opacity-50 pointer-events-none -z-10"></div>
@@ -512,9 +502,7 @@ document.addEventListener('DOMContentLoaded', function() {
     </div>
 </section>
 
-{{-- ═══════════════════════════════════════════════════════════════
-     PROSES PEMESANAN
-     ═══════════════════════════════════════════════════════════════ --}}
+
 
 <section class="py-16 md:py-24 px-4 md:px-8 xl:px-24 bg-white">
     <div class="max-w-7xl mx-auto">
@@ -552,14 +540,14 @@ document.addEventListener('DOMContentLoaded', function() {
 </section>
 
 
-{{-- External Home Scripts --}}
+
 <script src="{{ asset('js/home.js') }}"></script>
 
-{{-- Modal Pop-up Tipe Lahan --}}
+
 <div id="tipeLahanModal" class="fixed inset-0 z-[9999] hidden flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm" onclick="if(event.target === this) closeTipeModal()">
     <div class="bg-white dark:bg-slate-950 w-full max-w-5xl rounded-[2rem] shadow-2xl overflow-hidden transform transition-all duration-300 flex flex-col max-h-[85vh] md:max-h-[80vh]">
         
-        {{-- Header --}}
+        
         <div class="px-8 py-5 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center bg-slate-50 dark:bg-slate-900 shrink-0">
             <div>
                 <h3 class="text-xl font-bold text-slate-800 dark:text-white">Daftar Tipe Lahan</h3>
@@ -570,11 +558,11 @@ document.addEventListener('DOMContentLoaded', function() {
             </button>
         </div>
 
-        {{-- Content: Split Pane Layout --}}
+        
         <div class="flex flex-col md:flex-row flex-grow overflow-hidden">
             <div class="w-full md:w-80 border-r border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 p-6 overflow-y-auto flex flex-col gap-6 shrink-0">
                 
-                {{-- Kawasan Muslim --}}
+                
                 <div>
                     <h4 class="text-xs font-bold uppercase tracking-wider text-slate-455 dark:text-slate-500 mb-3">Kawasan Muslim</h4>
                     <div class="flex flex-col gap-1.5">
@@ -593,7 +581,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     </div>
                 </div>
 
-                {{-- Kawasan Non-Muslim --}}
+                
                 <div>
                     <h4 class="text-xs font-bold uppercase tracking-wider text-slate-455 dark:text-slate-500 mb-3">Kawasan Non-Muslim</h4>
                     <div class="flex flex-col gap-1.5">
@@ -614,14 +602,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
             </div>
 
-            {{-- Right Pane: Live Image Preview and Details --}}
+            
             <div class="flex-grow p-8 flex flex-col md:flex-row gap-8 overflow-y-auto">
-                {{-- Image Box --}}
+                
                 <div class="w-full md:w-1/2 aspect-[4/3] md:aspect-auto md:h-full max-h-[300px] md:max-h-none rounded-2xl overflow-hidden bg-slate-50 border border-slate-100 dark:border-slate-800 shrink-0 shadow-sm">
                     <img id="modal-tipe-img" src="{{ asset('storage/assets/tipe/barokah.png') }}" class="w-full h-full object-cover object-center" alt="Preview Tipe Lahan" />
                 </div>
 
-                {{-- Detail Box --}}
+                
                 <div class="flex flex-col justify-between flex-grow">
                     <div>
                         <h4 id="modal-tipe-title" class="text-2xl font-bold text-slate-900 dark:text-white mb-6">Tipe Barokah</h4>
@@ -646,7 +634,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         </div>
 
-        {{-- Footer --}}
+        
         <div class="px-8 py-5 border-t border-slate-100 dark:border-slate-850 bg-slate-50 dark:bg-slate-900/50 flex justify-end gap-3 shrink-0">
             <button type="button" onclick="closeTipeModal()" class="px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-all">
                 Tutup

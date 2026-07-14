@@ -4,11 +4,11 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Mount Carmel — Verifikasi OTP</title>
-    {{-- Roboto Font --}}
+    
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet"/>
-    {{-- Bootstrap Icons CDN --}}
+    
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"/>
-    {{-- External Premium Stylesheet --}}
+    
     <link rel="stylesheet" href="{{ asset('css/auth.css') }}"/>
     <style>
         :root {
@@ -76,15 +76,15 @@
 
 <div class="page-container">
 
-    {{-- Left Side: Beautiful Scenic Visual Panel --}}
+    
     <div class="visual-panel">
-        {{-- Brand --}}
+        
         <div class="brand-section">
             <i class="bi bi-symmetry-vertical brand-icon"></i>
             Mount Carmel
         </div>
 
-        {{-- Center Tagline --}}
+        
         <div class="visual-main-content">
             <h1 class="main-tagline">
                 Verifikasi Akun Anda
@@ -92,7 +92,7 @@
             </h1>
         </div>
 
-        {{-- Bottom Trust Items --}}
+        
         <div class="trust-container">
             <div class="trust-item">
                 <div class="trust-item-icon">
@@ -103,7 +103,7 @@
         </div>
     </div>
 
-    {{-- Right Side: Clean Form Panel --}}
+    
     <div class="form-panel">
         <div class="form-card">
             <div class="form-header">
@@ -123,7 +123,7 @@
             </div>
             @endif
 
-            {{-- Form Verifikasi --}}
+            
             <form action="{{ route('otp.verify.submit') }}" method="POST">
                 @csrf
                 <div class="otp-input-container">
@@ -141,7 +141,7 @@
                 </button>
             </form>
 
-            {{-- Form Kirim Ulang OTP --}}
+            
             <div style="margin-top: 2rem; text-align: center;">
                 <p style="font-size: 0.85rem; color: var(--gray-muted); margin-bottom: 0.5rem;">Tidak menerima kode OTP?</p>
                 <form action="{{ route('otp.resend') }}" method="POST">
@@ -152,7 +152,7 @@
                 </form>
             </div>
 
-            {{-- Helper hint untuk lingkungan lokal agar mudah ditest --}}
+            
             @if(config('app.env') === 'local' && session('otp_code'))
             <div style="margin-top: 3rem; background-color: #f8f9fc; border: 1px solid #eeeeee; border-radius: 12px; padding: 1rem; text-align: center;">
                 <p style="font-size: 0.75rem; color: #7e8694; margin: 0;">

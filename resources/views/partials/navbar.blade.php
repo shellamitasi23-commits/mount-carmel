@@ -7,8 +7,7 @@
                     <span class="text-xl font-bold tracking-tight text-gray-900 dark:text-gray-100">Mount Carmel</span>
                 </a>
 
-                <div class="hidden md:flex flex-1 justify-center">
-                    <ul class="flex items-center space-x-1 lg:space-x-2 bg-gray-100/50 dark:bg-gray-800/50 rounded-full px-2 py-1">
+                <ul class="hidden md:flex flex-1 justify-center items-center space-x-1 lg:space-x-2 bg-gray-100/50 dark:bg-gray-800/50 rounded-full px-2 py-1">
 
                         <li>
                             <a href="{{ route('home') }}"
@@ -47,12 +46,11 @@
                             </a>
                         </li>
                     </ul>
-                </div>
 
                 <div class="hidden md:flex items-center gap-3 shrink-0 ml-4">
                     @guest
-                        <a href="{{ route('login') }}" class="text-sm font-semibold text-gray-600 hover:text-gray-900 transition-colors px-3">Masuk</a>
-                        <a href="{{ route('register') }}" class="inline-flex items-center px-5 py-2.5 bg-[#800000] text-white text-sm font-semibold rounded-full hover:bg-[#800000]/90 transition-all shadow-lg hover:-translate-y-0.5">Pesan Sekarang</a>
+                        <a href="{{ route('login') }}" class="text-sm font-semibold text-gray-600 hover:text-gray-900 transition-colors px-3">Login</a>
+                        <a href="{{ route('register') }}" class="inline-flex items-center px-5 py-2.5 bg-[#800000] text-white text-sm font-semibold rounded-full hover:bg-[#800000]/90 transition-all shadow-lg hover:-translate-y-0.5">Register</a>
                     @endguest
                     @auth
                         <div x-data="{ open: false }" class="relative">
@@ -93,7 +91,7 @@
         </div>
     </nav>
 
-    {{-- Mobile Drawer --}}
+    
     <div x-show="mobileMenuOpen" x-cloak style="display:none" class="md:hidden relative z-50">
 
         <div x-show="mobileMenuOpen" x-cloak
@@ -118,7 +116,7 @@
                 </button>
             </div>
 
-            <div class="flex-1 overflow-y-auto px-4 py-5 flex flex-col space-y-1">
+            <nav class="flex-1 overflow-y-auto px-4 py-5 flex flex-col space-y-1">
 
                 <a href="{{ route('home') }}" class="flex items-center gap-3 px-4 py-3.5 rounded-xl text-[15px] font-medium transition-colors {{ request()->routeIs('home') ? 'bg-primary/10 text-primary' : 'text-gray-600 hover:bg-gray-50' }}">
                     <span class="material-icons text-[20px] {{ request()->routeIs('home') ? 'text-primary' : 'text-gray-400' }}">home</span>
@@ -147,13 +145,13 @@
                     <span class="material-icons text-[20px] {{ request()->routeIs('kontak') ? 'text-primary' : 'text-gray-400' }}">support_agent</span>
                     Kontak
                 </a>
-            </div>
+            </nav>
 
             <div class="shrink-0 p-5 border-t border-gray-100 bg-gray-50/50">
                 @guest
                     <div class="flex flex-col gap-3">
                         <p class="text-[11px] text-center text-gray-500 uppercase tracking-wider font-bold mb-1">Akun Saya</p>
-                        <a href="{{ route('login') }}" class="text-center font-bold text-gray-700 bg-white border border-gray-200 py-3 rounded-xl w-full shadow-sm hover:bg-gray-50">Masuk</a>
+                        <a href="{{ route('login') }}" class="text-center font-bold text-gray-700 bg-white border border-gray-200 py-3 rounded-xl w-full shadow-sm hover:bg-gray-50">Login</a>
                         <a href="{{ route('register') }}" class="text-center font-bold bg-[#800000] text-white py-3 rounded-xl w-full shadow-md hover:bg-[#800000]/90">Daftar Akun</a>
                     </div>
                 @endguest

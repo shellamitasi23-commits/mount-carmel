@@ -12,7 +12,7 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     
-    {{-- External Master Layout CSS --}}
+    
     <link rel="stylesheet" href="{{ asset('css/master.css') }}"/>
 </head> 
 
@@ -26,7 +26,7 @@
 
     @include('partials.footer')
 
-    {{-- External Master Layout JS --}}
+    
     <script src="{{ asset('js/master.js') }}"></script>
 </body>
 </html>

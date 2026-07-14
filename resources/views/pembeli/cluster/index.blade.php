@@ -4,7 +4,7 @@
 @section('content')
 <div class="pt-24 min-h-screen bg-white dark:bg-gray-950">
 
-    {{-- Page Header --}}
+    
     <div class="px-8 xl:px-24 py-12 border-b border-gray-100 dark:border-gray-900">
         <div class="max-w-7xl mx-auto">
             <span data-aos="fade-up" class="text-[#800000] font-bold text-xs">Eksklusivitas & Ketenangan</span>
@@ -14,7 +14,7 @@
             </p>
         </div>
     </div>
-    {{-- Cluster Grid --}}
+    
     <div class="px-8 xl:px-24 py-12" x-data="{ filter: 'semua' }">
         <div class="max-w-7xl mx-auto"> 
 
@@ -49,7 +49,7 @@
                      x-transition:enter-end="opacity-100 translate-y-0"
                      class="group flex flex-col md:flex-row w-full bg-white dark:bg-gray-900/50 border border-gray-100 dark:border-gray-800 rounded-[2rem] p-5 gap-6 md:gap-8 shadow-[0_10px_30px_rgba(0,0,0,0.02)] hover:shadow-[0_20px_40px_rgba(128,0,0,0.06)] dark:hover:shadow-[0_20px_40px_rgba(0,0,0,0.25)] transition-all duration-500 hover:-translate-y-1">
 
-                    {{-- Image Container --}}
+                    
                     <div class="relative w-full md:w-[40%] shrink-0 aspect-[4/3] md:aspect-auto md:h-64 overflow-hidden bg-gray-100 dark:bg-gray-800 rounded-2xl">
                         <img src="{{ $img }}" alt="{{ $cluster->nama_cluster }}"
                              class="w-full h-full object-cover transition-transform duration-[1.5s] ease-out group-hover:scale-105" />
@@ -73,7 +73,7 @@
                         </div>
                     </div>
 
-                    {{-- Content --}}
+                    
                     <div class="flex flex-col flex-grow justify-between py-1 px-1">
                         <div>
                             <div class="flex flex-col sm:flex-row justify-between items-start mb-4 gap-4">
@@ -97,7 +97,7 @@
                                 {{ $cluster->deskripsi ?? 'Kawasan pemakaman eksklusif dengan lingkungan asri dan fasilitas lengkap untuk kedamaian keluarga.' }}
                             </p>
 
-                            {{-- Tipe Lahan Tags --}}
+                            
                             @if($tipeLahan->isNotEmpty())
                             <div class="flex flex-wrap gap-2 mb-6">
                                 @foreach($tipeLahan->take(5) as $tipe)
@@ -112,7 +112,7 @@
                             @endif
                         </div>
 
-                        {{-- CTA --}}
+                        
                         <div class="pt-5 border-t border-gray-100 dark:border-gray-900 flex justify-between items-center">
                             @auth
                             <a href="{{ route('pembeli.lahan.index', ['cluster_id' => $cluster->id]) }}"

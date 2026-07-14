@@ -13,7 +13,7 @@
     </a>
 </div>
 
-{{-- Navigation Tabs --}}
+
 <div class="flex items-center gap-1.5 mb-8 p-1.5 bg-white border border-slate-100 rounded-2xl w-full shadow-sm overflow-x-auto whitespace-nowrap">
     @php
         $tabs = [
@@ -33,7 +33,7 @@
     @endforeach
 </div>
 
-{{-- Filtering --}}
+
 <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100 mb-6">
     <form action="{{ route('marketing.laporan.reservasi') }}" method="GET" class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
         <div>
@@ -71,7 +71,7 @@
     </form>
 </div>
 
-{{-- Data Table --}}
+
 <div class="bg-white border border-slate-100 rounded-xl shadow-sm overflow-hidden">
     <div class="overflow-x-auto">
         <table class="w-full text-left text-sm whitespace-nowrap">

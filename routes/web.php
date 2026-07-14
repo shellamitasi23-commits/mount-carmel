@@ -18,9 +18,6 @@ use App\Http\Controllers\Pembeli\LahanController as PembeliLahan;
 use App\Http\Controllers\Pembeli\ProfilController as PembeliProfil;
 
 
-// ──────────────────────────────────────────────────────────────────────────
-//  PUBLIK - Dapat diakses tanpa autentikasi
-// ──────────────────────────────────────────────────────────────────────────
 
 // Halaman utama
 Route::get('/', [PembeliHome::class, 'index'])->name('home');
@@ -116,6 +113,12 @@ Route::middleware('auth')->group(function () {
         Route::post('/resend', [\App\Http\Controllers\Auth\OtpController::class, 'resend'])->name('resend');
     });
 
+    // Rute Unduh/Lihat Dokumen Aman
+    Route::get('/document/ktp/{reservasi_id}', [\App\Http\Controllers\DocumentController::class, 'viewKtp'])->name('document.ktp');
+    Route::get('/document/bukti-bayar/{pembayaran_id}', [\App\Http\Controllers\DocumentController::class, 'viewBuktiBayar'])->name('document.bukti-bayar');
+    Route::get('/document/sertifikat/{reservasi_id}', [\App\Http\Controllers\DocumentController::class, 'viewSertifikat'])->name('document.sertifikat');
+    Route::get('/document/signature/{user_id}', [\App\Http\Controllers\DocumentController::class, 'viewSignature'])->name('document.signature');
+
     // ──────────────────────────────────────────────────────────────────────
     // RUTE MARKETING - Untuk marketing
     // ──────────────────────────────────────────────────────────────────────
@@ -134,11 +137,8 @@ Route::middleware('auth')->group(function () {
         Route::post('/reservasi', [\App\Http\Controllers\Marketing\TransaksiController::class, 'storeReservasi'])->name('reservasi.store');
         Route::put('/reservasi/{id}/status', [\App\Http\Controllers\Marketing\TransaksiController::class, 'updateStatus'])->name('reservasi.updateStatus');
 
-        // Manajemen Lahan
+        // Manajemen Lahan (View-Only)
         Route::get('/lahan', [\App\Http\Controllers\Marketing\LahanController::class, 'index'])->name('lahan.index');
-        Route::post('/lahan', [\App\Http\Controllers\Marketing\LahanController::class, 'store'])->name('lahan.store');
-        Route::put('/lahan/{id}', [\App\Http\Controllers\Marketing\LahanController::class, 'update'])->name('lahan.update');
-        Route::delete('/lahan/{id}', [\App\Http\Controllers\Marketing\LahanController::class, 'destroy'])->name('lahan.destroy');
 
         // Manajemen cluster
         Route::get('/cluster', [\App\Http\Controllers\Marketing\ClusterController::class, 'index'])->name('cluster.index');
@@ -188,6 +188,10 @@ Route::middleware('auth')->group(function () {
         Route::put('/approval/{id}/approve', [\App\Http\Controllers\Manajer\ApprovalController::class, 'approve'])->name('approval.approve');
         Route::put('/approval/{id}/reject', [\App\Http\Controllers\Manajer\ApprovalController::class, 'reject'])->name('approval.reject');
 
+        // Approval Sertifikat
+        Route::get('/sertifikat', [\App\Http\Controllers\Manajer\SertifikatApprovalController::class, 'index'])->name('sertifikat.index');
+        Route::post('/sertifikat/{id}/sign', [\App\Http\Controllers\Manajer\SertifikatApprovalController::class, 'sign'])->name('sertifikat.sign');
+
         // Laporan
         Route::get('/laporan', [\App\Http\Controllers\Manajer\LaporanController::class, 'index'])->name('laporan.index');
         Route::get('/laporan/reservasi', [\App\Http\Controllers\Manajer\LaporanController::class, 'reservasi'])->name('laporan.reservasi');
@@ -227,21 +231,22 @@ Route::middleware('auth')->group(function () {
     // RUTE KOORDINATOR LAPANGAN - Untuk koordinator lapangan
     // ──────────────────────────────────────────────────────────────────────
     Route::middleware('role:koordinator_lapangan')->prefix('koordinator-lapangan')->name('koordinator_lapangan.')->group(function () {
-        // Dashboard
+        // Dashboard (View-Only)
         Route::get('/', [\App\Http\Controllers\KoordinatorLapangan\DashboardController::class, 'index'])->name('dashboard');
         
-        // Kelola Cluster
+        // Cluster (View-Only)
         Route::get('/cluster', [\App\Http\Controllers\KoordinatorLapangan\ClusterController::class, 'index'])->name('cluster.index');
-        Route::post('/cluster', [\App\Http\Controllers\KoordinatorLapangan\ClusterController::class, 'store'])->name('cluster.store');
-        Route::put('/cluster/{id}', [\App\Http\Controllers\KoordinatorLapangan\ClusterController::class, 'update'])->name('cluster.update');
-        Route::delete('/cluster/{id}', [\App\Http\Controllers\KoordinatorLapangan\ClusterController::class, 'destroy'])->name('cluster.destroy');
 
-        // Kelola Lahan
+        // Lahan (CRUD)
         Route::get('/lahan', [\App\Http\Controllers\KoordinatorLapangan\LahanController::class, 'index'])->name('lahan.index');
         Route::post('/lahan', [\App\Http\Controllers\KoordinatorLapangan\LahanController::class, 'store'])->name('lahan.store');
         Route::put('/lahan/{id}', [\App\Http\Controllers\KoordinatorLapangan\LahanController::class, 'update'])->name('lahan.update');
-        Route::put('/lahan/{id}/progres', [\App\Http\Controllers\KoordinatorLapangan\LahanController::class, 'updateProgres'])->name('lahan.updateProgres');
         Route::delete('/lahan/{id}', [\App\Http\Controllers\KoordinatorLapangan\LahanController::class, 'destroy'])->name('lahan.destroy');
+
+        // Reservasi (View-Only / Acc Pakai / Konfirmasi Lahan)
+        Route::get('/reservasi', [\App\Http\Controllers\KoordinatorLapangan\ReservasiController::class, 'index'])->name('reservasi.index');
+        Route::put('/reservasi/{id}/konfirmasi-tersedia', [\App\Http\Controllers\KoordinatorLapangan\ReservasiController::class, 'konfirmasiTersedia'])->name('reservasi.konfirmasi_tersedia');
+        Route::put('/reservasi/{id}/konfirmasi-tidak-tersedia', [\App\Http\Controllers\KoordinatorLapangan\ReservasiController::class, 'konfirmasiTidakTersedia'])->name('reservasi.konfirmasi_tidak_tersedia');
     });
 
     // ──────────────────────────────────────────────────────────────────────
@@ -273,6 +278,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [\App\Http\Controllers\Admin\ProfilController::class, 'index'])->name('index');
         Route::patch('/update', [\App\Http\Controllers\Admin\ProfilController::class, 'update'])->name('update');
         Route::put('/password', [\App\Http\Controllers\Admin\ProfilController::class, 'updatePassword'])->name('password');
+        Route::patch('/avatar', [\App\Http\Controllers\Admin\ProfilController::class, 'updateAvatar'])->name('avatar.update');
+        Route::post('/signature', [\App\Http\Controllers\Admin\ProfilController::class, 'saveSignature'])->name('signature.save');
     });
 
     // ──────────────────────────────────────────────────────────────────────
@@ -283,5 +290,9 @@ Route::middleware('auth')->group(function () {
         Route::patch('/update', [PembeliProfil::class, 'update'])->name('update');
         Route::put('/password', [PembeliProfil::class, 'updatePassword'])->name('password');
         Route::patch('/avatar', [PembeliProfil::class, 'updateAvatar'])->name('avatar.update');
+        
+        // Rute Tanda Tangan Pembeli
+        Route::post('/signature', [PembeliProfil::class, 'saveSignature'])->name('signature.save');
+        Route::post('/sertifikat/{id}/sign', [PembeliProfil::class, 'signSertifikat'])->name('sertifikat.sign');
     });
 });

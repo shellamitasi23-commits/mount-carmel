@@ -5,7 +5,7 @@
 <div class="min-h-screen bg-white pt-28 pb-20">
     <div class="max-w-7xl mx-auto px-10">
 
-        {{-- Header Section --}}
+        
         <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
             <div class="max-w-3xl">
                 <span class="inline-block text-slate-400 font-bold tracking-wider text-xs mb-2">
@@ -62,7 +62,7 @@
                 
                 <div class="flex flex-col lg:flex-row gap-6 items-start">
                     
-                    {{-- Main Info --}}
+                    
                     <div class="flex-grow space-y-6 w-full">
                         <div>
                             <div class="flex flex-wrap items-center gap-3 mb-2">
@@ -147,7 +147,7 @@
                                     </div>
                                 </div>
 
-                                {{-- Slot Grid for Multi-slot --}}
+                                
                                 <div class="mt-4 p-4 bg-slate-50 border border-slate-100 rounded-2xl">
                                     <div class="flex items-center justify-between mb-4">
                                         <h4 class="text-xs font-semibold text-slate-500">Daftar Slot Lahan</h4>
@@ -276,7 +276,7 @@
                         </div>
                     </div>
 
-                    {{-- Actions Panel --}}
+                    
                     <div class="w-full lg:w-64 shrink-0 space-y-5 pt-6 lg:pt-0 lg:pl-8 lg:border-l border-slate-100 text-xs">
                         <div>
                             <p class="text-gray-400 font-medium mb-0.5">Status Bayar</p>

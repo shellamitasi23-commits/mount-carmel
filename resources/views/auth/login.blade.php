@@ -4,26 +4,26 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Mount Carmel — Masuk ke Akun</title>
-  {{-- Poppins Font --}}
+  
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
-  {{-- Bootstrap Icons CDN --}}
+  
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"/>
-  {{-- External Premium Stylesheet --}}
+  
   <link rel="stylesheet" href="{{ asset('css/auth.css') }}"/>
 </head>
 <body>
 
 <div class="page-container">
 
-  {{-- Left Side: Beautiful Scenic Visual Panel --}}
+  
   <div class="visual-panel">
-    {{-- Brand --}}
+    
     <div class="brand-section">
       <i class="bi bi-symmetry-vertical brand-icon"></i>
       Mount Carmel
     </div>
 
-    {{-- Center Tagline --}}
+    
     <div class="visual-main-content">
       <h1 class="main-tagline">
         Menemukan Kedamaian Sejati
@@ -31,7 +31,7 @@
       </h1>
     </div>
 
-    {{-- Bottom Trust Items --}}
+    
     <div class="trust-container">
       <div class="trust-item">
         <div class="trust-item-icon">
@@ -42,7 +42,7 @@
     </div>
   </div>
 
-  {{-- Right Side: Clean Form Panel --}}
+  
   <div class="form-panel">
     <div class="form-card">
       <div class="form-header">
@@ -50,7 +50,7 @@
         <p class="form-subtitle">Mari masuk ke akun Anda untuk mengelola pemesanan lahan.</p>
       </div>
 
-      {{-- Session Alerts --}}
+      
       @if ($errors->any())
         <div class="session-alert">
           <i class="bi bi-exclamation-triangle-fill" style="font-size: 1.1rem; shrink: 0;"></i>
@@ -65,11 +65,11 @@
         </div>
       @endif
 
-      {{-- Sign In Form --}}
+      
       <form method="POST" action="{{ route('login') }}" id="loginForm">
         @csrf
 
-        {{-- Email Field --}}
+        
         <div class="field-group">
           <label for="lEmail" class="field-label">Alamat Email</label>
           <div class="input-wrapper">
@@ -83,7 +83,7 @@
           @error('email') <span class="invalid-feedback">{{ $message }}</span> @enderror
         </div>
 
-        {{-- Password Field --}}
+        
         <div class="field-group">
           <label for="lPass" class="field-label">Kata Sandi</label>
           <div class="input-wrapper">
@@ -99,7 +99,7 @@
           @error('password') <span class="invalid-feedback">{{ $message }}</span> @enderror
         </div>
 
-        {{-- Extras --}}
+        
         <div class="form-extras">
           <label class="remember-me" for="remember">
             <input type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}/>
@@ -110,18 +110,18 @@
           @endif
         </div>
 
-        {{-- Submit Button --}}
+        
         <button type="submit" class="submit-button" id="btnLogin">Masuk Sekarang</button>
       </form>
 
-      {{-- Social Separator --}}
+      
       <div class="or-divider">
         <div class="or-line"></div>
         <span class="or-text">atau</span>
         <div class="or-line"></div>
       </div>
 
-      {{-- Google Button --}}
+      
       <a href="{{ route('auth.google') }}" class="social-button" style="text-decoration: none;">
         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 48 48" style="display: block; flex-shrink: 0;">
           <path fill="#FFC107" d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8c-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4C12.955 4 4 12.955 4 24s8.955 20 20 20s20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z"/>
@@ -132,7 +132,7 @@
         <span style="margin-left: 12px; color: #1f2937; font-weight: 600;">Masuk melalui Google</span>
       </a>
 
-      {{-- Footer Link --}}
+      
       <p class="switch-option">
         Belum memiliki akun?
         <a href="{{ route('register') }}">Yuk, daftar di sini</a>
@@ -142,7 +142,7 @@
 
 </div>
 
-{{-- External Premium Script --}}
+
 <script src="{{ asset('js/auth.js') }}"></script>
 </body>
 </html>

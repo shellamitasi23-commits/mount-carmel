@@ -15,13 +15,6 @@
         <h1 class="text-2xl font-bold text-slate-800">Data Reservasi</h1>
         <p class="text-sm text-slate-500 mt-1">Kelola permohonan pemakaman dan pantau status unit lahan.</p>
     </div>
-
-    @if(auth()->user()->role == 'marketing')
-    <button onclick="document.getElementById('modalTambah').classList.remove('hidden')"
-            class="bg-[#800000] text-white px-5 py-2.5 rounded-xl font-semibold text-sm hover:bg-[#800000]/90 transition-all shadow-md flex items-center gap-2">
-        <span class="material-icons-outlined text-sm">add</span> Input Reservasi
-    </button>
-    @endif
 </div>
 
 {{-- Filtering System --}}

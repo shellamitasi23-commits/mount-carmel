@@ -7,9 +7,9 @@
     <p class="text-xs text-slate-500 mt-1">Kelola data Cluster makam, plot Lahan (Lahan), dan pantau ketersediaan lahan secara real-time.</p>
 </div>
 
-{{-- Stats Grid --}}
+
 <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-    {{-- Total Cluster --}}
+    
     <div class="bg-white rounded-xl shadow-sm border border-slate-100 p-4 flex items-center justify-between transition-all hover:shadow-md duration-300">
         <div>
             <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Total Cluster</p>
@@ -23,7 +23,7 @@
         </div>
     </div>
 
-    {{-- Total Lahan --}}
+    
     <div class="bg-white rounded-xl shadow-sm border border-slate-100 p-4 flex items-center justify-between transition-all hover:shadow-md duration-300">
         <div>
             <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Total Lahan</p>
@@ -37,7 +37,7 @@
         </div>
     </div>
 
-    {{-- Lahan Tersedia --}}
+    
     <div class="bg-white rounded-xl shadow-sm border border-slate-100 p-4 flex items-center justify-between transition-all hover:shadow-md duration-300">
         <div>
             <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Lahan Kosong</p>
@@ -51,7 +51,7 @@
         </div>
     </div>
 
-    {{-- Lahan Terisi/Dipesan --}}
+    
     <div class="bg-white rounded-xl shadow-sm border border-slate-100 p-4 flex items-center justify-between transition-all hover:shadow-md duration-300">
         <div>
             <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Lahan Terisi</p>
@@ -66,9 +66,9 @@
     </div>
 </div>
 
-{{-- Occupancy Overview --}}
+
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-    {{-- Land Occupancy Bar --}}
+    
     <div class="lg:col-span-2 bg-white rounded-xl shadow-sm border border-slate-100 p-4">
         <h3 class="text-sm font-bold text-slate-800 mb-3">Rasio Okupansi Lahan</h3>
         @php
@@ -99,7 +99,7 @@
         </div>
     </div>
 
-    {{-- Recent Allocations --}}
+    
     <div class="bg-white rounded-xl shadow-sm border border-slate-100 p-4">
         <h3 class="text-sm font-bold text-slate-800 mb-3">Alokasi Reservasi Terbaru</h3>
         <div class="space-y-3">

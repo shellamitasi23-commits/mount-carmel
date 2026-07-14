@@ -7,7 +7,7 @@ Lahan — {{ $cluster->nama_cluster }}
 <div class="min-h-screen bg-white pt-28 pb-20">
     <div class="max-w-7xl mx-auto px-10">
 
-        {{-- Minimalist Breadcrumb --}}
+        
         <nav class="flex items-center gap-2 text-xs text-gray-400 mb-8">
             <a href="{{ route('home') }}" class="hover:text-slate-900 transition-colors">Beranda</a>
             <span>/</span>
@@ -16,7 +16,7 @@ Lahan — {{ $cluster->nama_cluster }}
             <span class="text-slate-900 font-medium">{{ $cluster->nama_cluster }}</span>
         </nav>
 
-        {{-- Header Section --}}
+        
         <div class="max-w-4xl mb-12">
             <span class="inline-block text-xs font-bold text-slate-400 mb-2">
                 {{ $cluster->kategori === 'Muslim' ? 'Kawasan Syariat Islam' : 'Kawasan Umum' }}
@@ -35,7 +35,7 @@ Lahan — {{ $cluster->nama_cluster }}
             </p>
         </div>
 
-        {{-- Navigation Switcher --}}
+        
         <div class="flex flex-wrap justify-center gap-2.5 mb-12">
             @foreach($clusters as $cl)
                 <a href="{{ route('pembeli.lahan.index', ['cluster_id' => $cl->id]) }}"
@@ -48,7 +48,7 @@ Lahan — {{ $cluster->nama_cluster }}
             @endforeach
         </div>
 
-        {{-- Tipe Lahan Grid --}}
+        
         @if($tipeLahans->isEmpty())
         <div class="py-32 text-center border-t border-gray-50 dark:border-gray-900">
             <h3 class="text-2xl font-light text-gray-300 italic mb-4">Tidak ada lahan tersedia saat ini</h3>
@@ -62,7 +62,7 @@ Lahan — {{ $cluster->nama_cluster }}
 
             <div class="group flex flex-col w-full max-w-md mx-auto bg-white dark:bg-gray-900/50 border border-gray-100 dark:border-gray-800 rounded-3xl p-5 shadow-[0_10px_30px_rgba(0,0,0,0.02)] hover:shadow-[0_20px_40px_rgba(128,0,0,0.06)] dark:hover:shadow-[0_20px_40px_rgba(0,0,0,0.25)] transition-all duration-500 hover:-translate-y-2">
                 
-                {{-- Premium Image --}}
+                
                 <div class="relative aspect-[4/3] overflow-hidden bg-slate-50 dark:bg-gray-800 rounded-2xl mb-6 shadow-sm">
                     @php
                         $tipeLower = strtolower($tipe['tipe_lahan']);
@@ -105,7 +105,7 @@ Lahan — {{ $cluster->nama_cluster }}
                          class="w-full h-full object-cover {{ $imgPosition }} transition-transform duration-1000 group-hover:scale-105" />
                     <div class="absolute inset-0 bg-slate-900/10 group-hover:bg-transparent transition-colors duration-700"></div>
                     
-                    {{-- Badges on top of image --}}
+                    
                     <div class="absolute top-4 right-4">
                         <span class="px-3 py-1 bg-[#800000] text-[9px] font-black uppercase tracking-[0.2em] text-white rounded-full shadow-sm">
                             {{ $tipe['tersedia'] }} Unit Tersedia
@@ -113,7 +113,7 @@ Lahan — {{ $cluster->nama_cluster }}
                     </div>
                 </div>
 
-                {{-- Content --}}
+                
                 <div class="flex flex-col flex-grow px-2">
                     <h3 class="font-bold text-slate-900 dark:text-white text-2xl tracking-tight mb-4 group-hover:text-[#800000] dark:group-hover:text-red-400 transition-colors duration-300">
                         {{ $tipe['tipe_lahan'] }}

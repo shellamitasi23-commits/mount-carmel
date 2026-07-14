@@ -39,8 +39,13 @@ class SertifikatController extends Controller
 
         $reservasis = $query->latest()->paginate(25);
 
-        $countSudah = Reservasi::where('status_reservasi', 'Selesai')->whereNotNull('file_sertifikat')->count();
-        $countBelum = Reservasi::where('status_reservasi', 'Selesai')->whereNull('file_sertifikat')->count();
+        $countSudah = Reservasi::where('status_reservasi', 'Selesai')
+            ->whereNotNull('file_sertifikat')
+            ->count();
+
+        $countBelum = Reservasi::where('status_reservasi', 'Selesai')
+            ->whereNull('file_sertifikat')
+            ->count();
 
         return view('marketing.sertifikat.index', compact('reservasis', 'countSudah', 'countBelum'));
     }
@@ -55,12 +60,12 @@ class SertifikatController extends Controller
 
         if ($request->hasFile('file_sertifikat')) {
             if ($reservasi->file_sertifikat) {
-                Storage::delete('public/sertifikat/' . $reservasi->file_sertifikat);
+                Storage::disk('local')->delete('sertifikat/' . $reservasi->file_sertifikat);
             }
 
             $file = $request->file('file_sertifikat');
             $filename = 'sertifikat_' . $id . '_' . time() . '.' . $file->getClientOriginalExtension();
-            $file->storeAs('public/sertifikat', $filename);
+            $file->storeAs('sertifikat', $filename, 'local');
 
             $reservasi->update([
                 'file_sertifikat' => $filename
@@ -75,7 +80,7 @@ class SertifikatController extends Controller
         $reservasi = Reservasi::findOrFail($id);
 
         if ($reservasi->file_sertifikat) {
-            Storage::delete('public/sertifikat/' . $reservasi->file_sertifikat);
+            Storage::disk('local')->delete('sertifikat/' . $reservasi->file_sertifikat);
             $reservasi->update(['file_sertifikat' => null]);
         }
 

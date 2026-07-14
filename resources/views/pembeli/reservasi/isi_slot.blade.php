@@ -5,7 +5,7 @@
 <div class="min-h-screen bg-[#F9FAFB] pt-28 pb-20">
     <div class="max-w-2xl mx-auto px-6">
 
-        {{-- Breadcrumb / Back --}}
+        
         <div class="mb-8" data-aos="fade-up">
             <a href="{{ route('pembeli.reservasi.index') }}" 
                class="inline-flex items-center gap-2 text-slate-500 hover:text-slate-900 transition-colors text-xs font-bold uppercase tracking-wider">
@@ -13,7 +13,7 @@
             </a>
         </div>
 
-        {{-- Form Card --}}
+        
         <div class="bg-white border-t-4 border-[#800000] shadow-xl rounded-2xl p-8 md:p-10" data-aos="fade-up" data-aos-delay="100">
             <div class="mb-8">
                 <span class="inline-block text-[#800000] font-black tracking-widest text-[10px] uppercase mb-2">
@@ -27,7 +27,7 @@
                 </p>
             </div>
 
-            {{-- Detail Lahan --}}
+            
             <div class="bg-slate-50 border border-slate-100 rounded-xl p-4 mb-8 flex items-center justify-between text-xs font-bold text-slate-600">
                 <div>
                     <span class="text-slate-400 font-bold block uppercase tracking-wider text-[9px]">Cluster</span>
@@ -42,7 +42,7 @@
             <form action="{{ route('pembeli.reservasi.simpan_slot', ['reservasi_id' => $reservasi->id, 'nomor_slot' => $nomor_slot]) }}" method="POST" class="space-y-6">
                 @csrf
 
-                {{-- Nama Jenazah --}}
+                
                 <div class="space-y-2">
                     <label for="nama_jenazah" class="block text-xs font-black uppercase tracking-wider text-slate-700">Nama Lengkap Jenazah <span class="text-red-500">*</span></label>
                     <input type="text" name="nama_jenazah" id="nama_jenazah" 
@@ -53,7 +53,7 @@
                     @enderror
                 </div>
 
-                {{-- Tanggal Dimakamkan --}}
+                
                 <div class="space-y-2">
                     <label for="tanggal_dimakamkan" class="block text-xs font-black uppercase tracking-wider text-slate-700">Tanggal Pemakaman (Opsional)</label>
                     <input type="date" name="tanggal_dimakamkan" id="tanggal_dimakamkan" 
@@ -65,7 +65,7 @@
                     @enderror
                 </div>
 
-                {{-- Buttons --}}
+                
                 <div class="flex items-center justify-end gap-4 pt-4 border-t border-slate-100">
                     <a href="{{ route('pembeli.reservasi.index') }}" 
                        class="px-6 py-3 border border-slate-200 text-slate-600 rounded-xl text-xs font-bold hover:bg-slate-50 transition-colors">

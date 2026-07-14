@@ -113,6 +113,11 @@ class LahanController extends Controller
     public function destroy($id)
     {
         $lahan = Lahan::findOrFail($id);
+        
+        if ($lahan->reservasis()->exists()) {
+            return back()->withErrors(['error' => 'Lahan tidak dapat dihapus karena memiliki riwayat reservasi pembeli terikat.']);
+        }
+
         $nomor = $lahan->nomor_lahan;
         $lahan->delete();
 

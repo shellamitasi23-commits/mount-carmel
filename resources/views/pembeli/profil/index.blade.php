@@ -1,11 +1,15 @@
 @extends('layouts.master')
 
 @section('content')
+@php
+    $lunasReservasis = $riwayat->where('status_reservasi', 'Selesai');
+@endphp
+
 
 <div x-data="{ tab: '{{ request('tab', 'data') }}' }" class="min-h-screen bg-[#FAFAFA] pt-28 pb-20 px-4 md:px-8 font-inter">
     <div class="max-w-6xl mx-auto">
 
-        {{-- Flash Message --}}
+        
         @if(session('success'))
         <div class="mb-8 bg-emerald-50 border-l-4 border-emerald-500 p-4 rounded-r-xl shadow-sm">
             <p class="text-emerald-800 font-semibold text-xs">Berhasil</p>
@@ -24,16 +28,16 @@
         </div>
         @endif
 
-        {{-- Main Grid Layout --}}
+        
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             
-            {{-- COLUMN KIRI - NAVIGATION --}}
+            
             <div class="lg:col-span-4 space-y-6">
                 
-                {{-- Navigation List Card --}}
+                
                 <div class="bg-white rounded-3xl border border-slate-100 p-5 shadow-[0_10px_30px_rgba(0,0,0,0.015)] space-y-1">
                     
-                    {{-- Item: Data Diri --}}
+                    
                     <button @click="tab = 'data'"
                             :class="tab === 'data' ? 'bg-[#800000]/5 text-[#800000]' : 'text-slate-500 hover:bg-slate-50'"
                             class="w-full flex items-center gap-4 px-4 py-3 rounded-2xl transition-all duration-200 text-left">
@@ -44,7 +48,7 @@
                         </div>
                     </button>
 
-                    {{-- Item: Keamanan --}}
+                    
                     <button @click="tab = 'password'"
                             :class="tab === 'password' ? 'bg-[#800000]/5 text-[#800000]' : 'text-slate-500 hover:bg-slate-50'"
                             class="w-full flex items-center gap-4 px-4 py-3 rounded-2xl transition-all duration-200 text-left">
@@ -55,7 +59,7 @@
                         </div>
                     </button>
 
-                    {{-- Item: Riwayat --}}
+                    
                     <button @click="tab = 'riwayat'"
                             :class="tab === 'riwayat' ? 'bg-[#800000]/5 text-[#800000]' : 'text-slate-500 hover:bg-slate-50'"
                             class="w-full flex items-center gap-4 px-4 py-3 rounded-2xl transition-all duration-200 text-left">
@@ -66,7 +70,7 @@
                         </div>
                     </button>
 
-                    {{-- Item: Sertifikat --}}
+                    
                     <button @click="tab = 'sertifikat'"
                             :class="tab === 'sertifikat' ? 'bg-[#800000]/5 text-[#800000]' : 'text-slate-500 hover:bg-slate-50'"
                             class="w-full flex items-center justify-between px-4 py-3 rounded-2xl transition-all duration-200 text-left">
@@ -77,12 +81,12 @@
                                 <p class="text-[9px] text-slate-400 mt-0.5">Unduh sertifikat lahan makam</p>
                             </div>
                         </div>
-                        @if($sertifikats->count() > 0)
-                            <span class="bg-emerald-500 text-white text-[9px] font-bold px-1.5 py-0.5 rounded">{{ $sertifikats->count() }}</span>
+                        @if($lunasReservasis->count() > 0)
+                            <span class="bg-emerald-500 text-white text-[9px] font-bold px-1.5 py-0.5 rounded">{{ $lunasReservasis->count() }}</span>
                         @endif
                     </button>
 
-                    {{-- Item: Pembayaran --}}
+                    
                     <button @click="tab = 'pembayaran'"
                             :class="tab === 'pembayaran' ? 'bg-[#800000]/5 text-[#800000]' : 'text-slate-500 hover:bg-slate-50'"
                             class="w-full flex items-center justify-between px-4 py-3 rounded-2xl transition-all duration-200 text-left">
@@ -101,14 +105,14 @@
                 </div>
             </div>
 
-            {{-- COLUMN KANAN - CONTENT CARD --}}
+            
             <div class="lg:col-span-8">
                 
-                {{-- TAB CONTENT: DATA DIRI --}}
+                
                 <div x-show="tab === 'data'" x-transition class="bg-white rounded-3xl border border-slate-100 p-6 md:p-8 shadow-[0_10px_30px_rgba(0,0,0,0.015)]">
                     <h3 class="text-base font-bold text-slate-800 mb-6">Informasi Pribadi</h3>
                     
-                    {{-- Avatar Section --}}
+                    
                     <div class="flex flex-col sm:flex-row items-center gap-5 mb-8 border-b border-slate-50 pb-6">
                         <div class="relative w-20 h-20 shrink-0">
                             <button type="button" onclick="document.getElementById('avatar-input').click()" 
@@ -134,7 +138,7 @@
                         </div>
                     </div>
 
-                    {{-- Form Data Diri --}}
+                    
                     <form action="{{ route('profil.update') }}" method="POST" class="space-y-5">
                         @csrf
                         @method('PATCH')
@@ -181,7 +185,7 @@
                     </form>
                 </div>
 
-                {{-- TAB CONTENT: KEAMANAN / GANTI PASSWORD --}}
+                
                 <div x-show="tab === 'password'" style="display:none" x-transition class="bg-white rounded-3xl border border-slate-100 p-6 md:p-8 shadow-[0_10px_30px_rgba(0,0,0,0.015)]">
                     <h3 class="text-base font-bold text-slate-800 mb-6">Keamanan Akun</h3>
                     
@@ -234,7 +238,7 @@
                     </form>
                 </div>
 
-                {{-- TAB CONTENT: RIWAYAT RESERVASI --}}
+                
                 <div x-show="tab === 'riwayat'" style="display:none" x-transition class="bg-white rounded-3xl border border-slate-100 shadow-[0_10px_30px_rgba(0,0,0,0.015)] overflow-hidden">
                     <h3 class="text-base font-bold text-slate-800 p-6 border-b border-slate-50">Riwayat Reservasi</h3>
                     
@@ -323,28 +327,64 @@
                     @endif
                 </div>
 
-                {{-- TAB CONTENT: SERTIFIKAT --}}
+                
                 <div x-show="tab === 'sertifikat'" style="display:none" x-transition class="bg-white rounded-3xl border border-slate-100 p-6 md:p-8 shadow-[0_10px_30px_rgba(0,0,0,0.015)]">
-                    <h3 class="text-base font-bold text-slate-800 mb-6">Sertifikat Kepemilikan</h3>
+                    <div class="mb-6 border-b border-slate-50 pb-4">
+                        <h3 class="text-base font-bold text-slate-800">Sertifikat Hak Guna Lahan</h3>
+                        <p class="text-[10px] text-slate-400 mt-0.5">Unduh dokumen sertifikat lahan pemakaman Anda yang telah diterbitkan oleh Marketing.</p>
+                    </div>
                     
-                    @if($sertifikats->isEmpty())
+
+
+                    @if($lunasReservasis->isEmpty())
                     <div class="py-16 text-center bg-slate-50/50 border border-dashed border-slate-200 rounded-3xl">
                         <span class="material-icons text-4xl text-slate-300 mb-2">workspace_premium</span>
-                        <h3 class="text-xs font-semibold text-slate-400">Belum Ada Sertifikat Terbit</h3>
+                        <h3 class="text-xs font-semibold text-slate-400">Belum Ada Sertifikat</h3>
+                        <p class="text-[10px] text-slate-400 mt-1">Sertifikat akan muncul di sini setelah pembayaran dikonfirmasi Lunas oleh Accounting.</p>
                     </div>
                     @else
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        @foreach($sertifikats as $s)
-                        <div class="bg-slate-50/40 p-5 rounded-2xl border border-slate-100 hover:shadow-sm transition-all duration-300">
-                            <p class="text-[9px] font-semibold text-emerald-600 uppercase tracking-wider mb-2">Sertifikat Hak Guna</p>
-                            <h3 class="text-sm font-bold text-slate-800 tracking-tight mb-1">Lahan #{{ $s->lahan->nomor_lahan }}</h3>
-                            <p class="text-[10px] font-medium text-slate-400 mb-5">{{ $s->lahan->cluster->nama_cluster ?? '-' }} &middot; {{ $s->lahan->tipe_lahan }}</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        @foreach($lunasReservasis as $r)
+                        <div class="bg-slate-50/40 p-5 rounded-2xl border border-slate-100 hover:shadow-sm transition-all duration-300 flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center justify-between gap-2 mb-2">
+                                    <span class="px-2 py-0.5 rounded text-[8px] font-bold uppercase
+                                        @if($r->file_sertifikat)
+                                            bg-emerald-50 text-emerald-700 border border-emerald-250
+                                        @else
+                                            bg-amber-50 text-amber-700 border border-amber-250
+                                        @endif">
+                                        {{ $r->file_sertifikat ? 'Terbit' : 'Proses Penerbitan' }}
+                                    </span>
+                                </div>
+                                <h3 class="text-sm font-bold text-slate-800 tracking-tight mb-1">
+                                    Lahan #{{ $r->lahan->nomor_lahan }}
+                                </h3>
+                                <p class="text-[10px] font-medium text-slate-400 mb-3">
+                                    {{ $r->lahan->cluster->nama_cluster ?? '-' }} &middot; {{ $r->lahan->tipe_lahan }}
+                                </p>
+                                <p class="text-[11px] font-semibold text-slate-600 mb-4">
+                                    @if($r->nama_jenazah)
+                                        <span class="text-slate-400">Jenazah:</span> Alm. {{ ucwords(strtolower($r->nama_jenazah)) }}
+                                    @else
+                                        <span class="text-slate-400">Pemilik:</span> {{ ucwords(strtolower($user->name)) }}
+                                    @endif
+                                </p>
+                            </div>
                             
-                            <div class="grid grid-cols-2 gap-2">
-                                <a href="{{ asset('storage/sertifikat/' . $s->file_sertifikat) }}" target="_blank"
-                                   class="w-full py-2 bg-[#800000] text-white rounded-lg font-semibold text-[10px] text-center hover:bg-[#800000]/90 transition-all">Lihat Dokumen</a>
-                                <a href="{{ asset('storage/sertifikat/' . $s->file_sertifikat) }}" download
-                                   class="w-full py-2 bg-white border border-slate-200 text-slate-600 rounded-lg font-semibold text-[10px] text-center hover:bg-slate-50 transition-all">Unduh Berkas</a>
+                            <div>
+                                @if($r->file_sertifikat)
+                                    <div class="grid grid-cols-2 gap-2">
+                                        <a href="{{ route('document.sertifikat', $r->id) }}" target="_blank"
+                                           class="w-full py-2 bg-[#800000] text-white rounded-lg font-semibold text-[10px] text-center hover:bg-[#800000]/90 transition-all">Lihat Dokumen</a>
+                                        <a href="{{ route('document.sertifikat', $r->id) }}?download=1"
+                                           class="w-full py-2 bg-white border border-slate-200 text-slate-600 rounded-lg font-semibold text-[10px] text-center hover:bg-slate-50 transition-all">Unduh</a>
+                                    </div>
+                                @else
+                                    <div class="bg-amber-50/50 border border-amber-100 text-amber-800 p-3 rounded-xl text-[10px] font-medium leading-relaxed text-center">
+                                        Sertifikat sedang dalam proses pembuatan/penerbitan oleh tim Marketing kami.
+                                    </div>
+                                @endif
                             </div>
                         </div>
                         @endforeach
@@ -352,10 +392,10 @@
                     @endif
                 </div>
 
-                {{-- TAB CONTENT: PEMBAYARAN --}}
+                
                 <div x-show="tab === 'pembayaran'" style="display:none" x-transition class="space-y-6">
                     
-                    {{-- Tagihan Aktif --}}
+                    
                     @if($reservasiSiapBayar->count() > 0)
                     <div class="bg-white rounded-3xl p-6 md:p-8 border-l-4 border-amber-500 shadow-[0_10px_30px_rgba(0,0,0,0.015)]">
                         <h3 class="text-xs font-semibold text-amber-600 uppercase tracking-wider mb-6">Menunggu Pembayaran</h3>
@@ -380,7 +420,7 @@
                     </div>
                     @endif
 
-                    {{-- Riwayat Transaksi --}}
+                    
                     <div class="bg-white rounded-3xl p-6 md:p-8 border border-slate-100 shadow-[0_10px_30px_rgba(0,0,0,0.015)]">
                         <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-6">Riwayat Transaksi</h3>
                         @if($pembayarans->isEmpty())
@@ -449,7 +489,7 @@
 
     </div>
     
-    {{-- Hidden forms for Avatar actions --}}
+    
     <form action="{{ route('profil.avatar.update') }}" method="POST" enctype="multipart/form-data" id="avatar-form" class="hidden">
         @csrf
         @method('PATCH')
@@ -464,5 +504,7 @@
         <button type="submit" id="delete-avatar-submit"></button>
     </form>
     @endif
-</div>
+    
+
+</script>
 @endsection

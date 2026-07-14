@@ -74,6 +74,7 @@ class Reservasi extends Model
         'dokumen_ktp',
         'dokumen_kk',
         'status_reservasi',
+        'konfirmasi_lahan',
         'status_pembayaran',
         'file_sertifikat',
         'alamat_pemesan',
@@ -107,6 +108,16 @@ class Reservasi extends Model
     {
         return $this->belongsTo(Lahan::class, 'lahan_id');
     }
+
+    /**
+     * Relasi: Reservasi memiliki satu Sertifikat
+     */
+    public function sertifikat()
+    {
+        return $this->hasOne(Sertifikat::class);
+    }
+
+
 
     /**
      * Relasi: Reservasi memiliki satu Pembayaran

@@ -4,18 +4,18 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Mount Carmel — Pendaftaran Akun</title>
-  {{-- Poppins Font --}}
+  
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
-  {{-- Bootstrap Icons CDN --}}
+  
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"/>
-  {{-- External Premium Stylesheet --}}
+  
   <link rel="stylesheet" href="{{ asset('css/auth.css') }}"/>
 </head>
 <body>
 
 <div class="page-container">
 
-  {{-- Left Side: Clean Form Panel --}}
+  
   <div class="form-panel">
     <div class="form-card">
       <div class="form-header">
@@ -23,7 +23,7 @@
         <p class="form-subtitle">Buat akun baru Anda untuk kemudahan pemesanan lahan.</p>
       </div>
 
-      {{-- Session Validation Errors --}}
+      
       @if ($errors->any())
         <div class="session-alert">
           <i class="bi bi-exclamation-triangle-fill" style="font-size: 1.1rem; shrink: 0;"></i>
@@ -31,13 +31,13 @@
         </div>
       @endif
 
-      {{-- Registration Form --}}
+      
       <form method="POST" action="{{ route('register.submit') }}" id="registerForm">
         @csrf
 
-        {{-- Row 1: Name and Phone --}}
+        
         <div class="field-row">
-          {{-- Name Field --}}
+          
           <div class="field-group">
             <label for="rName" class="field-label">Nama Lengkap</label>
             <div class="input-wrapper">
@@ -47,7 +47,7 @@
               <i class="bi bi-person input-icon"></i>
             </div>
           </div>
-          {{-- Phone Field --}}
+          
           <div class="field-group">
             <label for="rTelp" class="field-label">Nomor Telepon / WhatsApp</label>
             <div class="input-wrapper">
@@ -58,7 +58,7 @@
           </div>
         </div>
 
-        {{-- Email Field --}}
+        
         <div class="field-group">
           <label for="rEmail" class="field-label">Alamat Email</label>
           <div class="input-wrapper">
@@ -70,7 +70,7 @@
           </div>
         </div>
         
-        {{-- Address Field --}}
+        
         <div class="field-group">
           <label for="rAddress" class="field-label">Alamat Rumah Lengkap</label>
           <div class="input-wrapper">
@@ -81,7 +81,7 @@
           </div>
         </div>
 
-        {{-- Password Field --}}
+        
         <div class="field-group">
           <label for="rPass" class="field-label">Kata Sandi Baru</label>
           <div class="input-wrapper">
@@ -95,7 +95,7 @@
           </div>
         </div>
 
-        {{-- Confirm Password Field --}}
+        
         <div class="field-group">
           <label for="rPassConfirm" class="field-label">Ulangi Kata Sandi Baru</label>
           <div class="input-wrapper">
@@ -108,7 +108,7 @@
           </div>
         </div>
 
-        {{-- Agreement Row --}}
+        
         <div class="checkbox-row">
           <input type="checkbox" id="rAgree" name="agree" required/>
           <label for="rAgree">
@@ -116,11 +116,11 @@
           </label>
         </div>
 
-        {{-- Submit Button --}}
+        
         <button type="submit" class="submit-button" id="btnRegister">Daftar Akun Sekarang</button>
       </form>
 
-      {{-- Footer Switch Link --}}
+      
       <p class="switch-option">
         Sudah memiliki akun?
         <a href="{{ route('login') }}">Mari masuk di sini</a>
@@ -128,15 +128,15 @@
     </div>
   </div>
 
-  {{-- Right Side: Beautiful Scenic Visual Panel --}}
+  
   <div class="visual-panel">
-    {{-- Brand --}}
+    
     <div class="brand-section">
       <i class="bi bi-symmetry-vertical brand-icon"></i>
       Mount Carmel
     </div>
 
-    {{-- Center Tagline --}}
+    
     <div class="visual-main-content">
       <h1 class="main-tagline">
         Langkah Wisaksana
@@ -144,7 +144,7 @@
       </h1>
     </div>
 
-    {{-- Bottom Trust Items --}}
+    
     <div class="trust-container">
       <div class="trust-item">
         <div class="trust-item-icon">
@@ -163,7 +163,7 @@
 
 </div>
 
-<!-- Modal Syarat & Ketentuan -->
+
 <div id="termsModal" class="modal-overlay" onclick="closeModalOnBackdrop(event, 'termsModal')">
   <div class="modal-card">
     <div class="modal-header">
@@ -200,7 +200,7 @@
   </div>
 </div>
 
-<!-- Modal Kebijakan Privasi -->
+
 <div id="privacyModal" class="modal-overlay" onclick="closeModalOnBackdrop(event, 'privacyModal')">
   <div class="modal-card">
     <div class="modal-header">
@@ -237,7 +237,7 @@
   </div>
 </div>
 
-{{-- External Premium Script --}}
+
 <script src="{{ asset('js/auth.js') }}"></script>
 </body>
 </html>

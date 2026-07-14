@@ -69,7 +69,7 @@ class PelangganController extends Controller
 
     public function update(Request $request, $id)
     {
-        $pembeli = User::findOrFail($id);
+        $pembeli = User::where('role', 'pembeli')->findOrFail($id);
  
         $request->validate([
             'name' => 'required|string|max:255',
@@ -105,7 +105,7 @@ class PelangganController extends Controller
 
     public function destroy($id)
     {
-        $pembeli = User::findOrFail($id);
+        $pembeli = User::where('role', 'pembeli')->findOrFail($id);
         $pembeli->delete();
 
         return redirect()->route('marketing.pembeli.index')->with('success', 'Data Pembeli berhasil dihapus!');

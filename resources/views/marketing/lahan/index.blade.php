@@ -18,7 +18,7 @@
 
 </div>
 
-{{-- Filtering System --}}
+
 <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100 mb-6">
     <form method="GET" action="{{ route('marketing.lahan.index') }}" class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
         @if(request('cluster_id'))
@@ -56,10 +56,10 @@
     </form>
 </div>
 
-{{-- Tab per Cluster --}}
+
 <div x-data="{ activeCluster: '{{ request('cluster_id', 'semua') }}' }">
 
-    {{-- Tab Nav --}}
+    
     <div class="flex items-center gap-1.5 mb-6 p-1.5 bg-white border border-slate-100 rounded-xl w-full shadow-sm overflow-x-auto whitespace-nowrap">
         <a href="{{ route('marketing.lahan.index', array_merge(request()->query(), ['cluster_id' => 'semua', 'page' => 1])) }}"
            class="flex-1 shrink-0 text-center px-4 py-2 rounded-lg text-xs font-bold transition-all {{ request('cluster_id', 'semua') === 'semua' ? 'bg-[#800000] text-white shadow-sm' : 'text-slate-500 hover:text-slate-800' }}">
@@ -73,7 +73,7 @@
         </a>
         @endforeach
     </div>
-    {{-- Tabel --}}
+    
     <div class="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
         <div class="overflow-x-auto">
             <table class="w-full text-left text-sm whitespace-nowrap">
@@ -143,7 +143,7 @@
         @endif
     </div></div>
 
-</div>{{-- end x-data --}}
+</div>
 
 
 @endsection

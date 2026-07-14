@@ -85,21 +85,55 @@
                         @endif
                     </td>
                     <td class="px-4 py-2.5 text-center">
-                        <span class="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-amber-50 text-amber-600">
-                            {{ $rs->status_reservasi }}
-                        </span>
+                        <div class="flex flex-col items-center gap-1">
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-amber-50 text-amber-600">
+                                {{ $rs->status_reservasi }}
+                            </span>
+                            @if($rs->konfirmasi_lahan === 'Belum Dikonfirmasi')
+                                <span class="inline-flex items-center px-2 py-0.5 rounded text-[9px] font-bold uppercase bg-amber-100 text-amber-800" title="Belum Dikonfirmasi oleh Lapangan">
+                                    Belum Cek Lapangan
+                                </span>
+                            @elseif($rs->konfirmasi_lahan === 'Tersedia')
+                                <span class="inline-flex items-center px-2 py-0.5 rounded text-[9px] font-bold uppercase bg-emerald-100 text-emerald-800" title="Terkonfirmasi Tersedia oleh Lapangan">
+                                    Lahan Tersedia
+                                </span>
+                            @elseif($rs->konfirmasi_lahan === 'Tidak Tersedia')
+                                <span class="inline-flex items-center px-2 py-0.5 rounded text-[9px] font-bold uppercase bg-rose-100 text-rose-800" title="Terkonfirmasi Tidak Tersedia oleh Lapangan">
+                                    Lahan Tidak Tersedia
+                                </span>
+                            @endif
+                        </div>
                     </td>
                     <td class="px-4 py-2.5 text-center flex justify-center gap-2">
-                        <form action="{{ route('manajer.approval.approve', $rs->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menyetujui reservasi ini?');">
+                        <form id="form-approve-{{ $rs->id }}" action="{{ route('manajer.approval.approve', $rs->id) }}" method="POST">
                             @csrf @method('PUT')
-                            <button type="submit" class="px-3 py-1.5 bg-[#800000] text-white text-[10px] font-bold uppercase rounded hover:bg-[#800000]/90 transition-colors">
+                            <button type="button" 
+                                    @click="$dispatch('confirm-modal', { 
+                                        title: 'Setujui Reservasi', 
+                                        message: '{{ $rs->konfirmasi_lahan !== 'Tersedia' ? '<span class=\"text-rose-600 font-bold block mb-4\">⚠ PERINGATAN: Lahan belum dikonfirmasi TERSEDIA oleh Koordinator Lapangan!</span>' : '' }}Apakah Anda yakin ingin menyetujui reservasi ini?', 
+                                        confirmText: 'Ya, Setujui',
+                                        type: '{{ $rs->konfirmasi_lahan !== 'Tersedia' ? 'danger' : 'primary' }}',
+                                        action: () => document.getElementById('form-approve-{{ $rs->id }}').submit() 
+                                    })"
+                                    class="px-3 py-1.5 bg-[#800000] text-white text-[10px] font-bold uppercase rounded hover:bg-[#800000]/90 transition-colors flex items-center gap-1" title="{{ $rs->konfirmasi_lahan !== 'Tersedia' ? 'Lahan belum dikonfirmasi TERSEDIA oleh lapangan!' : 'Setujui Reservasi' }}">
+                                @if($rs->konfirmasi_lahan !== 'Tersedia')
+                                    <span class="material-icons text-xs">warning</span>
+                                @endif
                                 Setujui
                             </button>
                         </form>
                         
-                        <form action="{{ route('manajer.approval.reject', $rs->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menolak reservasi ini? Lahan akan kembali tersedia.');">
+                        <form id="form-reject-{{ $rs->id }}" action="{{ route('manajer.approval.reject', $rs->id) }}" method="POST">
                             @csrf @method('PUT')
-                            <button type="submit" class="px-3 py-1.5 bg-slate-100 text-slate-600 text-[10px] font-bold uppercase rounded hover:bg-slate-200 transition-colors">
+                            <button type="button"
+                                    @click="$dispatch('confirm-modal', { 
+                                        title: 'Tolak Reservasi', 
+                                        message: 'Apakah Anda yakin ingin menolak reservasi ini? Lahan akan kembali dilepas menjadi <b>Tersedia</b>.', 
+                                        confirmText: 'Ya, Tolak',
+                                        type: 'danger',
+                                        action: () => document.getElementById('form-reject-{{ $rs->id }}').submit() 
+                                    })"
+                                    class="px-3 py-1.5 bg-slate-100 text-slate-600 text-[10px] font-bold uppercase rounded hover:bg-slate-200 transition-colors">
                                 Tolak
                             </button>
                         </form>

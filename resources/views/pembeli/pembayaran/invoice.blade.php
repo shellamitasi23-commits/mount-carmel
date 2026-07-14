@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Invoice #{{ $pembayaran->no_invoice }} — Mount Carmel</title>
     
-    {{-- Fonts --}}
+    
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,600&display=swap" rel="stylesheet">
     
-    {{-- Standalone Premium Invoice CSS --}}
+    
     <link rel="stylesheet" href="{{ asset('css/invoice.css') }}"/>
     <style>
         .badge.partial {
@@ -141,7 +141,7 @@
 </div>
 @endif
 
-{{-- Pembungkus Tombol --}}
+
 <div class="print-btn-container">
     <a href="{{ route('pembeli.reservasi.index') }}" class="btn btn-back">
         Kembali ke Reservasi
@@ -151,10 +151,10 @@
     </button>
 </div>
 
-{{-- Kertas Invoice --}}
+
 <div class="invoice-box">
 
-    {{-- Header --}}
+    
     <div class="header">
         <div>
             <div class="brand">Mount Carmel</div>
@@ -179,7 +179,7 @@
         </div>
     </div>
 
-    {{-- Billing Info --}}
+    
     <div class="info-section">
         <div class="info-col">
             <div class="info-title">Ditagihkan Kepada</div>
@@ -206,7 +206,7 @@
         </div>
     </div>
 
-    {{-- Tabel Layanan --}}
+    
     <table class="table">
         <thead>
             <tr>
@@ -307,7 +307,7 @@
                 <span>Rp {{ number_format($pembayaran->jumlah_bayar, 0, ',', '.') }}</span>
             </div>
             
-            {{-- Pesan Status di bawah Total --}}
+            
             <div style="text-align: right; margin-top: 15px; font-size: 11px; color: #6B7280;">
                 @if($pembayaran->status_pembayaran === 'Lunas')
                     @if($pembayaran->cicilan_ke === 0)
@@ -329,7 +329,7 @@
 
     </div>
 
-    {{-- Tanda Tangan / Verifikasi --}}
+    
     <div style="margin-top: 50px; border-top: 1px solid #E5E7EB; padding-top: 20px; display: flex; justify-content: space-between; font-size: 11px; color: #4B5563;">
         <div>
             @if($pembayaran->reservasi?->marketing_oleh)

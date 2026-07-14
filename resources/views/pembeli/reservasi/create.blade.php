@@ -5,7 +5,7 @@
 <div class="min-h-screen bg-white dark:bg-gray-950 pt-32 pb-32">
     <div class="max-w-6xl mx-auto px-8">
 
-        {{-- Minimalist Breadcrumb --}}
+        
         <nav class="flex items-center gap-2 text-xs text-gray-400 mb-8" data-aos="fade-down">
             <a href="{{ route('home') }}" class="hover:text-[#800000] transition-colors">Beranda</a>
             <span class="text-gray-200 dark:text-gray-800">/</span>
@@ -16,7 +16,7 @@
             <span class="text-slate-900 dark:text-white font-medium">Isi Data Reservasi</span>
         </nav>
 
-        {{-- Minimalist Progress Bar --}}
+        
         <div class="flex items-center justify-between max-w-2xl mx-auto mb-16" data-aos="fade-down">
             @foreach([
                 ['label'=>'Pilih Lahan','done'=>true,'active'=>false],
@@ -70,7 +70,7 @@
                 <input type="hidden" name="lahan_id" value="{{ $lahan->id }}">
 
                 <div class="grid grid-cols-1 gap-8">
-                    {{-- Foto KTP Pemesan --}}
+                    
                     <div class="group">
                         <label class="block text-xs font-semibold text-gray-500 dark:text-gray-400 group-focus-within:text-[#800000] transition-colors mb-3">
                             Foto KTP Pemesan <span class="text-[#800000]">*</span>
@@ -98,7 +98,7 @@
                         </div>
                     </div>
 
-                    {{-- Kategori Kebutuhan --}}
+                    
                     <div class="group">
                         <label class="block text-xs font-semibold text-gray-500 dark:text-gray-400 mb-2">
                             Kategori Kebutuhan <span class="text-[#800000]">*</span>
@@ -123,13 +123,13 @@
                         </div>
                     </div>
 
-                    {{-- Metode Pembayaran --}}
+                    
                     <div class="group">
                         <label class="block text-xs font-semibold text-gray-500 dark:text-gray-400 mb-2">
                             Metode Pembayaran <span class="text-[#800000]">*</span>
                         </label>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            {{-- Tunai --}}
+                            
                             <label class="relative flex items-center p-4 bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl cursor-pointer transition-all hover:border-[#800000]/30"
                                    :class="metode === 'tunai' ? 'ring-2 ring-[#800000] border-[#800000] bg-white dark:bg-gray-800 shadow-sm shadow-[#800000]/5' : ''">
                                 <input type="radio" name="metode_pembayaran" value="tunai" x-model="metode" class="hidden">
@@ -139,7 +139,7 @@
                                 </div>
                             </label>
 
-                            {{-- Cicilan dengan DP --}}
+                            
                             <label x-show="kebutuhan === 'pre_need'" 
                                    x-transition
                                    class="relative flex items-center p-4 bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl cursor-pointer transition-all hover:border-[#800000]/30"
@@ -153,7 +153,7 @@
                         </div>
                     </div>
 
-                    {{-- Input DP (Cicilan dengan DP) --}}
+                    
                     <div class="group" x-show="metode === 'cicilan_dp'" x-transition x-cloak>
                         <input type="hidden" name="nominal_dp" :value="lahanHarga * 0.2">
                         <div class="bg-gray-50 dark:bg-gray-950 p-6 rounded-2xl border border-gray-100 dark:border-gray-800">
@@ -164,7 +164,7 @@
                         </div>
                     </div>
 
-                    {{-- Kontak Kerabat --}}
+                    
                     <div class="group">
                         <label class="block text-xs font-semibold text-gray-500 dark:text-gray-400 group-focus-within:text-[#800000] transition-colors mb-2">
                             Kontak Kerabat <span class="text-gray-400 font-normal text-[11px]">(opsional)</span>
@@ -174,7 +174,7 @@
                             class="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl text-sm font-medium text-gray-900 dark:text-white focus:border-[#800000] focus:ring-0 transition-all placeholder:text-gray-300 dark:placeholder:text-gray-700">
                     </div>
 
-                    {{-- Alamat --}}
+                    
                     <div class="group">
                         <label class="block text-xs font-semibold text-gray-500 dark:text-gray-400 group-focus-within:text-[#800000] transition-colors mb-2">
                             Alamat Lengkap Pemesan <span class="text-[#800000]">*</span>
@@ -184,7 +184,7 @@
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        {{-- Nama Jenazah --}}
+                        
                         <div class="group">
                             <label class="block text-xs font-semibold text-gray-500 dark:text-gray-400 group-focus-within:text-[#800000] transition-colors mb-2">
                                 Nama Lengkap Jenazah <span x-show="kebutuhan === 'end_user'" class="text-[#800000]">*</span><span x-show="kebutuhan === 'pre_need'" class="text-gray-400 font-normal text-[11px]">(opsional)</span>
@@ -195,7 +195,7 @@
                                 class="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl text-sm font-medium text-gray-900 dark:text-white focus:border-[#800000] focus:ring-0 transition-all placeholder:text-gray-300 dark:placeholder:text-gray-700">
                         </div>
  
-                        {{-- Tanggal Dimakamkan --}}
+                        
                         <div class="group">
                             <label class="block text-xs font-semibold text-gray-500 dark:text-gray-400 group-focus-within:text-[#800000] transition-colors mb-2">
                                 Rencana Tanggal Pemakaman <span x-show="kebutuhan === 'end_user'" class="text-[#800000]">*</span><span x-show="kebutuhan === 'pre_need'" class="text-gray-400 font-normal text-[11px]">(opsional)</span>
@@ -206,7 +206,7 @@
                         </div>
                     </div>
 
-                    {{-- Kustomisasi Lahan (Khusus Lahan Special) --}}
+                    
                     @if(str_contains(strtolower($lahan->tipe_lahan), 'special'))
                     <div class="border-t border-slate-100 dark:border-slate-800 pt-8">
                         <span class="text-xs font-bold text-[#800000] block mb-4">Kustomisasi Lahan (Khusus Lahan Special)</span>
@@ -223,7 +223,7 @@
                     @endif
                 </div>
 
-                {{-- Action Buttons --}}
+                
                 <div class="flex flex-col sm:flex-row items-center gap-6 pt-6 border-t border-gray-100 dark:border-gray-800/50">
                     <button type="submit"
                         class="w-full sm:flex-1 py-3.5 bg-[#800000] text-white text-xs font-semibold rounded-xl hover:bg-[#900000] transition-all duration-300">

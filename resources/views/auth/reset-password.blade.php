@@ -4,26 +4,26 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Mount Carmel — Atur Ulang Kata Sandi</title>
-  {{-- Poppins Font --}}
+  
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
-  {{-- Bootstrap Icons CDN --}}
+  
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"/>
-  {{-- External Premium Stylesheet --}}
+  
   <link rel="stylesheet" href="{{ asset('css/auth.css') }}"/>
 </head>
 <body>
 
 <div class="page-container">
 
-  {{-- Left Side: Beautiful Scenic Visual Panel --}}
+  
   <div class="visual-panel">
-    {{-- Brand --}}
+    
     <div class="brand-section">
       <i class="bi bi-symmetry-vertical brand-icon"></i>
       Mount Carmel
     </div>
 
-    {{-- Center Tagline --}}
+    
     <div class="visual-main-content">
       <h1 class="main-tagline">
         Menemukan Kedamaian Sejati
@@ -31,7 +31,7 @@
       </h1>
     </div>
 
-    {{-- Bottom Trust Items --}}
+    
     <div class="trust-container">
       <div class="trust-item">
         <div class="trust-item-icon">
@@ -42,7 +42,7 @@
     </div>
   </div>
 
-  {{-- Right Side: Clean Form Panel --}}
+  
   <div class="form-panel">
     <div class="form-card">
       <div class="icon-wrapper">
@@ -54,7 +54,7 @@
         <p class="form-subtitle">Buat kata sandi baru yang kuat untuk mengamankan kembali akun Mount Carmel Anda.</p>
       </div>
 
-      {{-- Session Alerts --}}
+      
       @if ($errors->any())
         <div class="session-alert">
           <i class="bi bi-exclamation-triangle-fill" style="font-size: 1.1rem; flex-shrink: 0;"></i>
@@ -65,10 +65,10 @@
       <form method="POST" action="{{ route('password.update') }}" id="resetForm">
         @csrf
         
-        {{-- Hidden Token Field --}}
+        
         <input type="hidden" name="token" value="{{ $token }}"/>
         
-        {{-- Email Field (ReadOnly but submitted) --}}
+        
         <div class="field-group">
           <label class="field-label" for="rEmail">Alamat Email</label>
           <div class="input-wrapper">
@@ -80,7 +80,7 @@
           @enderror
         </div>
 
-        {{-- Password Field --}}
+        
         <div class="field-group">
           <label class="field-label" for="rPass">Kata Sandi Baru</label>
           <div class="input-wrapper">
@@ -95,7 +95,7 @@
           @enderror
         </div>
 
-        {{-- Confirm Password Field --}}
+        
         <div class="field-group">
           <label class="field-label" for="rPassConfirm">Konfirmasi Kata Sandi Baru</label>
           <div class="input-wrapper">
@@ -119,7 +119,7 @@
 
 </div>
 
-{{-- External Premium Script --}}
+
 <script src="{{ asset('js/auth.js') }}"></script>
 <script>
   // Add submission loading state to reset form

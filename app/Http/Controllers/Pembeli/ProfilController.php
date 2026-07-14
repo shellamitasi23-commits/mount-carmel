@@ -17,7 +17,6 @@ class ProfilController extends Controller
 
         // Data tambahan untuk tab lain
         $riwayat = $user->reservasis()->with(['lahan', 'pembayaran', 'detailJenazahs'])->latest()->get();
-        $sertifikats = $user->reservasis()->whereNotNull('file_sertifikat')->get();
 
         // Data Pembayaran Saya (dipindah dari PembayaranController)
         $userReservasiIds = $riwayat->pluck('id');
@@ -97,7 +96,7 @@ class ProfilController extends Controller
             return false;
         });
 
-        return view('pembeli.profil.index', compact('user', 'riwayat', 'sertifikats', 'pembayarans', 'reservasiSiapBayar'));
+        return view('pembeli.profil.index', compact('user', 'riwayat', 'pembayarans', 'reservasiSiapBayar'));
     }
 
     public function update(Request $request)
@@ -186,5 +185,69 @@ class ProfilController extends Controller
         $user->save();
         
         return back()->with('success', 'Foto profil diperbarui!');
+    }
+
+    public function saveSignature(Request $request)
+    {
+        $request->validate([
+            'signature' => 'required|string',
+        ]);
+
+        $user = \App\Models\User::find(Auth::id());
+        
+        $signatureData = $request->signature;
+        $image = str_replace('data:image/png;base64,', '', $signatureData);
+        $image = str_replace(' ', '+', $image);
+        $imageName = 'sig_user_' . $user->id . '_' . time() . '.png';
+        
+        Storage::disk('local')->put('signatures/' . $imageName, base64_decode($image));
+        
+        if ($user->tanda_tangan) {
+            Storage::disk('local')->delete($user->tanda_tangan);
+        }
+        
+        $user->tanda_tangan = 'signatures/' . $imageName;
+        $user->save();
+        
+        // Auto-apply this signature to all pending certificates of this user
+        $pendingSertifikats = \App\Models\Sertifikat::whereHas('reservasi', function ($q) use ($user) {
+            $q->where('user_id', $user->id);
+        })->where('status_sertifikat', 'Menunggu TTD Pemilik')->get();
+
+        foreach ($pendingSertifikats as $sertifikat) {
+            $sertifikat->update([
+                'ttd_pemilik' => 'signatures/' . $imageName,
+                'status_sertifikat' => 'Menunggu TTD Manajer'
+            ]);
+        }
+
+        return back()->with('success', 'Tanda tangan default berhasil disimpan!');
+    }
+
+    public function signSertifikat(Request $request, $id)
+    {
+        $request->validate([
+            'signature' => 'required|string',
+        ]);
+
+        $sertifikat = \App\Models\Sertifikat::findOrFail($id);
+        
+        if ($sertifikat->reservasi->user_id !== Auth::id()) {
+            abort(403);
+        }
+
+        $signatureData = $request->signature;
+        $image = str_replace('data:image/png;base64,', '', $signatureData);
+        $image = str_replace(' ', '+', $image);
+        $imageName = 'sig_sertifikat_' . $id . '_' . time() . '.png';
+        
+        Storage::disk('local')->put('signatures/' . $imageName, base64_decode($image));
+        
+        $sertifikat->update([
+            'ttd_pemilik' => 'signatures/' . $imageName,
+            'status_sertifikat' => 'Menunggu TTD Manajer'
+        ]);
+
+        return back()->with('success', 'Sertifikat berhasil ditandatangani! Sekarang menunggu tanda tangan Manajer.');
     }
 }

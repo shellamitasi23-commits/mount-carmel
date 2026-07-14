@@ -17,7 +17,7 @@
     </div>
 
 </div>
-{{-- Ringkasan Cluster List --}}
+
 <div id="cluster-container" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
     @forelse($clusters as $cluster)
     @php
@@ -49,7 +49,7 @@
                 {{ $cluster->deskripsi ?? 'No sector description available.' }}
             </p>
  
-            {{-- Stat Matrix --}}
+            
             <div class="grid grid-cols-3 gap-2 mb-6">
                 <div class="bg-slate-50/50 p-2.5 rounded-xl text-center" title="Ready / Tersedia">
                     <p class="text-lg font-black text-slate-900 tracking-tighter">{{ $tersedia }}</p>

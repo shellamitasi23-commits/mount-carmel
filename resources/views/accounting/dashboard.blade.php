@@ -14,7 +14,7 @@
     <p class="text-xs text-slate-500 mt-1">Monitoring arus kas dan verifikasi transaksi pembayaran.</p>
 </div>
 
-{{-- Stats Grid --}}
+
 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
     <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100 border-l-4 border-l-[#800000]">
         <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Total Pendapatan</p>
@@ -38,7 +38,7 @@
 </div>
 
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-    {{-- Chart Pendapatan --}}
+    
     <div class="lg:col-span-2 bg-white rounded-xl shadow-sm border border-slate-100 p-5">
         <h4 class="text-[10px] font-black text-slate-800 uppercase tracking-widest mb-4">Tren Pendapatan (6 Bulan Terakhir)</h4>
         <div class="h-64 flex items-end justify-between gap-4">
@@ -59,7 +59,7 @@
         </div>
     </div>
 
-    {{-- Recent Activities --}}
+    
     <div class="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden flex flex-col">
         <div class="px-4 py-3 border-b border-slate-50 flex items-center justify-between">
             <h4 class="text-[10px] font-black text-slate-800 uppercase tracking-widest">Aktivitas Terbaru</h4>

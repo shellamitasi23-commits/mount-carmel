@@ -15,21 +15,14 @@
         <h1 class="text-2xl font-bold text-slate-800">Data Cluster</h1>
         <p class="text-sm text-slate-500 mt-1">Kelola zona pemakaman Muslim dan Non-Muslim.</p>
     </div>
-    @if(auth()->user()->role == 'koordinator_lapangan')
-    <button onclick="openModal()"
-            class="bg-[#800000] hover:bg-[#800000]/80 text-white px-5 py-2.5 rounded-xl font-semibold flex items-center gap-2 transition-all shadow-md text-sm hover:shadow-lg hover:-translate-y-0.5">
-        <span class="material-icons-outlined text-sm">add</span> Tambah Cluster
-    </button>
-    @endif
 </div>
 
-{{-- Search --}}
 <div class="mb-6">
     <input id="cluster-search" type="text" placeholder="Cari cluster (nama, kategori, deskripsi)..." 
         class="w-full md:w-1/2 px-4 py-2 bg-white border border-slate-100 rounded-xl text-sm font-medium shadow-sm focus:ring-4 focus:ring-slate-900/5 focus:border-slate-900 outline-none transition-all placeholder:text-slate-300" />
 </div>
 
-{{-- Ringkasan Cluster List --}}
+
 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
     @forelse($clusters as $cluster)
     @php
@@ -54,36 +47,13 @@
                         </span>
                     </div>
                 </div>
-                
-                @if(auth()->user()->role == 'koordinator_lapangan')
-                <div class="flex gap-1.5">
-                    <button onclick="openEditModal({{ $cluster->id }})"
-                            class="w-8 h-8 flex items-center justify-center bg-white border border-slate-100 text-slate-400 hover:text-slate-900 hover:border-slate-200 rounded-lg transition-all shadow-sm" title="Edit Configuration">
-                        <span class="material-icons-outlined text-base">edit</span>
-                    </button>
-                    <form id="form-delete-cluster-{{ $cluster->id }}" action="{{ route('koordinator_lapangan.cluster.destroy', $cluster->id) }}" method="POST">
-                        @csrf @method('DELETE')
-                        <button type="button"
-                                @click="$dispatch('confirm-modal', { 
-                                    title: 'Hapus Cluster', 
-                                    message: 'Apakah Anda yakin ingin menghapus <b>{{ $cluster->nama_cluster }}</b>? <br><br> Seluruh data lahan di dalamnya akan ikut terhapus secara permanen.', 
-                                    confirmText: 'Hapus Permanen',
-                                    type: 'danger',
-                                    action: () => document.getElementById('form-delete-cluster-{{ $cluster->id }}').submit() 
-                                })"
-                                class="w-8 h-8 flex items-center justify-center bg-white border border-slate-100 text-slate-400 hover:text-rose-600 hover:border-rose-100 rounded-lg transition-all shadow-sm" title="Remove Cluster">
-                            <span class="material-icons-outlined text-base">delete</span>
-                        </button>
-                    </form>
-                </div>
-                @endif
             </div>
- 
+
             <p class="text-[11px] font-medium text-slate-400 leading-relaxed mb-4 uppercase tracking-wide">
                 {{ $cluster->deskripsi ?? 'No sector description available.' }}
             </p>
- 
-            {{-- Stat Matrix --}}
+
+            
             <div class="grid grid-cols-3 gap-2 mb-6">
                 <div class="bg-slate-50/50 p-2.5 rounded-xl text-center" title="Ready / Tersedia">
                     <p class="text-lg font-black text-slate-900 tracking-tighter">{{ $tersedia }}</p>
@@ -117,9 +87,6 @@
             </div>
         </div>
     </div>
-    @if(auth()->user()->role == 'koordinator_lapangan')
-    @include('koordinator_lapangan.cluster.edit')
-    @endif
     @empty
     <div class="col-span-2 py-16 bg-white border border-slate-100 rounded-xl text-center shadow-inner">
         <p class="text-xl font-black text-slate-100 uppercase tracking-[0.3em] italic mb-2">No Sector Data</p>
@@ -128,16 +95,7 @@
     @endforelse
 </div>
 
-@if(auth()->user()->role == 'koordinator_lapangan')
-@include('koordinator_lapangan.cluster.create')
-@endif
-
 <script>
-    function openModal()        { document.getElementById('createModal').classList.remove('hidden'); }
-    function closeModal()       { document.getElementById('createModal').classList.add('hidden'); }
-    function openEditModal(id)  { document.getElementById('editModal'+id).classList.remove('hidden'); }
-    function closeEditModal(id) { document.getElementById('editModal'+id).classList.add('hidden'); }
-
     // Search/filter card list
     function initClusterSearch() {
         const input = document.getElementById('cluster-search');

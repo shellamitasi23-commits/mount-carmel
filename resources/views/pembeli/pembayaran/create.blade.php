@@ -5,7 +5,7 @@
 <div class="min-h-screen bg-white dark:bg-gray-950 pt-32 pb-32">
     <div class="max-w-6xl mx-auto px-8">
 
-        {{-- Minimalist Breadcrumb --}}
+        
         <nav class="flex items-center gap-4 text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 mb-12" data-aos="fade-down">
             <a href="{{ route('home') }}" class="hover:text-[#800000] transition-colors">Beranda</a>
             <span class="text-gray-200 dark:text-gray-800">/</span>
@@ -14,7 +14,7 @@
             <span class="text-gray-900 dark:text-white">Pembayaran</span>
         </nav>
 
-        {{-- Minimalist Progress Bar --}}
+        
         <div class="flex items-center justify-between max-w-2xl mx-auto mb-20" data-aos="fade-down">
             @foreach([
                 ['label'=>'Pilih Lahan','done'=>true,'active'=>false],
@@ -75,7 +75,7 @@
                 <input type="hidden" name="rekening_tujuan" x-bind:value="nomorRek">
                 <input type="hidden" name="atas_nama_rekening" x-bind:value="atasNama">
 
-                {{-- Amount Display --}}
+                
                 <div class="bg-gray-50 dark:bg-gray-950 p-6 rounded-2xl border border-gray-100/50 dark:border-gray-900/50 text-center">
                     <p class="text-xs font-semibold text-gray-500 dark:text-gray-450 mb-1">Nominal Yang Harus Ditransfer</p>
                     <div class="text-3xl font-extrabold text-[#800000] tracking-tight">
@@ -86,7 +86,7 @@
                     </p>
                 </div>
 
-                {{-- Bank Selection --}}
+                
                 <div class="group">
                     <label class="block text-xs font-semibold text-gray-500 dark:text-gray-400 mb-2">
                         Pilih Rekening Tujuan <span class="text-[#800000]">*</span>
@@ -113,7 +113,7 @@
                     </div>
                 </div>
 
-                {{-- Upload Proof --}}
+                
                 <div class="group">
                     <label class="block text-xs font-semibold text-gray-500 dark:text-gray-400 mb-3">
                         Unggah Bukti Transfer <span class="text-[#800000]">*</span>
@@ -150,7 +150,7 @@
                         class="w-full px-5 py-3 bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl text-xs font-medium text-gray-900 dark:text-white focus:border-[#800000] focus:ring-0 transition-all resize-none placeholder:text-gray-200 dark:placeholder:text-gray-800"></textarea>
                 </div>
 
-                {{-- Submit Button --}}
+                
                 <div class="flex flex-col sm:flex-row items-center gap-6 pt-6 border-t border-gray-100 dark:border-gray-800/50">
                     <button type="submit"
                         class="w-full sm:flex-1 py-3.5 bg-[#800000] text-white text-xs font-semibold rounded-xl hover:bg-[#900000] transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed"

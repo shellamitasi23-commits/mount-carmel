@@ -28,7 +28,7 @@
     </div>
     @endif
 
-    {{-- Tagihan yang perlu dibayar --}}
+    
     @if($reservasiSiapBayar->count() > 0)
     <div class="mb-8" data-aos="fade-up">
         <h2 class="text-sm font-bold text-gray-700 uppercase tracking-widest mb-4 flex items-center gap-2">
@@ -61,7 +61,7 @@
     </div>
     @endif
 
-    {{-- Riwayat Pembayaran --}}
+    
     <div data-aos="fade-up">
         <h2 class="text-sm font-bold text-gray-700 uppercase tracking-widest mb-4 flex items-center gap-2">
             <span class="material-icons text-gray-400 text-base">history</span>
@@ -116,14 +116,14 @@
                     <div class="flex flex-col sm:items-end gap-2 shrink-0">
                         <p class="font-bold text-gray-900">Rp {{ number_format($bayar->jumlah_bayar, 0, ',', '.') }}</p>
                         <div class="flex gap-2">
-                            {{-- Invoice HANYA kalau Lunas --}}
+                            
                             @if($bayar->status_pembayaran === 'Lunas')
                             <a href="{{ route('pembeli.pembayaran.invoice', $bayar->id) }}"
                                class="btn-press px-4 py-2 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-xl text-xs font-bold hover:bg-emerald-100 transition-colors flex items-center gap-1.5">
                                 <span class="material-icons text-xs">receipt</span> Invoice
                             </a>
                             @endif
-                            {{-- Kirim ulang kalau ditolak --}}
+                            
                             @if($bayar->status_pembayaran === 'Ditolak')
                             <a href="{{ route('pembeli.pembayaran.create', ['reservasi_id' => $bayar->reservasi_id]) }}"
                                class="btn-press px-4 py-2 bg-red-50 text-red-600 border border-red-200 rounded-xl text-xs font-bold hover:bg-red-100 transition-colors flex items-center gap-1.5">

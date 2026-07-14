@@ -5,14 +5,14 @@
 <div class="min-h-screen bg-white dark:bg-gray-950 pt-32 pb-32">
     <div class="max-w-6xl mx-auto px-8">
 
-        {{-- Minimalist Breadcrumb --}}
+        
         <nav class="flex items-center gap-2 text-xs text-gray-400 mb-8" data-aos="fade-down">
             <a href="{{ route('home') }}" class="hover:text-[#800000] transition-colors">Beranda</a>
             <span class="text-gray-200 dark:text-gray-800">/</span>
             <span class="text-slate-900 dark:text-white font-medium">Konfirmasi Reservasi</span>
         </nav>
 
-        {{-- Minimalist Progress Bar --}}
+        
         <div class="flex items-center justify-between max-w-2xl mx-auto mb-16" data-aos="fade-down">
             @foreach([
                 ['label'=>'Pilih Lahan','done'=>true,'active'=>false],
@@ -56,7 +56,7 @@
             </header>
 
             <div class="space-y-8 text-xs">
-                {{-- Detail Lahan --}}
+                
                 <div class="bg-gray-50 dark:bg-gray-950 p-6 rounded-2xl border border-gray-100/50 dark:border-gray-900/50">
                     <span class="text-xs font-bold text-[#800000] block mb-4">I. Detail Lahan</span>
                     <div class="grid grid-cols-2 gap-y-4 gap-x-6">
@@ -79,7 +79,7 @@
                     </div>
                 </div>
 
-                {{-- Informasi Pemesan & Jenazah --}}
+                
                 <div class="bg-gray-50 dark:bg-gray-950 p-6 rounded-2xl border border-gray-100/50 dark:border-gray-900/50">
                     <span class="text-xs font-bold text-[#800000] block mb-4">II. Informasi Pemesan & Kebutuhan</span>
                     <div class="grid grid-cols-2 gap-y-4 gap-x-6">
@@ -130,7 +130,7 @@
                     </div>
                 </div>
 
-                {{-- Kustomisasi Lahan (Khusus Special) --}}
+                
                 @if($reservasi->request_tambahan || $reservasi->biaya_tambahan > 0)
                 <div class="bg-gray-50 dark:bg-gray-950 p-6 rounded-2xl border border-gray-100/50 dark:border-gray-900/50">
                     <span class="text-xs font-bold text-[#800000] block mb-4">III. Request Tambahan (Lahan Special)</span>
@@ -147,7 +147,7 @@
                 </div>
                 @endif
 
-                {{-- Rincian Biaya & Skema Pembayaran --}}
+                
                 <div class="border border-gray-100 dark:border-gray-850 rounded-2xl overflow-hidden shadow-sm">
                     <div class="p-6 bg-gray-50 dark:bg-gray-950 border-b border-gray-100 dark:border-gray-900">
                         <span class="text-xs font-bold text-[#800000] block mb-4">IV. Rincian & Skema Pembayaran</span>
@@ -183,7 +183,7 @@
                             </div>
                         </div>
 
-                        {{-- Breakdown specific to method --}}
+                        
                         <div class="bg-gray-50 dark:bg-gray-950 p-4 rounded-xl border border-gray-100 dark:border-gray-900 space-y-2">
                             @if($reservasi->jenis_pembayaran === 'tunai')
                                 <div class="flex justify-between items-center">
@@ -207,7 +207,7 @@
                         </div>
                     </div>
 
-                    {{-- Highlight Tagihan Pertama --}}
+                    
                     <div class="p-6 bg-[#800000]/5 dark:bg-[#800000]/10 border-t border-gray-150 dark:border-gray-850 flex justify-between items-center">
                         <div>
                             <span class="text-xs font-semibold text-[#800000] block mb-0.5">Tagihan Pertama Anda</span>
@@ -232,7 +232,7 @@
                 </div>
             </div>
 
-            {{-- Action Buttons --}}
+            
             <div class="flex flex-col sm:flex-row items-center gap-6 pt-8 mt-8 border-t border-gray-100 dark:border-gray-800/50">
                 <a href="{{ route('pembeli.pembayaran.create', ['reservasi_id' => $reservasi->id]) }}"
                     class="w-full sm:flex-1 py-3.5 bg-[#800000] text-white text-xs font-semibold text-center rounded-xl hover:bg-[#900000] transition-all duration-300">

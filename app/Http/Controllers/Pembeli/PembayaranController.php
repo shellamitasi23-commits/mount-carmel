@@ -201,7 +201,7 @@ class PembayaranController extends Controller
             }
         }
 
-        $path = $request->file('bukti_pembayaran')->store('bukti_bayar', 'public');
+        $path = $request->file('bukti_pembayaran')->store('bukti_bayar', 'local');
 
         $noInvoice = 'INV-' . date('Ymd') . '-' . strtoupper(substr(md5($reservasi->id . time()), 0, 6));
 

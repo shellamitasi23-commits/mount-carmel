@@ -49,7 +49,60 @@ class ProfilController extends Controller
         }
 
         $user->update(['password' => Hash::make($request->password)]);
-
-        return back()->with('success', 'Kata sandi berhasil diperbarui.');
-    }
-}
+ 
+         return back()->with('success', 'Kata sandi berhasil diperbarui.');
+     }
+ 
+     public function updateAvatar(Request $request)
+     {
+         $user = \App\Models\User::find(Auth::id());
+ 
+         if ($request->has('remove_avatar') && $request->remove_avatar == '1') {
+             if ($user->avatar) {
+                 Storage::disk('public')->delete('avatars/' . $user->avatar);
+                 $user->avatar = null;
+                 $user->save();
+             }
+             return back()->with('success', 'Foto profil berhasil dihapus!');
+         }
+ 
+         $request->validate(['avatar' => 'required|image|max:2048']);
+         
+         if ($user->avatar) {
+             Storage::disk('public')->delete('avatars/' . $user->avatar);
+         }
+         
+         $fileName = time() . '.' . $request->avatar->extension();
+         $request->avatar->storeAs('avatars', $fileName, 'public');
+         
+         $user->avatar = $fileName;
+         $user->save();
+         
+         return back()->with('success', 'Foto profil diperbarui!');
+     }
+ 
+     public function saveSignature(Request $request)
+     {
+         $request->validate([
+             'signature' => 'required|string',
+         ]);
+ 
+         $user = \App\Models\User::find(Auth::id());
+         
+         $signatureData = $request->signature;
+         $image = str_replace('data:image/png;base64,', '', $signatureData);
+         $image = str_replace(' ', '+', $image);
+         $imageName = 'sig_user_' . $user->id . '_' . time() . '.png';
+         
+         Storage::disk('local')->put('signatures/' . $imageName, base64_decode($image));
+         
+         if ($user->tanda_tangan) {
+             Storage::disk('local')->delete($user->tanda_tangan);
+         }
+         
+         $user->tanda_tangan = 'signatures/' . $imageName;
+         $user->save();
+ 
+         return back()->with('success', 'Tanda tangan default berhasil disimpan!');
+     }
+ }

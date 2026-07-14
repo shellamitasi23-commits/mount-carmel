@@ -31,7 +31,7 @@
     </div>
 </div>
 
-{{-- Filtering System --}}
+
 <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100 mb-6">
     <form method="GET" action="{{ route(auth()->user()->role . '.jenazah.index') }}" class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
         <div class="md:col-span-2">

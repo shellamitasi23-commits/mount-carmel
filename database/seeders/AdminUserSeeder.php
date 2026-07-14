@@ -50,7 +50,6 @@ class AdminUserSeeder extends Seeder
             ]
         );
 
-        // Seeding 3 Accounting Staff
         User::updateOrCreate(
             ['email' => 'accountingclara@mountcarmel.id'],
             [
@@ -90,7 +89,7 @@ class AdminUserSeeder extends Seeder
                 'no_telepon' => '081234560005'
             ]
         );
-        
+
         foreach (['sapira' => 'sapira@email.com', 'rizky' => 'rizky@email.com', 'ali' => 'ali@email.com'] as $name => $email) {
             User::updateOrCreate(
                 ['email' => $email],

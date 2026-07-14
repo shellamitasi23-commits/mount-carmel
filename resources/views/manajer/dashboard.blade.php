@@ -12,7 +12,7 @@
 <div class="mb-6">
     <h1 class="text-xl font-extrabold text-slate-800 tracking-tight uppercase">Dashboard Utama</h1>
     <p class="text-xs text-slate-500 mt-1">Ringkasan operasional dan inventori lahan Mount Carmel secara real-time.</p>
-</div>{{-- Main Stats --}}
+</div>
 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
     <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100 border-l-4 border-l-[#800000]">
         <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Total Kapasitas Lahan</p>
@@ -28,9 +28,9 @@
     </div>
 </div>
  
-{{-- Detail Per Sektor --}}
+
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-    {{-- Sektor Muslim --}}
+    
     <div class="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden group">
         <div class="px-4 py-3 border-b border-slate-50 bg-slate-50/50 flex items-center justify-between">
             <h4 class="text-xs font-black text-slate-800 uppercase tracking-widest flex items-center gap-2">
@@ -54,7 +54,7 @@
         </div>
     </div>
  
-    {{-- Sektor Non-Muslim --}}
+    
     <div class="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden group">
         <div class="px-4 py-3 border-b border-slate-50 bg-slate-50/50 flex items-center justify-between">
             <h4 class="text-xs font-black text-slate-800 uppercase tracking-widest flex items-center gap-2">
@@ -80,9 +80,9 @@
 </div>
 
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-    {{-- Left Column (Span 2) --}}
+    
     <div class="lg:col-span-2 flex flex-col gap-6">
-        {{-- Recent Sales Table --}}
+        
         <div class="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
             <div class="px-4 py-3 border-b border-slate-50 flex items-center justify-between">
                 <h4 class="text-xs font-black text-slate-800 uppercase tracking-widest">Aktivitas Transaksi Terbaru</h4>
@@ -127,9 +127,9 @@
         </div>
     </div>
 
-    {{-- KANAN (Span 1) --}}
+    
     <div class="flex flex-col gap-6">
-        {{-- Revenue Summary --}}
+        
         <div class="bg-[#800000] text-white p-5 rounded-xl shadow-xl relative overflow-hidden group">
             <div class="absolute top-[-20%] right-[-10%] w-32 h-32 bg-[#800000]/80 rounded-full blur-3xl opacity-50"></div>
             <p class="text-[9px] font-black text-white/50 uppercase tracking-[0.3em] mb-2 relative z-10">Sales Revenue</p>
@@ -143,7 +143,7 @@
             </div>
         </div>
 
-        {{-- Performance Chart --}}
+        
         <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-100 flex-1 flex flex-col">
             <h4 class="text-[10px] font-black text-slate-800 uppercase tracking-widest mb-4">Performa Bulanan</h4>
             <div class="relative flex-1 min-h-[200px]">

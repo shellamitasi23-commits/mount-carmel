@@ -108,14 +108,14 @@
 <body>
   <div class="wrapper">
     <table class="main-table" cellpadding="0" cellspacing="0">
-      <!-- HEADER -->
+      
       <tr>
         <td class="header">
           <span class="header-logo">MOUNT CARMEL</span>
         </td>
       </tr>
 
-      <!-- CONTENT -->
+      
       <tr>
         <td class="content">
           <h1>Halo, {{ $name }}</h1>
@@ -137,7 +137,7 @@
         </td>
       </tr>
 
-      <!-- FOOTER -->
+      
       <tr>
         <td class="footer">
           <p style="font-size: 12px; margin-bottom: 5px;">&copy; {{ date('Y') }} Mount Carmel. Semua Hak Dilindungi Undang-Undang.</p>

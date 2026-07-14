@@ -5,7 +5,7 @@
 <div class="min-h-screen bg-slate-50 pt-28 pb-20 font-inter">
 <div class="max-w-6xl mx-auto px-4 md:px-6">
 
-    {{-- Header --}}
+    
     <div class="text-center mb-12" data-aos="fade-up">
         <p class="text-xs font-semibold tracking-wider text-[#800000] uppercase mb-2 block">Hubungi Kami</p>
         <h1 class="text-2xl md:text-3xl font-bold text-gray-900 mb-3">Kami Siap Membantu Anda</h1>
@@ -14,10 +14,10 @@
         </p>
     </div>
 
-    {{-- Kartu Info Kontak --}}
+    
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto mb-12">
 
-        {{-- Email --}}
+        
         <div class="group bg-white rounded-3xl border border-slate-100/80 shadow-sm p-6 flex flex-col items-center text-center hover:shadow-md hover:border-slate-200/50 hover:-translate-y-0.5 transition-all duration-300"
              data-aos="fade-up" data-aos-delay="100">
             <div class="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center mb-4 group-hover:scale-105 transition-transform duration-300">
@@ -35,7 +35,7 @@
             </a>
         </div>
 
-        {{-- Alamat --}}
+        
         <div class="group bg-white rounded-3xl border border-slate-100/80 shadow-sm p-6 flex flex-col items-center text-center hover:shadow-md hover:border-slate-200/50 hover:-translate-y-0.5 transition-all duration-300"
              data-aos="fade-up" data-aos-delay="200">
             <div class="w-12 h-12 bg-red-50 rounded-xl flex items-center justify-center mb-4 group-hover:scale-105 transition-transform duration-300">
@@ -55,10 +55,10 @@
 
     </div>
 
-    {{-- Grid: Form + Peta --}}
+    
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
 
-        {{-- Form Kirim Pesan --}}
+        
         <div data-aos="fade-right">
             <div class="bg-white rounded-3xl border border-slate-100/80 shadow-sm p-8 md:p-10">
                 <h2 class="text-2xl font-bold text-gray-900 font-poppins mb-2">Kirim Pesan</h2>
@@ -166,7 +166,7 @@
             </div>
         </div>
 
-        {{-- Peta Embed --}}
+        
         <div class="flex flex-col gap-6" data-aos="fade-left">
             <div class="bg-white rounded-3xl border border-slate-100/80 shadow-sm overflow-hidden flex flex-col h-full justify-between">
                 <div class="p-6 border-b border-slate-50">
@@ -195,7 +195,7 @@
 
     </div>
 
-    {{-- Jam Operasional di Bawah --}}
+    
     <div class="bg-white rounded-3xl border border-slate-100/80 shadow-sm p-8 md:p-10 mb-12" data-aos="fade-up">
         <h3 class="font-semibold text-gray-800 text-base mb-8 flex items-center justify-center gap-2">
             <span class="material-icons text-[#800000] text-xl">schedule</span>

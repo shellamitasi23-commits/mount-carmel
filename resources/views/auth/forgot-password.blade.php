@@ -4,26 +4,26 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Mount Carmel — Lupa Kata Sandi</title>
-  {{-- Poppins Font --}}
+  
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
-  {{-- Bootstrap Icons CDN --}}
+  
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"/>
-  {{-- External Premium Stylesheet --}}
+  
   <link rel="stylesheet" href="{{ asset('css/auth.css') }}"/>
 </head>
 <body>
 
 <div class="page-container">
 
-  {{-- Left Side: Beautiful Scenic Visual Panel --}}
+  
   <div class="visual-panel">
-    {{-- Brand --}}
+    
     <div class="brand-section">
       <i class="bi bi-symmetry-vertical brand-icon"></i>
       Mount Carmel
     </div>
 
-    {{-- Center Tagline --}}
+    
     <div class="visual-main-content">
       <h1 class="main-tagline">
         Menemukan Kedamaian Sejati
@@ -31,7 +31,7 @@
       </h1>
     </div>
 
-    {{-- Bottom Trust Items --}}
+    
     <div class="trust-container">
       <div class="trust-item">
         <div class="trust-item-icon">
@@ -42,7 +42,7 @@
     </div>
   </div>
 
-  {{-- Right Side: Clean Form Panel --}}
+  
   <div class="form-panel">
     <div class="form-card">
       <div class="icon-wrapper">
@@ -57,7 +57,7 @@
       <form method="POST" action="{{ route('password.email') }}">
         @csrf
         
-        {{-- Email Field --}}
+        
         <div class="field-group">
           <label class="field-label">Alamat Email</label>
           <div class="input-wrapper">
@@ -83,7 +83,7 @@
 
 <div class="toast" id="toast"></div>
 
-{{-- External Premium Script --}}
+
 <script src="{{ asset('js/auth.js') }}"></script>
 <script>
   /* Trigger Toast dari Session Laravel */

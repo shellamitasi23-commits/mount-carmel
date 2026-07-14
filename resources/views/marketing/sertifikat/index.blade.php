@@ -1,216 +1,181 @@
 @extends('layouts.admin')
-@section('title', 'Penerbitan Sertifikat')
+
+@section('title', 'Sertifikat Lahan - Mount Carmel')
 
 @section('content')
-
-@if(session('success'))
-<div class="mb-6 bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-xl flex items-center gap-3">
-    <span class="material-icons-outlined text-sm">check_circle</span>
-    <span class="font-medium text-sm">{{ session('success') }}</span>
-</div>
-@endif
-
-@if(session('error'))
-<div class="mb-6 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl flex items-center gap-3">
-    <span class="material-icons-outlined text-sm">error</span>
-    <span class="font-medium text-sm">{{ session('error') }}</span>
-</div>
-@endif
-
-<div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+<div class="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
     <div>
-        <h1 class="text-2xl font-bold text-slate-800">Penerbitan Sertifikat</h1>
-        <p class="text-sm text-slate-500 mt-1">Upload sertifikat hak guna lahan untuk pembeli yang sudah melunasi pembayaran.</p>
-    </div>
-
-    {{-- Statistik kecil --}}
-    <div class="flex gap-3">
-        <div class="bg-white border border-slate-100 rounded-xl px-3 py-2 text-center shadow-sm">
-            <p class="text-xl font-bold text-slate-900">{{ $countSudah }}</p>
-            <p class="text-[10px] text-slate-400 uppercase tracking-wider font-semibold">Sudah Terbit</p>
-        </div>
-        <div class="bg-white border border-slate-100 rounded-xl px-3 py-2 text-center shadow-sm">
-            <p class="text-xl font-bold text-amber-600">{{ $countBelum }}</p>
-            <p class="text-[10px] text-slate-400 uppercase tracking-wider font-semibold">Belum Terbit</p>
-        </div>
+        <h1 class="text-xl font-bold text-slate-800 tracking-tight">Sertifikat Lahan</h1>
+        <p class="text-xs text-slate-400 mt-0.5">Kelola dan unggah berkas sertifikat untuk reservasi lahan yang sudah Lunas.</p>
     </div>
 </div>
 
-{{-- Filtering --}}
-<div class="bg-white border border-slate-100 rounded-xl shadow-sm p-4 mb-6">
-    <form action="{{ route('marketing.sertifikat.index') }}" method="GET" class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
-        <div class="md:col-span-2">
-            <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5">Cari Pembeli / Lahan</label>
-            <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama, email pembeli, atau nomor lahan..." 
-                   class="w-full px-4 py-2 bg-slate-50 border border-slate-100 rounded-xl text-sm font-bold outline-none focus:ring-2 focus:ring-slate-900/5 focus:border-slate-900 transition-all">
+
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+    <div class="bg-white p-4 rounded-3xl border border-slate-100 shadow-[0_10px_30px_rgba(0,0,0,0.015)]">
+        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Total Lunas</p>
+        <h3 class="text-xl font-black text-slate-800 mt-1">{{ $countSudah + $countBelum }}</h3>
+    </div>
+    <div class="bg-white p-4 rounded-3xl border border-slate-100 shadow-[0_10px_30px_rgba(0,0,0,0.015)]">
+        <p class="text-[10px] font-bold text-emerald-600 uppercase tracking-wider">Sertifikat Terbit</p>
+        <h3 class="text-xl font-black text-emerald-600 mt-1">{{ $countSudah }}</h3>
+    </div>
+    <div class="bg-white p-4 rounded-3xl border border-slate-100 shadow-[0_10px_30px_rgba(0,0,0,0.015)]">
+        <p class="text-[10px] font-bold text-amber-600 uppercase tracking-wider">Belum Terbit</p>
+        <h3 class="text-xl font-black text-amber-600 mt-1">{{ $countBelum }}</h3>
+    </div>
+</div>
+
+
+<div class="bg-white p-4 rounded-3xl border border-slate-100 shadow-[0_10px_30px_rgba(0,0,0,0.015)] mb-6">
+    <form action="{{ route('marketing.sertifikat.index') }}" method="GET" class="flex flex-col md:flex-row gap-3">
+        <div class="flex-1">
+            <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama pembeli atau nomor lahan..."
+                   class="w-full bg-slate-50 border border-slate-100 rounded-2xl px-4 py-2.5 text-xs text-slate-700 outline-none focus:bg-white focus:border-[#800000] transition-colors">
         </div>
-        <div>
-            <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5">Status Sertifikat</label>
-            <select name="status" onchange="this.form.submit()" class="w-full bg-slate-50 border border-slate-100 rounded-xl px-4 py-2 text-sm font-bold outline-none focus:ring-2 focus:ring-slate-900/5 focus:border-slate-900 transition-all cursor-pointer">
+        <div class="w-full md:w-48">
+            <select name="status" onchange="this.form.submit()"
+                    class="w-full bg-slate-50 border border-slate-100 rounded-2xl px-4 py-2.5 text-xs text-slate-600 outline-none focus:bg-white focus:border-[#800000] cursor-pointer">
                 <option value="">Semua Status</option>
-                <option value="belum_terbit" {{ request('status') == 'belum_terbit' ? 'selected' : '' }}>Belum Terbit</option>
-                <option value="terbit" {{ request('status') == 'terbit' ? 'selected' : '' }}>Sudah Terbit</option>
+                <option value="terbit" {{ request('status') === 'terbit' ? 'selected' : '' }}>Terbit</option>
+                <option value="belum_terbit" {{ request('status') === 'belum_terbit' ? 'selected' : '' }}>Belum Terbit</option>
             </select>
         </div>
-        <div class="flex gap-2">
-            @if(request('search') || request('status'))
-            <a href="{{ route('marketing.sertifikat.index') }}" 
-               class="w-full bg-slate-100 text-slate-500 px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-widest hover:bg-slate-200 transition-all text-center flex items-center justify-center font-bold">
-                Reset
-            </a>
-            @endif
-        </div>
+        <button type="submit" class="px-5 py-2.5 bg-[#800000] text-white font-bold rounded-2xl text-xs hover:bg-[#800000]/90 transition-colors">Cari</button>
+        @if(request()->anyFilled(['search', 'status']))
+            <a href="{{ route('marketing.sertifikat.index') }}" class="px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold rounded-2xl text-xs transition-colors text-center">Reset</a>
+        @endif
     </form>
 </div>
 
+
 @if($reservasis->isEmpty())
-<div class="py-10 text-center bg-white rounded-xl border border-slate-100 shadow-sm">
-    <span class="material-icons-outlined text-5xl text-slate-200 block mb-3">workspace_premium</span>
-    <p class="font-medium text-slate-500">Belum ada data reservasi atau sertifikat.</p>
-    <p class="text-xs text-slate-400 mt-1">Sertifikat bisa diterbitkan setelah pembayaran dikonfirmasi Lunas.</p>
+<div class="bg-white rounded-3xl border border-slate-100 p-16 text-center shadow-[0_10px_30px_rgba(0,0,0,0.015)]">
+    <span class="material-icons-outlined text-5xl text-slate-200 mb-2">workspace_premium</span>
+    <h3 class="text-sm font-bold text-slate-400">Tidak ada data ditemukan</h3>
+    <p class="text-xs text-slate-400 mt-1">Data reservasi lunas belum tersedia atau pencarian tidak cocok.</p>
 </div>
 @else
-
-<div class="space-y-3">
+<div class="space-y-4">
     @foreach($reservasis as $res)
     @php
         $sudahTerbit = !is_null($res->file_sertifikat);
+        $statusText = $sudahTerbit ? 'Terbit' : 'Belum Terbit';
+        $badgeClass = $sudahTerbit ? 'bg-emerald-50 text-emerald-700 border border-emerald-100' : 'bg-amber-50 text-amber-700 border border-amber-100';
     @endphp
-
-    <div class="bg-white rounded-xl border border-slate-100 shadow-sm overflow-hidden">
-
-        {{-- Bar status --}}
-        <div class="h-1 w-full {{ $sudahTerbit ? 'bg-emerald-500' : 'bg-amber-400' }}"></div>
-
-        <div class="p-4">
-            <div class="flex flex-col lg:flex-row lg:items-center gap-4">
-
-                {{-- Info Reservasi --}}
-                <div class="flex-grow">
-                    <div class="flex flex-wrap items-center gap-2 mb-2">
-                        <h3 class="font-bold text-slate-900 text-base">
-                            lahan #{{ $res->lahan->nomor_lahan }}
-                        </h3>
-                        <span class="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase
-                            {{ $sudahTerbit ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700' }}">
-                            {{ $sudahTerbit ? 'Sertifikat Terbit' : 'Belum Terbit' }}
-                        </span>
-                        <span class="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase bg-blue-100 text-blue-700">
-                            Lunas
-                        </span>
-                    </div>
-
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-1 text-sm">
-                        <div>
-                            <p class="text-[10px] text-slate-400 uppercase tracking-wider font-semibold mb-0.5">Pembeli</p>
-                            <p class="font-semibold text-slate-800">{{ $res->user->name }}</p>
-                            <p class="text-xs text-slate-400">{{ $res->user->email }}</p>
-                        </div>
-                        <div>
-                            <p class="text-[10px] text-slate-400 uppercase tracking-wider font-semibold mb-0.5">Cluster</p>
-                            <p class="font-semibold text-slate-800">{{ $res->lahan->cluster->nama_cluster }}</p>
-                            <p class="text-xs text-slate-400">{{ $res->lahan->tipe_lahan }}</p>
-                        </div>
-                        <div>
-                            <p class="text-[10px] text-slate-400 uppercase tracking-wider font-semibold mb-0.5">Jenazah</p>
-                            <p class="font-semibold text-slate-800">
-                                {{ $res->nama_jenazah ? 'Alm. '.$res->nama_jenazah : 'Pre-Need' }}
-                            </p>
-                        </div>
-                        <div>
-                            <p class="text-[10px] text-slate-400 uppercase tracking-wider font-semibold mb-0.5">Invoice</p>
-                            <p class="font-semibold text-slate-800">{{ $res->pembayaran->no_invoice ?? '-' }}</p>
-                            <p class="text-xs text-slate-400">
-                                Rp {{ number_format($res->lahan->harga, 0, ',', '.') }}
-                            </p>
-                        </div>
-                    </div>
+    <div class="bg-white rounded-3xl border border-slate-100 p-5 md:p-6 shadow-[0_10px_30px_rgba(0,0,0,0.015)] hover:shadow-md transition-shadow">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+            <div class="flex-grow">
+                <div class="flex flex-wrap items-center gap-2 mb-2">
+                    <h3 class="font-bold text-slate-900 text-base">
+                        Lahan #{{ $res->lahan->nomor_lahan }}
+                    </h3>
+                    <span class="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase {{ $badgeClass }}">
+                        {{ $statusText }}
+                    </span>
+                    <span class="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase bg-blue-50 text-blue-700 border border-blue-100">
+                        Lunas
+                    </span>
                 </div>
 
-                {{-- Aksi Upload / Lihat --}}
-                <div class="shrink-0 flex flex-col gap-3 lg:items-end">
-
-                    @if($sudahTerbit)
-                    {{-- Sudah ada sertifikat --}}
-                    <div class="flex items-center gap-2">
-                        <a href="{{ asset('storage/sertifikat/' . $res->file_sertifikat) }}" target="_blank"
-                           class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-xl text-xs font-bold hover:bg-emerald-100 transition-colors">
-                            <span class="material-icons-outlined text-sm">open_in_new</span> Lihat Sertifikat
-                        </a>
-                        <a href="{{ asset('storage/sertifikat/' . $res->file_sertifikat) }}" download
-                           class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 text-slate-700 rounded-xl text-xs font-bold hover:bg-slate-200 transition-colors">
-                            <span class="material-icons-outlined text-sm">download</span>
-                        </a>
-                        @if(auth()->user()->role == 'marketing')
-                        <form action="{{ route('marketing.sertifikat.destroy', $res->id) }}" method="POST"
-                               onsubmit="return confirm('Hapus sertifikat ini? Pembeli tidak bisa lagi mengunduhnya.')">
-                            @csrf @method('DELETE')
-                            <button type="submit"
-                                    class="inline-flex items-center gap-1.5 px-2.5 py-1.5 bg-red-50 text-red-500 border border-red-100 rounded-xl text-xs font-bold hover:bg-red-100 transition-colors">
-                                <span class="material-icons-outlined text-sm">delete</span>
-                            </button>
-                        </form>
-                        @endif
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-1 text-sm">
+                    <div>
+                        <p class="text-[10px] text-slate-400 uppercase tracking-wider font-semibold mb-0.5">Pembeli</p>
+                        <p class="font-semibold text-slate-800">{{ $res->user->name }}</p>
+                        <p class="text-xs text-slate-400">{{ $res->user->email }}</p>
                     </div>
+                    <div>
+                        <p class="text-[10px] text-slate-400 uppercase tracking-wider font-semibold mb-0.5">Cluster</p>
+                        <p class="font-semibold text-slate-800">{{ $res->lahan->cluster->nama_cluster }}</p>
+                        <p class="text-xs text-slate-400">{{ $res->lahan->tipe_lahan }}</p>
+                    </div>
+                    <div>
+                        <p class="text-[10px] text-slate-400 uppercase tracking-wider font-semibold mb-0.5">Jenazah</p>
+                        <p class="font-semibold text-slate-800">
+                            {{ $res->nama_jenazah ? 'Alm. '.$res->nama_jenazah : 'Pre-Need' }}
+                        </p>
+                    </div>
+                    <div>
+                        <p class="text-[10px] text-slate-400 uppercase tracking-wider font-semibold mb-0.5">Invoice</p>
+                        <p class="font-semibold text-slate-800">{{ $res->pembayaran->no_invoice ?? '-' }}</p>
+                        <p class="text-xs text-slate-400">
+                            Rp {{ number_format($res->lahan->harga, 0, ',', '.') }}
+                        </p>
+                    </div>
+                </div>
+            </div>
 
-                    {{-- Ganti sertifikat --}}
-                    @if(auth()->user()->role == 'marketing')
-                    <div x-data="{ gantiOpen: false }">
-                        <button @click="gantiOpen = !gantiOpen"
-                                class="text-xs text-slate-400 hover:text-slate-700 flex items-center gap-1 transition-colors">
-                            <span class="material-icons-outlined text-sm">edit</span> Ganti Sertifikat
+            
+            <div class="shrink-0 flex flex-col gap-3 lg:items-end">
+                @if($sudahTerbit)
+                
+                <div class="flex items-center gap-2">
+                    <a href="{{ route('document.sertifikat', $res->id) }}" target="_blank"
+                       class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-emerald-50 text-emerald-700 border border-emerald-250 rounded-xl text-xs font-bold hover:bg-emerald-100 transition-colors">
+                        <span class="material-icons-outlined text-sm">open_in_new</span> Lihat Sertifikat
+                    </a>
+                    <a href="{{ route('document.sertifikat', $res->id) }}?download=1"
+                       class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 text-slate-700 rounded-xl text-xs font-bold hover:bg-slate-200 transition-colors">
+                        <span class="material-icons-outlined text-sm">download</span>
+                    </a>
+                    
+                    <div x-data="{ gantiOpen: false }" class="relative">
+                        <button @click="gantiOpen = !gantiOpen" 
+                                class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-slate-200 hover:bg-slate-50 text-slate-600 rounded-xl text-xs font-bold transition-all shadow-sm">
+                            <span class="material-icons-outlined text-sm">edit</span> Ganti
                         </button>
-                        <div x-show="gantiOpen" x-transition class="mt-2">
+                        <div x-show="gantiOpen" x-transition class="absolute right-0 mt-2 bg-white border border-slate-100 shadow-xl rounded-2xl p-4 z-50 w-72">
                             <form action="{{ route('marketing.sertifikat.upload', $res->id) }}" method="POST"
                                   enctype="multipart/form-data"
-                                  class="flex items-center gap-2">
+                                  class="space-y-3">
                                 @csrf
-                                <input type="file" name="file_sertifikat" accept=".pdf,.jpg,.jpeg,.png"
-                                       required
-                                       class="text-xs text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-slate-100 file:text-slate-700 hover:file:bg-slate-200 cursor-pointer">
+                                <p class="text-xs font-bold text-slate-700">Ganti Berkas Sertifikat</p>
+                                <input type="file" name="file_sertifikat" accept=".pdf,.jpg,.jpeg,.png" required
+                                       class="text-xs text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-slate-100 file:text-slate-700 hover:file:bg-slate-200 cursor-pointer w-full">
                                 <button type="submit"
-                                        class="px-3 py-1.5 bg-[#800000] text-white rounded-lg text-xs font-bold hover:bg-[#800000]/90 transition-colors whitespace-nowrap">
-                                    Upload
+                                        class="w-full py-2 bg-[#800000] text-white rounded-xl text-xs font-bold hover:bg-[#800000]/90 transition-colors">
+                                    Upload & Ganti
                                 </button>
                             </form>
                         </div>
                     </div>
-                    @endif
 
-                    @else
-                    {{-- Belum ada sertifikat — form upload --}}
-                    @if(auth()->user()->role == 'marketing')
-                    <form action="{{ route('marketing.sertifikat.upload', $res->id) }}" method="POST"
-                          enctype="multipart/form-data"
-                          class="flex flex-col gap-2">
-                        @csrf
-                        <div class="border-2 border-dashed border-slate-200 rounded-xl bg-slate-50 hover:border-slate-400 transition-colors">
-                            <label class="flex items-center gap-3 px-4 py-2 cursor-pointer">
-                                <span class="material-icons-outlined text-slate-400 text-xl">upload_file</span>
-                                <div>
-                                    <p class="text-xs font-bold text-slate-600">Upload Sertifikat</p>
-                                    <p class="text-[10px] text-slate-400">PDF, JPG, PNG — Maks. 5MB</p>
-                                </div>
-                                <input type="file" name="file_sertifikat" accept=".pdf,.jpg,.jpeg,.png" required
-                                       class="hidden"
-                                       onchange="this.closest('form').querySelector('.file-name').textContent = this.files[0]?.name || ''">
-                            </label>
-                        </div>
-                        <div class="flex items-center justify-between gap-2">
-                            <span class="file-name text-[10px] text-slate-400 truncate max-w-[160px]"></span>
-                            <button type="submit"
-                                    class="px-3.5 py-1.5 bg-[#800000] hover:bg-[#800000]/90 text-white rounded-xl text-xs font-bold transition-colors flex items-center gap-1.5 whitespace-nowrap">
-                                <span class="material-icons-outlined text-sm">send</span> Terbitkan Sertifikat
-                            </button>
-                        </div>
+                    <form action="{{ route('marketing.sertifikat.destroy', $res->id) }}" method="POST"
+                           onsubmit="return confirm('Hapus sertifikat ini? Pembeli tidak bisa lagi mengunduhnya.')">
+                        @csrf @method('DELETE')
+                        <button type="submit"
+                                class="inline-flex items-center gap-1.5 px-2.5 py-1.5 bg-red-50 text-red-500 border border-red-100 rounded-xl text-xs font-bold hover:bg-red-100 transition-colors">
+                            <span class="material-icons-outlined text-sm">delete</span>
+                        </button>
                     </form>
-                    @else
-                    <span class="text-slate-400 text-xs italic">Belum ada sertifikat</span>
-                    @endif
-
-                    @endif
-
                 </div>
+                @else
+                
+                <form action="{{ route('marketing.sertifikat.upload', $res->id) }}" method="POST"
+                      enctype="multipart/form-data"
+                      class="flex flex-col gap-2 w-full sm:w-80">
+                    @csrf
+                    <div class="border border-dashed border-slate-200 rounded-xl bg-slate-50 hover:border-slate-400 transition-colors">
+                        <label class="flex items-center gap-3 px-4 py-2.5 cursor-pointer">
+                            <span class="material-icons-outlined text-slate-400 text-xl">upload_file</span>
+                            <div>
+                                <p class="text-[11px] font-bold text-slate-600">Upload File Sertifikat</p>
+                                <p class="text-[9px] text-slate-400">PDF, JPG, PNG — Maks. 5MB</p>
+                            </div>
+                            <input type="file" name="file_sertifikat" accept=".pdf,.jpg,.jpeg,.png" required
+                                   class="hidden"
+                                   onchange="this.closest('form').querySelector('.file-name').textContent = this.files[0]?.name || ''">
+                        </label>
+                    </div>
+                    <div class="flex items-center justify-between gap-2">
+                        <span class="file-name text-[9px] text-slate-400 truncate max-w-[160px]"></span>
+                        <button type="submit"
+                                class="px-4 py-1.5 bg-[#800000] hover:bg-[#800000]/90 text-white rounded-xl text-xs font-bold transition-colors flex items-center gap-1.5 whitespace-nowrap">
+                            <span class="material-icons-outlined text-sm">send</span> Kirim
+                        </button>
+                    </div>
+                </form>
+                @endif
             </div>
         </div>
     </div>

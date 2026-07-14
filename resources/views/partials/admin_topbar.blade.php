@@ -6,5 +6,9 @@
         <span class="font-bold text-lg text-primary">Mount Carmel</span>
     </div>
     
-    <img src="https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->name) }}&background=800000&color=fff" alt="{{ auth()->user()->name }}" class="w-8 h-8 rounded-full">
+    @if(auth()->user()->avatar)
+        <img src="{{ asset('storage/avatars/' . auth()->user()->avatar) }}" alt="{{ auth()->user()->name }}" class="w-8 h-8 rounded-full object-cover">
+    @else
+        <img src="https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->name) }}&background=800000&color=fff" alt="{{ auth()->user()->name }}" class="w-8 h-8 rounded-full">
+    @endif
 </header>
