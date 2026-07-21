@@ -133,7 +133,7 @@ class ReservasiController extends Controller
             'tanggal_dimakamkan' => $request->tanggal_dimakamkan ?? null,
             'alamat_pemesan' => $request->alamat_pemesan,
             'dokumen_ktp' => $ktpPath,
-            'status_reservasi' => 'Menunggu Validasi',
+            'status_reservasi' => 'Disetujui',
             'status_pembayaran' => 'Belum Bayar',
             'jenis_pembayaran' => $jenisPembayaran,
             'tenor_cicilan' => $tenor,
@@ -249,7 +249,7 @@ class ReservasiController extends Controller
             $slotTerisi->update([
                 'nama_jenazah' => $request->nama_jenazah,
                 'tanggal_dimakamkan' => $request->tanggal_dimakamkan,
-                'status' => 'Menunggu Validasi', // Reset status kembali ke pending
+                'status' => 'Disetujui', // Reset status kembali ke disetujui
             ]);
         } else {
             // Simpan baru
@@ -258,7 +258,7 @@ class ReservasiController extends Controller
                 'nomor_slot' => $nomor_slot,
                 'nama_jenazah' => $request->nama_jenazah,
                 'tanggal_dimakamkan' => $request->tanggal_dimakamkan,
-                'status' => 'Menunggu Validasi',
+                'status' => 'Disetujui',
             ]);
         }
 

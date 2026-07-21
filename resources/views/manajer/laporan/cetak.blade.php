@@ -36,6 +36,8 @@
                 Laporan Data Pembeli
             @elseif($type === 'cluster')
                 Laporan Data Cluster
+            @elseif($type === 'pembayaran')
+                Laporan Pembayaran Masuk
             @else
                 Laporan Rekapitulasi Penjualan Lahan
             @endif
@@ -78,14 +80,26 @@
                     <th>Ahli Waris</th>
                     <th class="text-right">Tgl Dimakamkan</th>
                 </tr>
+            @elseif($type === 'pembayaran')
+                <tr>
+                    <th>No</th>
+                    <th>Invoice & Tanggal</th>
+                    <th>Nama Pembeli</th>
+                    <th>Lahan & Cluster</th>
+                    <th>Rekening Penerima</th>
+                    <th class="text-right">Nominal (Rp)</th>
+                    <th class="text-right">Status</th>
+                </tr>
             @else
                 <tr>
                     <th>No</th>
                     <th>Tanggal</th>
                     <th>Nama Pembeli</th>
                     <th>Lahan & Cluster</th>
-                    <th>Nama Jenazah</th>
-                    <th class="text-right">Harga (Rp)</th>
+                    <th>Status Reservasi</th>
+                    <th>Detail Pembayaran</th>
+                    <th class="text-right">Total Biaya (Rp)</th>
+                    <th class="text-right">Status Bayar</th>
                 </tr>
             @endif
         </thead>
@@ -149,30 +163,62 @@
                         <td colspan="6" style="text-align: center;">Tidak ada data pada periode ini.</td>
                     </tr>
                 @endforelse
-            @else
-                @forelse($reservasis as $index => $rs)
-                    @php $total += $rs->lahan->harga; @endphp
+            @elseif($type === 'pembayaran')
+                @forelse($pembayarans as $index => $p)
+                    @php $total += $p->jumlah_bayar; @endphp
                     <tr>
                         <td>{{ $index + 1 }}</td>
-                        <td>{{ $rs->created_at->format('d/m/Y') }}</td>
-                        <td>{{ $rs->user->name }}</td>
-                        <td>{{ $rs->lahan->cluster->nama_cluster }} - {{ $rs->lahan->nomor_lahan }}</td>
-                        <td>Alm. {{ $rs->nama_semua_jenazah }}</td>
-                        <td class="text-right">{{ number_format($rs->lahan->harga, 0, ',', '.') }}</td>
+                        <td>
+                            <div>{{ $p->no_invoice }}</div>
+                            <small style="color: #64748b; font-size: 10px;">{{ \Carbon\Carbon::parse($p->tanggal_bayar)->format('d/m/Y') }}</small>
+                        </td>
+                        <td>{{ $p->reservasi->user->name ?? '-' }}</td>
+                        <td>UNIT {{ $p->reservasi->lahan->nomor_lahan ?? '-' }} ({{ $p->reservasi->lahan->cluster->nama_cluster ?? '' }})</td>
+                        <td>{{ $p->nama_bank }} - {{ $p->rekening_tujuan }}</td>
+                        <td class="text-right">{{ number_format($p->jumlah_bayar, 0, ',', '.') }}</td>
+                        <td class="text-right">{{ $p->status_pembayaran }}</td>
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="6" style="text-align: center;">Tidak ada data pada periode ini.</td>
+                        <td colspan="7" style="text-align: center;">Tidak ada data pembayaran pada periode ini.</td>
+                    </tr>
+                @endforelse
+            @else
+                @forelse($reservasis as $index => $rs)
+                    @php $total += ($rs->biaya_penuh ?? $rs->lahan->harga); @endphp
+                    <tr>
+                        <td>{{ $index + 1 }}</td>
+                        <td>{{ $rs->created_at->format('d/m/Y') }}</td>
+                        <td>
+                            <div>{{ $rs->user->name ?? '-' }}</div>
+                            <small style="color: #64748b; font-size: 10px;">{{ $rs->user->email ?? '' }}</small>
+                        </td>
+                        <td>UNIT {{ $rs->lahan->nomor_lahan }} ({{ $rs->lahan->cluster->nama_cluster }})</td>
+                        <td>{{ $rs->status_reservasi }}</td>
+                        <td>
+                            <div>Metode: {{ ucfirst($rs->jenis_pembayaran) }}</div>
+                            @php
+                                $totalTerbayar = $rs->pembayarans->where('status_pembayaran', 'Lunas')->sum('jumlah_bayar');
+                            @endphp
+                            <small style="color: #64748b; font-size: 10px;">Terbayar: Rp {{ number_format($totalTerbayar, 0, ',', '.') }}</small>
+                        </td>
+                        <td class="text-right">{{ number_format($rs->biaya_penuh ?? $rs->lahan->harga, 0, ',', '.') }}</td>
+                        <td class="text-right">{{ $rs->status_pembayaran }}</td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="8" style="text-align: center;">Tidak ada data pada periode ini.</td>
                     </tr>
                 @endforelse
             @endif
         </tbody>
 
-        @if($type === 'reservasi')
+        @if($type === 'reservasi' || $type === 'pembayaran')
             <tfoot>
                 <tr class="font-bold" style="background-color: #fdfdfd;">
-                    <td colspan="5" class="text-right">TOTAL PENDAPATAN</td>
+                    <td colspan="{{ $type === 'pembayaran' ? '5' : '6' }}" class="text-right">TOTAL PENDAPATAN</td>
                     <td class="text-right">Rp {{ number_format($total, 0, ',', '.') }}</td>
+                    <td></td>
                 </tr>
             </tfoot>
         @endif

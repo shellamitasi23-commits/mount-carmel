@@ -15,6 +15,10 @@
         <h1 class="text-2xl font-bold text-slate-800">Verifikasi Pembayaran</h1>
         <p class="text-sm text-slate-500 mt-1">Validasi bukti transfer dan pengesahan kepemilikan lahan.</p>
     </div>
+    <a href="{{ route('accounting.pembayaran.create') }}" 
+       class="bg-[#800000] hover:bg-[#800000]/90 text-white px-5 py-2.5 rounded-xl font-bold flex items-center gap-2 shadow-md text-xs uppercase tracking-widest transition-all active:scale-95">
+        <span class="material-icons-outlined text-sm">add</span> Input Pembayaran
+    </a>
 </div>
 
 

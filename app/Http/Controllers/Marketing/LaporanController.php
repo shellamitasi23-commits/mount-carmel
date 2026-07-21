@@ -21,7 +21,7 @@ class LaporanController extends Controller
 
     public function reservasi(Request $request)
     {
-        $query = Reservasi::with(['user', 'lahan.cluster']);
+        $query = Reservasi::with(['user', 'lahan.cluster', 'pembayarans']);
         if ($request->filled('start_date') && $request->filled('end_date')) {
             $query->whereBetween('created_at', [$request->start_date, $request->end_date]);
         }
@@ -169,7 +169,7 @@ class LaporanController extends Controller
                 break;
 
             default:
-                $query = Reservasi::with(['user', 'lahan.cluster']);
+                $query = Reservasi::with(['user', 'lahan.cluster', 'pembayarans']);
                 if ($request->filled('start_date') && $request->filled('end_date')) {
                     $query->whereBetween('created_at', [$request->start_date, $request->end_date]);
                 }

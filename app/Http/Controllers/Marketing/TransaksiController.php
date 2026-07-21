@@ -80,7 +80,7 @@ class TransaksiController extends Controller
             'nama_jenazah' => $request->nama_jenazah,
             'tanggal_reservasi' => now()->toDateString(),
             'tanggal_dimakamkan' => $request->tanggal_dimakamkan,
-            'status_reservasi' => 'Menunggu Validasi',
+            'status_reservasi' => 'Disetujui',
             'status_pembayaran' => 'Belum Bayar',
             'marketing_oleh' => auth()->user()->name,
         ]);

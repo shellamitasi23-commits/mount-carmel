@@ -183,11 +183,6 @@ Route::middleware('auth')->group(function () {
         Route::get('/reservasi', [\App\Http\Controllers\Marketing\TransaksiController::class, 'reservasi'])->name('reservasi.index');
         Route::get('/pembayaran', [\App\Http\Controllers\Marketing\TransaksiController::class, 'pembayaran'])->name('pembayaran.index');
 
-        // Approval Transaksi
-        Route::get('/approval', [\App\Http\Controllers\Manajer\ApprovalController::class, 'index'])->name('approval.index');
-        Route::put('/approval/{id}/approve', [\App\Http\Controllers\Manajer\ApprovalController::class, 'approve'])->name('approval.approve');
-        Route::put('/approval/{id}/reject', [\App\Http\Controllers\Manajer\ApprovalController::class, 'reject'])->name('approval.reject');
-
         // Approval Sertifikat
         Route::get('/sertifikat', [\App\Http\Controllers\Manajer\SertifikatApprovalController::class, 'index'])->name('sertifikat.index');
         Route::post('/sertifikat/{id}/sign', [\App\Http\Controllers\Manajer\SertifikatApprovalController::class, 'sign'])->name('sertifikat.sign');
@@ -217,14 +212,28 @@ Route::middleware('auth')->group(function () {
 
         // Kelola Harga
         Route::get('/harga', [\App\Http\Controllers\Accounting\HargaController::class, 'index'])->name('harga.index');
+        Route::post('/harga', [\App\Http\Controllers\Accounting\HargaController::class, 'store'])->name('harga.store');
         Route::put('/harga/{id}', [\App\Http\Controllers\Accounting\HargaController::class, 'update'])->name('harga.update');
+        Route::delete('/harga/{id}', [\App\Http\Controllers\Accounting\HargaController::class, 'destroy'])->name('harga.destroy');
+
+        // Kelola Reservasi & Konfirmasi Reservasi
+        Route::get('/reservasi', [\App\Http\Controllers\Accounting\TransaksiController::class, 'reservasi'])->name('reservasi.index');
+        Route::put('/reservasi/{id}/status', [\App\Http\Controllers\Accounting\TransaksiController::class, 'updateReservasiStatus'])->name('reservasi.updateStatus');
 
         // Kelola Pembayaran
         Route::get('/pembayaran', [\App\Http\Controllers\Accounting\TransaksiController::class, 'pembayaran'])->name('pembayaran.index');
+        Route::get('/pembayaran/create', [\App\Http\Controllers\Accounting\TransaksiController::class, 'createPembayaran'])->name('pembayaran.create');
+        Route::post('/pembayaran', [\App\Http\Controllers\Accounting\TransaksiController::class, 'storePembayaran'])->name('pembayaran.store');
         Route::put('/pembayaran/{id}/konfirmasi', [\App\Http\Controllers\Accounting\TransaksiController::class, 'konfirmasiPembayaran'])->name('pembayaran.konfirmasi');
 
         // Cetak Invoice
         Route::get('/pembayaran/invoice/{id}', [PembeliPembayaran::class, 'invoice'])->name('pembayaran.invoice');
+
+        // Laporan
+        Route::get('/laporan', [\App\Http\Controllers\Accounting\LaporanController::class, 'index'])->name('laporan.index');
+        Route::get('/laporan/pembayaran', [\App\Http\Controllers\Accounting\LaporanController::class, 'pembayaran'])->name('laporan.pembayaran');
+        Route::get('/laporan/reservasi', [\App\Http\Controllers\Accounting\LaporanController::class, 'reservasi'])->name('laporan.reservasi');
+        Route::get('/laporan/pdf', [\App\Http\Controllers\Accounting\LaporanController::class, 'exportPdf'])->name('laporan.pdf');
     });
 
     // ──────────────────────────────────────────────────────────────────────
@@ -234,8 +243,11 @@ Route::middleware('auth')->group(function () {
         // Dashboard (View-Only)
         Route::get('/', [\App\Http\Controllers\KoordinatorLapangan\DashboardController::class, 'index'])->name('dashboard');
         
-        // Cluster (View-Only)
+        // Cluster (CRUD)
         Route::get('/cluster', [\App\Http\Controllers\KoordinatorLapangan\ClusterController::class, 'index'])->name('cluster.index');
+        Route::post('/cluster', [\App\Http\Controllers\KoordinatorLapangan\ClusterController::class, 'store'])->name('cluster.store');
+        Route::put('/cluster/{id}', [\App\Http\Controllers\KoordinatorLapangan\ClusterController::class, 'update'])->name('cluster.update');
+        Route::delete('/cluster/{id}', [\App\Http\Controllers\KoordinatorLapangan\ClusterController::class, 'destroy'])->name('cluster.destroy');
 
         // Lahan (CRUD)
         Route::get('/lahan', [\App\Http\Controllers\KoordinatorLapangan\LahanController::class, 'index'])->name('lahan.index');

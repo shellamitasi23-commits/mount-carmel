@@ -1,66 +1,125 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Taman Pemakaman Mount Carmel — Sistem Manajemen Operasional & Transaksi
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Sistem Informasi Manajemen Operasional Taman Pemakaman **Mount Carmel** adalah aplikasi berbasis web yang dirancang khusus untuk memfasilitasi seluruh alur bisnis penjualan, pemesanan, verifikasi pembayaran, administrasi pemakaman, hingga penerbitan sertifikat lahan secara terintegrasi.
 
-## About Laravel
+Aplikasi ini dibangun menggunakan framework **Laravel 12** dengan antarmuka pengguna premium menggunakan **Tailwind CSS** dan **Alpine.js**.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 👥 Hak Akses & Fitur Utama
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Sistem ini memiliki 5 (lima) peran pengguna (*roles*) dengan tanggung jawab spesifik:
 
-## Learning Laravel
+### 1. Pembeli (Customer / End-User)
+*   **Browsing Lahan & Cluster**: Melihat katalog zona cluster pemakaman (Muslim & Non-Muslim) beserta unit lahan yang tersedia secara real-time.
+*   **Pemesanan Online**: Melakukan reservasi unit lahan secara langsung dengan mengunggah KTP pemesan dan memilih skema pembayaran (Tunai atau Cicilan).
+*   **Input Data Jenazah**: Mengisi data jenazah (nama, tanggal pemakaman, dan nomor slot) secara mandiri untuk lahan yang sudah dipesan.
+*   **Konfirmasi Pembayaran**: Mengunggah bukti transfer bank untuk pembayaran Uang Muka (DP), cicilan berkala, maupun pelunasan tunai.
+*   **Tanda Tangan Elektronik**: Membubuhkan tanda tangan digital pada profil pribadi untuk verifikasi dokumen sertifikat lahan.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### 2. Marketing
+*   **Manajemen Pelanggan**: Mengelola basis data Pembeli (CRUD Akun Pembeli).
+*   **Pendaftaran Pemesanan**: Membantu pembeli melakukan reservasi unit lahan secara offline/melalui bantuan agen marketing.
+*   **Manajemen Cluster**: Mengelola pembagian wilayah zona cluster pemakaman (Muslim / Non-Muslim).
+*   **Laporan Reservasi**: Memantau perkembangan status reservasi dan status pembayaran terintegrasi pelanggan.
+*   **Dokumen Sertifikat**: Mengunggah berkas sertifikat lahan untuk kemudian diserahkan kepada Manajer untuk ditandatangani.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### 3. Manajer (Manager)
+*   **Monitoring Eksekutif**: Memantau performa penjualan, ketersediaan sisa kavling lahan, dan distribusi pemakaman.
+*   **Approval & Tanda Tangan Sertifikat**: Melakukan verifikasi dan memberikan tanda tangan digital persetujuan pada Sertifikat Lahan yang diunggah oleh Marketing.
+*   **Pusat Laporan PDF**: Mencetak laporan rekapitulasi komprehensif (Laporan Lahan, Laporan Pembeli, Laporan Cluster, Laporan Reservasi, Laporan Jenazah) ke format PDF.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 4. Accounting
+*   **Kelola Lahan & Harga (CRUD)**: Mengelola master data unit lahan pemakaman, termasuk menambah unit baru, memperbarui ukuran/kapasitas, menetapkan harga jual resmi, hingga menghapus unit lahan.
+*   **Verifikasi Pembayaran**: Melakukan validasi bukti transfer bank yang diunggah oleh Pembeli (menyetujui atau menolak transaksi).
+*   **Input Pembayaran Langsung**: Menginput transaksi pembayaran secara manual (misal pembayaran via kasir kantor) yang secara otomatis akan langsung disetujui (*Lunas*) dan memperbarui sisa tagihan serta status unit lahan.
+*   **Laporan Keuangan**: Mengakses Laporan Pembayaran Masuk dan Laporan Reservasi serta mengekspornya ke berkas cetak PDF.
 
-## Laravel Sponsors
+### 5. Koordinator Lapangan (Field Coordinator)
+*   **CRUD Cluster & Lahan**: Mengelola daftar cluster dan unit lahan fisik di lapangan (tanpa fitur unggah foto progres).
+*   **Validasi Ketersediaan Fisik**: Memeriksa dan mengonfirmasi secara fisik apakah unit lahan yang dipesan pembeli berstatus *Tersedia* (dapat digunakan) atau *Tidak Tersedia* (mengalami kendala geografis/teknis di lapangan).
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+---
 
-### Premium Partners
+## 🛠️ Spesifikasi Teknologi
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+*   **Backend**: PHP >= 8.2 & Laravel 12.x
+*   **Frontend**: Blade Templating, Tailwind CSS, Alpine.js
+*   **Database**: MySQL / MariaDB
+*   **PDF Engine**: Barryvdh Laravel DomPDF (Wrapper `dompdf` untuk ekspor laporan & cetak invoice)
+*   **OTP Server**: Sistem verifikasi kode OTP berbasis sesi/log (untuk otentikasi pendaftaran akun pembeli)
 
-## Contributing
+---
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## 🚀 Panduan Instalasi & Pengembangan
 
-## Code of Conduct
+Ikuti langkah-langkah berikut untuk menjalankan proyek ini di lingkungan lokal Anda:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 1. Klon Repositori
+```bash
+git clone <url-repository>
+cd mount-carmel
+```
 
-## Security Vulnerabilities
+### 2. Instalasi Dependensi PHP & JS
+Gunakan Composer untuk menginstal paket dependensi backend, dan NPM untuk frontend:
+```bash
+composer install
+npm install
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### 3. Konfigurasi Environment File
+Salin file konfigurasi `.env.example` menjadi `.env`:
+```bash
+cp .env.example .env
+```
+Sesuaikan konfigurasi koneksi database Anda di dalam file `.env`:
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=mount_carmel
+DB_USERNAME=root
+DB_PASSWORD=
+```
 
-## License
+### 4. Generate Application Key
+```bash
+php artisan key:generate
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### 5. Migrasi & Seeding Database
+Jalankan migrasi tabel database beserta seeder bawaan untuk membuat data awal dan akun demo:
+```bash
+php artisan migrate --seed
+```
+
+### 6. Jalankan Server Lokal
+Jalankan server pengembangan Laravel dan compile aset frontend:
+```bash
+# Terminal 1: Menjalankan Laravel server
+php artisan serve
+
+# Terminal 2: Menjalankan Vite bundler
+npm run dev
+```
+Aplikasi sekarang dapat diakses melalui browser di alamat `http://127.0.0.1:8000`.
+
+---
+
+## 🧪 Menjalankan Pengujian (Testing)
+
+Proyek ini dilengkapi dengan suite pengujian otomatis menggunakan **Pest PHP**. Untuk menjalankan test:
+```bash
+php artisan test
+```
+Untuk menguji modul spesifik (misalnya modul Koordinator Lapangan):
+```bash
+php artisan test --filter=KoordinatorLapangan
+```
+
+---
+
+## 📄 Lisensi
+
+Sistem Informasi Mount Carmel ini dilisensikan secara internal untuk keperluan operasional **PT Taman Pemakaman Mount Carmel**.

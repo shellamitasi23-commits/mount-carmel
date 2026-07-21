@@ -118,7 +118,7 @@
                             <span class="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider {{ $badgeClass }}">
                                 {{ $status }}
                             </span>
-                            @elseif($rs->konfirmasi_lahan === 'Tersedia')
+                            @if($rs->konfirmasi_lahan === 'Tersedia')
                                 <span class="inline-flex items-center px-2 py-0.5 rounded text-[9px] font-bold uppercase bg-emerald-100 text-emerald-800" title="Lahan Tersedia">
                                     Lahan Tersedia
                                 </span>
